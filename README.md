@@ -14,7 +14,7 @@ One of the most powerful patterns in this collection: **use Claude (Opus/Sonnet)
 
 #### OpenAI Official Codex Plugin (`plugins/openai-codex/`)
 
-Included in this repo is OpenAI's official [Codex plugin for Claude Code](https://github.com/openai/codex) — the bridge that enables cross-model collaboration:
+Included in this repo is OpenAI's official **[codex-plugin-cc](https://github.com/openai/codex-plugin-cc)** — the bridge that enables cross-model collaboration:
 
 | Component | What it does |
 |---|---|
@@ -152,7 +152,7 @@ cp -r rules/common ~/.claude/rules/
 
 ### Codex MCP Setup (for cross-model review)
 
-To enable Claude + GPT-5.4 collaboration, configure the Codex MCP server in your Claude Code settings. See the [Codex MCP documentation](https://github.com/openai/codex) for setup instructions.
+To enable Claude + GPT-5.4 collaboration, install OpenAI's official [codex-plugin-cc](https://github.com/openai/codex-plugin-cc) (included in `plugins/openai-codex/`), and configure the Codex MCP server in your Claude Code settings.
 
 ## Credits
 
