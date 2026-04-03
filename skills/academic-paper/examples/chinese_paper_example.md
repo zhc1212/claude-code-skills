@@ -23,7 +23,7 @@ The following is a complete Chinese academic paper example produced by `full mod
 ¹ Department of Education, National Chengchi University, Taipei, Taiwan
 ² Graduate Institute of Higher Education, Tamkang University, New Taipei, Taiwan
 
-**Corresponding Author**: Chia-Hui Lin (jiahuei.lin@nccu.edu.tw)
+**Corresponding Author**: Chia-Hui Lin (author@university.edu.tw)
 
 **AI Disclosure Statement**: This study used generative AI tools (Claude, Anthropic, 2024) during the literature search and initial classification stages. All AI-assisted outputs were manually reviewed and revised by the authors. The final manuscript writing, data analysis, and academic judgments were completed entirely and independently by the authors.
 
