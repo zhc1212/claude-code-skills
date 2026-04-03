@@ -4,7 +4,7 @@
   "description": "Battle-tested Claude Code configurations from an Anthropic hackathon winner — agents, skills, hooks, rules, and legacy command shims evolved over 10+ months of intensive daily use",
   "owner": {
     "name": "Affaan Mustafa",
-    "email": "me@affaanmustafa.com"
+    "email": "me@your-username.com"
   },
   "metadata": {
     "description": "Battle-tested Claude Code configurations from an Anthropic hackathon winner"
@@ -17,7 +17,7 @@
       "version": "1.9.0",
       "author": {
         "name": "Affaan Mustafa",
-        "email": "me@affaanmustafa.com"
+        "email": "me@your-username.com"
       },
       "homepage": "https://github.com/affaan-m/everything-claude-code",
       "repository": "https://github.com/affaan-m/everything-claude-code",
