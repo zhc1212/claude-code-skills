@@ -12,6 +12,23 @@ Built on top of [Everything Claude Code (ECC)](https://github.com/anthropics/cla
 
 One of the most powerful patterns in this collection: **use Claude (Opus/Sonnet) as the primary coding agent, with GPT-5.4 via Codex MCP as an independent reviewer and research partner.** Two models catch more bugs than one.
 
+#### OpenAI Official Codex Plugin (`plugins/openai-codex/`)
+
+Included in this repo is OpenAI's official [Codex plugin for Claude Code](https://github.com/openai/codex) — the bridge that enables cross-model collaboration:
+
+| Component | What it does |
+|---|---|
+| `plugins/openai-codex/skills/codex-cli-runtime` | Core runtime: manages Codex CLI sessions, thread IDs, and result parsing |
+| `plugins/openai-codex/skills/gpt-5-4-prompting` | Prompt engineering guide for GPT-5.4 — recipes, anti-patterns, prompt blocks |
+| `plugins/openai-codex/skills/codex-result-handling` | Structured handling of Codex review output back into Claude's workflow |
+| `plugins/openai-codex/agents/codex-rescue.md` | Delegate stuck tasks to Codex for a second implementation pass |
+| `plugins/openai-codex/commands/review.md` | `/codex:review` — send code to GPT-5.4 for independent review |
+| `plugins/openai-codex/commands/adversarial-review.md` | Adversarial review mode with structured schema output |
+| `plugins/openai-codex/commands/rescue.md` | `/codex:rescue` — hand off debugging or investigation to Codex |
+| `plugins/openai-codex/hooks/hooks.json` | Auto-trigger Codex review on git push via Stop hook |
+
+#### Skills Built on Top of Codex
+
 | Skill / Command | What it does |
 |---|---|
 | `skills/codex-review` | Send `git diff` to GPT-5.4 for independent code review. Supports file-level, branch-level, and full PR review. Triggered by `/codex-review`. |
@@ -124,6 +141,7 @@ cp -r agents/ ~/.claude/agents/
 cp -r rules/ ~/.claude/rules/
 cp -r hooks/ ~/.claude/hooks/
 cp -r scripts/ ~/.claude/scripts/
+cp -r plugins/openai-codex/ ~/.claude/plugins/openai-codex/  # Codex plugin
 
 # Or install selectively — just copy what you need
 cp -r skills/codex-review ~/.claude/skills/
