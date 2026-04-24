@@ -1,6 +1,6 @@
 ---
 name: experiment-plot-advisor
-description: Recommend optimal academic chart types for ML experiment results and generate publication-quality matplotlib/seaborn plotting code. Use when user has experiment data and needs figure recommendations for NeurIPS/ICML/ICLR/ACL papers.
+description: Use when user has ML experiment data (tables, CSV, benchmark results) and needs to choose a chart type for a conference paper figure. Also use when user says "画图", "绘图推荐", "plot results", "性能对比图", "训练曲线", "ablation figure", or asks how to visualize results for NeurIPS/ICML/ICLR/ACL submission.
 version: 1.0.0
 tags: [Visualization, Plotting, Matplotlib, Seaborn, NeurIPS, ICML, Academic, Experiment Results]
 ---
@@ -130,12 +130,11 @@ plt.rcParams.update({
     'font.family': 'serif',
 })
 
-# Try LaTeX rendering (graceful fallback)
-try:
+# LaTeX rendering (graceful fallback)
+import shutil
+if shutil.which('latex'):
     plt.rcParams['text.usetex'] = True
     plt.rcParams['font.serif'] = ['Times New Roman', 'Computer Modern']
-except:
-    plt.rcParams['text.usetex'] = False
 ```
 
 ### Color Palettes
@@ -154,6 +153,21 @@ except:
 LINESTYLES = ['-', '--', '-.', ':', (0, (3, 1, 1, 1)), (0, (5, 2))]
 MARKERS = ['o', 's', '^', 'D', 'v', 'P']
 ```
+
+## Common Mistakes
+
+| Mistake | Fix |
+|---------|-----|
+| 3D bar charts or 3D surfaces | Always use 2D. 3D distorts perception and is rejected by top venues. |
+| Rainbow/jet colormap | Use viridis, inferno, or single-hue sequential. Rainbow has perceptual non-uniformity. |
+| Pie chart for >5 categories | Use horizontal bar chart instead. Pie charts are hard to compare beyond 3-4 slices. |
+| Missing error bars on multi-run data | If you have variance, show it. Reviewers will ask. |
+| Adding error bars to single-run data | Don't fabricate uncertainty. State "single run" in caption. |
+| Y-axis not starting at 0 for bar charts | Bar height encodes magnitude — truncated Y-axis misleads. Use break axis if needed. |
+| Too many colors with no pattern distinction | Always pair color with marker/linestyle for grayscale compatibility. |
+| Cramming 10+ methods into one plot | Use facet grid or split into 2 figures. Readability > density. |
+| Legend covering data points | Place legend outside plot (`bbox_to_anchor`) or use `loc='best'`. |
+| Default matplotlib style | Always apply the publication preamble. Default gray background and thick borders look unprofessional. |
 
 ## Output Requirements
 
