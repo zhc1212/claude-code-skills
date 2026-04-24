@@ -1,6 +1,6 @@
 # Claude Code Skills Collection
 
-A curated collection of **221 skills**, **68 slash commands**, **36 agents**, and **multi-language rules** for [Claude Code](https://claude.ai/code).
+A curated collection of **226 skills**, **68 slash commands**, **36 agents**, and **multi-language rules** for [Claude Code](https://claude.ai/code).
 
 Built on top of [Everything Claude Code (ECC)](https://github.com/anthropics/claude-code) — the most comprehensive plugin system for Claude Code — with additional research, writing, and evaluation skills.
 
