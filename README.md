@@ -73,30 +73,92 @@ This collection is built on ECC's plugin infrastructure:
 
 A complete pipeline from literature search to camera-ready PDF:
 
-| Stage | Skills |
-|---|---|
-| Literature Search | `research-lit`, `kdense-literature-review`, `kdense-bgpt-paper-search`, `deep-research`, `exa-search` |
-| Idea Generation | `brainstorming-research-ideas`, `creative-thinking-for-research`, `idea-creator`, `idea-discovery` |
-| Novelty Check | `novelty-check` — verify against recent literature |
-| Deep Research | `academic-deep-research` — 13-agent pipeline, PRISMA-compliant systematic review, meta-analysis |
-| Paper Planning | `paper-plan` — structured outline from review + experiment results |
-| Figure Generation | `paper-figure`, `orchestra-academic-plotting` — publication-quality figures from data |
-| Paper Writing | `paper-write`, `ml-paper-writing`, `orchestra-ml-paper-writing`, `research-paper-writing` — section-by-section LaTeX drafting with venue templates (NeurIPS, ICML, ICLR, ACL, AAAI, COLM) |
-| Peer Review | `academic-paper-reviewer` — multi-perspective simulated review with dynamic reviewer personas |
-| Auto-Improve | `auto-paper-improvement-loop` — GPT-5.4 review → fix → recompile, 2 autonomous rounds |
-| Full Pipeline | `academic-pipeline` — 9-stage orchestrator: research → write → integrity → review → revise → finalize |
-| LaTeX Compile | `paper-compile` — compile, fix errors, verify output |
+### Research & Ideation
+
+| Skill | Trigger | What it does |
+|---|---|---|
+| `research-lit` | "find papers", "文献调研" | Search and analyze papers, find related work, summarize key ideas |
+| `idea-creator` | "找idea", "brainstorm ideas" | Generate and rank research ideas given a broad direction |
+| `idea-discovery` | "idea pipeline" | Full pipeline: literature → idea generation → novelty check → review |
+| `novelty-check` | "查新", "novelty check" | Verify idea novelty against recent literature |
+| `brainstorming-research-ideas` | "研究方向" | Structured ideation frameworks for high-impact directions |
+| `creative-thinking-for-research` | "换个角度想" | Cognitive science frameworks for creative thinking |
+| `academic-deep-research` | "deep research", "系统综述" | 13-agent pipeline, PRISMA-compliant systematic review |
+
+### Writing Papers
+
+| Skill | Trigger | What it does |
+|---|---|---|
+| `ml-paper-writing` | "写论文", "write paper" | **Main skill.** NeurIPS/ICML/ICLR/ACL/AAAI + systems venues. Templates, citations, checklists |
+| `systems-paper-writing` | "写系统论文", "OSDI paper" | **Systems venues** (OSDI/SOSP/ASPLOS/NSDI/EuroSys). 12-page blueprint, paragraph-level structure, 4 writing patterns, LaTeX templates |
+| `paper-plan` | "写大纲", "outline" | Structured outline from experiment results and review conclusions |
+| `paper-write` | "写论文", "draft LaTeX" | Section-by-section LaTeX drafting from an outline |
+| `write-paper-section` | "写论文段落", "write section" | Write or improve a single section (method, experiments, results) |
+| `research-paper-writing` | "improve writing" | Improve ML/CV/NLP paper quality: structure, flow, reviewer perspective |
+| `academic-paper` | "academic paper pipeline" | 12-agent pipeline (v2.4), forced APA7 formatting |
+| `academic-pipeline` | "full pipeline" | 9-stage orchestrator: research → write → integrity → review → revise → finalize |
+| `paper-writing` | "论文流水线" | Workflow 3: outline → figures → writing → compile, fully automated |
+| `doc-coauthoring` | "协作写作", "一起写" | Staged collaboration: collect context → draft per-section → reader test |
+
+### Figures & Tables
+
+| Skill | Trigger | What it does |
+|---|---|---|
+| `experiment-plot-advisor` | "画图", "绘图推荐", "plot results" | Recommend chart type (19 academic chart types) + generate matplotlib code |
+| `paper-figure` | "作图", "generate figure" | Publication-quality figures and tables from experiment results |
+| `academic-plotting` | "论文配图" | Two modes: architecture diagrams (Gemini) + data plots (matplotlib) |
+| `paper-arch-diagram` | "架构图", "framework diagram" | Generate architecture diagram prompts for image generation tools |
+| `canvas-design` | "概念图", "示意图", "poster" | Design-philosophy-driven concept diagrams, output .png/.pdf |
+| `gen-figure-caption` | "生成caption", "写图注" | Generate English figure captions from Chinese descriptions |
+| `gen-table-caption` | "表格标题", "table caption" | Generate English table captions from Chinese descriptions |
+
+### Language & Polishing
+
+| Skill | Trigger | What it does |
+|---|---|---|
+| `polish-english-paper` | "润色", "polish", "grammar check" | Paragraph-level English polishing (grammar, style, academic tone) |
+| `deai-latex` | "去AI味", "de-AI" | Remove AI writing traces from LaTeX text only |
+| `humanizer` | "humanize", "让文字更自然" | **Universal** AI-trace removal for any text format (based on Wikipedia AI writing signals) |
+| `shorten-latex` | "缩短", "shorten", "page limit" | Shorten paragraphs to fit page limits while preserving meaning |
+| `translate-zh-en` | "翻译", "translate to English" | Chinese academic drafts → publication-quality English LaTeX |
+
+### Review & Quality
+
+| Skill | Trigger | What it does |
+|---|---|---|
+| `reviewer-view-paper` | "模拟审稿", "reviewer opinion" | Single harsh reviewer perspective, top-venue style |
+| `academic-paper-reviewer` | "review my paper" | Multi-perspective: 1 EIC + 3 peer reviewers + 1 meta-reviewer |
+| `research-review` | "review my research" | Cross-model deep review via Codex (GPT-5.5) |
+| `auto-paper-improvement-loop` | "自动改论文", "auto improve" | GPT-5.5 review → Claude fix → recompile, 2 autonomous rounds |
+| `auto-review-loop` | "review loop" | Multi-round: Codex reviews → Claude fixes → Codex re-reviews until convergence |
+| `paper-compile` | "编译论文", "compile paper" | Compile LaTeX → PDF, auto-fix errors |
+
+### Presentation & Documents
+
+| Skill | Trigger | What it does |
+|---|---|---|
+| `presenting-conference-talks` | "做slides", "conference talk" | Generate Beamer slides + PPTX + speaker notes from paper PDF |
+| `docx` | "Word文档", ".docx" | Create/edit/redline Word documents with tracked changes |
+
+### Typical Workflows
+
+```
+Research:    idea-creator → novelty-check → research-lit
+Write:       paper-plan → paper-write → paper-compile
+Systems:     systems-paper-writing (structure) + ml-paper-writing (citations/format)
+Figures:     experiment-plot-advisor → paper-figure → gen-figure-caption
+Polish:      polish-english-paper → deai-latex / humanizer → shorten-latex
+Review:      reviewer-view-paper → auto-paper-improvement-loop
+Submit:      paper-compile → ml-paper-writing (checklist)
+Present:     presenting-conference-talks
+```
 
 ### Evaluation & Benchmarking
 
 | Skill | What it evaluates |
 |---|---|
 | `orchestra-lm-evaluation-harness` | 60+ academic benchmarks (MMLU, HumanEval, GSM8K, TruthfulQA, ...) |
-| `orchestra-bigcode-evaluation-harness` | Code generation: HumanEval, MBPP, MultiPL-E, 15+ benchmarks |
-| `orchestra-nemo-evaluator` | 100+ benchmarks from 18+ harnesses |
 | `eval-harness` | Formal evaluation framework for Claude Code sessions |
-| `kdense-peer-review` | Structured manuscript/grant review with checklist evaluation |
-| `kdense-scientific-critical-thinking` | Evaluate scientific claims and evidence quality |
 
 ---
 
