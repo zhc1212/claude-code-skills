@@ -62,10 +62,10 @@ Task is complete only after validation passes.
 ## Task
 Research name: GitHub Copilot
 category: International Product
-description: Developed by Microsoft/GitHub, first mainstream AI coding assistant, ~40% market share, output structured JSON to ~/research/results/results/GitHub_Copilot.json
+description: Developed by Microsoft/GitHub, first mainstream AI coding assistant, ~40% market share, output structured JSON to /home/weizhena/AIcoding/aicoding-history/results/GitHub_Copilot.json
 
 ## Field Definitions
-Read ~/research/results/fields.yaml to get all field definitions
+Read /home/weizhena/AIcoding/aicoding-history/fields.yaml to get all field definitions
 
 ## Output Requirements
 1. Output JSON according to fields defined in fields.yaml
@@ -74,11 +74,11 @@ Read ~/research/results/fields.yaml to get all field definitions
 4. All field values must be in English
 
 ## Output Path
-~/research/results/results/GitHub_Copilot.json
+/home/weizhena/AIcoding/aicoding-history/results/GitHub_Copilot.json
 
 ## Validation
 After completing JSON output, run validation script to ensure complete field coverage:
-python ~/.claude/skills/research/validate_json.py -f ~/research/results/fields.yaml -j ~/research/results/results/GitHub_Copilot.json
+python ~/.claude/skills/research/validate_json.py -f /home/weizhena/AIcoding/aicoding-history/fields.yaml -j /home/weizhena/AIcoding/aicoding-history/results/GitHub_Copilot.json
 Task is complete only after validation passes.
 ```
 

@@ -24,7 +24,7 @@ Each phase builds on the previous one's output. The final deliverable is a polis
 
 - **VENUE = `ICLR`** — Target venue. Options: `ICLR`, `NeurIPS`, `ICML`. Affects style file, page limit, citation format.
 - **MAX_IMPROVEMENT_ROUNDS = 2** — Number of review→fix→recompile rounds in the improvement loop.
-- **REVIEWER_MODEL = `gpt-5.4`** — Model used via Codex MCP for plan review, figure review, writing review, and improvement loop.
+- **REVIEWER_MODEL = `gpt-5.5`** — Model used via Codex MCP for plan review, figure review, writing review, and improvement loop.
 - **AUTO_PROCEED = true** — Auto-continue between phases. Set `false` to pause and wait for user approval after each phase.
 
 > Override inline: `/paper-writing "NARRATIVE_REPORT.md" — venue: NeurIPS, wait for my approval at each step`
@@ -55,7 +55,7 @@ Invoke `/paper-plan` to create the structural outline:
 - Design section structure (5-8 sections depending on paper type)
 - Plan figure/table placement with data sources
 - Scaffold citation structure
-- GPT-5.4 reviews the plan for completeness
+- GPT-5.5 reviews the plan for completeness
 
 **Output:** `PAPER_PLAN.md` with section plan, figure plan, citation scaffolding.
 
@@ -87,7 +87,7 @@ Invoke `/paper-figure` to generate data-driven plots and tables:
 - Generate matplotlib/seaborn plots from JSON/CSV data
 - Generate LaTeX comparison tables
 - Create `figures/latex_includes.tex` for easy insertion
-- GPT-5.4 reviews figure quality and captions
+- GPT-5.5 reviews figure quality and captions
 
 **Output:** `figures/` directory with PDFs, generation scripts, and LaTeX snippets.
 
@@ -120,7 +120,7 @@ Invoke `/paper-write` to generate section-by-section LaTeX:
 - Clean stale files from previous section structures
 - Automated bib cleaning (remove uncited entries)
 - De-AI polish (remove "delve", "pivotal", "landscape"...)
-- GPT-5.4 reviews each section for quality
+- GPT-5.5 reviews each section for quality
 
 **Output:** `paper/` directory with `main.tex`, `sections/*.tex`, `references.bib`, `math_commands.tex`.
 
@@ -176,9 +176,9 @@ Invoke `/auto-paper-improvement-loop` to polish the paper:
 
 **What this does (2 rounds):**
 
-**Round 1:** GPT-5.4 xhigh reviews the full paper → identifies CRITICAL/MAJOR/MINOR issues → Claude Code implements fixes → recompile → save `main_round1.pdf`
+**Round 1:** GPT-5.5 xhigh reviews the full paper → identifies CRITICAL/MAJOR/MINOR issues → Claude Code implements fixes → recompile → save `main_round1.pdf`
 
-**Round 2:** GPT-5.4 xhigh re-reviews with conversation context → identifies remaining issues → Claude Code implements fixes → recompile → save `main_round2.pdf`
+**Round 2:** GPT-5.5 xhigh re-reviews with conversation context → identifies remaining issues → Claude Code implements fixes → recompile → save `main_round2.pdf`
 
 **Typical improvements:**
 - Fix assumption-model mismatches

@@ -11,7 +11,7 @@ Generate a structured, section-by-section paper outline from: **$ARGUMENTS**
 
 ## Constants
 
-- **REVIEWER_MODEL = `gpt-5.4`** — Model used via Codex MCP for outline review. Must be an OpenAI model.
+- **REVIEWER_MODEL = `gpt-5.5`** — Model used via Codex MCP for outline review. Must be an OpenAI model.
 - **TARGET_VENUE = `ICLR`** — Default venue. User can override (e.g., `/paper-plan "topic" — venue: NeurIPS`). Supported: `ICLR`, `NeurIPS`, `ICML`.
 - **MAX_PAGES** — Main body page limit, measured from first page to end of Conclusion section (excluding references, appendix, and acknowledgements). ICLR=9, NeurIPS=9, ICML=8.
 
@@ -180,11 +180,11 @@ For each section, list required citations:
 
 ### Step 6: Cross-Review with REVIEWER_MODEL
 
-Send the complete outline to GPT-5.4 xhigh for feedback:
+Send the complete outline to GPT-5.5 xhigh for feedback:
 
 ```
 mcp__codex__codex:
-  model: gpt-5.4
+  model: gpt-5.5
   config: {"model_reasoning_effort": "xhigh"}
   prompt: |
     Review this paper outline for a [VENUE] submission.

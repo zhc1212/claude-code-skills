@@ -27,7 +27,7 @@ Each phase builds on the previous one's output. The final deliverable is a valid
 - **MAX_PILOT_IDEAS = 3** — Run pilots for at most 3 top ideas in parallel. Additional ideas are validated on paper only.
 - **MAX_TOTAL_GPU_HOURS = 8** — Total GPU budget across all pilots. If exceeded, skip remaining pilots and note in report.
 - **AUTO_PROCEED = true** — If user doesn't respond at a checkpoint, automatically proceed with the best option after presenting results. Set to `false` to always wait for explicit user confirmation.
-- **REVIEWER_MODEL = `gpt-5.4`** — Model used via Codex MCP. Must be an OpenAI model (e.g., `gpt-5.4`, `o3`, `gpt-4o`). Passed to sub-skills.
+- **REVIEWER_MODEL = `gpt-5.5`** — Model used via Codex MCP. Must be an OpenAI model (e.g., `gpt-5.5`, `o3`, `gpt-4o`). Passed to sub-skills.
 
 > 💡 These are defaults. Override by telling the skill, e.g., `/idea-discovery "topic" — pilot budget: 4h per idea, 20h total` or `/idea-discovery "topic" — wait for my approval at each step`.
 
@@ -69,7 +69,7 @@ Invoke `/idea-creator` with the landscape context:
 ```
 
 **What this does:**
-- Brainstorm 8-12 concrete ideas via GPT-5.4 xhigh
+- Brainstorm 8-12 concrete ideas via GPT-5.5 xhigh
 - Filter by feasibility, compute cost, quick novelty search
 - Deep validate top ideas (full novelty check + devil's advocate)
 - Run parallel pilot experiments on available GPUs (top 2-3 ideas)
@@ -104,7 +104,7 @@ For each top idea (positive pilot signal), run a thorough novelty check:
 
 **What this does:**
 - Multi-source literature search (arXiv, Scholar, Semantic Scholar)
-- Cross-verify with GPT-5.4 xhigh
+- Cross-verify with GPT-5.5 xhigh
 - Check for concurrent work (last 3-6 months)
 - Identify closest existing work and differentiation points
 
@@ -119,7 +119,7 @@ For the surviving top idea(s), get brutal feedback:
 ```
 
 **What this does:**
-- GPT-5.4 xhigh acts as a senior reviewer (NeurIPS/ICML level)
+- GPT-5.5 xhigh acts as a senior reviewer (NeurIPS/ICML level)
 - Scores the idea, identifies weaknesses, suggests minimum viable improvements
 - Provides concrete feedback on experimental design
 

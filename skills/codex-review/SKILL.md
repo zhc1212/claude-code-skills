@@ -1,11 +1,11 @@
 ---
 name: codex-review
-description: Send code to GPT-5.4 via Codex MCP for cross-model review. ONLY trigger when the user explicitly mentions "codex" in the context of review — e.g. "codex review", "/codex-review", "让codex看看", "codex帮我review". Do NOT trigger on generic "review", "review my code", "review my changes", "superpower review", or any review request that does not contain the word "codex" — those belong to superpowers:requesting-code-review, review-implementation, or final-review.
+description: Send code to GPT-5.5 via Codex MCP for cross-model review. ONLY trigger when the user explicitly mentions "codex" in the context of review — e.g. "codex review", "/codex-review", "让codex看看", "codex帮我review". Do NOT trigger on generic "review", "review my code", "review my changes", "superpower review", or any review request that does not contain the word "codex" — those belong to superpowers:requesting-code-review, review-implementation, or final-review.
 ---
 
 # Codex Code Review
 
-Get an independent code review from GPT-5.4 via Codex MCP — a second opinion from a different model than the one writing the code.
+Get an independent code review from GPT-5.5 via Codex MCP — a second opinion from a different model than the one writing the code.
 
 ## Review Modes
 

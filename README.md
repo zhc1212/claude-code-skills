@@ -1,6 +1,6 @@
 # Claude Code Skills Collection
 
-A curated collection of **191 skills**, **68 slash commands**, **36 agents**, and **multi-language rules** for [Claude Code](https://claude.ai/code).
+A curated collection of **221 skills**, **68 slash commands**, **36 agents**, and **multi-language rules** for [Claude Code](https://claude.ai/code).
 
 Built on top of [Everything Claude Code (ECC)](https://github.com/anthropics/claude-code) — the most comprehensive plugin system for Claude Code — with additional research, writing, and evaluation skills.
 
@@ -100,20 +100,42 @@ A complete pipeline from literature search to camera-ready PDF:
 
 ---
 
+## GSD — Get Stuff Done (68 skills)
+
+The largest skill family in this collection. A complete project management system that runs inside Claude Code:
+
+| Stage | Skills |
+|---|---|
+| **Start** | `gsd-new-project`, `gsd-new-milestone`, `gsd-explore` |
+| **Plan** | `gsd-discuss-phase`, `gsd-research-phase`, `gsd-plan-phase`, `gsd-list-phase-assumptions` |
+| **Execute** | `gsd-execute-phase`, `gsd-fast`, `gsd-quick`, `gsd-autonomous` |
+| **Quality** | `gsd-code-review`, `gsd-code-review-fix`, `gsd-validate-phase`, `gsd-secure-phase`, `gsd-ui-review` |
+| **Ship** | `gsd-ship`, `gsd-pr-branch`, `gsd-verify-work` |
+| **Track** | `gsd-progress`, `gsd-stats`, `gsd-health`, `gsd-session-report` |
+| **Manage** | `gsd-manager`, `gsd-workstreams`, `gsd-thread`, `gsd-pause-work`, `gsd-resume-work` |
+| **Maintain** | `gsd-debug`, `gsd-forensics`, `gsd-undo`, `gsd-cleanup` |
+| **Docs** | `gsd-docs-update`, `gsd-map-codebase`, `gsd-intel`, `gsd-milestone-summary` |
+
+---
+
 ## All Skill Categories
 
 | Category | Count | Key Skills |
 |---|---|---|
-| **Research & Writing** | 40+ | academic-paper, deep-research, ml-paper-writing, research-lit, idea-creator, novelty-check |
+| **GSD (Get Stuff Done)** | 68 | gsd-autonomous, gsd-plan-phase, gsd-execute-phase, gsd-ship, gsd-debug, gsd-map-codebase |
+| **Research & Writing** | 38+ | academic-paper, deep-research, ml-paper-writing, research-lit, idea-creator, novelty-check |
 | **Cross-Model (Codex)** | 10+ | codex-review, auto-review-loop, deep-research-codex-*, multi-plan/execute |
 | **Superpowers** | 12 | brainstorming, writing-plans, TDD, debugging, code-review, verification |
-| **Development Patterns** | 20+ | python/golang/rust/kotlin/swift/django/laravel/springboot-patterns |
-| **Testing** | 10+ | tdd-workflow, python/golang/rust/kotlin/cpp-testing, e2e-testing |
+| **Development Patterns** | 20+ | python/golang/rust/kotlin/swift-patterns, api-design, backend/frontend-patterns |
+| **Testing** | 10+ | tdd-workflow, python-testing, e2e-testing, ai-regression-testing |
 | **Code Review** | 10+ | security-review, python/go/rust/cpp/kotlin/flutter/java-reviewer |
+| **PUA / Motivation** | 9 | pua, pua-en, pua-ja, pua-loop, mama, shot, pro, yes, caveman |
+| **Design** | 4 | design-consultation, design-review, design-html, design-shotgun |
 | **DevOps** | 5+ | docker-patterns, deployment-patterns, dmux-workflows, autonomous-loops |
-| **Content & Media** | 10+ | article-writing, crosspost, x-api, fal-ai-media, manim-video, pixel-art |
-| **Security** | 5+ | security-review, security-scan, django/laravel/springboot-security |
+| **Content & Media** | 10+ | article-writing, crosspost, x-api, presenting-conference-talks |
+| **Security** | 5+ | security-review, security-scan, investigate |
 | **Evaluation** | 7 | lm-evaluation-harness, bigcode-harness, nemo-evaluator, eval-harness |
+| **Project Ops** | 5+ | health, retro, office-hours, plan-ceo/eng/design-review |
 
 ## Rules
 
