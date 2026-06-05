@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "config": {
+    "stopReviewGate": false
+  },
+  "jobs": [
+    {
+      "createdAt": "2026-04-15T06:04:45.125Z",
+      "updatedAt": "2026-04-15T06:13:27.684Z",
+      "id": "task-mnznbg05-wd3593",
+      "kind": "task",
+      "kindLabel": "rescue",
+      "title": "Codex Task",
+      "workspaceRoot": "/home/xiyaofeng/huicheng/LLMCompression/.claude/worktrees/ci-test-setup",
+      "jobClass": "task",
+      "summary": "**Verdict**",
+      "write": false,
+      "sessionId": "4d798f73-3900-41cf-9a3d-7b079f3d46a0",
+      "status": "completed",
+      "startedAt": "2026-04-15T06:04:45.132Z",
+      "phase": "done",
+      "pid": null,
+      "logFile": "/home/xiyaofeng/huicheng/.claude/plugins/data/codex-openai-codex/state/ci-test-setup-20a7afbb24454f45/jobs/task-mnznbg05-wd3593.log",
+      "threadId": "019d8fbe-023c-7970-be69-bafa9be1d64a",
+      "turnId": "019d8fbe-0270-7573-8899-2748f122d2d0",
+      "completedAt": "2026-04-15T06:13:27.664Z"
+    }
+  ]
+}

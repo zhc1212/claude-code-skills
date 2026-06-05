@@ -1,0 +1,257 @@
+[2026-04-08T01:48:48.002Z] Starting Codex Task.
+[2026-04-08T01:48:48.318Z] Starting Codex task thread.
+[2026-04-08T01:48:48.577Z] Starting Codex task thread.
+[2026-04-08T01:48:48.614Z] Thread ready (019d6ac7-2259-7381-9772-da6e45484731).
+[2026-04-08T01:48:48.650Z] Turn started (019d6ac7-2284-7af0-86e8-953e0917c17c).
+[2026-04-08T01:49:07.400Z] Assistant message captured: 先核对 `README.md` 与指定实现文件的对应关系。我会先把 README 的每一条技术性陈述拆出来，再逐个读取 `one_site`、`two_site`、`global_opt...
+
+[2026-04-08T01:49:07.401Z] Assistant message
+先核对 `README.md` 与指定实现文件的对应关系。我会先把 README 的每一条技术性陈述拆出来，再逐个读取 `one_site`、`two_site`、`global_opt` 下的实现和任何公式来源文件，最后按你要求的 6 个部分输出结构化审查。
+[2026-04-08T01:49:22.960Z] Assistant message captured: 先确认文件范围和行号基线，避免后面引用错位。我会把 README 和你列出的实现文件全部按带行号方式读出来，再补读公式实际来源。
+
+[2026-04-08T01:49:22.960Z] Assistant message
+先确认文件范围和行号基线，避免后面引用错位。我会把 README 和你列出的实现文件全部按带行号方式读出来，再补读公式实际来源。
+[2026-04-08T01:49:23.107Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/README.md'
+[2026-04-08T01:49:23.132Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/README.md' (exit 0)
+[2026-04-08T01:49:23.132Z] Running command: /bin/bash -lc 'rg --files mpo_modules/optimizers'
+[2026-04-08T01:49:23.132Z] Command completed: /bin/bash -lc 'rg --files mpo_modules/optimizers' (exit 0)
+[2026-04-08T01:49:44.650Z] Assistant message captured: README 已经展开。下一步我在逐个读取实现文件和分发/初始化相关代码，重点核对算法描述、参数名、默认值、环境变量、以及 README 里列出的示例调用是否真能跑通。
+
+[2026-04-08T01:49:44.650Z] Assistant message
+README 已经展开。下一步我在逐个读取实现文件和分发/初始化相关代码，重点核对算法描述、参数名、默认值、环境变量、以及 README 里列出的示例调用是否真能跑通。
+[2026-04-08T01:49:44.793Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/tt_svd.py'
+[2026-04-08T01:49:44.794Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/tt_svd.py' (exit 0)
+[2026-04-08T01:49:44.800Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/als.py'
+[2026-04-08T01:49:44.801Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/two_site/stiefel_dmrg.py'
+[2026-04-08T01:49:44.802Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/als.py' (exit 0)
+[2026-04-08T01:49:44.804Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/two_site/stiefel_dmrg.py' (exit 0)
+[2026-04-08T01:49:44.806Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/two_site/dmrg_optimizer.py'
+[2026-04-08T01:49:44.815Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/two_site/dmrg_optimizer.py' (exit 0)
+[2026-04-08T01:49:44.815Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/global_opt/hybrid_bb.py'
+[2026-04-08T01:49:44.816Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/global_opt/hybrid_bb.py' (exit 0)
+[2026-04-08T01:50:01.841Z] Assistant message captured: `dmrg_optimizer.py` 很大，我在补抓 README 涉及的精确片段：`matrix_ring_svd_dmrg` 包装器、solver 分支、边界条件、返回值和早停逻辑...
+
+[2026-04-08T01:50:01.841Z] Assistant message
+`dmrg_optimizer.py` 很大，我在补抓 README 涉及的精确片段：`matrix_ring_svd_dmrg` 包装器、solver 分支、边界条件、返回值和早停逻辑。这样最终每个结论都能落到具体行号，而不是泛泛描述。
+[2026-04-08T01:50:01.972Z] Running command: /bin/bash -lc "sed -n '1500,1765p' mpo_modules/optimizers/two_site/dmrg_optimizer.py | nl -ba...
+[2026-04-08T01:50:01.972Z] Command completed: /bin/bash -lc "sed -n '1500,1765p' mpo_modules/optimizers/two_site/dmrg_optimizer.py | nl -ba... (exit 0)
+[2026-04-08T01:50:01.974Z] Running command: /bin/bash -lc "sed -n '326,620p' mpo_modules/optimizers/two_site/dmrg_optimizer.py | nl -ba -...
+[2026-04-08T01:50:01.974Z] Running command: /bin/bash -lc 'rg -n "matrix_ring_svd_dmrg|class SimplifiedALS|class TwoSiteDMRG|pair_solver|...
+[2026-04-08T01:50:01.975Z] Command completed: /bin/bash -lc 'rg -n "matrix_ring_svd_dmrg|class SimplifiedALS|class TwoSiteDMRG|pair_solver|... (exit 0)
+[2026-04-08T01:50:01.975Z] Command completed: /bin/bash -lc "sed -n '326,620p' mpo_modules/optimizers/two_site/dmrg_optimizer.py | nl -ba -... (exit 0)
+[2026-04-08T01:50:01.981Z] Running command: /bin/bash -lc "sed -n '2930,3126p' mpo_modules/optimizers/two_site/dmrg_optimizer.py | nl -ba...
+[2026-04-08T01:50:01.982Z] Command completed: /bin/bash -lc "sed -n '2930,3126p' mpo_modules/optimizers/two_site/dmrg_optimizer.py | nl -ba... (exit 0)
+[2026-04-08T01:50:14.138Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/tt_ops.py'
+[2026-04-08T01:50:14.138Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/ring_ops.py'
+[2026-04-08T01:50:14.140Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/tt_ops.py' (exit 0)
+[2026-04-08T01:50:14.141Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/ring_ops.py' (exit 0)
+[2026-04-08T01:50:14.141Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/factorization.py'
+[2026-04-08T01:50:14.141Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/core.py'
+[2026-04-08T01:50:14.141Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/factorization.py' (exit 0)
+[2026-04-08T01:50:14.142Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/core.py' (exit 0)
+[2026-04-08T01:50:14.145Z] Running command: /bin/bash -lc "rg -n \"matrix_ring_svd_dmrg|matrix_ring_svd_riemannian|matrix_ring_svd_hybrid...
+[2026-04-08T01:50:14.145Z] Command completed: /bin/bash -lc "rg -n \"matrix_ring_svd_dmrg|matrix_ring_svd_riemannian|matrix_ring_svd_hybrid... (exit 0)
+[2026-04-08T01:50:27.254Z] Assistant message captured: Riemannian 部分是 README 偏抽象的区域，我在把 `optimizer.py`、`quotient_manifold.py`、`tr_point.py`、`mpo_ada...
+
+[2026-04-08T01:50:27.254Z] Assistant message
+Riemannian 部分是 README 偏抽象的区域，我在把 `optimizer.py`、`quotient_manifold.py`、`tr_point.py`、`mpo_adapter.py` 等全部摊开。这里既要核对“算法说法”，也要核对 README 里暗示的模块职责和实际暴露 API 是否一致。
+[2026-04-08T01:50:27.397Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/riemannian/__init__.py'
+[2026-04-08T01:50:27.397Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/riemannian/__init__.py' (exit 0)
+[2026-04-08T01:50:27.420Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/riemannian/optimizer.py'
+[2026-04-08T01:50:27.420Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/riemannian/tensor_ring.py'
+[2026-04-08T01:50:27.420Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/riemannian/optimizer.py' (exit 0)
+[2026-04-08T01:50:27.420Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/riemannian/tensor_ring.py' (exit 0)
+[2026-04-08T01:50:27.426Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/riemannian/tr_point.py'
+[2026-04-08T01:50:27.426Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/riemannian/tr_point.py' (exit 0)
+[2026-04-08T01:50:27.429Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/riemannian/quotient_manifold.py'
+[2026-04-08T01:50:27.430Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/riemannian/quotient_manifold.py' (exit 0)
+[2026-04-08T01:50:34.456Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/riemannian/mpo_adapter.py'
+[2026-04-08T01:50:34.456Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/riemannian/mpo_adapter.py' (exit 0)
+[2026-04-08T01:50:34.553Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/riemannian/product_tr_point.py'
+[2026-04-08T01:50:34.553Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/riemannian/product_tr_point.py' (exit 0)
+[2026-04-08T01:50:34.561Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/riemannian/multi_variable_optimizer.py'
+[2026-04-08T01:50:34.561Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/riemannian/multi_variable_optimizer.py' (exit 0)
+[2026-04-08T01:50:49.386Z] Assistant message captured: 还要补看入口导出和 Stiefel 工具本身。README 有不少“示例导入路径”和“目录结构”类断言，这类错误最容易漏掉，我在核对 `__init__.py` 和 `stiefel_u...
+
+[2026-04-08T01:50:49.386Z] Assistant message
+还要补看入口导出和 Stiefel 工具本身。README 有不少“示例导入路径”和“目录结构”类断言，这类错误最容易漏掉，我在核对 `__init__.py` 和 `stiefel_utils.py`。
+[2026-04-08T01:50:49.506Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/two_site/stiefel_utils.py'
+[2026-04-08T01:50:49.508Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/two_site/stiefel_utils.py' (exit 0)
+[2026-04-08T01:50:49.547Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/two_site/__init__.py'
+[2026-04-08T01:50:49.547Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/two_site/__init__.py' (exit 0)
+[2026-04-08T01:50:49.547Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/global_opt/__init__.py'
+[2026-04-08T01:50:49.547Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/global_opt/__init__.py' (exit 0)
+[2026-04-08T01:50:49.548Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/__init__.py'
+[2026-04-08T01:50:49.548Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/__init__.py' (exit 0)
+[2026-04-08T01:50:49.563Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/__init__.py'
+[2026-04-08T01:50:49.563Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/optimizers/one_site/__init__.py' (exit 0)
+[2026-04-08T01:51:00.927Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/dmrg/__init__.py'
+[2026-04-08T01:51:00.927Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/dmrg/__init__.py' (exit 0)
+[2026-04-08T01:51:00.937Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/riemannian/__init__.py'
+[2026-04-08T01:51:00.937Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/riemannian/__init__.py' (exit 0)
+[2026-04-08T01:51:00.941Z] Running command: /bin/bash -lc 'rg -n "class BUG|BUG|bug_dmrg" mpo_modules/activation_driven'
+[2026-04-08T01:51:00.942Z] Command completed: /bin/bash -lc 'rg -n "class BUG|BUG|bug_dmrg" mpo_modules/activation_driven' (exit 0)
+[2026-04-08T01:51:00.947Z] Running command: /bin/bash -lc "rg --files mpo_modules/activation_driven | sed -n '1,40p'"
+[2026-04-08T01:51:00.947Z] Command completed: /bin/bash -lc "rg --files mpo_modules/activation_driven | sed -n '1,40p'" (exit 0)
+[2026-04-08T01:51:30.234Z] Assistant message captured: 我已经碰到一个关键风险点：README 把 two-site 方法写成 “both / ring”，但实现看起来更像“先在 chain 上优化，再可选地闭成 ring”。我在补读 `Tw...
+
+[2026-04-08T01:51:30.235Z] Assistant message
+我已经碰到一个关键风险点：README 把 two-site 方法写成 “both / ring”，但实现看起来更像“先在 chain 上优化，再可选地闭成 ring”。我在补读 `TwoSiteDMRG` 内部对边界的假设和 `matrix_ring_svd_dmrg` 包装器的实际流程。
+[2026-04-08T01:51:30.364Z] Running command: /bin/bash -lc "rg -n \"boundary|periodic|ring|contract_ring|_forward_with_pair|_forward_with_...
+[2026-04-08T01:51:30.365Z] Command completed: /bin/bash -lc "rg -n \"boundary|periodic|ring|contract_ring|_forward_with_pair|_forward_with_... (exit 0)
+[2026-04-08T01:51:30.367Z] Running command: /bin/bash -lc "sed -n '620,980p' mpo_modules/optimizers/two_site/dmrg_optimizer.py | nl -ba -...
+[2026-04-08T01:51:30.368Z] Command completed: /bin/bash -lc "sed -n '620,980p' mpo_modules/optimizers/two_site/dmrg_optimizer.py | nl -ba -... (exit 0)
+[2026-04-08T01:51:30.369Z] Running command: /bin/bash -lc "sed -n '980,1320p' mpo_modules/optimizers/two_site/dmrg_optimizer.py | nl -ba ...
+[2026-04-08T01:51:30.370Z] Command completed: /bin/bash -lc "sed -n '980,1320p' mpo_modules/optimizers/two_site/dmrg_optimizer.py | nl -ba ... (exit 0)
+[2026-04-08T01:51:30.373Z] Running command: /bin/bash -lc "sed -n '1320,1505p' mpo_modules/optimizers/two_site/dmrg_optimizer.py | nl -ba...
+[2026-04-08T01:51:30.373Z] Command completed: /bin/bash -lc "sed -n '1320,1505p' mpo_modules/optimizers/two_site/dmrg_optimizer.py | nl -ba... (exit 0)
+[2026-04-08T01:52:25.588Z] Running command: /bin/bash -lc 'rg -n "deadlock|fork|MPO_CTG_PARALLEL|parallel=True|CUDA context" mpo_modules'
+[2026-04-08T01:52:25.589Z] Command completed: /bin/bash -lc 'rg -n "deadlock|fork|MPO_CTG_PARALLEL|parallel=True|CUDA context" mpo_modules' (exit 0)
+[2026-04-08T01:52:25.593Z] Running command: /bin/bash -lc "rg -n \"model\\.train\\(|weight_full|_cached_weight|_cores_cached|cache_on_eva...
+[2026-04-08T01:52:25.593Z] Command completed: /bin/bash -lc "rg -n \"model\\.train\\(|weight_full|_cached_weight|_cores_cached|cache_on_eva... (exit 0)
+[2026-04-08T01:52:42.478Z] Assistant message captured: README 的分发器段落也出现了异常信号，我正在确认 `mpo_decompose` 是否真的存在，以及 `MPO_RING_OPTIMIZER` 的默认值和选项是否与代码一致。这个部...
+
+[2026-04-08T01:52:42.478Z] Assistant message
+README 的分发器段落也出现了异常信号，我正在确认 `mpo_decompose` 是否真的存在，以及 `MPO_RING_OPTIMIZER` 的默认值和选项是否与代码一致。这个部分如果写错，会直接误导调用方式。
+[2026-04-08T01:52:42.595Z] Running command: /bin/bash -lc "sed -n '430,550p' mpo_modules/model_utils.py | nl -ba -v430"
+[2026-04-08T01:52:42.596Z] Command completed: /bin/bash -lc "sed -n '430,550p' mpo_modules/model_utils.py | nl -ba -v430" (exit 0)
+[2026-04-08T01:52:42.596Z] Running command: /bin/bash -lc "rg -n \"def mpo_decompose|mpo_decompose\\b|MPO_RING_OPTIMIZER|MPO_RING_ALS_ITE...
+[2026-04-08T01:52:42.596Z] Command completed: /bin/bash -lc "rg -n \"def mpo_decompose|mpo_decompose\\b|MPO_RING_OPTIMIZER|MPO_RING_ALS_ITE... (exit 0)
+[2026-04-08T01:52:42.602Z] Running command: /bin/bash -lc 'nl -ba mpo_modules/activation_driven/__init__.py'
+[2026-04-08T01:52:42.602Z] Command completed: /bin/bash -lc 'nl -ba mpo_modules/activation_driven/__init__.py' (exit 0)
+[2026-04-08T01:52:53.390Z] Assistant message captured: 参数预算部分我也在补代码依据。`factorization.py` 里已经有链式参数计数和自动 `ring_rank` 近似推导，这能帮助判断 README 的公式是否仅是理论形状公式，...
+
+[2026-04-08T01:52:53.390Z] Assistant message
+参数预算部分我也在补代码依据。`factorization.py` 里已经有链式参数计数和自动 `ring_rank` 近似推导，这能帮助判断 README 的公式是否仅是理论形状公式，还是与仓库实际预算逻辑一致。
+[2026-04-08T01:52:53.475Z] Running command: /bin/bash -lc "sed -n '543,620p' mpo_modules/model_utils.py | nl -ba -v543"
+[2026-04-08T01:52:53.476Z] Command completed: /bin/bash -lc "sed -n '543,620p' mpo_modules/model_utils.py | nl -ba -v543" (exit 0)
+[2026-04-08T01:52:53.719Z] Running command: /bin/bash -lc "sed -n '554,610p' mpo_modules/factorization.py | nl -ba -v554"
+[2026-04-08T01:52:53.719Z] Command completed: /bin/bash -lc "sed -n '554,610p' mpo_modules/factorization.py | nl -ba -v554" (exit 0)
+[2026-04-08T01:54:00.217Z] Running command: /bin/bash -lc 'rg -n "boundary|periodic|ring|_expand_cores_to_chi|first core|last core" mpo_m...
+[2026-04-08T01:54:00.217Z] Command completed: /bin/bash -lc 'rg -n "boundary|periodic|ring|_expand_cores_to_chi|first core|last core" mpo_m... (exit 0)
+[2026-04-08T01:54:00.217Z] Running command: /bin/bash -lc 'rg -n "full_optimization_minibatch|num_sweeps|left_to_right|right_to_left|riem...
+[2026-04-08T01:54:00.218Z] Command completed: /bin/bash -lc 'rg -n "full_optimization_minibatch|num_sweeps|left_to_right|right_to_left|riem... (exit 0)
+[2026-04-08T01:54:39.904Z] Assistant message captured: 我在把 README 里的数值例子和 OOM 量级都重新算一遍。这里不能只看文字，实际代码里 Gram 大小是按 `core_size^2 * 8` 走的，量级可能和 README 写的...
+
+[2026-04-08T01:54:39.904Z] Assistant message
+我在把 README 里的数值例子和 OOM 量级都重新算一遍。这里不能只看文字，实际代码里 Gram 大小是按 `core_size^2 * 8` 走的，量级可能和 README 写的完全不是一回事。
+[2026-04-08T01:54:43.420Z] Running command: /bin/bash -lc "python - <<'PY' chi=64 for dk in [256,64,256]: core_size=chi*dk*chi gram_bytes...
+[2026-04-08T01:54:43.420Z] Command failed: /bin/bash -lc "python - <<'PY' chi=64 for dk in [256,64,256]: core_size=chi*dk*chi gram_bytes... (exit 127)
+[2026-04-08T01:54:49.253Z] Running command: /bin/bash -lc "python3 - <<'PY' chi=64 for dk in [256,64,256]: core_size=chi*dk*chi gram_byte...
+[2026-04-08T01:54:49.253Z] Command completed: /bin/bash -lc "python3 - <<'PY' chi=64 for dk in [256,64,256]: core_size=chi*dk*chi gram_byte... (exit 0)
+[2026-04-08T01:54:55.502Z] Running command: /bin/bash -lc "python3 - <<'PY' import math chain=64*256+64*64*64+64*256 ring=64*64*(256+64+2...
+[2026-04-08T01:54:55.503Z] Command completed: /bin/bash -lc "python3 - <<'PY' import math chain=64*256+64*64*64+64*256 ring=64*64*(256+64+2... (exit 0)
+[2026-04-08T01:55:15.493Z] Running command: /bin/bash -lc 'rg -n "MPO_RING_RANK|ring_rank_val|_compute_auto_ring_rank|ring_rank" mpo_modu...
+[2026-04-08T01:55:15.493Z] Command completed: /bin/bash -lc 'rg -n "MPO_RING_RANK|ring_rank_val|_compute_auto_ring_rank|ring_rank" mpo_modu... (exit 0)
+[2026-04-08T01:56:19.496Z] Running command: /bin/bash -lc "rg --files | rg '("'^|/)healing'"\\.py"'$'"'"
+[2026-04-08T01:56:19.496Z] Command completed: /bin/bash -lc "rg --files | rg '("'^|/)healing'"\\.py"'$'"'" (exit 0)
+[2026-04-08T01:56:25.082Z] Running command: /bin/bash -lc "nl -ba healing.py | sed -n '1,80p'"
+[2026-04-08T01:56:25.082Z] Command completed: /bin/bash -lc "nl -ba healing.py | sed -n '1,80p'" (exit 0)
+[2026-04-08T01:58:22.589Z] Running command: /bin/bash -lc 'rg --files mpo_modules/riemannian'
+[2026-04-08T01:58:22.589Z] Command completed: /bin/bash -lc 'rg --files mpo_modules/riemannian' (exit 0)
+[2026-04-08T01:58:30.235Z] Running command: /bin/bash -lc "sed -n '508,516p' mpo_modules/factorization.py | nl -ba -v508"
+[2026-04-08T01:58:30.235Z] Command completed: /bin/bash -lc "sed -n '508,516p' mpo_modules/factorization.py | nl -ba -v508" (exit 0)
+[2026-04-08T01:59:19.566Z] Assistant message captured: 我还在核对 README 里的参数预算示例是不是和仓库实际的因子分解习惯一致，尤其是 `2048 -> [16, 8, 16]` 这一组因子是否真的来自代码里的 factor helper。
+
+[2026-04-08T01:59:19.566Z] Assistant message
+我还在核对 README 里的参数预算示例是不是和仓库实际的因子分解习惯一致，尤其是 `2048 -> [16, 8, 16]` 这一组因子是否真的来自代码里的 factor helper。
+[2026-04-08T01:59:19.693Z] Running command: /bin/bash -lc "rg -n \"def find_factors_balanced|find_factors_balanced\\(\" mpo_modules"
+[2026-04-08T01:59:19.693Z] Command completed: /bin/bash -lc "rg -n \"def find_factors_balanced|find_factors_balanced\\(\" mpo_modules" (exit 0)
+[2026-04-08T01:59:19.695Z] Running command: /bin/bash -lc "nl -ba mpo_modules/helpers.py | sed -n '1,180p'"
+[2026-04-08T01:59:19.695Z] Command completed: /bin/bash -lc "nl -ba mpo_modules/helpers.py | sed -n '1,180p'" (exit 0)
+[2026-04-08T01:59:19.750Z] Running command: /bin/bash -lc "python3 - <<'PY' from mpo_modules.helpers import find_factors_balanced print(f...
+[2026-04-08T01:59:21.983Z] Command completed: /bin/bash -lc "python3 - <<'PY' from mpo_modules.helpers import find_factors_balanced print(f... (exit 0)
+[2026-04-08T01:59:33.016Z] Running command: /bin/bash -lc "python3 - <<'PY' try: from mpo_modules.factorization import factor_linear_mpo ...
+[2026-04-08T01:59:33.017Z] Running command: /bin/bash -lc "python3 - <<'PY' try: from mpo_modules.riemannian.mpo_adapter import matrix_ri...
+[2026-04-08T01:59:35.134Z] Command completed: /bin/bash -lc "python3 - <<'PY' try: from mpo_modules.riemannian.mpo_adapter import matrix_ri... (exit 0)
+[2026-04-08T01:59:35.134Z] Command completed: /bin/bash -lc "python3 - <<'PY' try: from mpo_modules.factorization import factor_linear_mpo ... (exit 0)
+[2026-04-08T02:00:17.382Z] Running command: /bin/bash -lc "python3 - <<'PY' import torch from mpo_modules.optimizers.two_site import matr...
+[2026-04-08T02:00:19.742Z] Command completed: /bin/bash -lc "python3 - <<'PY' import torch from mpo_modules.optimizers.two_site import matr... (exit 0)
+[2026-04-08T02:01:01.773Z] Running command: /bin/bash -lc "rg -n \"def build_mpolinear_from_dense|build_mpolinear_from_dense\\b|def facto...
+[2026-04-08T02:01:01.774Z] Command completed: /bin/bash -lc "rg -n \"def build_mpolinear_from_dense|build_mpolinear_from_dense\\b|def facto... (exit 0)
+[2026-04-08T02:05:15.259Z] Assistant message captured: 1. 技术准确性 - [ERROR] README 第49行把 “Riemannian CG” 归为 `1-site`。代码证据：[`optimizer.py:258`](/home/x...
+
+[2026-04-08T02:05:15.259Z] Assistant message
+1. 技术准确性
+- [ERROR] README 第49行把 “Riemannian CG” 归为 `1-site`。代码证据：[`optimizer.py:258`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/riemannian/optimizer.py#L258)、[`tr_point.py:218`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/riemannian/tr_point.py#L218) 显示一次迭代会为所有 core 计算梯度并整体 `retract()`。建议：改成“global / all-cores-simultaneous on TR manifold”，不要写成 1-site。
+- [ERROR] README 第142行把 `exact` 描述成“Direct solve via normal equations”。代码证据：[`dmrg_optimizer.py:378`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L378)、[`dmrg_optimizer.py:2830`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L2830)、[`dmrg_optimizer.py:489`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L489) 表明 `exact` 只被接受为字符串，但优化分支并未调用 `_solve_pair_exact*()`，而是落到 Adam 路径；相关实现还有 `pass/TODO`，见 [`dmrg_optimizer.py:674`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L674)、[`dmrg_optimizer.py:1327`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L1327)。建议：从 README 删除 `exact`，或先把它真正接到执行路径上。
+- [ERROR] README 第85行写 “Memory guard: skips if Gram matrix exceeds ...”。代码证据：[`als.py:138`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L138)、[`als.py:140`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L140) 直接 `raise MemoryError(...)`，调用方 [`als.py:269`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L269) 没有捕获。建议：改成“raises `MemoryError` and aborts ALS”，或者补上真正的 skip/fallback。
+- [ERROR] README 第86行写 “relative improvement < `als_tol`”。代码证据：[`als.py:403`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L403)、[`als.py:408`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L408) 用的是绝对差 `abs(prev_err - cur_err) < als_tol`，不是相对改进。建议：把 README 改成“absolute error change < `als_tol`”，或把实现改成相对判据。
+- [WARNING] README 第83行说 ALS “reducing the system size”。代码证据：[`als.py:162`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L162)、[`als.py:225`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L225) 虽然先构造 `bond_gram`，但随后仍显式物化完整 `gram` 并解完整线性系统。建议：改成“利用 Kronecker 结构构造 Gram，更快/更清晰；但当前实现仍求解完整系统”。
+- [WARNING] README 第50/52行把 TwoSiteDMRG 与 StiefelDMRG 的 boundary 写成 `both`。代码证据：[`two_site/__init__.py:128`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L128)、[`two_site/__init__.py:177`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L177)、[`dmrg_optimizer.py:442`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L442)、[`stiefel_dmrg.py:146`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/stiefel_dmrg.py#L146) 表明权重包装器是“先 chain 优化，再可选 `chain_to_ring()` 闭环”，而扩 rank 逻辑也默认首尾 bond 为 1。建议：改成“chain-first; ring only via explicit post-close / limited support”，不要无条件写 `both`。
+- [WARNING] README 第302行写 “gradient divergence (2x best)”。代码证据：[`hybrid_bb.py:238`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/global_opt/hybrid_bb.py#L238)、[`hybrid_bb.py:241`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/global_opt/hybrid_bb.py#L241) 检查的是 `cur_err > 2 * best_err`，即误差发散，不是梯度发散。建议：改成“error divergence (> 2x best error)”。
+
+2. 完整性
+- [WARNING] README 总览与各方法段落没有明确说：矩阵分解包装器基本都要求 `A` 是方阵。代码证据：[`tt_ops.py:42`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/tt_ops.py#L42)、[`als.py:330`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L330)、[`mpo_adapter.py:116`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/riemannian/mpo_adapter.py#L116)、[`hybrid_bb.py:145`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/global_opt/hybrid_bb.py#L145)、[`two_site/__init__.py:117`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L117)。建议：在 Overview 和每个 wrapper 的示例前都注明 “square matrix only”。
+- [WARNING] README 没有覆盖 TwoSiteDMRG 的关键参数族。代码证据：[`dmrg_optimizer.py:344`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L344) 之后定义了 `lbfgs_*`、`cg_*`、`kaczmarz_*`；[`dmrg_optimizer.py:37`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L37) 还支持 `MPO_LOSS_ACTIVATION=relu|silu|gelu`；[`dmrg_optimizer.py:2996`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L2996) 还有 `MPO_ADAPTIVE_CHI`。建议：增加“Advanced options / env vars”小节。
+- [WARNING] README 没有写出 Stiefel/RCG 的重要行为参数。代码证据：[`stiefel_dmrg.py:73`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/stiefel_dmrg.py#L73) 有 `grad_clip`、[`stiefel_dmrg.py:76`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/stiefel_dmrg.py#L76) 有 `adam_lr`、[`stiefel_dmrg.py:77`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/stiefel_dmrg.py#L77) 有 `retract_every`；[`optimizer.py:195`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/riemannian/optimizer.py#L195) RCG 还有 `max_time`。建议：至少把这些参数列进 README 的签名表。
+- [WARNING] README 第67行 “Used as initialization for all other methods” 说得过满。代码证据：矩阵包装器确实先做 TT-SVD，如 [`two_site/__init__.py:128`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L128)；但 `SimplifiedALS`/`TwoSiteDMRG`/`StiefelTwoSiteDMRG` 类本身都接收现成 `mpo_module`，见 [`dmrg_optimizer.py:59`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L59)、[`dmrg_optimizer.py:336`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L336)、[`stiefel_dmrg.py:63`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/stiefel_dmrg.py#L63)。建议：改成“used by the matrix-decomposition wrappers”。
+
+3. 代码示例
+- [ERROR] README 第151-158行的 `matrix_ring_svd_dmrg()` 示例没有传 `ring_rank`，但实际默认不会闭成 ring。代码证据：[`two_site/__init__.py:81`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L81)、[`two_site/__init__.py:177`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L177)。建议：示例里显式传 `ring_rank=...`，否则把函数解释为“chain DMRG wrapper with optional ring close”。
+- [ERROR] README 第323-326行使用 `from mpo_modules.factorization import mpo_decompose`，该符号不存在。代码证据：[`factorization.py:358`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/factorization.py#L358) 只定义了 `factor_linear_mpo`，导出列表见 [`factorization.py:611`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/factorization.py#L611)。建议：把示例改为 `factor_linear_mpo(nn.Linear(...), ...)`，或真正实现并导出 `mpo_decompose`。
+- [ERROR] README 第318-326行暗示 dispatcher 可选 `rcg`；当前实现里该分支导入路径是坏的。代码证据：[`factorization.py:512`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/factorization.py#L512) 导入 `mpo_modules.riemannian.mpo_adapter`，但顶层只有 [`riemannian/__init__.py:1`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/riemannian/__init__.py#L1)。建议：改成 `from mpo_modules.riemannian import matrix_ring_svd_riemannian` 或直接从 `mpo_modules.optimizers.one_site.riemannian.mpo_adapter` 导入。
+- [WARNING] README 第131行把 `matrix_ring_svd_dmrg()` 说成来自 `two_site/dmrg_optimizer.py`。代码证据：真正定义在 [`two_site/__init__.py:75`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L75)，`dmrg_optimizer.py` 里只有类实现。建议：把“File”改成 “`two_site/__init__.py` wrapper over `dmrg_optimizer.py`”。
+
+4. 已知问题 / 易踩坑
+- [ERROR] README 第308行 “TwoSiteDMRG will increase bond dimension beyond chi during SVD split unless `max_rank` is explicitly set” 不准确。代码证据：扩维发生在 [`dmrg_optimizer.py:421`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L421) 的 `_expand_cores_to_chi()`；SVD 截断本身在 [`dmrg_optimizer.py:2976`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L2976) 反而被当前 shape / `max_rank` 双重 cap。建议：改成“设置 `max_rank` 会先把链 core 扩到该 chi；若 `max_rank=None`，SVD split 不会超过当前 shape”。
+- [INFO] README 第310行的 eval cache staleness 是有源码依据的。代码证据：[`core.py:94`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/core.py#L94) 的 `train()` 会清空 `weight_full/_cores_cached`，而 eval dense 路径会缓存权重，见 [`core.py:1112`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/core.py#L1112)。建议：保留这条，并补一句“若不切回 train，也可手动删缓存属性”。
+- [INFO] README 第314行的 interleaved layout 提醒是正确的。代码证据：[`tt_ops.py:53`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/tt_ops.py#L53)、[`factorization.py:420`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/factorization.py#L420)。建议：保留，并在示例里统一写成 `(o1,i1,o2,i2,...)`。
+- [WARNING] README 第312行把 `MPO_CTG_PARALLEL` 默认写成 `true`，且把 deadlock 原因写成定论；代码默认其实是 `auto`。证据：[`core.py:835`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/core.py#L835)、[`tt_ops.py:420`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/tt_ops.py#L420)。建议：改成“default=`auto`，在 CUDA 上若遇到并行路径搜索问题可手动设 `false`”。
+- [WARNING] README 的 pitfalls 列表漏掉了一个高风险项：`pair_solver="exact"` 现在是“看起来可选，实际不可用”。代码证据：同第1节第2条。建议：把它加入 pitfalls，直到实现完成为止。
+- [WARNING] README 的 pitfalls 列表漏掉了一个 API 差异：`StiefelTwoSiteDMRG` 不走 `_apply_loss_activation()`。代码证据：[`stiefel_dmrg.py:461`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/stiefel_dmrg.py#L461) 直接对 `Y_pred/Yb` 做 MSE，而 `SimplifiedALS/TwoSiteDMRG` 在 [`dmrg_optimizer.py:37`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L37) 读取 `MPO_LOSS_ACTIVATION`。建议：明确写出“Stiefel 版当前只支持原始 activation MSE”。
+
+5. 数学
+- [INFO] README 第254-270行的 chain / uniform-ring 参数公式，与 core 形状约定一致。代码证据：open-boundary 形状见 [`tt_ops.py:25`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/tt_ops.py#L25)，periodic 形状见 [`ring_ops.py:35`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/ring_ops.py#L35)。建议：保留，但明确这是“uniform-bond theoretical formula”。
+- [WARNING] README 第264-282行默认读者会把 ring 预算理解成“所有 bond 都等于同一个 `chi`”，但仓库实际常把 `max_rank` 和 `ring_rank` 分开。代码证据：[`factorization.py:486`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/factorization.py#L486)、[`two_site/__init__.py:160`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L160)、[`two_site/__init__.py:177`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L177)。建议：新增一段“actual repo rank schedule is usually non-uniform”。
+- [INFO] README 第272-282行的数值例子本身是对的：`chain(chi=64)=294,912`，`uniform ring(chi=64)=2,359,296`，等预算 `chi≈22.63`。代码依据：形状定义同上；2048 的 balanced 分解也与 [`helpers.py:20`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/helpers.py#L20) 的策略一致。建议：保留，但标注这是“uniform ring 假设下的算例”。
+- [ERROR] README 第100行把 ALS 的 Gram OOM 量级写成“~64 GB”，与实现公式不符。代码证据：[`als.py:134`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L134)、[`als.py:137`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L137) 用 `core_size^2 * 8` 计算 float64 Gram；按 README 自己的 2048x2048 / K=3 / `chi=64` 例子，中间 core 约 512 GiB，边界 core 约 8 TiB。建议：把“64 GB”改成公式，或至少改成正确数量级。
+
+6. 结构与清晰度
+- [ERROR] README 第22行目录树列出了 `one_site/riemannian/stiefel_utils.py`，仓库中没有这个文件。代码证据：[`riemannian/__init__.py:3`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/riemannian/__init__.py#L3) 只导出已有模块；实际 `stiefel_utils.py` 只存在于 [`two_site/stiefel_utils.py:1`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/stiefel_utils.py#L1)。建议：从目录树删除该项，或补上文件。
+- [WARNING] README 第11-22行把整个 `one_site/` 目录都描述成 “Fix K-1 cores, update 1 core”，这会误导读者理解 `riemannian/`。代码证据：RCG 实际是全变量更新，见第1节第1条。建议：把目录说明改成“historical grouping / single-variable lineage”，不要把子目录语义绝对化。
+- [WARNING] README 第284-326行把“环境变量分发器”“真实可调用 API”“理论方法说明”混在一起，结果直接写出了不存在的 `mpo_decompose` 和坏掉的 `rcg` 分支。代码证据：见第3节。建议：拆成两个小节：“Actual callable APIs”和“Internal layer-level dispatcher”。
+- [WARNING] README 第288-293行的配置表过于稀疏，且默认值有误。代码证据：除 `MPO_CTG_PARALLEL` 默认错误外，优化器还受 [`dmrg_optimizer.py:37`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L37) 的 `MPO_LOSS_ACTIVATION`、[`dmrg_optimizer.py:2996`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L2996) 的 `MPO_ADAPTIVE_CHI`、[`dmrg_optimizer.py:1451`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L1451) 的 `MPO_CG_CHUNK_SIZE` 等影响。建议：把“Config”扩成“Core env vars / advanced env vars / per-solver params”三段。
+[2026-04-08T02:05:15.291Z] Turn completed.
+
+[2026-04-08T02:05:15.373Z] Final output
+1. 技术准确性
+- [ERROR] README 第49行把 “Riemannian CG” 归为 `1-site`。代码证据：[`optimizer.py:258`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/riemannian/optimizer.py#L258)、[`tr_point.py:218`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/riemannian/tr_point.py#L218) 显示一次迭代会为所有 core 计算梯度并整体 `retract()`。建议：改成“global / all-cores-simultaneous on TR manifold”，不要写成 1-site。
+- [ERROR] README 第142行把 `exact` 描述成“Direct solve via normal equations”。代码证据：[`dmrg_optimizer.py:378`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L378)、[`dmrg_optimizer.py:2830`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L2830)、[`dmrg_optimizer.py:489`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L489) 表明 `exact` 只被接受为字符串，但优化分支并未调用 `_solve_pair_exact*()`，而是落到 Adam 路径；相关实现还有 `pass/TODO`，见 [`dmrg_optimizer.py:674`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L674)、[`dmrg_optimizer.py:1327`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L1327)。建议：从 README 删除 `exact`，或先把它真正接到执行路径上。
+- [ERROR] README 第85行写 “Memory guard: skips if Gram matrix exceeds ...”。代码证据：[`als.py:138`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L138)、[`als.py:140`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L140) 直接 `raise MemoryError(...)`，调用方 [`als.py:269`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L269) 没有捕获。建议：改成“raises `MemoryError` and aborts ALS”，或者补上真正的 skip/fallback。
+- [ERROR] README 第86行写 “relative improvement < `als_tol`”。代码证据：[`als.py:403`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L403)、[`als.py:408`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L408) 用的是绝对差 `abs(prev_err - cur_err) < als_tol`，不是相对改进。建议：把 README 改成“absolute error change < `als_tol`”，或把实现改成相对判据。
+- [WARNING] README 第83行说 ALS “reducing the system size”。代码证据：[`als.py:162`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L162)、[`als.py:225`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L225) 虽然先构造 `bond_gram`，但随后仍显式物化完整 `gram` 并解完整线性系统。建议：改成“利用 Kronecker 结构构造 Gram，更快/更清晰；但当前实现仍求解完整系统”。
+- [WARNING] README 第50/52行把 TwoSiteDMRG 与 StiefelDMRG 的 boundary 写成 `both`。代码证据：[`two_site/__init__.py:128`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L128)、[`two_site/__init__.py:177`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L177)、[`dmrg_optimizer.py:442`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L442)、[`stiefel_dmrg.py:146`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/stiefel_dmrg.py#L146) 表明权重包装器是“先 chain 优化，再可选 `chain_to_ring()` 闭环”，而扩 rank 逻辑也默认首尾 bond 为 1。建议：改成“chain-first; ring only via explicit post-close / limited support”，不要无条件写 `both`。
+- [WARNING] README 第302行写 “gradient divergence (2x best)”。代码证据：[`hybrid_bb.py:238`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/global_opt/hybrid_bb.py#L238)、[`hybrid_bb.py:241`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/global_opt/hybrid_bb.py#L241) 检查的是 `cur_err > 2 * best_err`，即误差发散，不是梯度发散。建议：改成“error divergence (> 2x best error)”。
+
+2. 完整性
+- [WARNING] README 总览与各方法段落没有明确说：矩阵分解包装器基本都要求 `A` 是方阵。代码证据：[`tt_ops.py:42`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/tt_ops.py#L42)、[`als.py:330`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L330)、[`mpo_adapter.py:116`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/riemannian/mpo_adapter.py#L116)、[`hybrid_bb.py:145`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/global_opt/hybrid_bb.py#L145)、[`two_site/__init__.py:117`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L117)。建议：在 Overview 和每个 wrapper 的示例前都注明 “square matrix only”。
+- [WARNING] README 没有覆盖 TwoSiteDMRG 的关键参数族。代码证据：[`dmrg_optimizer.py:344`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L344) 之后定义了 `lbfgs_*`、`cg_*`、`kaczmarz_*`；[`dmrg_optimizer.py:37`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L37) 还支持 `MPO_LOSS_ACTIVATION=relu|silu|gelu`；[`dmrg_optimizer.py:2996`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L2996) 还有 `MPO_ADAPTIVE_CHI`。建议：增加“Advanced options / env vars”小节。
+- [WARNING] README 没有写出 Stiefel/RCG 的重要行为参数。代码证据：[`stiefel_dmrg.py:73`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/stiefel_dmrg.py#L73) 有 `grad_clip`、[`stiefel_dmrg.py:76`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/stiefel_dmrg.py#L76) 有 `adam_lr`、[`stiefel_dmrg.py:77`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/stiefel_dmrg.py#L77) 有 `retract_every`；[`optimizer.py:195`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/riemannian/optimizer.py#L195) RCG 还有 `max_time`。建议：至少把这些参数列进 README 的签名表。
+- [WARNING] README 第67行 “Used as initialization for all other methods” 说得过满。代码证据：矩阵包装器确实先做 TT-SVD，如 [`two_site/__init__.py:128`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L128)；但 `SimplifiedALS`/`TwoSiteDMRG`/`StiefelTwoSiteDMRG` 类本身都接收现成 `mpo_module`，见 [`dmrg_optimizer.py:59`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L59)、[`dmrg_optimizer.py:336`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L336)、[`stiefel_dmrg.py:63`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/stiefel_dmrg.py#L63)。建议：改成“used by the matrix-decomposition wrappers”。
+
+3. 代码示例
+- [ERROR] README 第151-158行的 `matrix_ring_svd_dmrg()` 示例没有传 `ring_rank`，但实际默认不会闭成 ring。代码证据：[`two_site/__init__.py:81`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L81)、[`two_site/__init__.py:177`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L177)。建议：示例里显式传 `ring_rank=...`，否则把函数解释为“chain DMRG wrapper with optional ring close”。
+- [ERROR] README 第323-326行使用 `from mpo_modules.factorization import mpo_decompose`，该符号不存在。代码证据：[`factorization.py:358`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/factorization.py#L358) 只定义了 `factor_linear_mpo`，导出列表见 [`factorization.py:611`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/factorization.py#L611)。建议：把示例改为 `factor_linear_mpo(nn.Linear(...), ...)`，或真正实现并导出 `mpo_decompose`。
+- [ERROR] README 第318-326行暗示 dispatcher 可选 `rcg`；当前实现里该分支导入路径是坏的。代码证据：[`factorization.py:512`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/factorization.py#L512) 导入 `mpo_modules.riemannian.mpo_adapter`，但顶层只有 [`riemannian/__init__.py:1`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/riemannian/__init__.py#L1)。建议：改成 `from mpo_modules.riemannian import matrix_ring_svd_riemannian` 或直接从 `mpo_modules.optimizers.one_site.riemannian.mpo_adapter` 导入。
+- [WARNING] README 第131行把 `matrix_ring_svd_dmrg()` 说成来自 `two_site/dmrg_optimizer.py`。代码证据：真正定义在 [`two_site/__init__.py:75`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L75)，`dmrg_optimizer.py` 里只有类实现。建议：把“File”改成 “`two_site/__init__.py` wrapper over `dmrg_optimizer.py`”。
+
+4. 已知问题 / 易踩坑
+- [ERROR] README 第308行 “TwoSiteDMRG will increase bond dimension beyond chi during SVD split unless `max_rank` is explicitly set” 不准确。代码证据：扩维发生在 [`dmrg_optimizer.py:421`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L421) 的 `_expand_cores_to_chi()`；SVD 截断本身在 [`dmrg_optimizer.py:2976`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L2976) 反而被当前 shape / `max_rank` 双重 cap。建议：改成“设置 `max_rank` 会先把链 core 扩到该 chi；若 `max_rank=None`，SVD split 不会超过当前 shape”。
+- [INFO] README 第310行的 eval cache staleness 是有源码依据的。代码证据：[`core.py:94`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/core.py#L94) 的 `train()` 会清空 `weight_full/_cores_cached`，而 eval dense 路径会缓存权重，见 [`core.py:1112`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/core.py#L1112)。建议：保留这条，并补一句“若不切回 train，也可手动删缓存属性”。
+- [INFO] README 第314行的 interleaved layout 提醒是正确的。代码证据：[`tt_ops.py:53`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/tt_ops.py#L53)、[`factorization.py:420`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/factorization.py#L420)。建议：保留，并在示例里统一写成 `(o1,i1,o2,i2,...)`。
+- [WARNING] README 第312行把 `MPO_CTG_PARALLEL` 默认写成 `true`，且把 deadlock 原因写成定论；代码默认其实是 `auto`。证据：[`core.py:835`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/core.py#L835)、[`tt_ops.py:420`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/tt_ops.py#L420)。建议：改成“default=`auto`，在 CUDA 上若遇到并行路径搜索问题可手动设 `false`”。
+- [WARNING] README 的 pitfalls 列表漏掉了一个高风险项：`pair_solver="exact"` 现在是“看起来可选，实际不可用”。代码证据：同第1节第2条。建议：把它加入 pitfalls，直到实现完成为止。
+- [WARNING] README 的 pitfalls 列表漏掉了一个 API 差异：`StiefelTwoSiteDMRG` 不走 `_apply_loss_activation()`。代码证据：[`stiefel_dmrg.py:461`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/stiefel_dmrg.py#L461) 直接对 `Y_pred/Yb` 做 MSE，而 `SimplifiedALS/TwoSiteDMRG` 在 [`dmrg_optimizer.py:37`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L37) 读取 `MPO_LOSS_ACTIVATION`。建议：明确写出“Stiefel 版当前只支持原始 activation MSE”。
+
+5. 数学
+- [INFO] README 第254-270行的 chain / uniform-ring 参数公式，与 core 形状约定一致。代码证据：open-boundary 形状见 [`tt_ops.py:25`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/tt_ops.py#L25)，periodic 形状见 [`ring_ops.py:35`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/ring_ops.py#L35)。建议：保留，但明确这是“uniform-bond theoretical formula”。
+- [WARNING] README 第264-282行默认读者会把 ring 预算理解成“所有 bond 都等于同一个 `chi`”，但仓库实际常把 `max_rank` 和 `ring_rank` 分开。代码证据：[`factorization.py:486`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/factorization.py#L486)、[`two_site/__init__.py:160`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L160)、[`two_site/__init__.py:177`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/__init__.py#L177)。建议：新增一段“actual repo rank schedule is usually non-uniform”。
+- [INFO] README 第272-282行的数值例子本身是对的：`chain(chi=64)=294,912`，`uniform ring(chi=64)=2,359,296`，等预算 `chi≈22.63`。代码依据：形状定义同上；2048 的 balanced 分解也与 [`helpers.py:20`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/helpers.py#L20) 的策略一致。建议：保留，但标注这是“uniform ring 假设下的算例”。
+- [ERROR] README 第100行把 ALS 的 Gram OOM 量级写成“~64 GB”，与实现公式不符。代码证据：[`als.py:134`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L134)、[`als.py:137`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/als.py#L137) 用 `core_size^2 * 8` 计算 float64 Gram；按 README 自己的 2048x2048 / K=3 / `chi=64` 例子，中间 core 约 512 GiB，边界 core 约 8 TiB。建议：把“64 GB”改成公式，或至少改成正确数量级。
+
+6. 结构与清晰度
+- [ERROR] README 第22行目录树列出了 `one_site/riemannian/stiefel_utils.py`，仓库中没有这个文件。代码证据：[`riemannian/__init__.py:3`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/one_site/riemannian/__init__.py#L3) 只导出已有模块；实际 `stiefel_utils.py` 只存在于 [`two_site/stiefel_utils.py:1`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/stiefel_utils.py#L1)。建议：从目录树删除该项，或补上文件。
+- [WARNING] README 第11-22行把整个 `one_site/` 目录都描述成 “Fix K-1 cores, update 1 core”，这会误导读者理解 `riemannian/`。代码证据：RCG 实际是全变量更新，见第1节第1条。建议：把目录说明改成“historical grouping / single-variable lineage”，不要把子目录语义绝对化。
+- [WARNING] README 第284-326行把“环境变量分发器”“真实可调用 API”“理论方法说明”混在一起，结果直接写出了不存在的 `mpo_decompose` 和坏掉的 `rcg` 分支。代码证据：见第3节。建议：拆成两个小节：“Actual callable APIs”和“Internal layer-level dispatcher”。
+- [WARNING] README 第288-293行的配置表过于稀疏，且默认值有误。代码证据：除 `MPO_CTG_PARALLEL` 默认错误外，优化器还受 [`dmrg_optimizer.py:37`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L37) 的 `MPO_LOSS_ACTIVATION`、[`dmrg_optimizer.py:2996`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L2996) 的 `MPO_ADAPTIVE_CHI`、[`dmrg_optimizer.py:1451`](/home/xiyaofeng/huicheng/MPO_Compression/mpo_modules/optimizers/two_site/dmrg_optimizer.py#L1451) 的 `MPO_CG_CHUNK_SIZE` 等影响。建议：把“Config”扩成“Core env vars / advanced env vars / per-solver params”三段。

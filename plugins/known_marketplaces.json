@@ -1,0 +1,98 @@
+{
+  "claude-plugins-official": {
+    "source": {
+      "source": "github",
+      "repo": "anthropics/claude-plugins-official"
+    },
+    "installLocation": "/home/xiyaofeng/huicheng/.claude/plugins/marketplaces/claude-plugins-official",
+    "lastUpdated": "2026-06-01T06:20:02.947Z"
+  },
+  "superpowers-marketplace": {
+    "source": {
+      "source": "github",
+      "repo": "obra/superpowers-marketplace"
+    },
+    "installLocation": "/home/xiyaofeng/huicheng/.claude/plugins/marketplaces/superpowers-marketplace",
+    "lastUpdated": "2026-06-01T06:23:06.085Z"
+  },
+  "claude-scientific-writer": {
+    "source": {
+      "source": "git",
+      "url": "https://github.com/K-Dense-AI/claude-scientific-writer.git"
+    },
+    "installLocation": "/home/xiyaofeng/huicheng/.claude/plugins/marketplaces/claude-scientific-writer",
+    "lastUpdated": "2026-06-01T06:20:26.598Z"
+  },
+  "planning-with-files": {
+    "source": {
+      "source": "github",
+      "repo": "OthmanAdi/planning-with-files"
+    },
+    "installLocation": "/home/xiyaofeng/huicheng/.claude/plugins/marketplaces/planning-with-files",
+    "lastUpdated": "2026-06-01T06:20:46.188Z"
+  },
+  "obsidian-skills": {
+    "source": {
+      "source": "github",
+      "repo": "kepano/obsidian-skills"
+    },
+    "installLocation": "/home/xiyaofeng/huicheng/.claude/plugins/marketplaces/obsidian-skills",
+    "lastUpdated": "2026-06-01T06:21:03.455Z"
+  },
+  "anthropic-agent-skills": {
+    "source": {
+      "source": "github",
+      "repo": "anthropics/skills"
+    },
+    "installLocation": "/home/xiyaofeng/huicheng/.claude/plugins/marketplaces/anthropic-agent-skills",
+    "lastUpdated": "2026-06-01T06:21:24.730Z"
+  },
+  "apify-agent-skills": {
+    "source": {
+      "source": "git",
+      "url": "https://github.com/apify/agent-skills.git"
+    },
+    "installLocation": "/home/xiyaofeng/huicheng/.claude/plugins/marketplaces/apify-agent-skills",
+    "lastUpdated": "2026-06-01T06:21:40.407Z"
+  },
+  "browserbase": {
+    "source": {
+      "source": "github",
+      "repo": "browserbase/skills"
+    },
+    "installLocation": "/home/xiyaofeng/huicheng/.claude/plugins/marketplaces/browserbase",
+    "lastUpdated": "2026-06-01T06:23:32.073Z"
+  },
+  "sci-brain": {
+    "source": {
+      "source": "github",
+      "repo": "QuantumBFS/sci-brain"
+    },
+    "installLocation": "/home/xiyaofeng/huicheng/.claude/plugins/marketplaces/sci-brain",
+    "lastUpdated": "2026-06-01T06:22:29.143Z"
+  },
+  "openai-codex": {
+    "source": {
+      "source": "github",
+      "repo": "openai/codex-plugin-cc"
+    },
+    "installLocation": "/home/xiyaofeng/huicheng/.claude/plugins/marketplaces/openai-codex",
+    "lastUpdated": "2026-06-01T06:22:48.660Z"
+  },
+  "caveman": {
+    "source": {
+      "source": "github",
+      "repo": "JuliusBrussee/caveman"
+    },
+    "installLocation": "/home/xiyaofeng/huicheng/.claude/plugins/marketplaces/caveman",
+    "lastUpdated": "2026-04-12T01:44:54.226Z"
+  },
+  "pua-skills": {
+    "source": {
+      "source": "github",
+      "repo": "tanweai/pua"
+    },
+    "installLocation": "/home/xiyaofeng/huicheng/.claude/plugins/marketplaces/pua-skills",
+    "lastUpdated": "2026-04-12T01:44:57.287Z"
+  }
+}

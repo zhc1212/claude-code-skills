@@ -1,0 +1,63 @@
+# sci-brain
+
+> ⚠️ **Breaking change in v0.3.** The on-disk layout changed: knowledge bases now live at `<project>/.knowledge/` with `INDEX.md` + `<project>/ref.bib`, replacing the old `<registry-root>/<topic>/` registries (`summary.md` + `references.bib`). See [`CLAUDE.md`](./CLAUDE.md) § "Migrating from the pre-0.3 layout" for `mv` commands. The `fetch-papers` skill was folded into `download-ref --from-bib`.
+
+An AI-powered research brainstorming partner. Tell it a research topic — it helps you find good problems, think them through, and shape concrete research ideas together with you.
+
+Works with [Claude Code](https://claude.ai/claude-code), [Codex](https://github.com/openai/codex), and [OpenCode](https://github.com/opencode-ai/opencode). Skill question styles inspired by [superpowers](https://github.com/obra/superpowers).
+
+## Quick Start
+
+Open **Claude Code**/**Codex**/**OpenCode** and type:
+
+```
+Install the plugin/skills from https://github.com/QuantumBFS/sci-brain
+Then invoke `ideas` skill to start talking.
+```
+
+## What does the `/ideas` skill do?
+
+You start a conversation. The agent asks about your background — you can describe yourself, or point it at your Zotero library or Google Scholar profile so it can learn from your papers directly.
+The better the agent understands you, the higher quality its recommendations are.
+
+Then you pick a domain expert (distilled from **real** scientists' conversations with AI, see [list](advisors/)) to assist you. Their profile is loaded into a subagent to help you ask the right questions.
+
+## Want Deeper Literature First?
+
+`/ideas` searches the web as you talk, but if you want a thorough literature map before brainstorming, run `/survey` first. It searches in parallel across seven strategies — landscape mapping, adjacent fields, cross-vocabulary, cross-method, historical lineage, negative results, and benchmarks — and builds a knowledge base with verified BibTeX.
+
+When you run `/ideas` afterward, it automatically picks up the survey results and uses them to ground the conversation.
+
+```
+/survey              ← build a literature map
+/ideas               ← brainstorm with that literature loaded
+```
+
+## Where Things Are Saved
+
+- **Project knowledge base** — `<project>/.knowledge/` — papers, rendered markdown, `INDEX.md`, `NOTES.md`. Populated by `/survey`, `/researchstyle`, `/download-ref`.
+- **Project BibTeX** — `<project>/ref.bib` — cite-key namespace, shared with any LaTeX in the project.
+- **Advisor knowledge bases** — `advisors/<slug>/.knowledge/` and `advisors/<slug>/ref.bib` — per-advisor private cache, gitignored.
+- **Conversation logs** — `docs/discussion/` — each session is a timestamped file; the next session picks up where you left off.
+- **Ideas reports** — `articles/` in your current directory, with a matching `.bib` file.
+
+## Want to Become an Advisor?
+
+If you've used Claude Code or Codex for research conversations and want your thinking style captured as a reusable advisor profile, just run:
+
+```
+clone https://github.com/QuantumBFS/sci-brain,
+invoke incarnate skill in the cloned repo to create my profile,
+then submit a pr,
+include all relevant chat history, interview output and the generated profile.
+```
+
+The whole process is interactive — you review everything before it's published, and you can decide to include the raw conversation data (for research purposes) in the pr or not.
+
+## Contributors
+
+**Initiator**: [Lei Wang](https://github.com/wangleiphy) and [Jin-Guo Liu](https://github.com/GiggleLiu)
+
+## License
+
+MIT. Feel free to adapt from the current codebase, BUT please acknowledge this package properly, thank you.

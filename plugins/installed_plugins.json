@@ -1,0 +1,123 @@
+{
+  "version": 2,
+  "plugins": {
+    "superpowers@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/home/xiyaofeng/huicheng/.claude/plugins/cache/claude-plugins-official/superpowers/5.1.0",
+        "version": "5.1.0",
+        "installedAt": "2026-01-25T15:56:33.827Z",
+        "lastUpdated": "2026-05-21T09:12:08.782Z",
+        "gitCommitSha": "469a6d81ebb8b827e284d4afb090c6c622d97747"
+      }
+    ],
+    "claude-scientific-writer@claude-scientific-writer": [
+      {
+        "scope": "user",
+        "installPath": "/home/xiyaofeng/huicheng/.claude/plugins/cache/claude-scientific-writer/claude-scientific-writer/9dcd259f2872",
+        "version": "9dcd259f2872",
+        "installedAt": "2026-02-05T02:27:01.476Z",
+        "lastUpdated": "2026-06-01T06:20:27.636Z",
+        "gitCommitSha": "9dcd259f287290c1fc638152133f4fbfc194d18c"
+      },
+      {
+        "scope": "project",
+        "projectPath": "/home/xiyaofeng/huicheng/everything-claude-code",
+        "installPath": "/home/xiyaofeng/huicheng/.claude/plugins/cache/claude-scientific-writer/claude-scientific-writer/5bf6b597e2af",
+        "version": "5bf6b597e2af",
+        "installedAt": "2026-05-11T08:35:14.635Z",
+        "lastUpdated": "2026-05-11T08:35:14.635Z",
+        "gitCommitSha": "5bf6b597e2aff21de4607cf4fe9a7b46ecbd7f04"
+      },
+      {
+        "scope": "local",
+        "projectPath": "/home/xiyaofeng/huicheng/everything-claude-code",
+        "installPath": "/home/xiyaofeng/huicheng/.claude/plugins/cache/claude-scientific-writer/claude-scientific-writer/5bf6b597e2af",
+        "version": "5bf6b597e2af",
+        "installedAt": "2026-05-11T08:35:15.519Z",
+        "lastUpdated": "2026-05-11T08:35:15.519Z",
+        "gitCommitSha": "5bf6b597e2aff21de4607cf4fe9a7b46ecbd7f04"
+      }
+    ],
+    "planning-with-files@planning-with-files": [
+      {
+        "scope": "user",
+        "installPath": "/home/xiyaofeng/huicheng/.claude/plugins/cache/planning-with-files/planning-with-files/2.43.0",
+        "version": "2.43.0",
+        "installedAt": "2026-02-05T02:34:25.365Z",
+        "lastUpdated": "2026-06-01T06:20:46.744Z",
+        "gitCommitSha": "6f94643bd2b77dad9ac30b68ace14a536e2e5619"
+      }
+    ],
+    "obsidian@obsidian-skills": [
+      {
+        "scope": "user",
+        "installPath": "/home/xiyaofeng/huicheng/.claude/plugins/cache/obsidian-skills/obsidian/1.0.1",
+        "version": "1.0.1",
+        "installedAt": "2026-02-05T02:36:30.733Z",
+        "lastUpdated": "2026-05-21T09:12:26.901Z",
+        "gitCommitSha": "34c2cda8b29eaeec6793e342b8b56e96ac29f15c"
+      }
+    ],
+    "document-skills@anthropic-agent-skills": [
+      {
+        "scope": "user",
+        "installPath": "/home/xiyaofeng/huicheng/.claude/plugins/cache/anthropic-agent-skills/document-skills/da20c92503b2",
+        "version": "da20c92503b2",
+        "installedAt": "2026-02-05T07:22:18.736Z",
+        "lastUpdated": "2026-06-01T06:21:25.488Z",
+        "gitCommitSha": "da20c92503b2e8ff1cf28ca81a0df4673debdbf7"
+      }
+    ],
+    "apify-ultimate-scraper@apify-agent-skills": [
+      {
+        "scope": "user",
+        "installPath": "/home/xiyaofeng/huicheng/.claude/plugins/cache/apify-agent-skills/apify-ultimate-scraper/2.0.0",
+        "version": "2.0.0",
+        "installedAt": "2026-03-02T08:03:14.795Z",
+        "lastUpdated": "2026-05-21T09:12:35.981Z",
+        "gitCommitSha": "df6b198b8285a1b56347a15185e0daf5c69bef3a"
+      }
+    ],
+    "browse@browserbase": [
+      {
+        "scope": "user",
+        "installPath": "/home/xiyaofeng/huicheng/.claude/plugins/cache/browserbase/browse/0.0.1",
+        "version": "0.0.1",
+        "installedAt": "2026-03-04T02:09:06.884Z",
+        "lastUpdated": "2026-05-13T13:48:49.091Z",
+        "gitCommitSha": "f780061d10313ba0fd7a26d7b21a90f8f0c3d468"
+      }
+    ],
+    "sci-brain@sci-brain": [
+      {
+        "scope": "user",
+        "installPath": "/home/xiyaofeng/huicheng/.claude/plugins/cache/sci-brain/sci-brain/0.3.0",
+        "version": "0.3.0",
+        "installedAt": "2026-03-12T11:16:15.914Z",
+        "lastUpdated": "2026-05-21T09:12:45.463Z",
+        "gitCommitSha": "35981a3985d784c38afd669f8923676c8ac1ed6c"
+      }
+    ],
+    "codex@openai-codex": [
+      {
+        "scope": "user",
+        "installPath": "/home/xiyaofeng/huicheng/.claude/plugins/cache/openai-codex/codex/1.0.4",
+        "version": "1.0.4",
+        "installedAt": "2026-03-31T13:06:10.381Z",
+        "lastUpdated": "2026-05-13T13:48:49.091Z",
+        "gitCommitSha": "9cb4fe4099195b2587c402117a3efce6ab5aac78"
+      }
+    ],
+    "superpowers@superpowers-marketplace": [
+      {
+        "scope": "user",
+        "installPath": "/home/xiyaofeng/huicheng/.claude/plugins/cache/superpowers-marketplace/superpowers/5.1.0",
+        "version": "5.1.0",
+        "installedAt": "2026-05-11T08:28:27.920Z",
+        "lastUpdated": "2026-05-13T13:48:49.091Z",
+        "gitCommitSha": "f2cbfbefebbfef77321e4c9abc9e949826bea9d7"
+      }
+    ]
+  }
+}

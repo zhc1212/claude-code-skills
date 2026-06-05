@@ -1,0 +1,34 @@
+# Only track shareable skill/config files
+# Exclude everything by default, then whitelist
+
+*
+
+# Whitelist shareable directories
+!.gitignore
+!README.md
+!AGENTS.md
+!marketplace.json
+!plugin.json
+!skills/
+!skills/**
+!agents/
+!agents/**
+!commands/
+!commands/**
+!hooks/
+!hooks/**
+!rules/
+!rules/**
+!scripts/
+!scripts/**
+!plugins/
+!plugins/**
+
+# Exclude caches and generated files inside whitelisted dirs
+**/__pycache__/
+**/*.pyc
+**/node_modules/
+**/cache/
+**/.cache/
+hooks/state/
+plugins/cache/
