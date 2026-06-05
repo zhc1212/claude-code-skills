@@ -1,6 +1,6 @@
 ---
 name: codex-paper-adversary
-description: "Sends paper sections to GPT via Codex MCP for independent adversarial review — Codex's job is to REJECT, not to help improve. Attacks are grounded in real venue reviewer standards (Quality/Clarity/Significance/Originality), calibrated to actual venue scoring scales, and constrained by explicit fatality gates. Use when user says \"codex review my paper\", \"hostile review\", \"adversarial paper review\", \"codex as reviewer\", \"try to reject my paper\", \"codex审我的论文\", \"codex当reviewer\", \"让codex挑刺\", \"论文对抗审查\", \"codex帮我找论文弱点\", \"模拟拒稿\". Not for code review (/codex-review), multi-persona simulated review (/academic-paper-reviewer), or paper writing/polishing. This is specifically adversarial — the goal is rejection, not improvement."
+description: "Adversarial paper review via Codex MCP — Codex's job is to REJECT, grounded in venue reviewer standards (Quality/Clarity/Significance/Originality) with fatality gates and venue-calibrated scoring. Use when user says \"codex review my paper\", \"hostile review\", \"adversarial paper review\", \"try to reject my paper\", \"codex审我的论文\", \"codex当reviewer\", \"codex挑刺\", \"论文对抗审查\", \"模拟拒稿\". Not for code review (/codex-review), multi-persona review (/academic-paper-reviewer), or single-reviewer harsh review (/reviewer-view-paper)."
 ---
 
 # Codex Paper Adversary
@@ -63,6 +63,9 @@ For figures and tables, also record:
 
 If the user specified a venue, note it. If not, ask: "Which venue? Reviewer
 expectations differ." Default to ICLR/NeurIPS if unspecified.
+
+If the paper is in Chinese (or another non-English language), note this in
+the adversarial packet so Codex reviews in the paper's language.
 
 ## Step 2: Build Adversarial Packet
 
@@ -260,4 +263,5 @@ valid rebuttals, Claude flags "unfair persistence" in the assessment.
 - **First call**: `mcp__codex__codex` with `config: {"reasoning_effort": "xhigh"}`
 - **Follow-ups on same section**: `mcp__codex__codex-reply` with saved `threadId`
 - **New section or re-review**: fresh `mcp__codex__codex` call (independent)
-- On MCP error: tell user, offer Claude-only adversarial review
+- On MCP error: tell user, offer Claude-only adversarial review (single-model,
+  loses cross-model blind-spot coverage — note this limitation to the user)
