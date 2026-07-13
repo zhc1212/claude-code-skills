@@ -1,0 +1,20 @@
+prompt: >
+  /oral-paragraph-audit Audit this Method paragraph from an LLM compression
+  paper targeting NeurIPS:
+
+  "We decompose each weight matrix $W \in \mathbb{R}^{d \times n}$ into two
+  low-rank factors $A \in \mathbb{R}^{d \times r}$ and $B \in \mathbb{R}^{r \times n}$
+  such that $W \approx AB$. The rank $r$ is chosen to satisfy a target parameter
+  ratio $\rho = 1 - r(d+n)/(dn)$, which measures the fraction of parameters
+  removed. Before truncation, we whiten the activation covariance to equalize
+  the contribution of each input dimension, reducing the approximation error
+  from $\|W - AB\|_F$ to $\|S^{-1}W - S^{-1}AB\|_F$ where $S$ is the
+  Cholesky factor of the covariance matrix."
+
+expected_behavior:
+  - "Identifies section as Method"
+  - "Finds S1 states a clear setup or claim (topic-support coherence OK or near-OK)"
+  - "Does NOT flag first person 'We' as a register violation"
+  - "Checks formula rigor (Check 9) — verifies symbols are defined near first use"
+  - "Does not flag the paragraph as low-density since every sentence introduces new information"
+  - "Reports Check 5 and Check 10 as skipped due to no adjacent context"

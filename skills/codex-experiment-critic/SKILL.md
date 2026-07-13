@@ -103,7 +103,7 @@ without being steered by Claude's framing.
 
 ## Phase 4: Codex Blind Critique
 
-Send via `mcp__codex__codex` with `config: {"reasoning_effort": "xhigh"}`:
+Send via `mcp__codex__codex` with `config: {"model": "gpt-5.6-sol", "reasoning_effort": "max"}`:
 
 ```
 ## Experiment Design Critique
@@ -241,7 +241,7 @@ The user can ask to:
 
 ## Codex MCP
 
-- **First call**: `mcp__codex__codex` with `config: {"reasoning_effort": "xhigh"}`
+- **First call**: `mcp__codex__codex` with `config: {"model": "gpt-5.6-sol", "reasoning_effort": "max"}`
 - **Follow-ups**: `mcp__codex__codex-reply` with saved `threadId` + `prompt`
 - Starting a fresh `mcp__codex__codex` mid-critique erases Codex's memory of
   the experiment context — always use the reply endpoint after the first call

@@ -17,10 +17,10 @@ calibrated confidence to ensure reasoning quality, not just persuasive prose.
 2. Claude forms Toulmin-structured position (shown to user, hidden from Codex)
 3. Codex forms BLIND independent position (evidence packet + topic only)
 4. (Optional) Codex requests one round of targeted raw evidence
-5. Compare → identify cruxes → build crux ledger → user checkpoint
+5. Compare → identify cruxes → build crux ledger → proceed
 6. Focused rounds on cruxes (expect 2-3, max 6)
 7. Stop as soon as a stopping condition is met
-8. Pre-synthesis check → user checkpoint → synthesize
+8. Pre-synthesis check → synthesize (user can interrupt anytime)
 ```
 
 ## Evidence Tiers
@@ -85,7 +85,7 @@ logic rather than talking past each other.
 ## Phase 2: Blind Opening
 
 Send Codex the evidence packet and topic. Via `mcp__codex__codex` with
-`config: {"reasoning_effort": "xhigh"}`:
+`config: {"model": "gpt-5.6-sol", "reasoning_effort": "max"}`:
 
 ```
 ## Independent Position Request: {topic}
@@ -158,20 +158,11 @@ or sycophantic convergence. Check before moving on:
 If cruxes exist (the common case), skip this section and proceed directly
 to the user checkpoint below.
 
-### User Checkpoint 1
+### User Checkpoint 1 (optional)
 
-After crux identification, present the user with:
-
-> **Opening positions**: Claude argues [X], Codex argues [Y].
-> Agreement on [A, B]. Cruxes: [C, D].
->
-> **Your input** (say "continue" to proceed as-is):
-> - Prioritize which cruxes to resolve first?
-> - Add constraints or preferences the models should respect?
-> - Declare any crux as "user-dependent" (your call, not the models')?
-
-Wait for the user's response. If they provide input, incorporate it into the
-crux ledger. If they say "continue" or equivalent, proceed with all cruxes open.
+After crux identification, briefly present the crux ledger inline (positions,
+agreements, cruxes) and **proceed directly to Round 1** without waiting for
+user input. The user can interrupt at any point if they want to steer.
 
 Then send Round 1 via `mcp__codex__codex-reply`:
 
@@ -281,15 +272,10 @@ Before summarizing, verify:
 
 ## Phase 7: Synthesis
 
-### User Checkpoint 2
+### User Checkpoint 2 (optional)
 
-Before writing the final summary, present the crux ledger with final statuses
-and ask:
-
-> Any cruxes you want to override or comment on before I summarize?
-
-Wait for the user's response. If they have input, incorporate it.
-If they say "continue" or equivalent, proceed to summary.
+Proceed directly to synthesis without waiting for user input.
+The user can interrupt if they want to override cruxes.
 
 ### Chat summary (always)
 
@@ -344,7 +330,7 @@ Template: see [references/consensus-template.md](references/consensus-template.m
 
 ## Codex MCP
 
-- **First call**: `mcp__codex__codex` with `config: {"reasoning_effort": "xhigh"}`
+- **First call**: `mcp__codex__codex` with `config: {"model": "gpt-5.6-sol", "reasoning_effort": "max"}`
 - **Follow-ups**: `mcp__codex__codex-reply` with saved `threadId` + `prompt`
 - Starting a fresh `mcp__codex__codex` mid-debate erases Codex's memory of
   prior rounds — always use the reply endpoint after the first call

@@ -1,0 +1,14 @@
+prompt: >
+  /oral-paragraph-audit 检查一下这段，来自一篇投ICLR的method section：
+
+  "我们提出了一种基于白化变换的低秩分解方法。首先，我们收集校准数据的激活协方差矩阵。
+  然后，通过Cholesky分解计算白化矩阵S。接着，我们对白化后的权重矩阵进行SVD截断，
+  保留前r个奇异值。最后，将分解结果转换回原始空间。该方法的优势在于白化操作均衡了
+  各输入维度的贡献，从而降低了截断误差。"
+
+expected_behavior:
+  - "Identifies this as a Chinese-language draft"
+  - "Runs content-logic checks (structure, density, claims, transitions)"
+  - "Skips or notes that English-specific register/de-AI checks do not apply"
+  - "Checks the logical flow of the method steps (sequential: collect → compute → truncate → convert)"
+  - "Identifies the final sentence as the claim/advantage statement"

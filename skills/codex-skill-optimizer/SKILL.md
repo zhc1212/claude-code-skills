@@ -111,7 +111,7 @@ Build a neutral evidence packet containing:
 
 Exclude: Claude's position, Claude's specific claims, user reactions.
 
-Send via `mcp__codex__codex` with `config: {"reasoning_effort": "xhigh"}`:
+Send via `mcp__codex__codex` with `config: {"model": "gpt-5.6-sol", "reasoning_effort": "max"}`:
 
 ```
 ## Independent Skill Review: {skill name}
@@ -132,7 +132,7 @@ Send via `mcp__codex__codex` with `config: {"reasoning_effort": "xhigh"}`:
 - Confidence calibration on findings
 - Blind independence in cross-model protocols
 - Evidence-grounded claims with falsifiers
-- xhigh reasoning, threadId for follow-up
+- max reasoning, threadId for follow-up
 - Edge case handling, cross-file consistency
 
 ### Task
@@ -205,7 +205,7 @@ Score across 10 dimensions. Mark dimensions as N/A when they don't apply
 | Cross-File Consistency | References align with SKILL.md, shared terminology |
 | Safety | Secrets, consent, destructive operations |
 | Follow-Up | threadId preserved, follow-up modes documented |
-| MCP Integration | xhigh config, error handling, initial failure path |
+| MCP Integration | max config, error handling, initial failure path |
 | Craftsmanship | Line count, progressive disclosure, organization |
 
 For each dimension: score 1-10, note issues found. Fix all issues
@@ -249,7 +249,7 @@ boundaries referencing sibling skills.
 without reasoning. Progressive structure (high at boundaries, light in
 middle). Evidence-grounded claims with confidence + falsifiers.
 
-**MCP**: `config: {"reasoning_effort": "xhigh"}`. Save threadId. Handle
+**MCP**: `config: {"model": "gpt-5.6-sol", "reasoning_effort": "max"}`. Save threadId. Handle
 initial connection failure. Reply endpoint for follow-ups.
 
 **Organization**: SKILL.md under 500 lines. Reference files for domain
@@ -257,7 +257,7 @@ detail, categories, templates. Lean body, rich references.
 
 ## Codex MCP
 
-- **First call**: `mcp__codex__codex` with `config: {"reasoning_effort": "xhigh"}`
+- **First call**: `mcp__codex__codex` with `config: {"model": "gpt-5.6-sol", "reasoning_effort": "max"}`
 - **Follow-ups**: `mcp__codex__codex-reply` with saved `threadId`
 - On MCP error: tell user, offer Claude-only audit (still valuable, just
   not cross-model validated)

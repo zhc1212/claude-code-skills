@@ -1,0 +1,16 @@
+prompt: >
+  /oral-paragraph-audit 帮我改一下这段 experiments paragraph for ICLR:
+
+  "It should be mentioned that our method achieves state-of-the-art results.
+  Furthermore, the perplexity on WikiText-2 is reduced to 11.4 for LLaMA-7B.
+  Additionally, we also tested on PTB and C4 datasets. The results are shown
+  in Table 1. Indeed, these results clearly showcase the effectiveness of our
+  novel approach."
+
+expected_behavior:
+  - "Recognizes '帮我改' as a rewrite-only request"
+  - "Presents revised text rather than the full 10-check scorecard"
+  - "Includes a brief severity summary of what was fixed"
+  - "The revised text removes throat-clearing from S1"
+  - "The revised text removes or replaces 'Furthermore', 'Additionally', 'Indeed'"
+  - "The revised text removes 'showcase the effectiveness of our novel approach' or replaces with specific claim"

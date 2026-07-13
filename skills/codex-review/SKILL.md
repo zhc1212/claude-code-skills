@@ -158,7 +158,7 @@ Also return:
 ```
 mcp__codex__codex(
   prompt: <review prompt>,
-  config: {"reasoning_effort": "xhigh"}
+  config: {"model": "gpt-5.6-sol", "reasoning_effort": "max"}
 )
 ```
 

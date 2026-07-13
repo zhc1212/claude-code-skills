@@ -1,10 +1,14 @@
 # Claude Code Skills
 
-253 skills, 79 commands, 81 agents, 16 hooks, 4 rule sets for [Claude Code](https://claude.ai/code).
+214 directly discoverable skills, 237 `SKILL.md` manifests, 79 commands, 81 agents, 16 hooks, and 4 rule sets for [Claude Code](https://claude.ai/code).
 
 Organized around an academic ML research workflow — from literature search to camera-ready PDF — with cross-model collaboration (Claude + GPT-5.5), automated review loops, and full project management.
 
 Built on [Everything Claude Code (ECC)](https://github.com/anthropics/claude-code) with plugins from [Superpowers](https://github.com/obra/superpowers-marketplace), [Anthropic](https://github.com/anthropics/skills), [OpenAI Codex](https://github.com/openai/codex-plugin-cc), [gstack](https://github.com/garrytan/gstack), and community repos.
+
+The `skills/` directory mirrors the maintainer's active `~/.claude/skills` installation. Symlinked skills are vendored as portable files, while nested `.git` metadata is excluded.
+
+The repository also tracks the maintainer's workspace-level `CLAUDE.md`.
 
 ## What's Different About This Collection
 
@@ -161,9 +165,9 @@ All Codex skills use GPT-5.5 with xhigh reasoning via [Codex MCP](https://github
 
 ## Infrastructure Skills
 
-### Superpowers (12 skills)
+### Superpowers (external plugin)
 
-Meta-workflow from [obra/superpowers](https://github.com/obra/superpowers-marketplace). Enforces discipline: plan before code, test before ship, verify before claim.
+Meta-workflow from [obra/superpowers](https://github.com/obra/superpowers-marketplace). These skills are supplied by the external plugin rather than vendored in `skills/`.
 
 | Skill | When |
 |---|---|
@@ -176,9 +180,9 @@ Meta-workflow from [obra/superpowers](https://github.com/obra/superpowers-market
 | `dispatching-parallel-agents` | 2+ independent tasks |
 | `executing-plans` | Running plans with quality gates |
 
-### GSD — Get Stuff Done (68 skills)
+### GSD — Get Stuff Done (external installation)
 
-Full project management inside Claude Code. Plan → execute → ship with atomic commits and state tracking.
+Full project management inside Claude Code. GSD is managed by its own installation outside this repository's mirrored `skills/` directory.
 
 | Stage | Key Skills |
 |---|---|
@@ -190,9 +194,9 @@ Full project management inside Claude Code. Plan → execute → ship with atomi
 | Track | `gsd-progress`, `gsd-stats`, `gsd-health` |
 | Debug | `gsd-debug`, `gsd-forensics`, `gsd-undo` |
 
-### Gstack v1.55.0 (from [garrytan/gstack](https://github.com/garrytan/gstack))
+### Gstack workflows (from [garrytan/gstack](https://github.com/garrytan/gstack))
 
-Developer tooling: code quality, review, debugging, retrospectives.
+The installed gstack workflows are vendored individually as portable skills instead of including the complete gstack source tree.
 
 | Skill | What it does |
 |---|---|
@@ -201,7 +205,7 @@ Developer tooling: code quality, review, debugging, retrospectives.
 | `investigate` | Systematic root-cause debugging (no fixes without root cause) |
 | `retro` | Weekly engineering retrospective |
 | `plan-eng-review` | Lock in architecture before coding |
-| `ship` | Ship workflow with quality gates |
+| `plan-tune` | Tune an existing implementation plan through structured review |
 | `browse` | Browser automation via Browserbase |
 
 ### GitHub Workflow
@@ -246,16 +250,20 @@ git clone https://github.com/zhc1212/claude-code-skills.git
 cd claude-code-skills
 
 # Install everything
-cp -r skills/ ~/.claude/skills/
-cp -r commands/ ~/.claude/commands/
-cp -r agents/ ~/.claude/agents/
-cp -r rules/ ~/.claude/rules/
-cp -r hooks/ ~/.claude/hooks/
+mkdir -p ~/.claude/{skills,commands,agents,rules,hooks}
+cp -r skills/. ~/.claude/skills/
+cp -r commands/. ~/.claude/commands/
+cp -r agents/. ~/.claude/agents/
+cp -r rules/. ~/.claude/rules/
+cp -r hooks/. ~/.claude/hooks/
 
 # Or install selectively
 cp -r skills/deai-latex ~/.claude/skills/
 cp -r skills/oral-paragraph-audit ~/.claude/skills/
 cp -r skills/codex-debate ~/.claude/skills/
+
+# Optional: use the included workspace instructions
+cp CLAUDE.md /path/to/your/workspace/CLAUDE.md
 ```
 
 ### Prerequisites

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Run Pipeline"
+  short_description: "Run Lean-QIT proving pipeline"
+  default_prompt: "Use $run-pipeline to run the Lean-QIT proving pipeline on a theorem."

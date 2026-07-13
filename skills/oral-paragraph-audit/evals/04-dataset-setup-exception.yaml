@@ -1,0 +1,17 @@
+prompt: >
+  /oral-paragraph-audit Audit this Dataset/Setup paragraph from a compression
+  paper targeting ICLR:
+
+  "We evaluate on seven language modeling benchmarks: WikiText-2, PTB, C4,
+  and four zero-shot tasks (ARC-Easy, ARC-Challenge, HellaSwag, WinoGrande).
+  For calibration, we sample 128 sequences of length 2048 from the C4 training
+  set with a fixed random seed. All experiments use float16 precision on a
+  single A100 GPU. We report perplexity for language modeling and accuracy
+  for zero-shot tasks."
+
+expected_behavior:
+  - "Identifies section as Dataset/Setup or Experiments Setup"
+  - "Does NOT flag S1 for lacking a claim — Dataset/Setup is factual by design (section exception)"
+  - "Does NOT flag the paragraph for low density — enumerative content is expected here"
+  - "Does NOT heavily penalize the final sentence for lacking an analytic conclusion (Step D relaxed)"
+  - "Checks are mostly OK or minor — this is a well-formed setup paragraph"
