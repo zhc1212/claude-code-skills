@@ -1,7 +1,0 @@
-{
-  "endpoint": "unix:/tmp/cxc-FeyrsH/broker.sock",
-  "pidFile": "/tmp/cxc-FeyrsH/broker.pid",
-  "logFile": "/tmp/cxc-FeyrsH/broker.log",
-  "sessionDir": "/tmp/cxc-FeyrsH",
-  "pid": 1733826
-}

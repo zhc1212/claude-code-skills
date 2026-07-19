@@ -1,28 +1,26 @@
 {
-  "name": "ecc",
-  "version": "2.0.0-rc.1",
-  "description": "Battle-tested Claude Code plugin for engineering teams — 48 agents, 185 skills, 68 legacy command shims, production-ready hooks, and selective install workflows evolved through continuous real-world use",
+  "name": "zhc-skills",
+  "version": "1.0.0",
+  "description": "Research workflow skills: cross-model debate, LLM compression, experiment management, paper writing, figure pipeline",
   "author": {
-    "name": "Affaan Mustafa",
-    "url": "https://x.com/affaanmustafa"
+    "name": "Dr. Zhang",
+    "url": "https://github.com/zhc1212"
   },
-  "homepage": "https://ecc.tools",
-  "repository": "https://github.com/affaan-m/everything-claude-code",
+  "homepage": "https://github.com/zhc1212/claude-code-skills",
+  "repository": "https://github.com/zhc1212/claude-code-skills",
   "license": "MIT",
   "keywords": [
-    "claude-code",
-    "agents",
-    "skills",
-    "hooks",
-    "rules",
-    "tdd",
-    "code-review",
-    "security",
-    "workflow",
-    "automation",
-    "best-practices"
+    "research",
+    "academic",
+    "paper-writing",
+    "cross-model-debate",
+    "llm-compression",
+    "experiment-management"
   ],
-  "mcpServers": {},
-  "skills": ["./skills/"],
-  "commands": ["./commands/"]
+  "skills": [
+    "./skills/"
+  ],
+  "commands": [
+    "./commands/"
+  ]
 }

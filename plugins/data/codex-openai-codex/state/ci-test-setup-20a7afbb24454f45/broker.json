@@ -1,7 +1,0 @@
-{
-  "endpoint": "unix:/tmp/cxc-CWwhpu/broker.sock",
-  "pidFile": "/tmp/cxc-CWwhpu/broker.pid",
-  "logFile": "/tmp/cxc-CWwhpu/broker.log",
-  "sessionDir": "/tmp/cxc-CWwhpu",
-  "pid": 2760542
-}

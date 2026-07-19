@@ -1,6 +1,6 @@
 ---
 name: paper-writing
-description: "Workflow 3: Full paper writing pipeline. Orchestrates paper-plan → paper-figure → figure-spec/paper-illustration/mermaid-diagram → paper-write → paper-compile → auto-paper-improvement-loop to go from a narrative report to a polished PDF. At `— effort: max | beast` (or explicit `— assurance: submission`), Phase 6 gates the Final Report on `tools/verify_paper_audits.sh`; the PDF is labelled `submission-ready` only when the external verifier is green. Use when user says \"写论文全流程\", \"write paper pipeline\", \"从报告到PDF\", \"paper writing\", or wants the complete paper generation workflow."
+description: "Workflow 3: Full paper writing pipeline. Orchestrates paper-plan → paper-figure → figure-spec/paper-illustration/mermaid-diagram → paper-write → paper-compile → auto-paper-improvement-loop to go from a narrative report to a polished PDF. At `— effort: max | beast` (or explicit `— assurance: submission`), Phase 6 gates the Final Report on `# (verify_paper_audits removed — use paper-presubmit-audit skill)`; the PDF is labelled `submission-ready` only when the external verifier is green. Use when user says \"写论文全流程\", \"write paper pipeline\", \"从报告到PDF\", \"paper writing\", or wants the complete paper generation workflow."
 argument-hint: "[narrative-report-path-or-topic] [— style-ref: <source>]"
 allowed-tools: Bash(*), Read, Write, Edit, Grep, Glob, Agent, Skill, mcp__codex__codex, mcp__codex__codex-reply
 ---
@@ -108,7 +108,7 @@ echo "<resolved-level>" > paper/.aris/assurance.txt   # draft or submission
   paper-claim-audit, citation-audit) are treated as load-bearing gates. Each
   sub-audit must emit its JSON artifact (PASS / WARN / FAIL / NOT_APPLICABLE /
   BLOCKED / ERROR) — never silent-skip. Phase 6 runs
-  `tools/verify_paper_audits.sh`; a non-zero exit blocks the Final Report.
+  `# (verify_paper_audits removed — use paper-presubmit-audit skill)`; a non-zero exit blocks the Final Report.
 
 **Escape hatch:** a user wanting the old "beast = depth-only, no audit gate"
 can pass `— effort: beast, assurance: draft` explicitly. Legal but
@@ -119,7 +119,7 @@ discouraged for actual submissions. See
 
 ```
 📋 Assurance: <level> (derived from effort: <effort>)
-   <either "current behavior, no audit gate" OR "mandatory audits gated by tools/verify_paper_audits.sh">
+   <either "current behavior, no audit gate" OR "mandatory audits gated by # (verify_paper_audits removed — use paper-presubmit-audit skill)">
 ```
 
 ### Phase 1: Paper Plan
@@ -519,7 +519,7 @@ skipping audits while claiming to have run them.
    [ ] 1. /proof-checker        → paper/PROOF_AUDIT.json
    [ ] 2. /paper-claim-audit    → paper/PAPER_CLAIM_AUDIT.json
    [ ] 3. /citation-audit       → paper/CITATION_AUDIT.json
-   [ ] 4. bash <ARIS_REPO>/tools/verify_paper_audits.sh paper/ --assurance submission
+   [ ] 4. bash <ARIS_REPO>/# (verify_paper_audits removed — use paper-presubmit-audit skill) paper/ --assurance submission
    [ ] 5. Block Final Report iff verifier exit code != 0
 ```
 
@@ -553,7 +553,7 @@ Order:
 #### Running the verifier
 
 ```bash
-bash <ARIS_REPO>/tools/verify_paper_audits.sh paper/ --assurance submission
+bash <ARIS_REPO>/# (verify_paper_audits removed — use paper-presubmit-audit skill) paper/ --assurance submission
 ```
 
 - **Exit 0** — All mandatory audits present, JSON schema-valid, hashes fresh,
@@ -580,7 +580,7 @@ in `~/.claude/settings.json`:
 {
   "hooks": {
     "Stop": [
-      {"command": "bash <ARIS_REPO>/tools/verify_paper_audits.sh paper/ --assurance submission"}
+      {"command": "bash <ARIS_REPO>/# (verify_paper_audits removed — use paper-presubmit-audit skill) paper/ --assurance submission"}
     ]
   }
 }

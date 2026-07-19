@@ -1,46 +1,31 @@
 {
-  "name": "ecc",
+  "name": "zhc-skills",
   "owner": {
-    "name": "Affaan Mustafa",
-    "email": "me@affaanmustafa.com"
+    "name": "Dr. Zhang",
+    "email": "delmer_culpabj@techie.com"
   },
   "metadata": {
-    "description": "Battle-tested Claude Code configurations from an Anthropic hackathon winner"
+    "description": "Research workflow skills for LLM compression and academic paper writing"
   },
   "plugins": [
     {
-      "name": "ecc",
+      "name": "zhc-skills",
       "source": "./",
-      "description": "The most comprehensive Claude Code plugin — 48 agents, 185 skills, 68 legacy command shims, selective install profiles, and production-ready hooks for TDD, security scanning, code review, and continuous learning",
-      "version": "2.0.0-rc.1",
+      "description": "Research workflow skills: cross-model debate, compression, experiments, papers, figures",
+      "version": "1.0.0",
       "author": {
-        "name": "Affaan Mustafa",
-        "email": "me@affaanmustafa.com"
+        "name": "Dr. Zhang"
       },
-      "homepage": "https://ecc.tools",
-      "repository": "https://github.com/affaan-m/everything-claude-code",
+      "homepage": "https://github.com/zhc1212/claude-code-skills",
+      "repository": "https://github.com/zhc1212/claude-code-skills",
       "license": "MIT",
       "keywords": [
-        "agents",
-        "skills",
-        "hooks",
-        "commands",
-        "tdd",
-        "code-review",
-        "security",
-        "best-practices"
+        "research",
+        "academic",
+        "llm-compression",
+        "cross-model-debate"
       ],
-      "category": "workflow",
-      "tags": [
-        "agents",
-        "skills",
-        "hooks",
-        "commands",
-        "tdd",
-        "code-review",
-        "security",
-        "best-practices"
-      ],
+      "category": "research",
       "strict": false
     }
   ]
