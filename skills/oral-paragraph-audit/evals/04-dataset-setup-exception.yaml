@@ -15,7 +15,7 @@ expected_behavior:
 - Does NOT heavily penalize the final sentence for lacking an analytic conclusion (Step D relaxed)
 - Checks are mostly OK or minor — this is a well-formed setup paragraph
 required_markers:
-- 'Section role:'
-- 'Structure:'
-- Finding summary:\s*0 Blocking
+- 'Section role\W{0,3}:'
+- 'Structure\W{0,3}:'
+- Finding summary\W{0,3}:\s*0 Blocking
 forbidden_markers: []

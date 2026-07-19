@@ -6,8 +6,8 @@ prompt: '/oral-paragraph-audit Audit this Method paragraph from an LLM compressi
   The rank $r$ is chosen to satisfy a target parameter ratio $\rho = 1 - r(d+n)/(dn)$, which
   measures the fraction of parameters removed. Before truncation, we whiten the activation covariance
   to equalize the contribution of each input dimension, reducing the approximation error from
-  $\|W - AB\|_F$ to $\|S^{-1}W - S^{-1}AB\|_F$ where $S$ is the Cholesky factor of the covariance
-  matrix."
+  $\|W - AB\|_F$ to $\|(W - AB)S\|_F$, where $S \in \mathbb{R}^{n \times n}$ is the Cholesky
+  factor of the activation covariance matrix."
 
   '
 expected_behavior:
@@ -18,9 +18,9 @@ expected_behavior:
 - Does not flag the paragraph as low-density since every sentence introduces new information
 - Reports Check 5 and Check 10 as skipped due to no adjacent context
 required_markers:
-- 'Section role:'
-- 'Formulas:'
-- bridge:\s*.*skip
-- Consistency:\s*.*skip
-- Finding summary:\s*0 Blocking
+- 'Section role\W{0,3}:'
+- 'Formulas\W{0,3}:'
+- bridge\W{0,3}:\s*.*skip
+- Consistency\W{0,3}:\s*.*skip
+- Finding summary\W{0,3}:\s*0 Blocking
 forbidden_markers: []

@@ -20,9 +20,9 @@ expected_behavior:
 - Flags unmarked speculation — 'fundamentally transforms the loss landscape' needs evidence
   or hedge (Check 7 section rules for Discussion)
 required_markers:
-- 'Section role:'
-- 'Claims:'
-- 'De-AI:'
-- 'Finding summary:'
+- 'Section role\W{0,3}:'
+- 'Claims\W{0,3}:'
+- 'De-AI\W{0,3}:'
+- 'Finding summary\W{0,3}:'
 - \b(MAJOR|BLOCKING)\b
 forbidden_markers: []

@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
 # Eval runner for oral-paragraph-audit.
 #
-# Deterministic marker checks are the primary gate (drive the exit code).
-# LLM judging of expected_behavior is advisory and opt-in.
+# Invokes the skill the real way: `claude -p "/oral-paragraph-audit ..."` in
+# headless mode — the installed zhc-skills plugin supplies the skill, exactly
+# as in an interactive session. No system-prompt injection.
 #
-# Usage:
-#   bash evals/run_tests.sh [test_id] [--check-only] [--judge]
-#     test_id       run one test (01, 02, ...); default all
-#     --check-only  skip generation; validate existing results/<test>.output.md
-#     --judge       additionally run the advisory LLM judge (not counted in exit code)
+# One command, auto mode:
+#   bash evals/run_tests.sh          # regenerates a test only if its saved
+#                                    # output is missing or older than
+#                                    # SKILL.md / the test YAML; then runs
+#                                    # deterministic marker checks (the gate)
+# Options:
+#   bash evals/run_tests.sh 03       # single test
+#   bash evals/run_tests.sh --fresh  # force regeneration of all
+#   bash evals/run_tests.sh --judge  # + advisory LLM judging (not in exit code)
 
 set -euo pipefail
 
@@ -20,12 +25,10 @@ mkdir -p "$RESULTS_DIR"
 
 GREEN='\033[0;32m'; RED='\033[0;31m'; YELLOW='\033[0;33m'; NC='\033[0m'
 
-CHECK_ONLY=0
-JUDGE=0
-TEST_ID=""
+FRESH=0; JUDGE=0; TEST_ID=""
 for arg in "$@"; do
     case "$arg" in
-        --check-only) CHECK_ONLY=1 ;;
+        --fresh) FRESH=1 ;;
         --judge) JUDGE=1 ;;
         *) TEST_ID="$arg" ;;
     esac
@@ -49,9 +52,9 @@ for line in sys.stdin:
 "
 }
 
-yaml_get() { # file key -> lines
+yaml_get() {
     python3 -c "
-import yaml, sys
+import yaml
 d = yaml.safe_load(open('$1'))
 v = d.get('$2') or []
 if isinstance(v, str): print(v)
@@ -60,9 +63,8 @@ else:
 "
 }
 
-check_markers() { # output_file test_file -> prints per-marker verdicts; returns fail count via global
-    local output_file="$1" test_file="$2"
-    python3 - "$output_file" "$test_file" <<'PYEOF'
+check_markers() {
+    python3 - "$1" "$2" <<'PYEOF'
 import sys, re, yaml
 out = open(sys.argv[1], encoding='utf-8', errors='ignore').read()
 d = yaml.safe_load(open(sys.argv[2]))
@@ -93,7 +95,6 @@ run_test() {
     echo "  Test: $test_name"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-    # schema sanity: prompt + required_markers must exist
     if ! python3 -c "
 import yaml, sys
 d = yaml.safe_load(open('$test_file'))
@@ -102,31 +103,36 @@ sys.exit(0 if d.get('prompt') and d.get('required_markers') else 1)"; then
         gen_err=$((gen_err + 1)); return
     fi
 
-    if [ "$CHECK_ONLY" -eq 0 ]; then
-        local prompt; prompt=$(yaml_get "$test_file" prompt)
-        local sys_prompt
-        sys_prompt="You are executing the oral-paragraph-audit skill. Follow every check precisely and produce the full output format as specified.
+    # regenerate only when stale (or --fresh): output missing, SKILL.md newer,
+    # or the test prompt changed (hash) — marker-only edits never force regen
+    local hash_file="$RESULTS_DIR/${test_name}.prompt.md5"
+    local cur_hash
+    cur_hash=$(yaml_get "$test_file" prompt | md5sum | cut -d' ' -f1)
+    local need_gen=0
+    if [ "$FRESH" -eq 1 ] || [ ! -s "$output_file" ] \
+       || [ "$SKILL_FILE" -nt "$output_file" ] \
+       || [ ! -f "$hash_file" ] || [ "$(cat "$hash_file")" != "$cur_hash" ]; then
+        need_gen=1
+    fi
 
-$(cat "$SKILL_FILE")"
-        echo "  Generating (claude -p, model=sonnet)..."
+    if [ "$need_gen" -eq 1 ]; then
+        local prompt; prompt=$(yaml_get "$test_file" prompt)
+        echo "  Generating via real skill invocation (claude -p, model=sonnet)..."
         local raw_file="$RESULTS_DIR/${test_name}.raw.jsonl"
         local exit_code=0
-        CLAUDE_WRAPPER_ASSUME_Y=Y timeout 300 claude -p --model sonnet --output-format json --append-system-prompt "$sys_prompt" "$prompt" > "$raw_file" 2>/dev/null || exit_code=$?
+        CLAUDE_WRAPPER_ASSUME_Y=Y timeout 300 claude -p --model sonnet --output-format json "$prompt" > "$raw_file" 2>/dev/null || exit_code=$?
         extract_claude_response < "$raw_file" > "$output_file" 2>/dev/null || true
         if [ $exit_code -ne 0 ] || [ ! -s "$output_file" ]; then
             echo -e "  ${RED}GENERATION ERROR (exit=$exit_code, output empty)${NC}"
             gen_err=$((gen_err + 1)); return
         fi
+        echo "$cur_hash" > "$hash_file"
         echo "  Response: $(wc -c < "$output_file") chars → $output_file"
     else
-        if [ ! -s "$output_file" ]; then
-            echo -e "  ${YELLOW}SKIP: no saved output at $output_file (run without --check-only first)${NC}"
-            gen_err=$((gen_err + 1)); return
-        fi
-        echo "  Validating saved output: $output_file"
+        echo "  Saved output is current — validating without regeneration"
     fi
 
-    # ---- deterministic phase (primary) ----
+    # deterministic gate
     local marker_report
     if marker_report=$(check_markers "$output_file" "$test_file"); then
         local n; n=$(echo "$marker_report" | grep -c '^PASS')
@@ -141,7 +147,7 @@ $(cat "$SKILL_FILE")"
         done <<< "$marker_report"
     fi
 
-    # ---- advisory judge phase (opt-in) ----
+    # advisory judge (opt-in)
     if [ "$JUDGE" -eq 1 ]; then
         local output; output=$(cat "$output_file")
         while IFS= read -r behavior; do
@@ -170,7 +176,7 @@ ${output:0:12000}" 2>/dev/null | extract_claude_response || echo "SKIP: judge fa
 echo "╔══════════════════════════════════════════╗"
 echo "║  oral-paragraph-audit Skill Eval Suite   ║"
 echo "╚══════════════════════════════════════════╝"
-[ "$CHECK_ONLY" -eq 1 ] && echo "  Mode: check-only (no generation)"
+[ "$FRESH" -eq 1 ] && echo "  Mode: forced regeneration"
 [ "$JUDGE" -eq 1 ] && echo "  Advisory LLM judge: enabled"
 
 if [ -n "$TEST_ID" ]; then

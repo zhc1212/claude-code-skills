@@ -11,8 +11,8 @@ expected_behavior:
 - 'Checks the logical flow of the method steps (sequential: collect → compute → truncate → convert)'
 - Identifies the final sentence as the claim/advantage statement
 required_markers:
-- 'Structure:'
-- 'Transitions:'
-- De-AI:\s*.*(skip|English|不适用)
-- 'Finding summary:'
+- 'Structure\W{0,3}:'
+- 'Transitions\W{0,3}:'
+- De-AI\W{0,3}:\s*.*(skip|English|不适用)
+- 'Finding summary\W{0,3}:'
 forbidden_markers: []
