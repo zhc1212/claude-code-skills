@@ -27,8 +27,9 @@ Progressive: problem → challenge → positioning. Each paragraph carries one m
 One dimension per paragraph, end with gap or positioning. A brief "In contrast, we..."
 is acceptable if it clarifies the gap.
 
-**Baseline description accuracy**: when describing what another method does, the
-description must match the cited paper. Knowledgeable reviewers may have authored the baseline.
+**Baseline description accuracy**: when describing what another method does, verify
+against the cited paper if available; otherwise mark "Needs verification — cited
+source unavailable". Knowledgeable reviewers may have authored the baseline.
 
 ## Limitations
 

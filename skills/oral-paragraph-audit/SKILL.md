@@ -1,6 +1,6 @@
 ---
 name: oral-paragraph-audit
-description: "Paragraph-level academic writing audit for ML/NLP papers targeting top venues. Runs 10 structured checks on topic-support coherence, information density, claim-evidence alignment, transitions, de-AI patterns, section conventions, content boundaries, formula rigor, and terminology consistency. Use when user says '检查一下这段', 'audit this paragraph', 'oral quality check', '帮我看看这段写的怎么样', '检查写作质量', '帮我改段落', '写作审查', 'paragraph quality', 'review this paragraph'. Not for grammar-only proofreading, translation, whole-paper outlining, or full-section drafting."
+description: "Paragraph-level prose-quality audit for ML/NLP papers targeting top venues ('oral' = top-venue prose bar, not spoken language). Runs 10 structured checks on topic-support coherence, information density, claim-evidence alignment, transitions, de-AI patterns, section conventions, content boundaries, formula rigor, and terminology consistency. Use when user says '检查一下这段', 'audit this paragraph', 'oral quality check', '帮我看看这段写的怎么样', '检查写作质量', '帮我改段落', '写作审查', 'paragraph quality', 'review this paragraph'. Not for grammar-only proofreading, translation, whole-paper outlining, or full-section drafting."
 ---
 
 # Oral-Level Paragraph Audit
@@ -42,9 +42,13 @@ rewrite wholesale unless sentence order or claim structure is broken.
 
 **Zero-skip principle**: every *applicable* check must show work with evidence in
 the output. A bare "OK" without showing which sentences were assessed is a failed
-audit. Checks that are skipped (no context for Check 5/10, non-technical for
-Check 9) should say so explicitly — "skipped" is valid, silence is not.
-The goal is zero issues surviving to reviewer.
+audit — a pass must name what was assessed (e.g. "Claims: no strong claim
+detected; assessed S1–S3. OK"). Checks that are skipped (no context for Check
+5/10, non-technical for Check 9) should say so explicitly — "skipped" is valid,
+silence is not. The goal is zero issues surviving to reviewer.
+
+**Calibration**: do not invent defects to satisfy a check — an evidence-backed
+PASS is a successful audit result, not a failure to find something.
 
 ## Procedure
 
@@ -65,17 +69,20 @@ The goal is zero issues surviving to reviewer.
 
 - **Unknown section**: infer from content; if genuinely ambiguous, ask the user
   or report "Section: inferred as [X]" and proceed.
-- **Unavailable tables/figures**: when a claim references a table you cannot
-  access, mark as "Needs verification — table not available" rather than
-  flagging as unsupported.
+- **Unavailable evidence (uniform policy)**: when a claim references a table,
+  figure, cited paper, or other-section content you cannot access, mark as
+  "Needs verification — [source] not available" rather than flagging as
+  unsupported. Reserve "unsupported" for claims the *supplied text* fails to
+  back.
 - **Rewrite-only request**: if the user asks "帮我改" without wanting a full
   audit, still run the 10 checks internally but present only the revised text
   with a brief severity summary.
 - **Light review**: if the user asks for a quick look ("快速看一下", "top issues
   only"), run all checks but present only the top 3 highest-severity findings.
 - **Long excerpts (>5 paragraphs)**: run each paragraph's checks, then run a
-  global Check 10 pass. For very long sections, ask whether to audit all
-  paragraphs or sample the most critical ones.
+  global Check 10 pass. Audit all paragraphs by default; sample only when the
+  user explicitly asks. If output limits prevent completing every paragraph,
+  say exactly which paragraphs/checks remain unaudited — never silently sample.
 - **No adjacent context**: report "Check 5: skipped (no preceding context)"
   and "Check 10: skipped (single ¶)" — don't fabricate transitions.
 - **LaTeX-heavy input**: preserve all macros, `\cite{}`, `\ref{}`, `\label{}`,
@@ -152,7 +159,9 @@ a claim must be specific enough that a reader can tell whether it is true.
 **Narrative arc**: if S1 frames a question, the paragraph must answer it by
 the final sentence.
 
-**Baseline accuracy**: descriptions of other methods must match cited papers.
+**Baseline accuracy**: verify descriptions of other methods against the cited
+paper when it is available; otherwise report "Needs verification — cited source
+unavailable" (do not flag as unsupported).
 
 ### 4. Sentence-to-Sentence Transitions
 
@@ -223,8 +232,8 @@ events and procedures. Mixed tense within a paragraph → flag MINOR.
 
 ### 7. Section-Specific Rules
 
-Apply the rules for the identified section type. See
-`references/section-rules.md` for detailed per-section conventions.
+Apply the rules for the identified section type. Read only the applicable
+section's subsection in `references/section-rules.md` — not the whole file.
 
 Key patterns: Abstract (no bare symbols, no jargon, self-contained), Intro
 (progressive: problem→challenge→positioning), Related Work (one dimension/¶,
@@ -279,7 +288,13 @@ Strengths: [what works well]
  8. Boundary:   [OK / MAJOR: S_ belongs in {Experiments/Setup/...}]
  9. Formulas:   [OK / skipped / BLOCKING: symbol X undefined]
 10. Consistency: [OK / skipped / MAJOR: terminology drift]
+
+Finding summary: N Blocking / N Major / N Minor
 ```
+
+Severity labels BLOCKING/MAJOR/MINOR are valid in any check — the bracketed
+options above are examples, not exhaustive. Count each finding once in the
+summary even when it surfaces in multiple checks.
 
 For each issue, provide:
 - **Original**: the problematic text
