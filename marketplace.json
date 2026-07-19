@@ -12,7 +12,7 @@
       "name": "zhc-skills",
       "source": "./",
       "description": "Research workflow skills: cross-model debate, compression, experiments, papers, figures",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "author": {
         "name": "Dr. Zhang"
       },
