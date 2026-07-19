@@ -3,6 +3,10 @@ name: citation-verification
 description: Verify academic citations for correctness — detect fabricated references, metadata errors, claim-citation mismatches, and retracted papers. Use before submission or after AI-assisted writing. Triggers on "检查引用", "verify citations", "citation check", "引用核验", "check references", "cite verify".
 ---
 
+<!-- PROVENANCE (audited 2026-07-19): adapted.
+Source: kgraph57/paper-writer-skill (citation-verification reference guide).
+Local: PubMed/CrossRef arbitration rules, workflow integration. -->
+
 # Citation Verification Workflow
 
 AI language models frequently fabricate ("hallucinate") citations. Every AI-generated reference must be verified before inclusion in a manuscript.

@@ -5,6 +5,10 @@ argument-hint: "[topic-or-narrative-doc] [— style-ref: <source>]"
 allowed-tools: Bash(*), Read, Write, Edit, Grep, Glob, Agent, WebSearch, WebFetch, mcp__codex__codex, mcp__codex__codex-reply
 ---
 
+<!-- PROVENANCE (audited 2026-07-19): adapted hybrid.
+Sources: Master-cai/Research-Paper-Writing-Skills (claim-evidence mapping); Galaxy-Dawn/claude-scholar (citation verification); Imbad0202/academic-research-skills (claim verification protocol); Orchestra-Research/AI-Research-SKILLs (writing-framing overlay).
+Local: style-ref helper, venue-driven outline logic, workflow integration. -->
+
 # Paper Plan: From Review Conclusions to Paper Outline
 
 Generate a structured, section-by-section paper outline from: **$ARGUMENTS**

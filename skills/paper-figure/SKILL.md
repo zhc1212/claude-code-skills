@@ -5,6 +5,10 @@ argument-hint: [figure-plan-or-data-path]
 allowed-tools: Bash(*), Read, Write, Edit, Grep, Glob, Agent, mcp__codex__codex, mcp__codex__codex-reply
 ---
 
+<!-- PROVENANCE (audited 2026-07-19): adapted hybrid.
+Sources: jimliu/baoyu-skills (type x style design matrix); pedrohcgs/claude-code-my-workflow (publication style defaults, figure rules); Imbad0202/academic-research-skills (visualization decision tree).
+Local: pipeline integration, table/figure ID scheme, priority planning. -->
+
 # Paper Figure: Publication-Quality Plots from Experiment Data
 
 Generate all figures and tables for a paper based on: **$ARGUMENTS**

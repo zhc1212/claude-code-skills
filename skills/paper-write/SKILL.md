@@ -5,6 +5,10 @@ argument-hint: "[venue-or-section] [— style-ref: <source>]"
 allowed-tools: Bash(*), Read, Write, Edit, Grep, Glob, Agent, WebSearch, WebFetch, mcp__codex__codex, mcp__codex__codex-reply
 ---
 
+<!-- PROVENANCE (audited 2026-07-19): adapted hybrid.
+Sources: Master-cai/Research-Paper-Writing-Skills (writing methodology, CCF-awarded); Galaxy-Dawn/claude-scholar + Imbad0202/academic-research-skills (citation verification); Orchestra-Research/AI-Research-SKILLs (writing-guidance overlay).
+Local: SVD/A800 research-workflow integration, style-ref helper (tools/extract_paper_style.py), NARRATIVE_REPORT-driven drafting, structure rewrite. -->
+
 # Paper Write: Section-by-Section LaTeX Generation
 
 Draft a LaTeX paper based on: **$ARGUMENTS**
