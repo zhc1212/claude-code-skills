@@ -1,6 +1,6 @@
 {
   "name": "zhc-skills",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Research workflow skills: cross-model debate, LLM compression, experiment management, paper writing, figure pipeline",
   "author": {
     "name": "Dr. Zhang",
