@@ -1,20 +1,28 @@
-prompt: >
-  /oral-paragraph-audit Audit this Discussion paragraph from an LLM compression
-  paper targeting NeurIPS:
+prompt: '/oral-paragraph-audit Audit this Discussion paragraph from an LLM compression paper
+  targeting NeurIPS:
 
-  "The results conclusively demonstrate that spectral restructuring is the
-  primary cause of improved compression quality. This proves that whitening
-  fundamentally transforms the loss landscape, creating a more amenable
-  optimization surface. Interestingly, the effect is more pronounced for
-  larger models, suggesting that scale amplifies the benefits of our approach.
-  It is important to note that these findings have profound implications for
-  the field of efficient AI."
+  "The results conclusively demonstrate that spectral restructuring is the primary cause of
+  improved compression quality. This proves that whitening fundamentally transforms the loss
+  landscape, creating a more amenable optimization surface. Interestingly, the effect is more
+  pronounced for larger models, suggesting that scale amplifies the benefits of our approach.
+  It is important to note that these findings have profound implications for the field of efficient
+  AI."
 
+  '
 expected_behavior:
-  - "Identifies section as Discussion"
-  - "Flags 'conclusively demonstrate' and/or 'proves' as overclaim verbs (Check 6 Category C)"
-  - "Flags 'primary cause' as overclaim — causal language requires stronger evidence (Check 3 or Check 6)"
-  - "Flags 'Interestingly' as stakes-raiser (Check 6 Category B)"
-  - "Flags 'It is important to note that' as throat-clearing (Check 2)"
-  - "Flags 'profound implications for the field' as promotional or empty (Check 2 or Check 6)"
-  - "Flags unmarked speculation — 'fundamentally transforms the loss landscape' needs evidence or hedge (Check 7 section rules for Discussion)"
+- Identifies section as Discussion
+- Flags 'conclusively demonstrate' and/or 'proves' as overclaim verbs (Check 6 Category C)
+- Flags 'primary cause' as overclaim — causal language requires stronger evidence (Check 3 or
+  Check 6)
+- Flags 'Interestingly' as stakes-raiser (Check 6 Category B)
+- Flags 'It is important to note that' as throat-clearing (Check 2)
+- Flags 'profound implications for the field' as promotional or empty (Check 2 or Check 6)
+- Flags unmarked speculation — 'fundamentally transforms the loss landscape' needs evidence
+  or hedge (Check 7 section rules for Discussion)
+required_markers:
+- 'Section role:'
+- 'Claims:'
+- 'De-AI:'
+- 'Finding summary:'
+- \b(MAJOR|BLOCKING)\b
+forbidden_markers: []

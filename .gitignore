@@ -32,3 +32,4 @@
 **/.cache/
 hooks/state/
 plugins/cache/
+skills/*/evals/results/

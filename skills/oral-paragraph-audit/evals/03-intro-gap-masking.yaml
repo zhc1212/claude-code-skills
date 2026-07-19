@@ -1,19 +1,27 @@
-prompt: >
-  /oral-paragraph-audit Audit this Introduction paragraph from an ML paper
-  targeting ICML:
+prompt: '/oral-paragraph-audit Audit this Introduction paragraph from an ML paper targeting
+  ICML:
 
-  "Large language models have achieved remarkable success across a wide range of
-  natural language processing tasks. However, their massive size poses significant
-  challenges for deployment on resource-constrained devices. Moreover, the
-  computational cost of inference scales linearly with model size, making
-  real-time applications impractical. In addition, memory requirements often
-  exceed the capacity of consumer-grade GPUs. These challenges have motivated
-  a growing body of work on model compression."
+  "Large language models have achieved remarkable success across a wide range of natural language
+  processing tasks. However, their massive size poses significant challenges for deployment
+  on resource-constrained devices. Moreover, the computational cost of inference scales linearly
+  with model size, making real-time applications impractical. In addition, memory requirements
+  often exceed the capacity of consumer-grade GPUs. These challenges have motivated a growing
+  body of work on model compression."
 
+  '
 expected_behavior:
-  - "Identifies section as Introduction"
-  - "Flags 'remarkable success' as booster (Check 6 Category B)"
-  - "Flags 'Moreover' and/or 'In addition' as gap-masking connectors (Check 4)"
-  - "Flags S2-S3-S4 as parallel list structure rather than progressive deepening (Check 1 or Check 4)"
-  - "Flags 'significant challenges' as vague or booster language (Check 6)"
-  - "Flags S5 as weak ending — 'motivated a growing body of work' is throat-clearing (Check 1 Step D or Check 2)"
+- Identifies section as Introduction
+- Flags 'remarkable success' as booster (Check 6 Category B)
+- Flags 'Moreover' and/or 'In addition' as gap-masking connectors (Check 4)
+- Flags S2-S3-S4 as parallel list structure rather than progressive deepening (Check 1 or Check
+  4)
+- Flags 'significant challenges' as vague or booster language (Check 6)
+- Flags S5 as weak ending — 'motivated a growing body of work' is throat-clearing (Check 1 Step
+  D or Check 2)
+required_markers:
+- 'Section role:'
+- 'Transitions:'
+- 'De-AI:'
+- 'Finding summary:'
+- \bMAJOR\b
+forbidden_markers: []

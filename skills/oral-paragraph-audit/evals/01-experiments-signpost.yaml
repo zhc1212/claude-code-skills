@@ -1,24 +1,33 @@
-prompt: >
-  /oral-paragraph-audit Audit this Experiments paragraph from an LLM compression
-  paper targeting ICLR:
+prompt: '/oral-paragraph-audit Audit this Experiments paragraph from an LLM compression paper
+  targeting ICLR:
 
-  "Having established the effectiveness of our whitening-based approach in the
-  previous section, we now turn to evaluating its performance across different
-  model scales. Furthermore, our method demonstrates remarkable improvements
-  over existing baselines on the WikiText-2 benchmark. Specifically, utilising
-  our approach on LLaMA-7B reduces perplexity from 42.1 to 11.4, which is
-  significantly better than all competing methods. The gains are robust across
-  five architectures up to 13B parameters. Additionally, we observe that the
-  improvements become more pronounced for higher compression ratios, which
-  contributes to our understanding of how model scale interacts with low-rank
-  approximation quality. Taken together, these results underscore the crucial
+  "Having established the effectiveness of our whitening-based approach in the previous section,
+  we now turn to evaluating its performance across different model scales. Furthermore, our
+  method demonstrates remarkable improvements over existing baselines on the WikiText-2 benchmark.
+  Specifically, utilising our approach on LLaMA-7B reduces perplexity from 42.1 to 11.4, which
+  is significantly better than all competing methods. The gains are robust across five architectures
+  up to 13B parameters. Additionally, we observe that the improvements become more pronounced
+  for higher compression ratios, which contributes to our understanding of how model scale interacts
+  with low-rank approximation quality. Taken together, these results underscore the crucial
   importance of spectral restructuring for efficient language model compression."
 
+  '
 expected_behavior:
-  - "Flags S1 as mechanical signpost or recap of previous section (Check 1 Step A or Check 2)"
-  - "Flags 'Furthermore' and/or 'Additionally' as gap-masking connectors (Check 4)"
-  - "Flags 'remarkable' or 'crucial' or 'underscore' as booster/filler/watchlist word (Check 6)"
-  - "Flags 'utilising' as Latinate or 'demonstrates' as Latinate (Check 6 Category C)"
-  - "Flags 'Taken together' as banned opener (Check 6 Category D)"
-  - "Flags 'significantly better than all competing methods' as unscoped or missing table reference (Check 3)"
-  - "Does NOT flag 'we' or 'our' as a register violation"
+- Flags S1 as mechanical signpost or recap of previous section (Check 1 Step A or Check 2)
+- Flags 'Furthermore' and/or 'Additionally' as gap-masking connectors (Check 4)
+- Flags 'remarkable' or 'crucial' or 'underscore' as booster/filler/watchlist word (Check 6)
+- Flags 'utilising' as Latinate or 'demonstrates' as Latinate (Check 6 Category C)
+- Flags 'Taken together' as banned opener (Check 6 Category D)
+- Flags 'significantly better than all competing methods' as unscoped or missing table reference
+  (Check 3)
+- Does NOT flag 'we' or 'our' as a register violation
+required_markers:
+- 'Section role:'
+- 'Structure:'
+- 'Density:'
+- 'Claims:'
+- 'Transitions:'
+- 'De-AI:'
+- 'Finding summary:'
+- \bMAJOR\b
+forbidden_markers: []
