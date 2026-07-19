@@ -5,14 +5,14 @@
     "email": "delmer_culpabj@techie.com"
   },
   "metadata": {
-    "description": "Research workflow skills for LLM compression and academic paper writing"
+    "description": "Research workflow skills for ML experiments and academic paper writing"
   },
   "plugins": [
     {
       "name": "zhc-skills",
       "source": "./",
-      "description": "Research workflow skills: cross-model debate, compression, experiments, papers, figures",
-      "version": "1.0.5",
+      "description": "Research workflow skills: cross-model debate, experiments, papers, figures",
+      "version": "1.0.6",
       "author": {
         "name": "Dr. Zhang"
       },
