@@ -14,7 +14,7 @@ This is the exposure manifest for the workspace that uses `zhc-skills` v1.0.10. 
 
 Clone each source under a project-local `.claude/skill-sources/` directory. Expose only directories containing `SKILL.md` as absolute symlinks under `.claude/skills/`; keep asset-only directories unlinked. Maintain a source manifest alongside those links and re-check it after every upstream update.
 
-Do not vendor these sources into `zhc-skills`: provenance, licenses, and update history remain upstream.
+Keep the sources listed above external to `zhc-skills`. The explicit exception is the `citation-verification` copy documented below; any vendored copy must retain its upstream license and pinned provenance.
 
 ## User-level synchronization (2026-09-10)
 
@@ -29,7 +29,7 @@ inventory of the current user-level installation. One confirmed source override:
 
 | Active skill | Upstream | Source path | Repository treatment |
 |---|---|---|---|
-| `citation-verification` | [Galaxy-Dawn/claude-scholar](https://github.com/Galaxy-Dawn/claude-scholar) | `skills/citation-verification/` | The active `SKILL.md` matches this upstream clone byte for byte. Keep this third-party installation separate; the older adapted skill in this repository is retained. |
+| `citation-verification` | [Galaxy-Dawn/claude-scholar](https://github.com/Galaxy-Dawn/claude-scholar) | `skills/citation-verification/` | Vendored in v1.0.12 by explicit user request. All nine source files match upstream commit `6ed46dac03191c7a734f49ed48b41195012098ff`; the MIT license and [provenance](../skills/citation-verification/PROVENANCE.md) accompany the copy and document three EOF whitespace normalizations. This replaces the older adapted version retained in v1.0.11. |
 
 `run-pipeline` is absent from the active user-level skills directory. Its
 repository copy is retained; absence from one installation does not retire it.

@@ -1,221 +1,204 @@
 ---
 name: citation-verification
-description: Verify academic citations for correctness — detect fabricated references, metadata errors, claim-citation mismatches, and retracted papers. Use before submission or after AI-assisted writing. Triggers on "检查引用", "verify citations", "citation check", "引用核验", "check references", "cite verify".
+description: This skill provides reference guidance for citation verification in academic writing. Use when the user asks about "citation verification best practices", "how to verify references", "preventing fake citations", or needs guidance on citation accuracy. This skill supports ml-paper-writing by providing detailed verification principles and common error patterns.
+tags: [Research, Academic, Citation, Reference]
+version: 0.1.0
 ---
 
-<!-- PROVENANCE (audited 2026-07-19): adapted.
-Source: kgraph57/paper-writer-skill (citation-verification reference guide).
-Local: PubMed/CrossRef arbitration rules, workflow integration. -->
+# Citation Verification Reference Guide
 
-# Citation Verification Workflow
+A reference guide for citation verification in academic paper writing, providing verification principles and best practices.
 
-AI language models frequently fabricate ("hallucinate") citations. Every AI-generated reference must be verified before inclusion in a manuscript.
+**Core Principle**: Proactively verify every citation during the writing process using programmatic or canonical scholarly sources first: arXiv, DOI/CrossRef, Semantic Scholar, publisher landing pages, and Zotero metadata. Google Scholar is useful for manual discovery, but it is not the canonical verification authority.
 
-**Rule: Never trust an AI-generated citation without independent verification.**
+## Core Problems
 
-## Common AI Citation Fabrication Patterns
+Citation issues in academic papers seriously impact research integrity:
 
-| Pattern | Example | Detection |
-|---------|---------|-----------|
-| **Plausible but nonexistent paper** | Real author + real journal + fabricated title | Search by title |
-| **Wrong author combination** | Author A's topic + Author B's name | Verify author list |
-| **Incorrect year** | Correct paper but wrong publication year | Cross-check with DOI |
-| **Fabricated DOI** | DOI format correct but resolves to nothing | Check doi.org |
-| **Journal mismatch** | Real paper published in different journal | Verify journal name |
-| **Volume/page errors** | Correct paper but wrong bibliographic details | Check against database |
-| **Merged citations** | Elements from 2+ real papers combined | Search each element separately |
-| **Retracted papers cited as valid** | Paper exists but was retracted | Check Retraction Watch |
-| **Preprint cited as published** | On arXiv/medRxiv but not peer-reviewed | Verify publication status |
-| **Outdated version cited** | Guideline or meta-analysis updated | Check for latest version |
+1. **Fake citations** - Citing non-existent papers (common issue with AI-generated citations)
+2. **Incorrect information** - Mismatched authors, titles, years, etc.
+3. **Inconsistent formatting** - Mixed citation formats
+4. **Missing citations** - Referenced but uncited work
 
-## Step-by-Step Verification
+These issues can lead to:
+- Paper rejection or retraction
+- Damage to academic reputation
+- Reviewers questioning research rigor
 
-### Step 1: Title Search (Primary)
+**Special risk with AI-assisted writing**: AI-generated citations have approximately 40% error rate; every citation must be verified via WebSearch.
 
-Search the exact title in multiple databases:
+## Verification Principles
 
-- **PubMed**: `https://pubmed.ncbi.nlm.nih.gov/` — use quotes for exact match
-- **Google Scholar**: `allintitle: [key words]` — discovery only, not authoritative
-- **Semantic Scholar**: `https://www.semanticscholar.org/` — good for CS/AI papers
+This skill provides verification principles based on canonical scholarly metadata and claim-level checking:
 
-**If title not found**: The paper likely does not exist. Do NOT proceed to use it.
+### 1. Proactive Verification (Verify During Writing)
 
-### Step 2: DOI Verification
+**Core idea**: Verify immediately when adding a citation, rather than checking after writing is complete.
 
-```bash
-# Direct resolution
-https://doi.org/[DOI]
+- Search for the paper via WebSearch each time a citation is needed
+- Confirm the paper exists on Google Scholar
+- Add to bibliography only after verification passes
 
-# CrossRef API lookup
-curl -s "https://api.crossref.org/works/[DOI]" | python -m json.tool
-```
+### 2. Canonical Metadata Verification
 
-**Check**: Does the resolved page match the claimed title, authors, and journal?
+Preferred authority order:
+1. DOI / publisher landing page
+2. arXiv ID or arXiv landing page
+3. CrossRef
+4. Semantic Scholar
+5. Zotero metadata imported from a verified identifier
+6. Google Scholar only for manual discovery or fallback lookup
 
-### Step 3: Author Verification
+**Verification steps**:
+1. Find a DOI, arXiv ID, publisher URL, or verified Zotero item.
+2. Confirm title, first author, year, venue, and identifier.
+3. Fetch BibTeX from CrossRef, arXiv, publisher metadata, Zotero, or another programmatic source when possible.
+4. If only Google Scholar can find the item, mark it as manual verification and do not treat the BibTeX as final until metadata is checked elsewhere.
 
-- PubMed author search: `[LastName FirstInitial][au]`
-- ORCID lookup: `https://orcid.org/[ORCID-ID]`
-- Google Scholar author profile
+### 3. Information Matching Verification
 
-**Check**: Has this author actually published in this topic area?
+**Information that must match**:
+- Title (minor differences allowed, e.g., capitalization)
+- Authors (at least the first author must match)
+- Year (±1 year difference allowed, considering preprints)
+- Publication venue (conference/journal name)
 
-### Step 4: Journal Verification
+### 4. Claim Verification
 
-- NLM Catalog: `https://www.ncbi.nlm.nih.gov/nlmcatalog/`
-- Check journal website table of contents for the specific volume/issue
+**Key principle**: When citing a specific claim, you must confirm the claim actually appears in the paper.
 
-### Step 5: Content Verification (Critical)
+- Use WebSearch to access the paper PDF
+- Search for relevant keywords
+- Confirm the accuracy of the claim
+- Record the section/page where the claim appears
 
-Even if the paper exists, verify:
-- [ ] The claims attributed to the paper are actually in the paper
-- [ ] The data/statistics cited match what the paper reports
-- [ ] The conclusions drawn are consistent with the paper's actual findings
-- [ ] The paper is not being cited out of context
+## Verification Workflow
 
-## Batch Verification
-
-### Phase 1: Rapid Triage (2-3 min per reference)
+### Integration into Writing Process
 
 ```
-For each reference:
-1. Copy exact title → PubMed search (with quotes)
-2. Mark as: ✅ Found | ❌ Not found | ⚠️ Partial match
+Need a citation during writing
+    ↓
+Find DOI / arXiv ID / publisher page / verified Zotero item
+    ↓
+Verify metadata with CrossRef / arXiv / Semantic Scholar / publisher / Zotero
+    ↓
+Confirm paper details
+    ↓
+Get BibTeX
+    ↓
+(If citing a specific claim) Verify the claim
+    ↓
+Add to bibliography
 ```
 
-### Phase 2: Detail Check
+**Key point**: Verification is part of the writing process, not a separate post-processing step.
+
+## Usage Guide
+
+### Using with ml-paper-writing
+
+The verification principles of this skill are integrated into the Citation Workflow of the `ml-paper-writing` skill.
+
+**Auto-trigger**: Citation verification is automatically executed when writing papers with the ml-paper-writing skill.
+
+**Manual reference**: Refer to this skill when you need detailed verification principles.
+
+### Verification Step Example
+
+**Scenario**: Need to cite the Transformer paper
 
 ```
-For each ✅ Found:
-1. Compare: authors, year, journal, volume, pages
-2. Verify DOI resolves correctly
-3. Mark as: ✅ Verified | ⚠️ Details wrong
+Step 1: WebSearch lookup
+Query: "Attention is All You Need Vaswani 2017"
+Result: Found multiple sources for the paper
+
+Step 2: Google Scholar verification
+Query: "site:scholar.google.com Attention is All You Need Vaswani"
+Result: ✅ Paper exists, 50,000+ citations, NeurIPS 2017
+
+Step 3: Confirm details
+- Title: "Attention is All You Need"
+- Authors: Vaswani, Ashish; Shazeer, Noam; Parmar, Niki; ...
+- Year: 2017
+- Venue: NeurIPS (NIPS)
+
+Step 4: Get BibTeX
+- Click "Cite" on Google Scholar
+- Select BibTeX format
+- Copy BibTeX entry
+
+Step 5: Add to bibliography
+- Paste into .bib file
+- Use \cite{vaswani2017attention} in the paper
 ```
 
-### Phase 3: Resolution
+### Handling Verification Failures
 
-```
-❌ Not found → Find replacement or remove
-⚠️ Partial match → Correct bibliographic details
-⚠️ Details wrong → Update with correct information
-```
+**If the paper cannot be verified through canonical sources**:
 
-### Programmatic Batch Verification
+1. **Check spelling** - Is the title or author name correct?
+2. **Try different queries** - Use different keyword combinations
+3. **Find alternative sources** - Try arXiv, DOI, CrossRef, Semantic Scholar, publisher pages, or Zotero
+4. **Mark as pending** - Use `[CITATION NEEDED]` marker
+5. **Notify the user** - Clearly state the citation cannot be verified
 
-```bash
-# CrossRef batch DOI check
-while IFS= read -r doi; do
-  response=$(curl -s "https://api.crossref.org/works/${doi}" 2>/dev/null)
-  status=$(echo "$response" | python3 -c "
-import sys, json
-try:
-    data = json.load(sys.stdin)
-    title = data['message']['title'][0] if data['message']['title'] else 'NO TITLE'
-    print(f'OK: {title}')
-except:
-    print('FAILED: DOI not found')
-" 2>/dev/null)
-  echo "${doi} -> ${status}"
-done < doi_list.txt
-```
+**If information doesn't match**:
 
-```bash
-# Semantic Scholar title lookup
-curl -s "https://api.semanticscholar.org/graph/v1/paper/search?query=<title>&limit=1&fields=title,authors,year,venue,externalIds" | python -m json.tool
-```
+1. **Confirm the source** - Did you find the correct paper?
+2. **Check versions** - Preprint vs. published version
+3. **Update information** - Use the most accurate version
+4. **Record discrepancies** - Note the reason for differences
 
-```bash
-# arXiv metadata
-curl -s "http://export.arxiv.org/api/query?id_list=<arxiv-id>" | grep -E "<title>|<author>|<published>"
-```
+## Best Practices
 
-## Handling Specific Scenarios
+### Preventing Fake Citations
 
-### Paper Exists but Details Wrong
-1. Use PubMed/CrossRef record as authoritative source
-2. Update all bibliographic fields
-3. Re-check that the paper's content still supports the citation context
+1. **Never generate citations from memory** - AI-generated citations have 40% error rate
+2. **Use WebSearch to find** - Verify every citation through WebSearch
+3. **Confirm on Google Scholar** - Verify paper existence on Google Scholar
+4. **Verify promptly** - Verify when adding citations, don't wait until finished
 
-### Paper Does Not Exist
-1. Search for the topic described in the fabricated title
-2. Find a real paper making the same point
-3. Read the real paper to confirm it supports the claim
-4. Replace the fabricated citation
+### Handling Verification Failures
 
-### Paper Is Retracted
-1. Check Retraction Watch: `http://retractiondatabase.org/`
-2. Check PubMed for retraction notice
-3. **Do NOT cite retracted papers** unless discussing the retraction itself
-4. Find alternative supporting evidence
+1. **Don't guess** - If you can't find the paper, don't fabricate information
+2. **Mark clearly** - Use `[CITATION NEEDED]` to mark explicitly
+3. **Notify the user** - Clearly state which citations cannot be verified
+4. **Provide reasons** - Explain why verification failed (not found, info mismatch, etc.)
 
-### Preprint Not Yet Published
-1. Check if a published version now exists
-2. If published: cite published version, not preprint
-3. If still preprint: cite as preprint with clear labeling
-4. Consider whether the journal accepts preprint citations
+### Improving Verification Accuracy
 
-### Multiple Versions Exist
-- Always cite the most recent/final version
-- Note the version/edition if relevant
+1. **Complete queries** - Include title, author, year
+2. **Check citation count** - Citation count on Google Scholar is a credibility indicator
+3. **Confirm venue** - Verify conference/journal name is correct
+4. **Verify claims** - When citing specific claims, confirm they exist in the paper
 
-## Per-Reference Checklist
+### Common Pitfalls
 
-```
-- [ ] Title verified: Found in database
-- [ ] Authors verified: Author list matches
-- [ ] Year verified: Publication year correct
-- [ ] Journal verified: Published in stated journal
-- [ ] Volume/Issue/Pages verified: Bibliographic details correct
-- [ ] DOI verified: Resolves to correct paper
-- [ ] Not retracted: Checked Retraction Watch / PubMed
-- [ ] Content verified: Paper actually supports the claim made
-- [ ] Citation context accurate: Not cited out of context
+❌ **Wrong approach**:
+- Generating BibTeX from memory
+- Skipping Google Scholar verification
+- Assuming a paper exists
+- Not marking unverifiable citations
 
-Status: ✅ Verified / ⚠️ Needs correction / ❌ Replace
-```
+✅ **Correct approach**:
+- Search every citation with WebSearch
+- Confirm on Google Scholar
+- Copy BibTeX from Google Scholar
+- Clearly mark unverifiable citations
 
-## Quick Decision Tree
+## Summary
 
-```
-AI generated a citation
-├── Search title (exact match)
-│   ├── FOUND → Verify all details (author, year, journal, DOI)
-│   │   ├── All correct → ✅ Use (check content too)
-│   │   ├── Minor errors → ⚠️ Correct from database
-│   │   └── Major discrepancies → ⚠️ Re-read paper
-│   └── NOT FOUND → Search Google Scholar
-│       ├── FOUND → Verify details
-│       └── NOT FOUND → ❌ Fabricated → Find real replacement
-└── DOI provided?
-    └── Resolve at doi.org
-        ├── Resolves → Check if matches claimed paper
-        └── Does not resolve → ❌ DOI fabricated
-```
+**Core Principle**: Proactively verify every citation during the writing process using WebSearch and Google Scholar.
 
-## Tools Reference
+**Key Steps**:
+1. WebSearch to find the paper
+2. Google Scholar to verify existence
+3. Confirm details
+4. Get BibTeX
+5. Verify claims (if needed)
+6. Add to bibliography
 
-| Tool | URL | Best For |
-|------|-----|----------|
-| DOI resolver | https://doi.org/ | Canonical resolution |
-| CrossRef API | https://api.crossref.org/works/ | Programmatic metadata |
-| Semantic Scholar | https://www.semanticscholar.org/ | CS/AI papers, API |
-| PubMed | https://pubmed.ncbi.nlm.nih.gov/ | Biomedical literature |
-| arXiv | https://arxiv.org/ | Preprints |
-| Retraction Watch | http://retractiondatabase.org/ | Retraction checking |
-| ORCID | https://orcid.org/ | Author identity |
-| NLM Catalog | https://www.ncbi.nlm.nih.gov/nlmcatalog/ | Journal verification |
+**Failure handling**: When verification fails, mark as `[CITATION NEEDED]` and clearly notify the user.
 
-## Output Format
-
-For each citation, produce:
-
-```
-[PASS]  \cite{key} — Author (Year). "Title". Venue.
-[WARN]  \cite{key} — Issue description (fixable).
-[CHECK] \cite{key} — Claim-support alignment unclear (needs human review).
-[FAIL]  \cite{key} — DOI does not resolve / not found. Likely fabricated.
-```
-
----
-
-*Source: [kgraph57/paper-writer-skill](https://github.com/kgraph57/paper-writer-skill) — citation-verification reference guide*
+**Integration**: The principles of this skill are integrated into the ml-paper-writing skill for automatic verification.
