@@ -11,6 +11,8 @@
 7. Scoring rubric
 8. Summary table
 9. Common scoring failures
+10. What counts as grounds: data or mechanism
+11. Attribution discipline
 
 ## 1. Origin and purpose
 
@@ -249,3 +251,47 @@ Then aggregate as follows:
   lift. Name the entry strategy from this file.
 - **Score and verdict mismatch**: a Strong Accept verdict with no
   dimension above 7 is incoherent. Realign.
+
+## 10. What counts as grounds: data or mechanism
+
+Two kinds of grounds justify scoring a dimension above the default 5, and
+both count:
+
+- **Measured results the user reported.** Quote their own statement as the
+  evidence for the score.
+- **A mechanism argument that holds up**: a clear account of why this
+  mechanism almost necessarily yields this gain. Label such scores
+  explicitly: "mechanism-based, not yet confirmed by data".
+
+A dimension with neither stays at 5, with the note "no grounds given for
+this dimension".
+
+**Do not kill good untested ideas.** Two things must never be conflated:
+
+- **Inventing numbers** is the absolute red line: no experiments means not
+  one percentage or speedup gets written.
+- **Confident qualitative judgment** is exactly what evaluation is for. An
+  untested idea with a solid mechanism **can** score 8 or 9 on a dimension,
+  provided the score is labeled mechanism-based, the driving mechanism is
+  spelled out, and a decisive validation experiment is named. The verdict
+  then reads "worth pursuing, pending the validation experiment".
+
+Do not systematically cap good untested ideas at 7. Zero results means "no
+invented numbers and a mechanism-based label", not "7 is the ceiling and
+Strong Accept is out of reach". Low scores are for mechanisms that are
+hollow; solid mechanisms deserve high scores with the risk stated plainly.
+
+## 11. Attribution discipline
+
+The most common scoring error: crediting a gain to the core mechanism when
+it may come from a peripheral factor: a routing step, a post-processing
+step, a stronger base model, favorable samples, or a weaker baseline.
+
+When an impressive result plausibly comes from anything peripheral, cap the
+affected dimension until a controlled comparison (an ablation) isolates the
+core mechanism's own contribution. This rule is field-general: a chemistry
+yield gain may come from an extra purification step rather than the new
+catalyst; a social-science effect may be driven by sample selection rather
+than the claimed intervention. The test is always the same: remove the
+peripheral step or choice, and ask how much of the gain the core mechanism
+retains. If the answer is "little", the attribution has not been earned.

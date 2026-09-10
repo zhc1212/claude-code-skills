@@ -1,6 +1,6 @@
 ---
 name: oral-paragraph-audit
-description: "Paragraph-level prose-quality audit for ML/NLP papers targeting top venues ('oral' = top-venue prose bar, not spoken language). Runs 10 structured checks on topic-support coherence, information density, claim-evidence alignment, transitions, de-AI patterns, section conventions, content boundaries, formula rigor, and terminology consistency. Use when user says '检查一下这段', 'audit this paragraph', 'oral quality check', '帮我看看这段写的怎么样', '检查写作质量', '帮我改段落', '写作审查', 'paragraph quality', 'review this paragraph'. Not for grammar-only proofreading, translation, whole-paper outlining, or full-section drafting."
+description: "Paragraph-level prose-quality audit for ML/NLP papers targeting top venues ('oral' = top-venue prose bar, not spoken language). Use when user says '检查一下这段', 'audit this paragraph', 'oral quality check', '帮我看看这段写的怎么样', '检查写作质量', '帮我改段落', '写作审查', 'paragraph quality', 'review this paragraph', or pastes one to several paragraphs of a paper draft and asks whether they read well. Not for grammar-only proofreading, translation, whole-paper outlining, full-section drafting, or abstract/intro structure (use abstract-intro-audit)."
 ---
 
 # Oral-Level Paragraph Audit
@@ -48,7 +48,13 @@ detected; assessed S1–S3. OK"). Checks that are skipped (no context for Check
 silence is not. The goal is zero issues surviving to reviewer.
 
 **Calibration**: do not invent defects to satisfy a check — an evidence-backed
-PASS is a successful audit result, not a failure to find something.
+PASS is a successful audit result, not a failure to find something. A clean
+paragraph ends with `0 Blocking / 0 Major` plus the evidence lines showing what
+was assessed. A missing citation for a background technique is a finding only
+when the text claims novelty or priority (Check 3); a technical description that
+could be read as an implicit claim ("we whiten before truncation, reducing the
+error from A to B") is audited for well-formedness under Check 9, not as an
+unsupported claim under Check 3.
 
 ## Procedure
 
@@ -59,6 +65,18 @@ PASS is a successful audit result, not a failure to find something.
    - **Blocking**: harms reviewer understanding, credibility, or perceived contribution.
    - **Major**: weakens clarity, evidence, or flow but does not invalidate.
    - **Minor**: style or polish with low effect on reviewer judgment.
+
+   **Severity test**: a Major must name what the reviewer would misread or
+   fail to find. If the smallest fix is a one-clause edit or a word swap, the
+   finding is Minor.
+
+   **Blocking defaults** — everything else starts at Major or Minor:
+   - Check 3: a strong claim the supplied text neither supports nor scopes
+     ("outperforms all", "significantly", "the primary cause").
+   - Check 7: an Experiments or Discussion ¶ that opens on a number instead of
+     a claim.
+   - Check 9: a symbol undefined at first use or carrying two meanings.
+   - Check 0: a ¶ whose role contradicts the section's structure.
 4. Provide replacement text with reasoning for Blocking and Major issues.
    For Minor issues, replacement is optional when the fix is obvious — a
    one-line note suffices. At oral level, Minor issues accumulate into
@@ -112,10 +130,17 @@ S1 states the paragraph's message. Every subsequent sentence supports it.
 **Step A** — Verify S1 states a claim or setup (not raw data). S1 must NOT
 recap the previous paragraph's conclusion — that wastes the reader's strongest
 attention position on information they already have.
-**Step B** — For each S(i>1), name its role: Evidence, Mechanism, Refinement,
-Contrast, or Consequence. Flag MAJOR if a sentence has no role relative to S1.
+**Step B** — For each S(i>1), name its role relative to S1 using the shared
+relation labels: **Setup, Evidence, Mechanism, Cause, Consequence, Refinement,
+Extension, Contrast, Limitation**. Check 4 uses the same nine labels for
+adjacent-sentence relations; do not coin others. Flag MAJOR if a sentence has
+no role relative to S1.
 **Step C** — If two distinct claims cannot be unified under S1, flag MAJOR:
-mixed messages — split.
+mixed messages — split. Two claims are distinct when they need different
+evidence or lead to different conclusions. Consecutive steps of one procedure,
+or a definition followed by the mechanism that refines it, are one message even
+when S1 names only the first step; if S1 under-scopes them, flag MINOR and widen
+S1 rather than splitting the paragraph.
 **Step D** — Final sentence must be analytic (interprets, concludes, or advances),
 not suspended narration. Empty conclusions like "this contributes to our
 understanding of X" without saying WHAT → flag MAJOR.
@@ -165,11 +190,18 @@ unavailable" (do not flag as unsupported).
 
 ### 4. Sentence-to-Sentence Transitions
 
-Every S(n)→S(n+1) pair needs a nameable logical relation: Cause, Contrast,
-Evidence, Consequence, Refinement, Extension, Setup, or Limitation.
+Every S(n)→S(n+1) pair needs a nameable logical relation drawn from the shared
+labels in Check 1 Step B (Setup, Evidence, Mechanism, Cause, Consequence,
+Refinement, Extension, Contrast, Limitation). Check 1 asks how S(i) relates to
+S1; this check asks how it relates to the sentence before it.
 
 **Mandatory enumeration**: list every pair with its relation type. Missing one
 pair in a 7-sentence abstract means missing ~15% of the checks.
+
+This check flags a missing or masked relation, not narration order. A sentence
+that states its own temporal or logical position ("Before truncation, we…",
+"Given this bound, …") has named the relation; do not flag it for arriving out
+of chronological order.
 
 **Gap-masking connectors**: Furthermore, Additionally, Moreover, In addition —
 these assert a logical relation exists without naming it. When one appears,
@@ -188,52 +220,33 @@ not circling). `\paragraph{}` headings handle topic switches — no bridge neede
 
 Skip if no preceding context available.
 
-### 6. De-AI Pass
+### 6. De-AI Pass (delegated)
 
-Flag when a pattern harms precision, register, or reviewer trust. Respect venue
-and author style — these are heuristics for top-venue prose, not universal rules.
-Four categories:
+`/deai-latex` owns the full pattern catalogue — AI vocabulary, boosters,
+stakes-raisers, weasel attributions, authority tropes, aphorism formulas,
+copula avoidance, negative parallelism, register violations, hyphenation
+position, and the false-positive list that keeps the pass from gutting good
+prose. Do not restate it here.
 
-**A. AI fingerprints** (patterns that signal machine-generated text):
-- Uniform sentence length, synonym cycling, passive clusters
-- Paired adjectives, verb doublets, "not only X but also Y"
-- Participial tails, forced triples, weak copula
+**Procedure.** Load `/deai-latex` in embedded mode and apply its catalogue to
+this paragraph yourself — invoking a skill loads its instructions into your own
+context, so this is you doing the work, not a call that hands back a result.
+Record, for each pattern you hit, its category and the phrase that triggered it.
+The zero-skip principle needs those phrases as evidence; a tally is not evidence.
 
-**B. Boosters and stakes-raisers** (inflate importance, undermine credibility):
-- Boosters: really, very, hugely, remarkably, strikingly, notably
-- Stakes-raisers: Unsurprisingly, Interestingly, Indeed, Of course, Naturally
-- Filler adverbs: crucially, importantly, genuinely, honestly, straightforward
-- Promotional: novel, unique, important contribution (let evidence speak)
+**Severity.** MINOR when hits are isolated. MAJOR when they **cluster** — a
+single em dash is nothing, but em dashes plus a forced triple plus an unsupported
+booster inside one sentence is a confession. Judge whether the hits pile into the
+same sentence or scatter across the paragraph, not how many there are.
 
-**C. Register violations** (wrong tone for academic prose):
-- Latinate over Anglo-Saxon when no precision is gained: utilise → use,
-  demonstrate → show, commence → start, regarding → about (technical terms exempt)
-- Verb nominalization: "the examination of X" → "examining X" / "X examines"
-- Overclaim verbs: prove, demonstrate conclusively, definitively, the cause →
-  prefer consistent with, indicates, the evidence supports
-- Editorializing in Results: commentary on data belongs in Discussion
-- First person (we/our/I): standard in ML/NLP papers — only flag if the venue
-  or style guide prohibits it (e.g., some humanities or medical journals)
-
-**D. Structural noise and formatting**:
-- >1 em dash per paragraph (use commas or parentheses)
-- >2 semicolons per paragraph (prefer full stops)
-- Bullet points in prose body text
-- i.e. in running text (use commas or namely)
-- "taken together", "Together," as sentence opener
-- Number/unit consistency: % vs percent (pick one), en-dash for ranges
-  (1840–2010, not hyphen), digits for 10+ and statistics, spelled out for
-  1–9 in running text, spaces around = in inline equations
-
-**Tense**: present tense for findings and established facts, past tense for
-events and procedures. Mixed tense within a paragraph → flag MINOR.
-
-**Guardrail**: if a flagged pattern reads clearly in context, keep it.
+**Guardrail.** If a flagged pattern reads clearly in context, keep it.
 
 ### 7. Section-Specific Rules
 
-Apply the rules for the identified section type. Read only the applicable
-section's subsection in `references/section-rules.md` — not the whole file.
+Apply the rules for the identified section type. Read the applicable section's
+subsection in `references/section-rules.md` plus the two *(all sections)*
+subsections at its end (Footnotes; Number, Unit, and Date Formatting) — not the
+rest of the file.
 
 Key patterns: Abstract (no bare symbols, no jargon, self-contained), Intro
 (progressive: problem→challenge→positioning), Related Work (one dimension/¶,
@@ -253,6 +266,13 @@ prior-work numbers for context are fine.
 Symbol hygiene (defined near first use, no dual meanings, consistent
 subscripts), dimensional consistency, completeness (explicit min/sum/domain),
 notation consistency with rest of paper.
+
+Severity: BLOCKING for an undefined or double-used symbol; MAJOR when an
+ambiguity changes what is computed (a dimension that does not match its use, an
+unstated domain or constraint that alters the result); MINOR for a convention or
+wording the reader can resolve from context (Cholesky factor orientation, sum
+vs. mean normalization of a loss, "reducing the error from A to B" where A and B
+are different objectives).
 
 Skip for non-technical sections.
 
@@ -283,7 +303,7 @@ Strengths: [what works well]
  3. Claims:     [OK / MAJOR: "X" unsupported / scope missing]
  4. Transitions: S1→S2: [relation]. S2→S3: [...]. ... [OK / MAJOR at S_→S_]
  5. ¶ bridge:   [OK / skipped / MAJOR]
- 6. De-AI:      [PASS / MINOR: ...]
+ 6. De-AI:      [PASS / MINOR: isolated hits / MAJOR: hits cluster in one sentence]
  7. Section:    [OK / MAJOR: ...]
  8. Boundary:   [OK / MAJOR: S_ belongs in {Experiments/Setup/...}]
  9. Formulas:   [OK / skipped / BLOCKING: symbol X undefined]
@@ -291,6 +311,12 @@ Strengths: [what works well]
 
 Finding summary: N Blocking / N Major / N Minor
 ```
+
+Emit every line label above verbatim — `Section role:`, `Strengths:`, and the
+eleven numbered check labels through `Finding summary:` — as its own line, with
+the colon immediately after the label. Put commentary after the colon, never
+between label and colon, and never merge `Section role:` into `0. Preflight:`;
+the labels are parsed by downstream tooling.
 
 Severity labels BLOCKING/MAJOR/MINOR are valid in any check — the bracketed
 options above are examples, not exhaustive. Count each finding once in the
@@ -306,9 +332,11 @@ without evidence is a failed audit — always show which sentences were assessed
 
 ## After the Audit: Handoff
 
-- **De-AI escalation**: if Check 6 surfaces 2+ MAJOR issues, recommend running
-  `/deai-latex` on the full section for a comprehensive de-AI pass. Check 6
-  is a spot-check, not an exhaustive rewrite tool.
+- **De-AI escalation**: Check 6 already runs `/deai-latex` on this paragraph. If
+  the tells cluster across 2+ paragraphs, the problem is the section rather than
+  the paragraph — recommend a full-section `/deai-latex` pass.
+- **Reflow**: if a rewrite changed length in a page-capped or near-final paper,
+  say so and recommend a rebuild. A length change reflows every later page.
 - **Figure/table issues**: if Check 3 reveals claim-data mismatches involving
   figures, recommend `/figure-audit` for a visual inspection.
 - **Full-paper sweep**: if multiple paragraphs have Blocking issues, suggest

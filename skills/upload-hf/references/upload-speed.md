@@ -10,7 +10,16 @@ echo "https_proxy: ${https_proxy:-not set}"
 echo "CLAUDE_PROXY_URL: ${CLAUDE_PROXY_URL:-not set}"
 ```
 
-**Claude Code always sets `http_proxy=127.0.0.1:<port>`.** This proxy handles Claude's API calls (small JSON) and will destroy upload speeds (1-4 KB/s for large files). It MUST be stripped.
+**Claude Code always sets `http_proxy=127.0.0.1:<port>`.** On affected hosts this proxy — which
+is meant for Claude's own small-JSON API calls — destroys upload speeds (1-4 KB/s for large files).
+
+**But it is NOT always the villain, and it must NOT be stripped unconditionally.** Verify direct
+egress works before removing it (SKILL.md Step 3 has the A/B probe). Counter-example measured
+2026-07: a host where `huggingface.co:443` direct returns `SSL_connect: Connection reset by peer`
+while the same request through the Claude proxy returns 401, and a 33.6 MB probe upload through
+the proxy sustains **6.69 MB/s**. There, stripping the proxy does not speed anything up — it
+removes the only route to the Hub. If a read mirror (hf-mirror.com) answers 200 but
+huggingface.co does not, that is the signature of this case; mirrors cannot accept uploads.
 
 ## Step 2: Speed Test -- Proxy vs Direct
 

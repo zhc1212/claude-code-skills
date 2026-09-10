@@ -48,9 +48,45 @@ Run before any upload. Read `references/preflight.md` for the full checklist.
 7. **Symlinks**: check `find <dir> -type l` -- symlinks break `upload_large_folder` and `upload_folder` silently
 8. **Model card**: `README.md` with HF frontmatter exists?
 
-## Step 3: Strip Proxy + Choose Backend (MANDATORY)
+## Step 3: Probe Reachability, THEN Decide on the Proxy (MANDATORY)
 
-Claude Code injects `http_proxy=127.0.0.1:<port>` into all child processes. This throttles large file uploads to 1-4 KB/s and causes finalization stalls at 99%.
+**Do not strip the proxy reflexively. Measure first.** On some hosts direct egress to
+`huggingface.co` is blocked and the Claude proxy is the *only* working route -- stripping it
+turns a working upload into no network at all. Run this probe before choosing:
+
+```bash
+# A: direct, proxy stripped
+env -u http_proxy -u https_proxy -u HTTP_PROXY -u HTTPS_PROXY -u all_proxy -u ALL_PROXY \
+    -u CLAUDE_PROXY_URL -u CLAUDE_PROXY_PORT \
+  curl -sS -m 12 -o /dev/null -w "direct -> %{http_code}\n" https://huggingface.co/api/whoami-v2
+# B: through the Claude proxy, as-is
+curl -sS -m 12 -o /dev/null -w "proxy  -> %{http_code}\n" https://huggingface.co/api/whoami-v2
+```
+
+| A (direct) | B (proxy) | Meaning | Do this |
+|---|---|---|---|
+| 200/401 | 200/401 | both routes work | **strip the proxy** (see below) |
+| **000 / SSL reset** | 200/401 | **direct blocked; proxy is the only route** | **KEEP the proxy.** Skip the `env -u` wrapper *and* the `os.environ.pop()` preamble. Still set `HF_HUB_DISABLE_XET=1` |
+| 200/401 | 000 | proxy broken | strip the proxy |
+| 000 | 000 | no route to HF | check if only a read mirror answers (`https://hf-mirror.com/api/models`). **Mirrors are read-only -- you cannot upload through one.** Stop and tell the user |
+
+`401` counts as reachable: the request hit the API and only lacked auth.
+
+### Then measure throughput -- do not trust the tables over a real number
+
+```python
+import os, time
+os.environ["HF_HUB_DISABLE_XET"] = "1"
+from huggingface_hub import HfApi
+p = "/tmp/probe.bin"          # head -c 33554432 /dev/urandom > /tmp/probe.bin
+t = time.time(); HfApi().upload_file(path_or_fileobj=p, path_in_repo="_speed_test/probe.bin",
+                                     repo_id=REPO_ID); d = time.time() - t
+print(f"{os.path.getsize(p)/1e6/d:.2f} MB/s -> {TOTAL/(os.path.getsize(p)/d)/3600:.1f} h")
+```
+
+Measured on a proxy-only host (2026-07): **6.69 MB/s through the Claude proxy**, i.e. the
+1-4 KB/s throttle below did **not** occur there. Report the ETA to the user before starting a
+large batch. Delete the probe file afterwards if the repo is public.
 
 ### Backend choice: LFS+hf_transfer (recommended) vs xet
 
@@ -63,11 +99,15 @@ Claude Code injects `http_proxy=127.0.0.1:<port>` into all child processes. This
 
 Only use xet for: single small files (<5G) where speed matters and you can manually retry.
 
-### Proxy stripping
+### Proxy stripping — ONLY if Step 3's probe said direct egress works
+
+If the probe showed direct is blocked, **skip this whole subsection**: keep the inherited proxy,
+set `HF_HUB_DISABLE_XET=1`, and launch with a plain `nohup python ...`. Everything else in this
+skill (skip-existing, retry, subprocess timeout, verification) still applies unchanged.
 
 **Both layers are required** -- `env -u` for native HTTP clients, `os.environ.pop()` for Python-level clients:
 
-Launch wrapper (ALWAYS use this):
+Launch wrapper (use this only when direct egress works):
 ```bash
 nohup env -u http_proxy -u https_proxy -u HTTP_PROXY -u HTTPS_PROXY \
   -u all_proxy -u ALL_PROXY -u CLAUDE_PROXY_URL -u CLAUDE_PROXY_PORT \
@@ -259,6 +299,7 @@ Read these when you need deeper guidance on a specific step:
 
 | Symptom | Likely cause | Fix |
 |---------|-------------|-----|
+| **`SSL_connect: Connection reset by peer` / `ConnectionResetError(104)` after stripping the proxy** | **Direct egress to huggingface.co is blocked on this host; the Claude proxy was the only route and you removed it** | **Put the proxy back.** Run Step 3's A/B probe. If a read mirror (hf-mirror.com) answers but HF does not, uploads are impossible without the proxy -- mirrors are read-only |
 | Stuck at 0% (hashed 0/N) | Dir symlinks + `upload_large_folder` | Switch to `upload_folder` per-checkpoint |
 | **Stuck at 99%** | **Proxy leak into hf_xet Rust runtime** | **`env -u` at OS level -- `os.environ.pop()` alone is NOT enough** |
 | Stuck at 100% for 10+ min | xet finalization hang (CLOSE-WAIT connections) | **Switch to LFS backend** (`HF_HUB_DISABLE_XET=1 HF_HUB_ENABLE_HF_TRANSFER=1`). SIGALRM does NOT work (Rust blocks Python signals). subprocess.run(timeout) can OS-kill but ~50% of >10G files hang all 3 retries. LFS eliminates this entirely. |

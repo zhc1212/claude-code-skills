@@ -2,8 +2,10 @@
 # Eval runner for oral-paragraph-audit.
 #
 # Invokes the skill the real way: `claude -p "/oral-paragraph-audit ..."` in
-# headless mode — the installed zhc-skills plugin supplies the skill, exactly
-# as in an interactive session. No system-prompt injection.
+# headless mode — the personal skill at ~/.claude/skills/oral-paragraph-audit
+# is loaded exactly as in an interactive session. No system-prompt injection.
+# Every `claude -p` call takes `</dev/null`: headless claude reads stdin, and
+# inside a `while read` loop it would swallow the remaining lines.
 #
 # One command, auto mode:
 #   bash evals/run_tests.sh          # regenerates a test only if its saved
@@ -120,7 +122,7 @@ sys.exit(0 if d.get('prompt') and d.get('required_markers') else 1)"; then
         echo "  Generating via real skill invocation (claude -p, model=sonnet)..."
         local raw_file="$RESULTS_DIR/${test_name}.raw.jsonl"
         local exit_code=0
-        CLAUDE_WRAPPER_ASSUME_Y=Y timeout 300 claude -p --model sonnet --output-format json "$prompt" > "$raw_file" 2>/dev/null || exit_code=$?
+        CLAUDE_WRAPPER_ASSUME_Y=Y timeout 300 claude -p --model sonnet --output-format json "$prompt" > "$raw_file" 2>/dev/null </dev/null || exit_code=$?
         extract_claude_response < "$raw_file" > "$output_file" 2>/dev/null || true
         if [ $exit_code -ne 0 ] || [ ! -s "$output_file" ]; then
             echo -e "  ${RED}GENERATION ERROR (exit=$exit_code, output empty)${NC}"
@@ -160,7 +162,7 @@ Answer ONLY 'PASS' or 'FAIL' on the first line, then one sentence of evidence.
 Expected behavior: $behavior
 
 Skill output (truncated):
-${output:0:12000}" 2>/dev/null | extract_claude_response || echo "SKIP: judge failed")
+${output:0:12000}" 2>/dev/null </dev/null | extract_claude_response || echo "SKIP: judge failed")
             local first_line; first_line=$(echo "$judge_result" | head -1)
             if echo "$first_line" | grep -qi "PASS"; then
                 adv_pass=$((adv_pass + 1)); echo -e "  ${GREEN}~ advisory PASS${NC}: $behavior"

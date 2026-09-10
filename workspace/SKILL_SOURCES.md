@@ -15,3 +15,22 @@ This is the exposure manifest for the workspace that uses `zhc-skills` v1.0.10. 
 Clone each source under a project-local `.claude/skill-sources/` directory. Expose only directories containing `SKILL.md` as absolute symlinks under `.claude/skills/`; keep asset-only directories unlinked. Maintain a source manifest alongside those links and re-check it after every upstream update.
 
 Do not vendor these sources into `zhc-skills`: provenance, licenses, and update history remain upstream.
+
+## User-level synchronization (2026-09-10)
+
+The v1.0.11 update synchronizes 30 existing skills and their supporting files
+from the active user-level `~/.claude/skills/` installation. Generated evaluation
+outputs are excluded. The source clone lives at
+`~/.claude/skill-sources/zhc-skills/`; pulling that clone does not update the
+independent installed copies.
+
+The table above is the historical 2026-07-20 workspace inventory, not a complete
+inventory of the current user-level installation. One confirmed source override:
+
+| Active skill | Upstream | Source path | Repository treatment |
+|---|---|---|---|
+| `citation-verification` | [Galaxy-Dawn/claude-scholar](https://github.com/Galaxy-Dawn/claude-scholar) | `skills/citation-verification/` | The active `SKILL.md` matches this upstream clone byte for byte. Keep this third-party installation separate; the older adapted skill in this repository is retained. |
+
+`run-pipeline` is absent from the active user-level skills directory. Its
+repository copy is retained; absence from one installation does not retire it.
+Other third-party installations remain external to this repository.

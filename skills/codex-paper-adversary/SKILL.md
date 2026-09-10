@@ -122,7 +122,7 @@ hints about what might be weak. Blind independence is the entire point.
 
 ## Step 2: Codex Adversarial Review
 
-Call `mcp__codex__codex` with `config: {"model": "gpt-5.6-sol", "reasoning_effort": "max"}`.
+Call `mcp__codex__codex` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`.
 See `references/codex-prompt-template.md` for the full prompt.
 
 Key elements of the prompt:
@@ -281,7 +281,7 @@ when X is in a section Codex hasn't seen yet.
 
 ## Codex MCP
 
-- **First call**: `mcp__codex__codex` with `config: {"model": "gpt-5.6-sol", "reasoning_effort": "max"}`
+- **First call**: `mcp__codex__codex` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
 - **Follow-ups on same section**: `mcp__codex__codex-reply` with saved `threadId`
 - **New section or re-review**: fresh `mcp__codex__codex` call (independent)
 - On MCP error: tell user, offer Claude-only adversarial review (single-model,

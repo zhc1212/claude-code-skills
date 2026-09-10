@@ -85,7 +85,7 @@ logic rather than talking past each other.
 ## Phase 2: Blind Opening
 
 Send Codex the evidence packet and topic. Via `mcp__codex__codex` with
-`config: {"model": "gpt-5.6-sol", "reasoning_effort": "max"}`:
+`model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`:
 
 ```
 ## Independent Position Request: {topic}
@@ -330,7 +330,7 @@ Template: see [references/consensus-template.md](references/consensus-template.m
 
 ## Codex MCP
 
-- **First call**: `mcp__codex__codex` with `config: {"model": "gpt-5.6-sol", "reasoning_effort": "max"}`
+- **First call**: `mcp__codex__codex` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
 - **Follow-ups**: `mcp__codex__codex-reply` with saved `threadId` + `prompt`
 - Starting a fresh `mcp__codex__codex` mid-debate erases Codex's memory of
   prior rounds — always use the reply endpoint after the first call

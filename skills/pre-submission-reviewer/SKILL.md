@@ -50,6 +50,50 @@ should block submission until addressed.
 
 ## Core procedure
 
+### Step 0: paradigm and venue fit
+
+Before the dimensional review, settle two things.
+
+**Paradigm**, judged by research method, because what counts as a
+severe problem differs by paradigm:
+
+- **STEM / technical** (CS, engineering, materials, chemistry): weight
+  the Introduction chain, contribution-to-section mapping, baseline
+  coverage, ablation-based attribution, figure quality. Benchmark
+  papers additionally get coverage, reproducibility, and
+  contamination checks; chemistry and materials get characterization
+  completeness, purity, controls, replicates.
+- **Humanities** (literature, history, philosophy, discourse
+  analysis): weight whether the thesis is explicit and defensible,
+  core concepts pinned down and stable across sections, the
+  literature genuinely engaged, and the material (texts, archives,
+  cases) able to carry the claims. Do **not** demand baselines or
+  ablations here; check instead whether sub-arguments build on each
+  other rather than sit in parallel, and whether conclusions outrun
+  the material.
+- **Empirical social science**: weight operationalized research
+  questions, sampling and data-source justification, statistics
+  matched to data types, conclusions bounded by the sample. For
+  theory papers, "experiments" reads as "proofs": check the proofs,
+  and never call the evidence thin merely because there is no results
+  table.
+- **Finance / economics**: weight identification credibility,
+  endogeneity handling, robustness checks (their absence is a
+  first-round flag), and economic versus merely statistical
+  significance.
+- **Law**: weight the accuracy of statutes, case numbers, and
+  holdings (an invented or wrong citation is rejection-level), the
+  clarity of the interpretive approach, and whether comparative
+  arguments state their scope.
+
+When the paradigm is unclear, ask the author before reviewing with
+the wrong ruler.
+
+**Venue fit**: if the stated target venue's scope visibly mismatches
+the paper's topic or contribution type, that is a real rejection
+risk, not a taste note. Flag it as a finding and suggest two or three
+better-fitting venues.
+
 ### Step 1: Dimension 1 Macro logic review
 
 See: references/logic-and-structure.md for the Logic First rule,
@@ -66,8 +110,35 @@ Check:
 - Related Work covers the necessary prior art.
 - Running example is consistent across Introduction, Methodology,
   Experiments.
+- The headline result's attribution is isolated: an ablation
+  separates the core mechanism from peripheral factors (a routing
+  step, post-processing, a stronger base model, favorable samples).
+  No such ablation: flag "attribution unverified" as MAJOR.
+- Claims match their evidence: "solves" is stronger than most papers
+  earn (usually "improves"); "state-of-the-art" needs the benchmark
+  and conditions; "we are the first" gets checked or flagged.
 
 Every break in the chain is CRITICAL.
+
+**Retrieval-grounded checks** (when the environment has a
+literature-search capability: a scholarly tool, web search over
+scholarly indexes, or shell access to public APIs):
+
+1. **Novelty verification**: extract two or three keyword groups from
+   the paper's core method and problem setting, retrieve, and identify
+   the three to five closest published works. If Related Work already
+   covers them, the paper's positioning stands; a highly relevant
+   uncovered work is a MAJOR finding ("missed X, Author et al.,
+   Year"). Compare on difference axes; a similar title alone proves
+   nothing.
+2. **Citation completeness**: retrieve the field's recent
+   representative works and its canonical ones, and compare against
+   the reference list; a missing canonical baseline, founding paper,
+   or recent survey is MAJOR.
+
+Retrieval results support metadata-level judgments only; never quote
+numbers or method details from search snippets. Without any retrieval
+capability, skip these two checks and say so in the summary.
 
 ### Step 2: Dimension 2 Writing details review
 
@@ -178,6 +249,13 @@ Emit the review in the Output format below.
 - **MINOR**: polish. Example: two long sentences that could be
   split; default Matplotlib styling; single article error.
 
+Severity honesty cuts both ways. A review that lists a dozen MINOR
+items while missing the one rejection-level flaw sends the author to
+submission with false confidence; a review that inflates taste issues
+into CRITICAL destroys trust. The overall recommendation must match
+the findings: any unresolved CRITICAL forbids "ready to submit", and
+a near-ready verdict requires zero CRITICAL and at most two MAJOR.
+
 ## Integrity gate
 
 Each bullet is tagged [inspection] (LLM verifies from the paper
@@ -209,6 +287,10 @@ If any [inspection] check fails, mark the output as "needs user
 attention". For [attestation] bullets, the skill states the scope
 of its scan and the user confirms completeness.
 
+Run the gate silently. Do not print a per-gate pass or fail report;
+a failure surfaces as a concrete finding in the affected dimension,
+and the delivered review stays free of internal checking rituals.
+
 ## Output format
 
 ### Summary
@@ -236,9 +318,6 @@ of its scan and the user confirms completeness.
 
 ### Banned-vocabulary and em-dash scan
 <list with line references>
-
-### Integrity gate result
-- Gate 1 through 7: <pass or fail>
 
 ### Final score (1-10)
 <score>

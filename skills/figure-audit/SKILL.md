@@ -181,7 +181,7 @@ For 精益求精 quality, send figure descriptions to GPT via Codex MCP for
 independent cross-model review. GPT catches semantic inconsistencies and
 predicts print-scale readability from figsize + font descriptions alone.
 
-- **First call**: `mcp__codex__codex` with `config: {"reasoning_effort": "max"}`
+- **First call**: `mcp__codex__codex` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
 - **Follow-ups**: `mcp__codex__codex-reply` with saved `threadId`
 - On MCP error: tell user, proceed with Claude-only audit (single-model,
   loses cross-model blind-spot coverage)

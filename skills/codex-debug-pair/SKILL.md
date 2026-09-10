@@ -122,9 +122,9 @@ as neutral description.
 ## Phase 4: Codex Blind Hypotheses
 
 Send the evidence packet to Codex via `mcp__codex__codex` with
-`config: {"model": "gpt-5.6-sol", "reasoning_effort": "max"}`. The high reasoning effort is
-worth it here because hypothesis generation benefits from deeper
-exploration of the search space.
+`model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`. The high
+reasoning effort is worth it here because hypothesis generation benefits from
+deeper exploration of the search space.
 
 ```
 ## Independent Bug Investigation
@@ -351,7 +351,7 @@ when similar bugs recur -- the ledger is a searchable diagnostic record.
 
 ## Codex MCP
 
-- **First call**: `mcp__codex__codex` with `config: {"model": "gpt-5.6-sol", "reasoning_effort": "max"}`
+- **First call**: `mcp__codex__codex` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
 - **Follow-ups**: `mcp__codex__codex-reply` with saved `threadId` + `prompt`
 - Starting a fresh `mcp__codex__codex` mid-session erases Codex's memory
   of the evidence packet and prior hypotheses -- always use the reply

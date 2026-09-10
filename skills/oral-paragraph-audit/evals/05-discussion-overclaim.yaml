@@ -11,10 +11,10 @@ prompt: '/oral-paragraph-audit Audit this Discussion paragraph from an LLM compr
   '
 expected_behavior:
 - Identifies section as Discussion
-- Flags 'conclusively demonstrate' and/or 'proves' as overclaim verbs (Check 6 Category C)
+- Flags 'conclusively demonstrate' and/or 'proves' as overclaim verbs (Check 6, deai-latex vocabulary)
 - Flags 'primary cause' as overclaim — causal language requires stronger evidence (Check 3 or
   Check 6)
-- Flags 'Interestingly' as stakes-raiser (Check 6 Category B)
+- Flags 'Interestingly' as stakes-raiser (Check 6, deai-latex boosters and stakes-raisers)
 - Flags 'It is important to note that' as throat-clearing (Check 2)
 - Flags 'profound implications for the field' as promotional or empty (Check 2 or Check 6)
 - Flags unmarked speculation — 'fundamentally transforms the loss landscape' needs evidence
@@ -24,5 +24,5 @@ required_markers:
 - 'Claims\W{0,3}:'
 - 'De-AI\W{0,3}:'
 - 'Finding summary\W{0,3}:'
-- \b(MAJOR|BLOCKING)\b
+- 'Finding summary\W{0,3}:\s*\**([1-9]\d* Blocking|\d+ Blocking\s*/\s*[1-9]\d* Major)'
 forbidden_markers: []

@@ -16,8 +16,8 @@ expected_behavior:
 - Flags S1 as mechanical signpost or recap of previous section (Check 1 Step A or Check 2)
 - Flags 'Furthermore' and/or 'Additionally' as gap-masking connectors (Check 4)
 - Flags 'remarkable' or 'crucial' or 'underscore' as booster/filler/watchlist word (Check 6)
-- Flags 'utilising' as Latinate or 'demonstrates' as Latinate (Check 6 Category C)
-- Flags 'Taken together' as banned opener (Check 6 Category D)
+- Flags 'utilising' or 'demonstrates' as Latinate over Anglo-Saxon (Check 6, deai-latex vocabulary)
+- Flags 'Taken together' as a watched sentence opener (Check 6, deai-latex additional watchlist)
 - Flags 'significantly better than all competing methods' as unscoped or missing table reference
   (Check 3)
 - Does NOT flag 'we' or 'our' as a register violation
@@ -29,5 +29,5 @@ required_markers:
 - 'Transitions\W{0,3}:'
 - 'De-AI\W{0,3}:'
 - 'Finding summary\W{0,3}:'
-- \bMAJOR\b
+- 'Finding summary\W{0,3}:\s*\**\d+ Blocking\s*/\s*[1-9]\d* Major'
 forbidden_markers: []

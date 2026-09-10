@@ -1,4 +1,12 @@
-# Worked Introduction outlines
+# Worked Introduction outlines (internal planning only)
+
+> **IMPORTANT**: the numbered outlines below are **internal planning
+> structures** built silently before drafting. They are NOT the format of
+> the output. The delivered product is six paragraphs of flowing prose,
+> with no labels, no "Paragraph 1: Background" headings, and no bulleted
+> lists of limitations or challenges. Use these examples to understand what
+> a strong logical chain looks like, then realise it as prose. (They double
+> as the target format for the explicit outline mode.)
 
 ## Table of contents
 
@@ -10,15 +18,14 @@
 
 ## 1. How to read these examples
 
-Each example below reverse-engineers a published Introduction into
-the six-paragraph outline this skill produces. The outlines are
-faithful to the published papers, with some writing points
-paraphrased. Sources are
-`handbook/06_Case_Studies/6.1`, `6.2`, and
-`6.3`.
+Each example below reverse-engineers a published Introduction into the
+six-paragraph plan that should sit in your head before drafting. The plans
+are faithful to the published papers, with some writing points paraphrased.
+Sources are `handbook/06_Case_Studies/6.1`, `6.2`, and `6.3`.
 
-The purpose is to show the outline at the level of detail this skill
-should produce when given similar inputs.
+The purpose is to show the level of structural clarity you should have
+internally before writing prose. The published Introductions themselves
+read as flowing prose, not as the bulleted plans below.
 
 ## 2. Example A: Alpha-SQL (ICML 2025), Technique
 

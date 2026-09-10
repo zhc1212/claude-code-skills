@@ -123,12 +123,12 @@ For each optimization target, generate a concrete diff:
 
 ### Step 4: Cross-Model Review of Patches
 
-Send each patch to GPT-5.6-sol max for adversarial review:
+Send each patch to GPT-6-Astra xhigh for adversarial review:
 
 ```
 mcp__codex__codex:
-  model: gpt-5.6-sol
-  config: {"model_reasoning_effort": "max"}
+  model: gpt-6-astra
+  config: {"model_reasoning_effort": "xhigh"}
   prompt: |
     You are reviewing a proposed optimization to an ARIS SKILL.md file.
     

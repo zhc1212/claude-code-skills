@@ -11,7 +11,7 @@ Check whether a proposed method/idea has already been done in the literature: **
 
 ## Constants
 
-- REVIEWER_MODEL = `gpt-5.6-sol` — Model used via Codex MCP. Must be an OpenAI model (e.g., `gpt-5.6-sol`, `o3`, `gpt-4o`)
+- REVIEWER_MODEL = `gpt-6-astra` — Model used via Codex MCP. Must be an OpenAI model (e.g., `gpt-6-astra`, `gpt-5.6-sol`, `gpt-5.5`)
 
 ## Instructions
 
@@ -41,9 +41,10 @@ For EACH core claim, search using ALL available sources:
 3. **Read abstracts**: For each potentially overlapping paper, WebFetch its abstract and related work section
 
 ### Phase C: Cross-Model Verification
-Call REVIEWER_MODEL via Codex MCP (`mcp__codex__codex`) with max reasoning:
+Call REVIEWER_MODEL via Codex MCP (`mcp__codex__codex`) at xhigh reasoning:
 ```
-config: {"model_reasoning_effort": "max"}
+model: REVIEWER_MODEL
+config: {"model_reasoning_effort": "xhigh"}
 ```
 Prompt should include:
 - The proposed method description

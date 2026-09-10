@@ -11,7 +11,7 @@ prompt: '/oral-paragraph-audit Audit this Introduction paragraph from an ML pape
   '
 expected_behavior:
 - Identifies section as Introduction
-- Flags 'remarkable success' as booster (Check 6 Category B)
+- Flags 'remarkable success' as booster / vague achievement claim (Check 6, deai-latex vocabulary)
 - Flags 'Moreover' and/or 'In addition' as gap-masking connectors (Check 4)
 - Flags S2-S3-S4 as parallel list structure rather than progressive deepening (Check 1 or Check
   4)
@@ -23,5 +23,5 @@ required_markers:
 - 'Transitions\W{0,3}:'
 - 'De-AI\W{0,3}:'
 - 'Finding summary\W{0,3}:'
-- \bMAJOR\b
+- 'Finding summary\W{0,3}:\s*\**\d+ Blocking\s*/\s*[1-9]\d* Major'
 forbidden_markers: []

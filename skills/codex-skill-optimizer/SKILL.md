@@ -111,7 +111,7 @@ Build a neutral evidence packet containing:
 
 Exclude: Claude's position, Claude's specific claims, user reactions.
 
-Send via `mcp__codex__codex` with `config: {"model": "gpt-5.6-sol", "reasoning_effort": "max"}`:
+Send via `mcp__codex__codex` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`:
 
 ```
 ## Independent Skill Review: {skill name}
@@ -249,7 +249,7 @@ boundaries referencing sibling skills.
 without reasoning. Progressive structure (high at boundaries, light in
 middle). Evidence-grounded claims with confidence + falsifiers.
 
-**MCP**: `config: {"model": "gpt-5.6-sol", "reasoning_effort": "max"}`. Save threadId. Handle
+**MCP**: `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`. Save threadId. Handle
 initial connection failure. Reply endpoint for follow-ups.
 
 **Organization**: SKILL.md under 500 lines. Reference files for domain
@@ -257,7 +257,7 @@ detail, categories, templates. Lean body, rich references.
 
 ## Codex MCP
 
-- **First call**: `mcp__codex__codex` with `config: {"model": "gpt-5.6-sol", "reasoning_effort": "max"}`
+- **First call**: `mcp__codex__codex` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
 - **Follow-ups**: `mcp__codex__codex-reply` with saved `threadId`
 - On MCP error: tell user, offer Claude-only audit (still valuable, just
   not cross-model validated)

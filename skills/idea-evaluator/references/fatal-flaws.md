@@ -7,6 +7,7 @@
 3. Detection rules
 4. Defense strategies
 5. Severity escalation logic
+6. The data-refuted mechanism: the highest-risk case
 
 ## 1. What counts as fatal
 
@@ -190,3 +191,27 @@ Verdict implications:
   Defend all flaws before starting experiments.
 - **At most one MAJOR flaw and any MINOR flaws**: compatible with
   Strong Accept, subject to other evaluation steps.
+
+## 6. The data-refuted mechanism: the highest-risk case
+
+If the data the user reports, or the attached results, **already show the
+core mechanism matched or beaten by a baseline, an ablation, or a simple
+control** (the isolated core mechanism scoring 0.30 against a fixed
+baseline's 0.45, say), the central claim is close to falsified.
+
+Treat this as CRITICAL immediately and lock the verdict to Reject and
+Pivot. It must not be downgraded to an ordinary problem. Additionally:
+
+- the refuted metric must not headline the story;
+- write no defense for it;
+- invent no optimistic threshold that would let it "pass";
+- and above all, never describe it as "a few more hours or days of
+  experiments away from holding". A core mechanism that was built and then
+  lost to the baseline is a **refuted premise** (the idea must change), not
+  a gap that more effort fills.
+
+Keep the distinction sharp: this rule fires when **data have already beaten
+the mechanism**, not when the mechanism is merely untested. An untested
+idea with a solid mechanism takes the other path (a mechanism-based high
+score plus a named validation experiment; the scoring reference covers it).
+Do not use this rule to kill promising untested work.

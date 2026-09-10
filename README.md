@@ -4,7 +4,7 @@ Dr. Zhang's own research workflow skills for Claude Code — originals only. Thi
 
 ## What This Plugin Does
 
-60 original skills (v1.0.10, provenance-audited 2026-07-19):
+60 bundled skills (v1.0.11; original provenance audit 2026-07-19):
 
 - **Cross-model debate** — structured Claude+Codex deliberation (codex-debate, codex-debug-pair, codex-experiment-critic, codex-paper-adversary, codex-skill-optimizer)
 - **Experiment management** — GPU job orchestration on A800 (run-experiment, run-gpu-experiment, run-pipeline, monitor-experiment, collect-results, analyze-results, experiment-bridge, experiment-plot-advisor, upload-hf)
@@ -23,6 +23,15 @@ This repository also tracks the portable parts of the workspace that uses these 
 - [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md) — the 66 third-party skills currently exposed in the workspace, recorded as upstream repositories and symlink targets. Their source is never vendored here.
 
 Copy and adapt these files into a project-level `.claude/` setup; do not treat the example infrastructure names as live configuration.
+
+## User-Level Sync — v1.0.11
+
+Synchronized 30 existing skills and supporting references/evaluation fixtures
+from the active user-level installation on 2026-09-10, including Codex model
+configuration and writing/review guidance. Generated evaluation outputs are not
+included. The active third-party `citation-verification` override and the
+retained, locally absent `run-pipeline` are documented in
+[`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md).
 
 ## Installation
 

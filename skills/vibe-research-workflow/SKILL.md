@@ -52,10 +52,16 @@ single invocable procedure.
 
 ## When NOT to use this skill
 
-- The user wants AI to generate the paper directly. Reject
-  politely; the integrity rules forbid it. Redirect to
-  `intro-drafter`, `tech-paper-template`, or
-  `pre-submission-reviewer` depending on intent.
+- The user wants paper prose drafted. That is legitimate under this
+  plugin's evidence discipline and belongs to the drafting skills:
+  route to `paper-writer` (any section) or `intro-drafter`
+  (Introductions), whose rules forbid fabricated substance (every
+  factual claim traces to the user's materials, verified retrieval,
+  or field common knowledge). Remind the user that venue and school
+  AI-disclosure policies still apply, and that they remain
+  responsible for verifying every drafted passage against their
+  actual research. What stays forbidden is fabrication, not
+  drafting.
 - The user wants a code implementation done. This skill guides
   the process; it does not replace the implementation itself.
 - The user wants to evaluate research direction. Use
@@ -79,7 +85,10 @@ State the six rules succinctly at the start of the session:
    expression polish.
 2. Research ideas, problems, designs, technical paths,
    experimental plans, core conclusions, and novelty must be the
-   user's own and fully understood.
+   user's own and fully understood. Drafting assistance is
+   legitimate within that boundary: the substance belongs to the
+   user; the linguistic realization may be AI-assisted; the
+   verification duty (rule 3) is unchanged.
 3. Every AI-generated or AI-assisted passage is verified by the
    user against the actual research process, experimental
    results, and facts.

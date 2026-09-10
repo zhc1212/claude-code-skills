@@ -5,14 +5,14 @@ argument-hint: [topic-or-scope]
 allowed-tools: Bash(*), Read, Grep, Glob, Write, Edit, Agent, mcp__codex__codex, mcp__codex__codex-reply
 ---
 
-# Research Review via Codex MCP (max reasoning)
+# Research Review via Codex MCP (xhigh reasoning)
 
-Get a multi-round critical review of research work from an external LLM with maximum reasoning depth.
+Get a multi-round critical review of research work from an external LLM at high reasoning effort.
 
 ## Constants
 
-- REVIEWER_MODEL = `gpt-5.6-sol` — Model used via Codex MCP. Must be an OpenAI model (e.g., `gpt-5.6-sol`, `o3`, `gpt-4o`)
-- **REVIEWER_BACKEND = `codex`** — Default: Codex MCP (max). Override with `— reviewer: oracle-pro` for GPT-5.6-sol Pro via Oracle MCP. See `shared-references/reviewer-routing.md`.
+- REVIEWER_MODEL = `gpt-6-astra` — Model used via Codex MCP. Must be an OpenAI model (e.g., `gpt-6-astra`, `gpt-5.6-sol`, `gpt-5.5`)
+- **REVIEWER_BACKEND = `codex`** — Default: Codex MCP (xhigh). Override with `— reviewer: oracle-pro` for GPT-5.6-sol Pro via Oracle MCP. See `shared-references/reviewer-routing.md`.
 
 ## Context: $ARGUMENTS
 
@@ -33,11 +33,12 @@ Before calling the external reviewer, compile a comprehensive briefing:
 3. Identify: core claims, methodology, key results, known weaknesses
 
 ### Step 2: Initial Review (Round 1)
-Send a detailed prompt with max reasoning:
+Send a detailed prompt at xhigh reasoning:
 
 ```
 mcp__codex__codex:
-  config: {"model_reasoning_effort": "max"}
+  model: REVIEWER_MODEL
+  config: {"model_reasoning_effort": "xhigh"}
   prompt: |
     [Full research context + specific questions]
     Please act as a senior ML reviewer (NeurIPS/ICML level). Identify:
@@ -81,7 +82,7 @@ Update project memory/notes with key review conclusions.
 
 ## Key Rules
 
-- ALWAYS use `config: {"model_reasoning_effort": "max"}` for reviews
+- ALWAYS use `config: {"model_reasoning_effort": "xhigh"}` for reviews
 - Send comprehensive context in Round 1 — the external model cannot read your files
 - Be honest about weaknesses — hiding them leads to worse feedback
 - Push back on criticisms you disagree with, but accept valid ones

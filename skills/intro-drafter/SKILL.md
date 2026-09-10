@@ -1,250 +1,211 @@
 ---
 name: intro-drafter
 description: >-
-  Drafts a 6-paragraph Introduction outline for a technical paper from a
-  structured Flowchart: background and running example, existing
-  limitations, problem essence and goal, key challenges, solution
-  overview, contributions. Positions the paper as Technique or New
-  Problem/Setting and aligns contributions with challenges. Use when
-  the user asks to 'draft the Introduction', 'outline the
-  Introduction', 'intro logic needs clarifying', 'help structure the
-  paper story', or before writing any Introduction prose.
-license: CC-BY-4.0
+  Drafts the Introduction prose for a technical paper, guided internally by
+  a six-paragraph flowchart: background and running example, existing
+  limitations, problem essence and goal, key challenges, solution overview,
+  contributions. Positions the paper as Technique or New Problem/Setting,
+  aligns contributions with challenges, and weaves verified citations.
+  Outputs flowing prose by default, or an outline on request. Use when the
+  user asks to draft, outline, or restructure an Introduction.
+license: CC-BY-NC-SA-4.0
 ---
 
 # Introduction Drafter
 
 ## Overview
 
-The Introduction is the compressed version of the entire paper. In one
-and a half to two pages it must state the research object, why the
-problem matters, why existing work falls short, what the paper
-contributes, and how the contribution maps to section numbers.
-Reviewers decide whether to keep reading by the time they finish the
-Introduction, so the logical throughline has to be airtight.
+The Introduction is the compressed version of the entire paper. In one and a
+half to two pages it must state the research object, why the problem
+matters, why existing work falls short, what the paper contributes, and how
+the contributions map to sections. Reviewers decide whether to keep reading
+by the end of the Introduction, so the logical throughline has to be
+airtight.
 
-This skill takes a small set of inputs (research area, limitations,
-hard constraints, key idea, challenges, solution overview) and
-produces a six-paragraph outline with an explicit purpose and writing
-points for every paragraph, plus a positioning as Technique Paper or
-New Problem/Setting Paper. It enforces the rule that contributions
-align one-to-one with challenges, and that every claim has a section
-to deliver it.
+This skill is a **prose generator**, not an outline generator. It takes a
+small set of inputs (research area, limitations, key idea, challenges,
+solution overview, optional references) and produces **six paragraphs of
+real Introduction prose**. The six-paragraph flowchart works underneath as
+an internal scaffold and never appears in the output.
+
+The delivered text must read as if a researcher wrote it: flowing
+paragraphs, no inline tags, no "Paragraph 1: Background" headings, no
+severity tables, no consistency reports. Just the Introduction.
+
+An explicit outline is still available: see "Outline mode" below.
+
+## Evidence rules (inherited)
+
+This skill follows the shared evidence discipline: every factual claim
+traces to the user's materials, this session's verified retrieval, or field
+common knowledge; model memory is never a source; delivered prose carries
+zero bracketed placeholder tags; details the user did not provide (specific
+scenarios, mechanisms, magnitudes, procedures, identifiers) are omitted, not
+invented.
+
+See: references/evidence-discipline.md and references/prose-delivery.md
+(shared with `paper-writer`).
 
 ## When to use this skill
 
-- Before writing any Introduction prose.
-- The user has finished planning but the Intro story feels fragmented.
-- The user has a partial Intro and wants to restructure.
-- The user asks to 'draft the Introduction', 'outline the
-  Introduction', 'intro logic needs clarifying', or 'help structure
-  the paper story'.
-- The paper's contributions are clear, but the storyline connecting
-  them is not.
-- `idea-evaluator` has returned Strong Accept and the next step is
-  drafting.
+- "Write the Introduction." "Draft the Intro from this idea."
+- The user has a paragraph of research thinking and wants finished prose,
+  not bullets.
+- The user has Goal and Key Idea settled but no Introduction text yet.
+- The user pastes references and asks for them woven into the Introduction.
 
 ## When NOT to use this skill
 
-- The paper's core idea is not yet stable. Use `idea-evaluator` first.
-- The paper is a benchmark paper. Use `benchmark-paper-template` (separate plugin)
-  instead; the flowchart differs.
-- The user wants to polish Introduction prose that is already
-  structured. Use `pre-submission-reviewer` instead.
-- The user wants to evaluate whether the Introduction is ready for
-  submission. Use `pre-submission-reviewer`.
+- Benchmark papers: `benchmark-paper-template` (the flowchart differs).
+- Any non-Introduction section: `paper-writer`.
+- Prose exists and needs polishing: `paper-polish`.
+- The user wants a submission-readiness verdict: `pre-submission-reviewer`.
 
-## Core procedure
+## Pre-check: STEM or not
 
-### Step 1: Paper-type positioning
+The six-paragraph model (background, limitations, goal, challenges,
+solution, contributions) is built for STEM and technical papers. If the
+research is non-STEM by method (humanities, social science, economics,
+law), do not force it through this scaffold; hand the task to `paper-writer`,
+whose CER planning covers those paradigms, while all evidence rules still
+apply. The test is the research method: experiments, benchmarks, models, or
+algorithms come here; everything else routes to `paper-writer`.
 
-See: references/paper-types.md for the Technique versus New
-Problem/Setting distinction, positioning criteria, and worked
-examples from Alpha-SQL, AFlow, and LEAD.
+## Core procedure (STEM)
 
-Decide which type the paper is:
+Internal thinking first, prose second. None of the intermediate thinking is
+printed.
 
-- **Technique Paper**: main contribution is a new method or mechanism
-  solving an existing problem. Narrative axis is Key Idea / Mechanism.
-  Goal gets one sentence in passing.
-- **New Problem/Setting Paper**: main contribution is a new problem
-  formulation. Narrative axis is Goal / Problem Formulation. Key
-  Idea supports "why this definition is reasonable".
+### Step 1: paper-type positioning (internal)
 
-The positioning decides how much weight Paragraph 3 carries: in
-Technique papers it is a short bridge; in New Problem papers it is a
-load-bearing paragraph.
+See: references/paper-types.md for the Technique versus New Problem/Setting
+distinction and worked examples from Alpha-SQL, AFlow, and LEAD.
 
-### Step 2: Paragraph-by-paragraph outline
+- **Technique paper**: the contribution is a new method for an existing
+  problem; the narrative axis is the key idea; Paragraph 3 is a short
+  bridge.
+- **New Problem/Setting paper**: the contribution is the problem
+  formulation itself; Paragraph 3 is load-bearing.
 
-See: references/flowchart.md for each paragraph's canonical purpose,
-writing points, and common failures.
+### Step 2: plan the six paragraphs (internal)
 
-For each of the six paragraphs, return a mini-section containing:
+See: references/flowchart.md for each paragraph's purpose, writing points,
+and common failures.
 
-- **Purpose**: one sentence.
-- **Writing points**: three to five bullets derived from the user's
-  inputs, each actionable.
-- **Gaps**: what the user's inputs do not yet cover for this
-  paragraph. Tag each with severity (CRITICAL, MAJOR, MINOR).
+For each paragraph, settle: its purpose; two to four concrete writing
+points drawn from the user's inputs; and its gaps (what the inputs do not
+yet cover). Gaps are reported to the user after the prose, never inside it.
 
-Paragraphs:
+1. Background and motivation; running example; why the problem matters.
+2. Limitations of existing work (at most three).
+3. Problem essence and goal; hard constraints explicit.
+4. Key challenges (at most three).
+5. Solution overview; one module per challenge.
+6. Contributions (three or four, each mapping to a section).
 
-1. Background and Motivation. Running example. Why the problem
-   matters in the real world.
-2. Limitations of existing work. At most three, each framed as
-   "prior work X does not handle Y".
-3. Problem essence and Our Goal. Hard constraints explicit. In
-   Technique papers this is a bridge; in New Problem/Setting papers
-   this is the contribution itself.
-4. Key challenges. At most three, each explaining why naive
-   extension of prior work fails.
-5. Solution overview. Each module addresses a challenge. Expect a
-   one-to-one mapping between Paragraph 4 challenges and Paragraph 5
-   modules.
-6. Contributions. Three or four numbered bullets. Each maps to a
-   section reference.
+### Step 3: the running example (internal)
 
-### Step 3: Running example design
+See: references/running-example.md for the design principles and patterns.
 
-See: references/running-example.md for the design principles (real,
-specific, simple-yet-complete, recurring throughout), two design
-patterns (concrete-failure versus good-versus-bad), and worked
-examples.
+If the user has not provided a running example, **do not fabricate one**.
+The reference file's first principle is that the example is real, drawn
+from real data or a real deployment. Write the background paragraph from
+the user's own abstract problem description, and in the closing note ask:
+"a concrete running example would make Paragraph 1 stronger; can you share
+a real case from your experiments or deployment?"
 
-If the user's inputs do not yet include a running example, propose
-two or three candidate examples and ask the user to pick. Record the
-chosen example in Paragraph 1 and make sure Paragraph 5 references
-it ("the Methodology section applies DynaGraph's hotspot detector to
-the running example from Section 1").
+### Step 4: alignment checks (internal, before writing)
 
-### Step 4: Contribution alignment check
+See: references/contribution-patterns.md for strong versus weak
+contribution patterns.
 
-See: references/contribution-patterns.md for strong-versus-weak
-contribution patterns, anti-patterns, and the canonical mapping to
-section numbers.
+Verify silently: the running example from Paragraph 1 reappears in
+Paragraph 5 or 6; every challenge answers a limitation or a hard
+constraint; the goal aligns with contribution 1; challenges map one-to-one
+to modules; contributions number three or four, each tied to a section,
+none of them vague ("extensive experiments" is not a contribution).
 
-For each contribution bullet, verify:
+A failed check is fixed in the plan before any prose is written. Never
+write around a broken chain.
 
-- Maps to a challenge in Paragraph 4, a module in Paragraph 5, or a
-  specific experiment result.
-- Specific, not vague ("comprehensive evaluation" is not a
-  contribution).
-- Cites the section number that delivers it.
+### Step 5: write the prose
 
-### Step 5: Flowchart consistency check
+Six flowing paragraphs, under these disciplines:
 
-Verify the six paragraphs form a single logical throughline:
+- **No paragraph labels in the output.** Natural transitions carry the
+  structure ("Despite this progress, ...", "In this work, we ...", "We
+  summarise our contributions as follows.").
+- **Each paragraph is one block**, roughly 100-250 words, weighted by the
+  paper type (see references/paper-types.md).
+- **Citations**: numeric citation-sequence, `[1]`, `[2]`, ... by first
+  appearance. A full six-paragraph Introduction typically weaves **15-25
+  references**: 3-5 in the background, 5-8 in the limitations, 2-4 in each
+  of paragraphs three to five, 0-2 in the contributions. A thin
+  bibliography reads as an opinion piece. Search before writing: three to
+  five retrieval rounds under different keywords build the pool, and the
+  argument is organized around retrieved, verified works. A claim whose
+  source cannot be found is rewritten to drop the need, never tagged. The
+  prose is followed by a **References** list matching the marks
+  bidirectionally. At three or more citations, run the independent
+  citation-verification ladder defined in `paper-writer` (a fresh-context
+  check of every entry when the environment allows it, with honest
+  degradation and disclosure otherwise).
+- **Numbers and claims**: no invented percentages, speedups, or benchmark
+  numbers. A specific gain appears only if the user reported it; otherwise
+  "improves over prior baselines", with no annotation attached.
+- **Tense**: past for prior work and observations; present or future for
+  the paper's own unvalidated claims ("this paper proposes"). Without
+  reported results, never "we achieved" or "we demonstrated".
+- **Tone pass**: before finalising, strip AI-tone signals and unsupported
+  superlatives, and match verbs to evidence strength (see the "Tone
+  references" section below for where the shared wordlists live).
 
-- Paragraph 1's running example is referenced in Paragraph 5 or a
-  case study forecast.
-- Paragraph 2's limitations motivate Paragraph 4's challenges.
-- Paragraph 3's goal aligns with Paragraph 6's contribution 1.
-- Paragraph 4's challenges map one-to-one with Paragraph 5's modules.
-- Paragraph 5's modules appear in Paragraph 6's contribution 2 or 3.
+### Step 6: a short closing note (optional, three lines at most)
 
-Any break in the chain is a CRITICAL gap.
+After the prose (and References), at most a short plain-language note:
+gaps the user should fill, a paragraph written tentatively for lack of
+input, or the running-example request from Step 3. No tables, no lists, no
+severity labels. Nothing useful to say means no note at all.
 
-### Step 6: Integrity gate
+## What the user receives
 
-Before emitting the outline, run the checks in the Integrity gate
-section below.
+- Six paragraphs of Introduction prose separated by blank lines, citations
+  as `[1]`, `[2]`, ...
+- A References list right after the prose, when citations are present.
+- Optionally, one one-to-three-line plain note.
 
-### Step 7: Output the outline
+Nothing else. The full prohibition list (headings, gate results, severity
+summaries, placeholder tags, process preambles) lives in
+references/prose-delivery.md and is binding.
 
-Emit the outline in the Output format below. For `interactive` mode,
-do not emit; converse one paragraph at a time.
+## Outline mode (on explicit request)
 
-## Integrity gate
+When the user explicitly asks for an outline instead of prose ("just the
+outline", "give me the skeleton first"), return the classic structure
+instead: the type positioning (type, rationale, implication), then for each
+of the six paragraphs its purpose, writing points, and gaps with severity,
+then the five consistency checks (running-example loop,
+limitations-to-challenges, goal-to-contribution-1, challenge-to-module
+mapping, contribution-to-section mapping). The same internal planning,
+externalized once, on request.
 
-All seven bullets are **[inspection]** class: the LLM verifies each
-directly from its own output (counting, pattern-matching, or
-comparing sections). No user-side attestation required.
+## Tone references
 
-Before returning the outline:
+The shared style references live with their canonical copies in
+`paper-polish` (ai-tone-guardrails, academic-phrasebank,
+section-conventions) and apply to this skill's prose pass; consult them
+through that skill's references when finer wording support is needed.
 
-1. **[inspection]** Running example named in Paragraph 1 reappears
-   in Paragraph 5 or 6 (or the Case Study forecast).
-2. **[inspection]** Limitations (Paragraph 2) are at most three and
-   each is specific to a named prior work or a named capability.
-3. **[inspection]** Challenges (Paragraph 4) are at most three and
-   each explains why a naive extension of prior work fails.
-4. **[inspection]** Challenge-to-module mapping is one-to-one, not
-   one-to-many or many-to-one.
-5. **[inspection]** Contributions (Paragraph 6) are three or four
-   and each maps to a section number.
-6. **[inspection]** No contribution is vague language ("extensive
-   experiments", "thorough analysis" on their own).
-7. **[inspection]** Paper-type positioning from Step 1 is reflected
-   in Paragraph 3's weight.
+## Cross-skill handoffs
 
-If any check fails, mark the paragraph as "needs user attention"
-and do not claim the outline is complete.
+- Introduction done, rest of the paper wanted: `paper-writer`.
+- Prose in place but stiff: `paper-polish`.
+- Doubts that the idea itself can carry a top-venue paper: do not write
+  that into the Introduction; put one line in the closing note and point to
+  `idea-evaluator`.
 
-## Output format
+## Output language
 
-### 0. Type positioning
-- Type: <Technique Paper or New Problem/Setting Paper>
-- Rationale: <one sentence>
-- Implication: <how Paragraph 3 weight adjusts>
-
-### 1. Paragraph 1: Background and Motivation
-- Purpose: <...>
-- Running example: <...>
-- Writing points:
-  1. ...
-  2. ...
-- Gaps: <list with severity>
-
-### 2. Paragraph 2: Limitations (at most 3)
-- Purpose: <...>
-- Writing points:
-  - Limitation 1: ...
-  - Limitation 2: ...
-  - Limitation 3: ... (if applicable)
-- Gaps: <list with severity>
-
-### 3. Paragraph 3: Problem Essence and Our Goal
-- Purpose: <...>
-- Hard constraints: <...>
-- Goal sentence candidate: "<...>"
-- Writing points: <list>
-- Gaps: <list with severity>
-
-### 4. Paragraph 4: Key Challenges (at most 3)
-- Purpose: <...>
-- Writing points:
-  - Challenge 1: ... why naive fails
-  - Challenge 2: ...
-  - Challenge 3: ...
-- Gaps: <list with severity>
-
-### 5. Paragraph 5: Solution Overview
-- Purpose: <...>
-- Challenge to module mapping:
-  - Challenge 1 -> Module A
-  - Challenge 2 -> Module B
-  - Challenge 3 -> Module C
-- Writing points: <list>
-- Gaps: <list with severity>
-
-### 6. Paragraph 6: Contributions
-1. <contribution 1> (Section <X>)
-2. <contribution 2> (Section <Y>)
-3. <contribution 3> (Section <Z>)
-4. <contribution 4 if applicable> (Section <W>)
-- Gaps: <list with severity>
-
-### 7. Flowchart consistency
-- Running-example loop: <pass or fail>
-- Limitations-challenges link: <pass or fail>
-- Goal-contribution1 link: <pass or fail>
-- Challenge-module mapping: <pass or fail>
-- Contribution-section mapping: <pass or fail>
-
-### 8. Integrity gate result
-- Gate 1-7: <pass or fail>
-
-### 9. Severity summary
-- <n> CRITICAL, <m> MAJOR, <k> MINOR
-- Top three actions first: ...
+Follow an explicit language request first; a named Chinese journal or
+Chinese thesis means Chinese prose; otherwise default to English. Never
+infer the output language from the language of the user's message.

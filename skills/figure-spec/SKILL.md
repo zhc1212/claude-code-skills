@@ -168,8 +168,8 @@ For paper architecture figures, invoke cross-model review:
 
 ```
 mcp__codex__codex:
-  model: gpt-5.6-sol
-  config: {"model_reasoning_effort": "max"}
+  model: gpt-6-astra
+  config: {"model_reasoning_effort": "xhigh"}
   prompt: |
     Review this SVG figure for a technical paper (architecture / workflow diagram).
 

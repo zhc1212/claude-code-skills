@@ -4,11 +4,11 @@ description: >-
   Evaluates a preliminary research idea against a five-dimension framework
   (Higher, Faster, Stronger, Cheaper, Broader) plus idea-lifecycle and
   student-capability matching, paradigm-shift probing, and a fatal-flaws
-  audit. Returns a reviewer-style verdict. Use when the user has a draft
-  research idea and asks whether it is worth pursuing, asks to 'evaluate
-  this idea', 'score this idea', 'assess feasibility', 'novelty check',
-  'is this a good research direction', or before committing to a paper
-  scope.
+  audit. Returns a reviewer-style verdict; non-STEM ideas route to
+  substitute frameworks. Use when the user has a draft research idea and
+  asks whether it is worth pursuing, asks to 'evaluate this idea', 'score
+  this idea', 'assess feasibility', 'novelty check', 'is this a good
+  research direction', or before committing to a paper scope.
 license: CC-BY-4.0
 ---
 
@@ -63,6 +63,20 @@ story compelling in one sentence? If you cannot write that sentence,
 the idea itself is probably not yet clear enough for evaluation; ask
 the user to restate.
 
+While restating, classify the research paradigm **by method, not by
+department name**: experiments, benchmarks, ablations, or model
+architectures mean STEM (continue with the five dimensions and fatal
+flaws below); text analysis, archives, or conceptual argument mean
+humanities; surveys, interviews, statistics, or fieldwork mean
+empirical social science; regressions, IV, DID, RDD, or panel data
+mean finance or economics; statutes, cases, or doctrine mean law.
+
+See: references/domain-evaluation-frameworks.md for the substitute
+five-dimension frameworks and fatal-flaw substitutions used by the
+non-STEM paradigms. When the paradigm is unclear, ask one question:
+"is the core method experiments, surveys, text analysis, or
+theoretical derivation?"
+
 ### Step 2: Fatal-flaws audit (early gate)
 
 See: references/fatal-flaws.md for the ten canonical fatal flaws,
@@ -72,13 +86,36 @@ Run the fatal-flaws audit **before** the scoring steps rather than
 after them. Identify at most two fatal flaws. For each, state the
 flaw, cite the detection rule, and recommend a concrete defense.
 
+**Ground the novelty flaw (F1) in real retrieval whenever the
+environment has a literature-search capability** (a scholarly search
+tool, web search over scholarly indexes, or shell access to public
+APIs). Extract two or three keyword groups from the idea (core method
+plus domain; mechanism plus task; technique plus benchmark), search,
+and name the three to five closest published works with title, authors,
+and year. For each, state which axis actually differs: the object acted
+on, the mechanism, the input granularity, or the problem setting. A
+similar title alone never establishes duplication; duplication requires
+failing to find even one differing axis. Retrieval results support
+metadata-level judgments only (who did what, where); never quote
+numbers or method details from search snippets. And "not found" does
+not prove novelty: report it as "no directly overlapping work retrieved
+under these keywords". With no retrieval capability, label the novelty
+judgment "unverified; literature check required".
+
+**A data-refuted core mechanism is an automatic CRITICAL.** If the
+user's own reported data or attachments already show the core mechanism
+matched or beaten by a baseline or simple control, lock the verdict to
+Reject and Pivot; write no defense and invent no optimistic threshold.
+See: references/fatal-flaws.md, the data-refuted section, for the exact
+boundary between "refuted by data" and "merely untested".
+
 **Short-circuit rule.** If any fatal flaw is tagged CRITICAL in the
 severity taxonomy (single-handedly causes rejection, unfixable
 within the lifecycle), stop here and emit the verdict directly:
 
 - Verdict: Reject and Pivot.
 - Output sections 1 (First impression), 2 (Fatal flaws with the
-  CRITICAL flaw), and 8 (Verdict with the flaw-driven rationale)
+  CRITICAL flaw), and 7 (Verdict with the flaw-driven rationale)
   only.
 - Do **not** run the five-dimension scoring, paradigm-shift probe,
   feasibility check, or integrity gate. Those would be decoration
@@ -115,6 +152,23 @@ Score the idea on each of:
 Score each 1-10 with explicit evidence from the user's stated
 contribution. Identify the two or three dimensions where the idea
 has the highest ceiling and recommend emphasising those in the paper.
+
+Scoring discipline: start every dimension at 5 and justify movement.
+Two kinds of grounds move a score up, and both count: measured results
+the user reported (quote them), or a mechanism argument that holds up
+(label the score "mechanism-based, not yet confirmed by data"). A
+solid, untested mechanism **can** reach 8 or 9 with that label plus a
+named validation experiment; do not systematically cap untested ideas.
+A dimension with neither data nor mechanism stays at 5 with "no
+grounds given". Watch attribution: when an impressive gain plausibly
+comes from a peripheral factor (routing, post-processing, a stronger
+base model, favorable samples), cap that dimension until an ablation
+isolates the core mechanism. The scoring reference's final two
+sections cover both rules in detail.
+
+For non-STEM paradigms, score the substitute dimensions from
+references/domain-evaluation-frameworks.md instead, under the same
+discipline.
 
 ### Step 5: Paradigm-shift probe
 
@@ -170,6 +224,10 @@ Issue one of three verdicts:
   prior benchmark or method, unfixable capability mismatch, or more
   than one fatal flaw.
 
+When the high scores are mechanism-based rather than data-based,
+qualify the verdict as "worth pursuing, pending the validation
+experiment", and name that experiment in the top-three actions.
+
 Emit the evaluation in the Output format below.
 
 ## Integrity gate
@@ -204,6 +262,11 @@ the corresponding output section as "needs user attention". For
 [attestation] bullets, the skill states the check was run and the
 user confirms the result.
 
+Run the gate silently. Do not print a per-gate pass or fail report;
+a failure surfaces as a concrete finding inside the affected output
+section, and the delivered evaluation stays free of internal
+checking rituals.
+
 ## Output format
 
 ### 1. First impression
@@ -215,8 +278,8 @@ user confirms the result.
 |---|---|---|---|
 | 1 | ... | CRITICAL or MAJOR | ... |
 
-*If any CRITICAL flaw is present, skip sections 3-7 and go to
-section 8 with verdict Reject and Pivot.*
+*If any CRITICAL flaw is present, skip sections 3-6 and go to
+section 7 with verdict Reject and Pivot.*
 
 ### 3. Lifecycle and capability match
 | Aspect | User's input | Assessment |
@@ -253,11 +316,10 @@ Disruptive potential: <none, possible, strong>.
 | Engineering | ... | ... |
 | Timeline | ... | ... |
 
-### 7. Integrity gate result
-- Gate 1 through 7: <pass or fail>
-
-### 8. Verdict
+### 7. Verdict
 **<Strong Accept or Accept with Revisions or Reject and Pivot>**
+*(mechanism-based high scores: append "worth pursuing, pending the
+validation experiment")*
 
 Top three actions to take first:
 1. ...
