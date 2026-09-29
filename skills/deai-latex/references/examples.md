@@ -1,19 +1,20 @@
 # Worked examples
 
-Before/after pairs for the catalogue families in `SKILL.md`, plus a rewrite that fails the meaning check and two passages that stay unchanged. The size of each edit is the point: the smallest change that removes the finding.
+Before/after pairs for the catalogue families in `SKILL.md`, plus a rewrite that fails the meaning check and two passages that stay unchanged. The size of each edit is the point: the smallest change that removes the finding. Each After draws only on its Before; where it needs more, the example shows where that comes from.
 
-## Inflation: inflated claim → concrete
+## Inflation: inflated claim → plain, at the same scope
 Before: "Large language models have achieved remarkable success across a wide range of tasks, but existing methods suffer from crucial limitations in efficiency."
-After: "Large language models perform well on many NLP tasks, but their inference cost remains high for long-context inputs."
+After: "Large language models perform well on many tasks, but existing methods have limited efficiency."
+Reason: The source names no task, cost, or input, so the rewrite names none. "Inference cost for long inputs" would be a new claim; a specific enters only when the passage already states it.
 
 ## Inflation: measured connective and vocabulary → direct
 Before: "Additionally, our method leverages block-level decomposition to facilitate more efficient compression."
 After: "Our method uses block-level decomposition for more efficient compression."
 
-## Inflation: weasel attribution → named or cut
-Before: "Experts argue that activation-aware rank search is the stronger approach."
-After: "ASVD reports that activation-aware rank search outperforms uniform truncation."
-Reason: If no such source exists, the claim gets cut rather than attributed to nobody.
+## Inflation: weasel attribution → the source the text gives
+Before: "Experts argue that activation-aware rank search is the stronger approach~\cite{asvd}."
+After: "\citet{asvd} argue that activation-aware rank search is the stronger approach."
+Reason: The citation is the source the text gives, so the claim is attributed to it and keeps its wording. Without a citation, the sentence stays and the log flags it as needing a source; naming a plausible paper would be a new claim.
 
 ## Staging: interpreting participial tail → trim
 Before: "L2 reduces perplexity from 42.1 to 19.3, demonstrating the effectiveness of the proposed optimization."
@@ -25,7 +26,7 @@ After: "\paragraph{Module type is the supported resolution.} A budget-matched pe
 
 ## Staging: scar tissue and shadowboxing → state the design
 Before: "An obvious approach would be to retrain the tokenizer on the target domain, but this discards the pretrained embeddings, so we keep the original vocabulary. This is not to say that domain-specific tokenizers are never worthwhile."
-After: "We keep the original vocabulary so that the pretrained embeddings remain usable."
+After: "We keep the original vocabulary so that the pretrained embeddings are not discarded."
 Reason: Tokenizer retraining is never evaluated or cited, so the rejection is drafting residue; the disclaimer answers an objection the text never raised.
 
 ## Punctuation: consequence tail → split without a connective

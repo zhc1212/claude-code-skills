@@ -4,7 +4,7 @@ Dr. Zhang's research workflow skills for Claude Code. Third-party skills normall
 
 ## What This Plugin Does
 
-60 bundled skills (v1.0.13; original provenance audit 2026-07-19):
+60 bundled skills (v1.0.14; original provenance audit 2026-07-19):
 
 - **Cross-model debate** — structured Claude+Codex deliberation (codex-debate, codex-debug-pair, codex-experiment-critic, codex-paper-adversary, codex-skill-optimizer)
 - **Experiment management** — GPU job orchestration on A800 (run-experiment, run-gpu-experiment, run-pipeline, monitor-experiment, collect-results, analyze-results, experiment-bridge, experiment-plot-advisor, upload-hf)
@@ -23,6 +23,14 @@ This repository also tracks the portable parts of the workspace that uses these 
 - [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md) — the historical 66-skill third-party workspace inventory, plus later source updates and the explicit citation-verification vendoring exception.
 
 Copy and adapt these files into a project-level `.claude/` setup; do not treat the example infrastructure names as live configuration.
+
+## deai-latex Review Fixes — v1.0.14
+
+Fixed two contradictions in `deai-latex` found in review:
+- The step-5 word trace no longer reverts the plain word that replaces a flagged one, as long as it adds no new entity, property, relation, quantity, or hedge.
+- Two worked examples invented technical detail; they now follow the preservation rules.
+
+Baselines now record their provenance (named by the user, or tied to the author by history) and their scope (same section type first). The deai-mark evidence carries a not-peer-reviewed label. A stdlib `scripts/audit_style.py` computes the step-1 counts and allowances, printing each match in context. It also checks math, citation keys, references, and numbers across a rewrite, and flags new content words.
 
 ## User-Level Sync — v1.0.13
 

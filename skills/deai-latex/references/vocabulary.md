@@ -47,7 +47,7 @@ significant 1.23, utilize 1.22, demonstrate 1.16, furthermore 1.13, importantly 
 
 ## 2026 update: current-model measurements
 
-deai-mark (github.com/elK-liang/deai-mark, v2.2, September 2026) compared 879 human biomedical papers (2018 to mid-2022, 17 journals) with abstracts, introductions and discussions that MiniMax M2.7, MiniMax M3 and a GLM-5.3 agent wrote from the same papers' title, keywords and Results. A rule needs a bootstrap 95% CI lower bound of at least 2.0; thresholds were frozen before the AI side was measured. It is generation, biomedical only, and has no GPT, Claude or Gemini data. OpenAI's prompting guide for GPT-6 Astra independently lists "leverage", "foster", "importantly", "it's worth noting" and "genuinely" as slop words for that release (vendor statement, unmeasured).
+deai-mark (github.com/elK-liang/deai-mark, v2.2, September 2026; a third-party benchmark in a GitHub repository, not peer reviewed) compared 879 human biomedical papers (2018 to mid-2022, 17 journals) with abstracts, introductions and discussions that MiniMax M2.7, MiniMax M3 and a GLM-5.3 agent wrote from the same papers' title, keywords and Results. A rule needs a bootstrap 95% CI lower bound of at least 2.0; thresholds were frozen before the AI side was measured. It is generation, biomedical only, and has no GPT, Claude or Gemini data. OpenAI's prompting guide for GPT-6 Astra independently lists "leverage", "foster", "importantly", "it's worth noting" and "genuinely" as slop words for that release (vendor statement, unmeasured).
 
 - **Confirmed:** underscore as a verb (17× in discussions), sentence-initial "Notably," (6.5×), "pave the way" (29×), "open avenues".
 - **Raised to Tier 2:** leverage (5.8×), foster (6.8×), sentence-initial "Importantly," (grouped with "Notably," in the 6.5× rule; its own ratio is not reported).
@@ -70,7 +70,7 @@ Figurative gating ("gates access to", "gated behind") is a practitioner flag too
 - Thelwall, Kousha, "Have LLM-associated terms increased in article full texts in all fields?" arXiv:2604.07565, 2026.
 - Lee, "An LLM-associated register shift in Korean journal abstracts," arXiv:2609.07447, 2026 (working paper).
 - Wikipedia, "Wikipedia:Signs of AI writing," revision of September 2026 (practitioner source; era lists and Historical indicators).
-- elK-liang/deai-mark v2.2 (2026-09): SKILL.md, PROTOCOL.md, results/VALIDATION.md; paired biomedical corpus, generation by MiniMax M2.7/M3 and GLM-5.3.
+- elK-liang/deai-mark v2.2 (2026-09), third-party benchmark, not peer reviewed: SKILL.md, PROTOCOL.md, results/VALIDATION.md; paired biomedical corpus, generation by MiniMax M2.7/M3 and GLM-5.3.
 - OpenAI, "Prompting guidance for GPT-6 Astra" (vendor guidance), quoted verbatim in Nanako0129/sepia `skills/sepia/references/model-fingerprints.md`.
 - Shan, Lee, Hao, "AI Writers Have a Consistent Stylometric Footprint, but AI Editors Do Not," arXiv:2608.27855, 2026; Saad & Ting 2026 (astro-ph); both read through sepia's `research/sources.md`, not in the original.
 - Evidence for the grammar and punctuation entries in SKILL.md:
