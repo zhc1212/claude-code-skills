@@ -20,45 +20,43 @@ The difference is not vocabulary or polish. It is information architecture:
 
 ## The Ten Principles (with sources)
 
-Numbering matches the compact list in SKILL.md exactly.
-
 1. **Every sentence earns its place.** Page limits are hard. A sentence that restates
    what the reader already knows wastes attention budget. Three things a sentence can
    do: advance the argument, introduce evidence, or specify mechanism. A sentence that
-   does none of these is deletable. *(Drives Checks 2, 6)*
+   does none of these is deletable. *(Drives Checks 3b, 6)*
 
 2. **Claims and evidence travel together.** When a reviewer reads "X outperforms Y,"
    they immediately look for the number. If evidence is two paragraphs away, the claim
-   feels unsupported. Oral papers never make the reviewer search. *(Drives Check 3)*
+   feels unsupported. Oral papers never make the reviewer search. *(Drives Check 8)*
 
 3. **The paragraph is the unit of argument.** S1 states what this paragraph will prove.
    The rest proves it. A reviewer skimming only S1s should reconstruct the full argument.
-   *(Drives Checks 0, 1, 4, 5)*
+   *(Drives the Section role line and Checks 2, 3a, 4)*
 
 4. **Content lives in the right place.** A correct sentence in the wrong section is noise.
-   Method explains *what and why*; Experiments explains *how and with what*. *(Drives Check 8)*
+   Method explains *what and why*; Experiments explains *how and with what*. *(Drives Check 5c)*
 
 5. **Do not multiply entities beyond necessity.** Every symbol, acronym, and terminology
    variant is a cognitive slot. If two names refer to the same object, pick one. Formulas
    must be locally readable — a reviewer should understand every symbol without flipping
-   back. *(Drives Checks 2, 8, 9)*
+   back. *(Drives Checks 5a, 5b, 9)*
 
 6. **Key information lands at the stress position.** Readers assign extra weight to
    sentence endings ([Gopen & Swan, 1990](https://cseweb.ucsd.edu/~swanson/papers/science-of-writing.pdf)).
    Bury key findings in subordinate clauses and the reader misses the payload.
-   *(Drives Check 4, interacts with Check 1)*
+   *(Drives Check 1, interacts with Check 2)*
 
 7. **Each paragraph must create reader value.** A paragraph that only reports what the
    authors did — without explaining why that matters to the community — is dead weight.
    An Experiments paragraph listing datasets and metrics is not valuable until it tells
-   the reader what question the experiment answers. *(Drives Checks 0, 1, 3; inspired
+   the reader what question the experiment answers. *(Drives the Section role line and Checks 3a, 8; inspired
    by [McEnerney's reader-value framework](https://henryleach.com/2016/05/the-craft-of-writing-effectively/))*
 
 8. **Cohesion comes from logic, not connectors.** Furthermore, Additionally, Moreover,
    and In addition assert a logical relation exists without naming it. If removing the
    connector exposes a gap, the sentences need restructuring — the connector was masking
    weak argument structure. Real transitions arise from substance: the end of one sentence
-   sets up the beginning of the next. *(Drives Check 4, interacts with Check 5)*
+   sets up the beginning of the next. *(Drives Check 2, interacts with Check 4)*
 
 9. **Restrained, evidence-first register.** Top-venue academic tone: let evidence carry
    the weight. Boosters (really, very, remarkably) inflate importance without adding
@@ -73,7 +71,7 @@ Numbering matches the compact list in SKILL.md exactly.
     previous one through contrast, specification, deepening, or mechanism — not mere
     juxtaposition. A sequence that reads "one paragraph on A, one on B, Together these…"
     is a list pretending to be an argument. The reader should feel the argument move forward
-    with each paragraph, not sideways. *(Drives Check 10, interacts with Check 5)*
+    with each paragraph, not sideways. *(Drives Check 4)*
 
 These principles interact: good structure with low density wastes a well-framed argument
 on filler. Dense paragraphs with decoupled claims are informative but unconvincing.

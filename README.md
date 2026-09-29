@@ -4,7 +4,7 @@ Dr. Zhang's research workflow skills for Claude Code. Third-party skills normall
 
 ## What This Plugin Does
 
-60 bundled skills (v1.0.12; original provenance audit 2026-07-19):
+60 bundled skills (v1.0.13; original provenance audit 2026-07-19):
 
 - **Cross-model debate** — structured Claude+Codex deliberation (codex-debate, codex-debug-pair, codex-experiment-critic, codex-paper-adversary, codex-skill-optimizer)
 - **Experiment management** — GPU job orchestration on A800 (run-experiment, run-gpu-experiment, run-pipeline, monitor-experiment, collect-results, analyze-results, experiment-bridge, experiment-plot-advisor, upload-hf)
@@ -23,6 +23,18 @@ This repository also tracks the portable parts of the workspace that uses these 
 - [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md) — the historical 66-skill third-party workspace inventory, plus later source updates and the explicit citation-verification vendoring exception.
 
 Copy and adapt these files into a project-level `.claude/` setup; do not treat the example infrastructure names as live configuration.
+
+## User-Level Sync — v1.0.13
+
+Synchronized `deai-latex` and `oral-paragraph-audit` from the active user-level
+installation on 2026-09-29. `deai-latex` now audits paper prose against the
+author's own writing (audit, adjudicate, minimal edit, verify meaning and style),
+groups its catalogue by what the model is doing, and keeps its worked examples in
+`references/examples.md`. `oral-paragraph-audit` carries the user-level revision
+of its checks and references. Six new evaluation fixtures contain unpublished text
+and stay local; generated evaluation outputs are excluded as before. Third-party
+updates made the same day are recorded in
+[`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md).
 
 ## Citation Verification Sync — v1.0.12
 

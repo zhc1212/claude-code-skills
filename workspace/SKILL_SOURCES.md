@@ -34,3 +34,30 @@ inventory of the current user-level installation. One confirmed source override:
 `run-pipeline` is absent from the active user-level skills directory. Its
 repository copy is retained; absence from one installation does not retire it.
 Other third-party installations remain external to this repository.
+
+## User-level synchronization (2026-09-29)
+
+The v1.0.13 update synchronizes `deai-latex` and `oral-paragraph-audit` from the
+active user-level installation. Six new `oral-paragraph-audit` evaluation
+fixtures (08–13) contain unpublished text and stay local; generated evaluation
+outputs remain excluded.
+
+Third-party user-level installations were updated from their upstreams the same
+day. They remain external to this repository; each installed copy matched its
+previous upstream version exactly before the update.
+
+| Upstream | Updated skills | Upstream commit |
+|---|---|---|
+| [blader/humanizer](https://github.com/blader/humanizer) | `humanizer` (v2.11.2 → v3.1.0) | `225a6f3` |
+| [AIScientists-Dev/academic-humanizer](https://github.com/AIScientists-Dev/academic-humanizer) | `academic-humanizer` (new, v0.3.3) | `94b88b2` |
+| [Yuan1z0825/nature-skills](https://github.com/Yuan1z0825/nature-skills) | 17 `nature-*` skills | `8488081` |
+| [QuantumBFS/sci-brain](https://github.com/QuantumBFS/sci-brain) | `create-advisor`, `how-to-download-ref`, `how-to-flow`, `how-to-review-figure`, `know-me-better`, `survey`, `write-slides` | `855fd57` |
+| [kkkkhazix/khazix-skills](https://github.com/kkkkhazix/khazix-skills) | `aihot` | `b81ad3b` |
+| [addsumtech/slides_maker](https://github.com/addsumtech/slides_maker) | `slide-maker` | `9fbe0a7` |
+
+Already current: the 12 `fse-*` skills (brycewang-stanford/Awesome-Journal-Skills
+`932eb23`) and `se-research-paper-writing`. Not updated: `ppt-master` (skipped),
+and skills whose upstream path no longer exists (8 mattpocock skills moved to
+deprecated or removed; `how-to-dump-dialog`, `idea-writer`, `import-dialog`,
+`soul-extraction`, `survey-writer` removed from sci-brain), whose installed
+copies are kept.

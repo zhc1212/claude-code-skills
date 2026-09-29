@@ -27,9 +27,21 @@ Progressive: problem → challenge → positioning. Each paragraph carries one m
 One dimension per paragraph, end with gap or positioning. A brief "In contrast, we..."
 is acceptable if it clarifies the gap.
 
+**Order within the paragraph**: the cited works of the dimension first, then one
+sentence that characterizes them together, then the positioning, once, at the
+end. The tell of a broken order is an own-work sentence after each cited work
+(A-B-A-B): every delta then answers one paper instead of the dimension. A
+synthesis sentence ("These systems all …") placed after the deltas can no longer
+set them up; move it before the positioning.
+
 **Baseline description accuracy**: when describing what another method does, verify
 against the cited paper if available; otherwise mark "Needs verification — cited
 source unavailable". Knowledgeable reviewers may have authored the baseline.
+
+**Delta against the paragraph's own description**: for each positioning claim
+("we do X, unlike Y"), reread what the paragraph itself says Y does. If that
+description already covers X, the delta names no difference: flag MAJOR and ask
+for the real one as `[fill: …]`.
 
 ## Limitations
 
@@ -38,7 +50,7 @@ or missing concrete detail.
 
 ## Dataset/Setup
 
-Factual and enumerative by design. Check 1 (claim-first) does not apply — focus on
+Factual and enumerative by design. Check 3a (claim-first) does not apply — focus on
 completeness and clarity.
 
 ## Method

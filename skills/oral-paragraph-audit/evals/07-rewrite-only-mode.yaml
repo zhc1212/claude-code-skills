@@ -17,5 +17,5 @@ expected_behavior:
 required_markers:
 - \b(Blocking|Major|Minor)\b
 forbidden_markers:
-- 'Preflight\W{0,3}:'
+- 'Section role\W{0,3}:'
 - 'Transitions\W{0,3}:'

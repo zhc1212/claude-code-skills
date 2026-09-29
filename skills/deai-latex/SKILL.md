@@ -1,228 +1,150 @@
 ---
 name: deai-latex
-description: >-
-  Use when the text is English LaTeX prose from an academic paper (any section) and the user wants AI writing style removed: "去AI味", "de-AI", "deai", "remove AI style", "AI tells", "reads like ChatGPT", "润色", "改一下文字", "polish prose", or after pasting ChatGPT/Claude-generated paper text. Also reach for it from /oral-paragraph-audit Check 6. For prose that is not from a paper (blog, essay, fiction, docs, email) use /humanizer instead, including when the user says "humanize" or "让文字更自然".
+description: Use when English prose from an academic paper, in LaTeX or plain text, should lose its AI writing style: "去AI味", "de-AI", "deai", "remove AI style", "AI tells", "reads like ChatGPT", or after pasting paper text that ChatGPT or Claude wrote or polished. Also reached from /oral-paragraph-audit Check 6. General polishing with no AI-style complaint (grammar, flow) goes to paper-polish or polish-english-paper; prose that is not from a paper goes to /humanizer.
 ---
 
-# De-AI LaTeX: Remove AI Writing Patterns from Academic Papers
+# De-AI Paper Prose
 
-## Your Task
+If the user hasn't provided the text yet, ask: **"Please paste the passage and, if you have them, your own draft of it or another passage you wrote without AI help."**
 
-If user hasn't provided LaTeX yet, ask: **"Please paste your LaTeX text."**
+The yardstick is the author's own writing, read at its median rather than its best. A mark the author uses at their usual rate is their style; only a rate above theirs is a tell, and their rate is a ceiling, never a target to converge on. Model style lives more in rhetorical moves (how a sentence stages, inflates, or shapes its content) than in single words, and word habits change with each model release while the moves persist. Finding a pattern does not license an edit: every candidate is judged in context first, and text the author wrote comes back unchanged. The rewriter is a model with habits of its own, so the procedure ends by checking what the rewrite itself added.
 
-Rewrite LLM-generated mechanical text into natural academic prose for top-venue submission. Preserve technical meaning while removing vague, inflated, or template-like patterns.
+## Modes
 
-**Section awareness**: identify which section the text belongs to (abstract, intro, method, experiments, discussion, conclusion). Different sections have different tolerances:
-- **Discussion/Conclusion**: fewer inline numbers, more qualitative language
-- **Experiments**: numbers are expected, focus on claim-first structure
-- **Abstract**: must be self-contained, no bare math symbols
-- **Method**: technical precision matters most, less de-AI needed
+- **Pasted (default).** Deliver the two-part output at the end.
+- **File.** Edit the prose in place; math, commands, citations, and comments pass through unchanged. Report a summary rather than the file, and in a page-capped paper include the net word change, since a longer passage can push content past the limit.
+- **Embedded** (`/oral-paragraph-audit` Check 6). You are the same agent doing both, so there is no hand-off. Run the procedure on the paragraph and carry forward the rewrite, the baseline table (or "no baseline"), each finding with its family and triggering phrase, and each dismissed candidate with its reason. The caller judges whether findings cluster in one sentence or scatter, which a count cannot show. Skip the two-part output.
 
-## Invocation Modes
+## Procedure
 
-**Pasted text (default).** Deliver the two-part output below.
+1. **Baseline.** Name the section (abstract, introduction, method, experiments, related work, limitations, conclusion); method prose legitimately uses passives and nominal style. Then find the author's own writing, strongest first:
+   - the author's earlier version of this same passage (a draft the user supplies, or the commit before an AI edit), which shows exactly what the model changed;
+   - other text the author wrote without AI help: the commit that imported their draft, a section no one has edited, or a passage the user names.
 
-**File mode.** The user points at a `.tex` file. Rewrite the prose in place, leaving math, macros, `\cite`/`\ref`, environments, and comments untouched. Report a short summary rather than pasting the file back.
+   Count per 1,000 prose words, in the baseline and in the passage, leaving out math, displayed environments, comments, and command names:
+   - em dashes (`---` or `—`; the two around one aside count as two);
+   - colons that elaborate a claim ("the two losses are coupled: lowering one raises the other"), apart from colons that introduce a list or follow a label ("Stage 1:");
+   - semicolons that join clauses, apart from those separating list items that contain commas;
+   - clause tails, exactly ", so", ", which", and ", rather than";
+   - sentence-initial connectives: however, moreover, furthermore, additionally, therefore, thus, hence, consequently, instead, together, finally, in contrast, as a result ("Instead," and "Together," only as sentence adverbs; ordinals that number a sequence are not connectives);
+   - mid-sentence therefore, thus, hence, consequently, however, moreover, furthermore, additionally (used only by step 6).
 
-**Embedded mode.** This skill is being applied as one step of a larger audit (e.g. `/oral-paragraph-audit` Check 6). You are the same agent doing both, so there is no hand-off: work the catalogue over the passage and carry forward the rewritten LaTeX plus, for each pattern you hit, its category and the phrase that triggered it. The caller needs those phrases as evidence and needs to see whether the hits cluster in one sentence or scatter across the passage — a bare count cannot show either. Skip the two-part output format below.
+   Also record the share of sentences under 16 words; a sentence ends in `.`, `?`, or `!` outside math, and headings and fragments under three words are not sentences. The author's **allowance** for a feature is the baseline rate times the passage's length, rounded up: 2.0 colons per 1,000 words allow one colon in a 355-word passage. Read the matched instances before trusting a count; a pattern match is not yet a candidate. **Done when** the table (feature × baseline, passage, allowance) exists, or you have stated "no baseline available". Without a baseline, counted features and edit residue are off and catalogue phrases are the only candidates; in pasted mode, add that the author's draft or own writing would enable the rate checks.
 
----
+2. **Audit, without editing.** Read the passage against the catalogue three times: for words, for sentences, and for paragraphs. With the author's earlier version, also compare the two sentence by sentence for edit residue. A counted feature is a candidate when the passage has at least two instances and more than the allowance. Record every candidate with its family, triggering phrase, and location. **Done when** every sentence has been read at all three levels and every candidate is listed.
 
-## Editing Procedure
+3. **Adjudicate.** A candidate becomes a finding only if it survives three questions.
+   - **Is it the author's?** A catalogue word or construction that the baseline also contains is held to the allowance, like a counted feature. Wording that the author's earlier version already has is the author's.
+   - **Is it doing work here?** A precise technical use ("gating mechanism", "robust regression"), the section's convention, a list with a paper function, a phrase quoted or discussed rather than used, or a mark that reads clearly in context is dismissed.
+   - **Does it cluster?** A catalogue phrase can be a finding on one sighting, but several candidates in one sentence make each more likely to be real, and one isolated em dash or "however" rarely is.
 
-1. Identify the paper section (abstract, intro, method, experiment, related work, limitation, conclusion).
-2. Preserve all technical claims, variables, citations, numbers, comparisons, and scope qualifiers.
-3. Edit only sentences that match a listed pattern or contain vague/inflated wording.
-4. Prefer smaller edits over full rewrites.
-5. After rewriting, verify that no claim became stronger, broader, or less precise than the original.
+   Record the reason for every dismissal. If nothing survives, return the passage unchanged and say it reads as the author's; that is the expected result for text the author wrote, not a fallback. **Done when** every candidate is a finding or dismissed with a reason.
 
----
+4. **Edit minimally.** Before the first edit, read `references/examples.md` for how small an edit should be.
+   - One edit per finding, and the log names the finding. An edit that answers to no finding is reverted.
+   - The first choice of fix is the author's own wording from the earlier version, where it says what the passage says; where the edit changed the claim, fix within the passage's wording and log the change. Otherwise change the sentence's words, subject, or opening.
+   - Keep one proposition per sentence and the author's order of definition, equation, and reason. Restoring the author's earlier order inside a paragraph keeps that order. Any other fix that would merge author sentences or move a reason ahead of what it explains is left undone and named in the log.
+   - Bring a counted feature down to the allowance, not to zero. Fix first the instances the earlier version shows the model created.
+   - To split off a ", so" tail, start the consequence as a new sentence with no connective; placed right after its cause, it keeps the causal link. Add "therefore" or "thus" only where a reader could not otherwise see the link.
 
-## Constraints
+   **Done when** every finding is fixed or listed as left in place with its reason.
 
-### 1. Vocabulary and Phrasing
+5. **Verify meaning.** Compare every changed sentence with its source. The rewrite must keep:
+   - the same claims, scope, and hedge strength;
+   - the same actors: when a passive becomes active, the agent must be one the source names;
+   - every number, name, citation, and qualifier, with each number still attached to the noun it measures;
+   - the direction of attribution: the author's own measurement stays the author's, and a reported claim stays reported ("reported", "claimed", "according to" are neither added nor removed);
+   - the polarity of a judgment: a limitation or criticism does not come out as praise;
+   - the grain of the results: several specific results are not merged into a general "better", and a vague benefit does not become a firm claim.
 
-Prefer plain, precise academic words. Avoid overused AI vocabulary.
+   It must add no new contrast, cause, consequence, or evaluative clause, and no broader generalization; LLM rewrites of scientific text broaden scope far more often than people do. Then trace the words: every content word in a changed sentence must appear in the source sentence, its neighbours, or the author's earlier version. Match on the stem, so a form change (tuning, tune) is not an addition, and read each flagged word before reverting it. An untraceable word is an addition and is reverted, unless it is repair: an article, a subject, or the verb of a nominalization that a split sentence needs. **Done when** every changed sentence has been checked and every content word traced.
 
-**Watchlist** (flag when vague or inflated, not mechanically): leverage, delve into, tapestry, accentuate, amplify, underscore, unveil, nuanced, profound, pivotal, foster, harmonize, transcend, elucidate, substantiate, seamless, intricate, crucial, landscape (abstract), interplay, showcase, garner, enduring, vibrant, quietly, gate/gated/gating (figurative only: "gates access to", "gated behind")
+6. **Verify style.** Machine editing leaves its trace in the filler it adds around the content more than in the words it swaps, so run three checks.
+   - **Deletion and reversion tests.** Strike every word or phrase the rewrite added: if the sentence still parses and says the same thing, the addition was filler and goes. Put back every wording the rewrite replaced: if the old wording carried no finding and said the same thing, restore it. Repair, as step 5 defines it, passes both tests.
+   - **Recount.** Recount the step-1 features, mid-sentence connectives included, on the rewritten passage. A feature whose count rose over the input is reverted, or kept with a one-line reason in the log. Run the catalogue again on every changed sentence, since a fix can itself create a tell.
+   - **Displacement.** A removed mark often returns in another form with the same rhythm: an em dash becomes a colon or a comma-bounded appositive, a ", so" tail becomes "X therefore", split participial tails become a run of "This …" openers. When one fix repeats, vary it (a different subject, an embedded clause), and never leave two identical openers in a row. Also check the rewriter's standing habits: em dashes, claim-elaborating colons, ", so" tails, "rather than", "only", and prose that narrates a revision.
 
-Gating mechanisms, gated units, MoE gates, and gate operations are technical terms. Default to keeping them; flag only the figurative use.
+   Banning a mark in the instructions does not stop a model from producing it; only these checks show whether it did. **Done when** every addition and replacement has passed both tests, no counted feature rose (or each rise has its reason), and no displaced form remains.
 
-**Common replacements**: leverage → use, delve into → investigate, tapestry → context, elucidate → explain, substantiate → support, showcase → show, crucial → important
+## Catalogue
 
-Replace only when the word sounds inflated, vague, or less precise than a simpler alternative. If the word is precise in context, keep it.
+The families say what the model is doing, which helps recognize a listed pattern in a new form; a move with no entry is not a finding. Vocabulary lives in [references/vocabulary.md](references/vocabulary.md), tiered by measured excess and dated; read it when a passage contains words that sound inflated.
 
-**Copula avoidance:** AI substitutes elaborate constructions for simple "is/are/has". "serves as a warm-start" → "is a warm-start". "stands as a key contribution" → "is a key contribution". Restore the copula.
+### Inflation: the stakes are raised above the content
 
-**Inflated significance:** "plays a crucial/vital/key role in" → "contributes to" or just state the effect directly. "a wide range/variety of tasks" → "tasks" or "several tasks".
+- **AI vocabulary.** Use the tiers in `references/vocabulary.md`. Replace a listed word only when it is vague or inflated where it stands. Word forms count separately: "leveraging" is Tier 1, "leverage" only Tier 2.
+- **Inflated significance and vague achievement.** "a wide range of", "remarkable success", "significant improvements", "comprehensive experiments", "sheds light on", "bridges the gap", "paves the way for", "opens new avenues", "suffers from limitations". Use the numbers the text already has, or narrow the claim. "Plays a crucial role" is not on this list: human papers use it more often than 2026 models do, so flag it only inside a cluster.
+- **Boosters and stakes-raisers.** "notably" (measured excess), "Interestingly", "Indeed", "Of course", "Naturally", "Unsurprisingly", and intensifiers such as "well beyond", "quite", "really", "very", "highly" when they add emphasis without precision.
+- **Weasel attributions.** "Experts argue", "several studies" when few are cited. Name the source the text gives or cut the claim; never decorate an unsupported claim to look sourced.
+- **Heavier forms of a plain verb.** Copula avoidance: LLM revision lowers "is" and "are" ("serves as a warm-start" → "is a warm-start"). Nominalization: instruction-tuned models nominalize at 1.5–2 times the human rate ("the examination of X" → "examining X"), unless the section's convention wants the noun.
+- **Paired adjectives and verb doublets.** "robust and effective", "designed and developed": keep the more precise one.
+- **Generic endings.** "This opens exciting avenues", "explore more robust and general methods", "Despite these promising results, several challenges remain". End on the last concrete finding, or name the limitation and its consequence.
+- **Repeated contribution framing.** Several "we propose/show/demonstrate" variants in one paragraph.
 
-**Vague achievement claims:** Replace generic phrases with concrete claims tied to actual results. Avoid: "remarkable success", "significant improvements", "comprehensive experiments", "state-of-the-art performance", "sheds light on", "bridges the gap", "opens new avenues", "extensive experiments demonstrate". If the text provides numbers, use them. If not, narrow the claim.
+### Staging: the reader is told how to take the content
 
-**Boosters and stakes-raisers:** boosters (really, very, hugely, remarkably, strikingly, notably), stakes-raisers (Unsurprisingly, Interestingly, Indeed, Of course, Naturally), filler adverbs (crucially, importantly, genuinely, honestly, straightforward), promotional adjectives (novel, unique, important contribution). Let the evidence carry the weight.
+- **Interpreting participial tails.** Instruction-tuned models use present participial clauses at 2–5 times the human rate. Trim a sentence-final "-ing" clause that restates the result ("…, demonstrating the effectiveness of …"); keep one that states a mechanism, condition, or consequence the source holds.
+- **Negative parallelism.** "not only X but also Y", "it's not just X, it's Y": a contrast nobody raised. State Y, or "X and Y".
+- **Formulaic openers and authority tropes.** "In recent years", "Recent advances in", "The real question is", "at its core", "fundamentally", "X is the Y of Z". State the ordinary point.
+- **Fragmented headers.** A `\paragraph{}` followed by one sentence that restates it before the content starts. Cut the warm-up sentence.
+- **Editorial scar tissue.** "A tempting approach would be X, but …" where X is never evaluated, cited, or mentioned again. Keep X when it is a baseline, an ablation, or a cited method.
+- **Shadowboxing.** "To be clear, we do not claim …" answering an objection the paper never raises. Keep a scope statement that qualifies a claim the text makes.
 
-**Weasel attributions:** "Experts argue", "Observers have noted", "Industry reports suggest", "several studies" when few are cited. Name the source or cut the claim. Never decorate an unsupported claim to look sourced.
+### Rhythm by rule: one shape applied regardless of content
 
-**Authority tropes:** "The real question is", "at its core", "fundamentally", "in reality", "what really matters", "the deeper issue". These pretend to cut through noise before restating an ordinary point.
+- **Forced groups of three.** Two items are fine; four are fine.
+- **Tailing negations and false ranges.** "needs no separate pass, no extra tuning" → "needs neither a separate pass nor extra tuning"; "from architecture search to quantization" is a list, not a range.
+- **Repeated sentence openings.** Three or more consecutive sentences with the same subject outside a contribution list. Begin with the action or change the subject where the referent allows; do not rotate synonyms and do not merge.
+- **Manufactured punchlines.** A run of short declaratives stacked for drama. One short sentence is fine; three in a row is a tell.
+- **Missing short sentences** (candidate; the evidence is non-academic, see `references/vocabulary.md`). In a passage of ten or more sentences with another finding, a share of sentences under 16 words below half the baseline share marks the longest sentences for splitting. Never merge, and do not alternate lengths on a schedule, which is its own tell.
 
-**Aphorism formulas:** "X is the Y of Z", "X is not a tool but a mirror", "the language of", "the currency of", "the architecture of". Replace the formula with the concrete claim it gestures at.
+### Punctuation and connectives: judged only against the baseline
 
-**Excessive hedging:** "could potentially possibly be argued that X might have some effect" → "X may affect Y". One hedge carries the uncertainty; three signal evasion. A caveat that exists only to repair an earlier overstatement ("achieves state-of-the-art results, although performance may vary across settings") means the claim above it is too strong: narrow the claim and drop the caveat.
+- **Em dashes.** Their rise in papers is real at population level but says little about a single paper, and rates differ by model by an order of magnitude. Claude, a likely rewriter, uses them heavily, so step 6 recounts them.
+- **Semicolons, claim-elaborating colons, and clause tails.** No published study measures them in academic English; the baseline decides.
+- **Sentence-initial connectives.** "Additionally" shows measured excess, still rising, and "Importantly," is Tier 2; these two are catalogue phrases, candidates on sighting even without a baseline. "Moreover", "Furthermore", "Thus", and "Therefore" show no excess, and human papers open with "However" and "Moreover" more often than 2026 models do; keep them unless the baseline shows the author does not write them. Deleting transitions in bulk trades one template for another.
 
-**Speculative gap-filling:** "it is believed that", "likely", "presumably" used to cover something the text does not know. State what is not known, or cut the sentence. In a paper this is a credibility failure, not a style one.
+### Edit residue: traces of a model editing the author's draft
 
-**Latinate over Anglo-Saxon** when no precision is gained: utilise → use, demonstrate → show, commence → start, regarding → about. Technical terms are exempt.
+Visible only against the author's earlier version. Editing leaves a different trace from generation (see the generation-vs-editing caveat in `references/vocabulary.md`): in one local case (2026-09, Claude polishing an author's draft), ", so" tails went from 0 to 13 and claim-elaborating colons from 0 to 11.
+- **Merged sentences.** Two author sentences joined into one by a colon, semicolon, clause tail, relative clause, or "and". They are not findings by themselves: the allowances and the short-sentence share decide how many joints to undo, merged joints go first, and the fix restores the author's split.
+- **Reordered content.** A claim or condition the author placed after its reason or definition now comes first. Inside a paragraph, restoring the author's order is the default fix. A move across paragraphs is a structural edit: name it in the log and leave it.
+- **Added filler.** Words the edit added around the content that the deletion test removes. A replaced word is left alone unless the new wording carries a finding.
+- **Changed claim strength.** A hedge, qualifier, or scope the draft had and the edit dropped, or one the edit added. Name it in the log as a suspected claim change; restoring it is the author's call.
 
-**Verb nominalization:** "the examination of X" → "examining X" or "X examines".
+### Leftovers: traces of the chat or of drafting
 
-**Overclaim verbs:** prove, demonstrate conclusively, definitively, "the cause" → prefer "consistent with", "indicates", "the evidence supports".
+- **Narrated revision.** "We replaced the earlier penalty with a softmax", "Revised: …" belong in a response letter; say what the method is. Changelogs and rebuttals are exempt.
+- **Chat formatting.** Prose split into bullets, bold-label-plus-colon bullets, decorative bold or italic. Keep lists with a paper function: contributions, assumptions, algorithm steps, settings, limitations.
+- **Leaked tokens and placeholders.** `oaicite`, `contentReference`, `turn0search0`, "[insert source]", "TBD", "XX", and curly quotes pasted from a chat window. Remove them; supply a citation only if the user gives one.
 
-### 2. Structure
+## What is not a tell
 
-- **Avoid unnecessary prose lists.** Convert `\itemize`/`\enumerate` to paragraphs when they merely split ordinary prose into bullets. Preserve lists that serve a conventional function: contributions, assumptions, algorithm steps, experimental settings, or limitations.
-- **Remove mechanical connectives:** "First and foremost", "It is worth noting that", "Additionally", "Furthermore", "Moreover" at sentence starts. Also "In recent years" / "Recent advances in" openers — delete and start with the actual subject.
-- **Trim vague participial tails.** Remove or rewrite sentence-final `-ing` clauses when they merely restate the result ("demonstrating the effectiveness of..."). Keep them when they express a precise mechanism, condition, or consequence.
-- **Reduce em dashes (—):** Replace with commas, parentheses, or subordinate clauses. More than one per paragraph is the practical ceiling.
-- **Reduce semicolons (;):** AI overuses semicolons to join parallel clauses. Human authors more often split into two sentences or use a conjunction. More than two per paragraph is the practical ceiling.
-- **Reduce explanatory parenthetical clutter.** Keep standard academic parentheses for citations, acronyms, dataset details, and short clarifications. Rewrite only parentheticals that interrupt the sentence or hide important content (e.g., "the method (which uses SVD) achieves..." → "the SVD-based method achieves...").
-- **Reduce rule-of-three:** AI forces ideas into groups of three to appear comprehensive. Two is fine. Four is fine. Don't force three.
-- **Remove negative parallelisms:** "not only X but also Y" → "X and Y" or two sentences. "it's not just about X, it's about Y" → state Y directly.
-- **Rewrite tailing negations.** A clipped fragment tacked onto a sentence instead of a real clause: "the allocator needs no separate pass, no extra tuning" → "the allocator needs neither a separate pass nor extra tuning".
-- **Collapse false ranges.** "from X to Y" only when X and Y sit on one meaningful scale. "from architecture search to quantization" is a list, not a range — write it as one.
-- **Fix synonym cycling:** AI rotates synonyms to avoid repetition (method/approach/technique/framework for the same concept). Pick one term and use it consistently throughout the paper. Consistent terminology is clearer than elegant variation.
-- **Repeated sentence openings.** Three or more consecutive sentences that start with the same subject ("The model first ... The model then ... The model finally ...") outside a contribution list or abstract. A first/then/finally march of same-length sentences is the same pattern. Merge the sentences, begin with the action, or change the subject where the referent allows. Do not rotate in synonyms for the subject; that trades this tell for the one above. The remaining sentence may still start with "The model".
-- **Reduce paired adjectives:** "robust and effective", "efficient and scalable" — pick the more precise one. If both matter, they deserve separate evidence, not a conjunction.
-- **Verb doublets.** "generated and amplified", "designed and developed", "analyzed and evaluated" — pick one. Two near-synonyms joined by "and" is AI hedging.
-- **Shorten redundant metadiscourse.** "In this paper, we propose" is fine once (it marks the background-to-contribution transition), but don't repeat it. "This section describes" → often deletable. "The rest of this paper is organized as follows" → shorten or remove.
-- **Cut fragmented headers.** A `\paragraph{}` or `\subsection{}` followed by one sentence that restates the heading before the real content starts. The heading already said it.
-- **Ground evaluation language in evidence.** If the text says a method is "effective", "efficient", or "robust", keep the claim only when surrounding text provides evidence. Otherwise, rewrite as a concrete measured result or narrow the claim.
-- **Uniform sentence length.** If all sentences in a paragraph are within ±5 words of each other, vary the rhythm — mix short punchy sentences (8-12 words) with longer ones (20-30 words).
-- **Passive voice clusters.** A single passive is fine. Three consecutive passives signal AI. Rewrite at least one with an active subject.
-- **Manufactured punchlines.** A run of short declaratives stacked for drama ("The cap was gone. No floor. No ceiling.") reads engineered. One short sentence for emphasis is fine; three in a row is a tell.
-- **Result-first → claim-first.** In Discussion/Conclusion, if a sentence leads with a number ("55% of the reduction..."), rewrite to lead with the insight ("block-internal coupling accounts for most of the reduction").
-- **Keep commentary out of Results.** Interpretation of the data belongs in Discussion.
-- **Drop generic positive conclusions.** "This opens exciting avenues for future work" → end on the last concrete finding, or name the actual direction.
-- **Describe the method, not the revision.** Prose that narrates a change ("we replaced the earlier penalty with a softmax") belongs in a response letter, not in Method. Say what the method is. Version-scoped text (changelogs, rebuttals) is exempt.
-- **Editorial scar tissue.** "A tempting/naive/obvious approach would be X, but ..." where X is never evaluated, cited, or mentioned again. The sentence records a drafting decision, not a result. A sound engineering reason for rejecting X ("prohibitively expensive") does not make X a finding; if the comparison matters, it belongs in the experiments with a number. State the actual design and its constraint directly. Keep X when it is a baseline in the tables, an ablation, or a cited method the paper positions against.
-- **Shadowboxing.** "To be clear, we do not claim ...", "This is not to say ...", "We are not arguing that ..." answering an objection nobody raised: the denied topic appears nowhere else in the paper. Cut it, or state the positive claim it hides. Keep a scope statement that qualifies a claim the text actually makes, an objection a cited work raises, or a limitation the paper then addresses.
-- **Avoid formulaic limitation sections.** "Despite these promising results, several challenges remain" → state the specific limitation and its consequence.
-- **Informal intensifiers.** "well beyond", "quite", "really", "very", "highly" — remove when they add emphasis without precision. "well beyond the calibration set" → "outside the calibration set".
-- **Cut filler phrases.** "in order to" → "to". "due to the fact that" → "because". "at this point in time" → "now". "in the event that" → "if". "has the ability to" → "can". "it is important to note that the data shows" → "the data shows".
-- **Tense discipline.** Present tense for findings and established facts, past tense for events and procedures. Both tenses in one paragraph are correct when a past procedure yields a present finding ("we trained X; the profile transfers"); flag MINOR only when the same event or claim switches tense without cause.
+- **Not in the catalogue, on evidence.** Passive voice: GPT-4o uses agentless passives at about half the human rate. Parentheses: human papers use more brackets than LLM-polished ones. Latinate words ("demonstrate", "utilize", "regarding") show no excess in the published counts. Paragraph-closing interpretations ("Overall, these results show …"): their measured excess is in fiction, and in a held-out paper test (2026-09) the author wrote them while the model's edit added none.
+- **Not reliable on their own.** Polished grammar and consistent style; formal or low-frequency vocabulary; neutral or dry tone, the most common false positive of human judges; non-native phrasing, which detectors misread as AI; dashes, brackets, and quotations mixed into sentences, which expert annotators read as human; deliberate repeated openings that build a sequence ("We train. We prune. We retrain.").
+- **Signs of the author.** Specific, hard-to-fabricate detail (an exact seed, an odd failure, a named cap that binds); unresolved tension; genuine asides and self-corrections; a scope qualifier the author can defend; plainness, repetition, and small slips. Blind judges pick out a humanized paragraph by which of the author's habits it changed, so smoothing these is itself the tell.
 
-### Additional Watchlist
+## Handled elsewhere
 
-These patterns are not errors by themselves. Edit them only when they are vague, repeated, or disconnected from concrete technical content:
+- Claim–evidence alignment, overclaim verbs, and hedge calibration belong to `/oral-paragraph-audit` Check 8. This skill keeps claim strength as the author set it (step 5) and names a suspected overclaim in the log without editing it.
+- General paragraph and paper structure (recap openings, empty conclusions, signposts, echo, bridges, repeated arguments, one term per concept) belongs to `/oral-paragraph-audit` Checks 3–5.
+- Grammar, flow, and formatting conventions (hyphenation, units, tense, heading case) belong to paper-polish.
+- Detector scores are not a goal. Surface rewriting barely moves a modern detector (0.0–0.2 points in one 2026 test); the goal is prose that reads as the author's.
 
-- Generic openings: "Recent advances...", "In recent years..."
-- Inflated claims: "remarkable success", "significant improvement", "comprehensive experiments"
-- Vague problem framing: "suffers from limitations", "bridges the gap"
-- Empty future work: "explore more robust and general methods" → name the actual direction
-- Repeated contribution framing: multiple variants of "we propose/show/demonstrate" in the same paragraph
-- "taken together" / "Together," as a sentence opener
-- "i.e." in running text → a comma, or "namely"
+## Adding a pattern
 
-### 3. Formatting
+A pattern enters the catalogue only with all three of the following; most practitioner lists fail the first.
+- A measured excess in model text over human text: at least 2×, or 1.25–2× with a second, independent signal. Evidence from fiction or general prose makes a candidate, marked as such.
+- A trigger that points at a specific word, construction, or countable shape. "Reads too uniformly" does not qualify.
+- A date and a model era.
 
-- Avoid decorative bold or italic emphasis in body text. Preserve formatting for mathematical notation, defined terms, dataset/model names, or venue/style requirements.
-- Keep LaTeX clean. Don't introduce unnecessary commands.
-- Preserve math in `$...$` and `\(...\)`.
-- Escape special characters (`%`, `_`, `&`).
-- **Curly quotes are a LaTeX defect, not just a tell.** Pasted `"` and `"` render wrong; LaTeX needs `` `` `` and `''`. Convert every one.
-- **Sentence case in headings.** AI capitalizes every main word; most venues want sentence case. Match the venue's style file.
-- **Hyphenate by position.** Attributive compounds take the hyphen ("a rank-profile transfer"), predicate ones usually drop it ("the profile is rank matched"). AI hyphenates uniformly in both.
-- **Number and unit consistency.** Pick `%` or "percent" and hold it; en-dash for ranges (`1840--2010`); digits for 10 and above and for all statistics; words for one through nine in running text; spaces around `=` in inline math.
-- **First person** (we/our) is standard in ML/NLP papers. Flag it only where the venue or style guide prohibits it.
+## Output Format
 
-### 4. Modification Threshold and False Positives
-
-- **Less is more.** If the input already reads naturally with no AI signatures, keep the original.
-- **Positive feedback.** Explicitly acknowledge high-quality input.
-- **Never change for the sake of changing.** Every edit must genuinely improve readability.
-- **Do not make prose artificially plain.** Technical writing should be clear, not casual.
-- **Look for clusters, not isolated hits.** One em dash means nothing. Em dashes plus a forced triple plus "vibrant landscape" plus an empty future-work sentence is a confession.
-- **If a flagged pattern reads clearly in context, keep it.** The watchlists are heuristics for top-venue prose, not rules that outrank the sentence in front of you.
-
-**Not reliable tells on their own** — a careful human writer hits these routinely:
-- Polished grammar and consistent style. Many authors are edited; polish is not AI.
-- Formal or academic vocabulary. AI overuses *specific* fancy words, not all of them.
-- One `however` or `moreover`. These are AI-coded only when piled up.
-- Curly quotes alone (every editor auto-curls) or one em dash alone (many authors use them).
-- A single short emphatic sentence.
-- Dry, plain prose with none of the specific tells above. That is just dry writing.
-- A watched phrase inside a quotation, a title, or an example where it is being discussed rather than used. Leave those alone.
-- Deliberate repeated openings that build a sequence ("We train. We prune. We retrain."). Change them only when the repetition adds nothing.
-- A rejected alternative that the paper evaluates (baseline, ablation) or cites. Only an alternative dismissed in one clause and never seen again is scar tissue.
-- A scope statement or limitation a reviewer would plausibly raise about a claim the text makes. Shadowboxing is the denial of a topic that appears nowhere else.
-
-**Signs a human wrote it — lean toward leaving the prose alone:**
-- Specific, hard-to-fabricate detail: an exact seed, an odd failure, a named cap that binds.
-- Unresolved tension: "we do not claim either route is better; the ordering reverses between ratios."
-- Varied sentence length, genuine asides, and self-corrections.
-- A scope qualifier the author can defend. Over-editing these flattens exactly what makes a paper credible.
-
-### 5. Edge-Case Guardrails
-
-- Preserve lists that serve a conventional paper function: contributions, assumptions, algorithm steps, experimental settings, limitations.
-- Preserve parentheses used for citations, acronyms, mathematical notation, dataset details.
-- Preserve transitions that clarify argument structure, especially in related work and theory sections ("in contrast", "more recently" can be legitimate).
-- Do not weaken or strengthen claims. Keep the original scope unless the text clearly supports a narrower rewrite.
-- Semicolons and parentheses in mathematical exposition are fine. Focus on prose punctuation.
-- **Never invent a fact.** The rewrite contains no number, name, citation, or qualifier absent from the source. Trading a vague claim for a specific one needs the specific to come from the source or the user.
-
-### 6. Output Format
-
-- **Part 1 [LaTeX]**: The rewritten English LaTeX (or original if no changes needed).
-- **Part 2 [Modification Log]**:
-  - If modified: briefly list which mechanical patterns were fixed.
-  - If unchanged: output "[PASS] The original text reads naturally with no obvious AI patterns. Recommend keeping as-is."
-
-**In a page-capped or near-final paper, report the net word change and rebuild before calling the rewrite done.** A length change reflows every page after it: the source diff looks local, but it can push content past the page limit or overfull a table cell you never opened. If an add breaks the budget, pay for it by cutting the body prose the add made redundant rather than by weakening the edit.
-
----
-
-## Examples
-
-### Inflated claim → concrete
-Before: "Large language models have achieved remarkable success across a wide range of tasks, but existing methods suffer from crucial limitations in efficiency."
-After: "Large language models perform well on many NLP tasks, but their inference cost remains high for long-context inputs."
-
-### Mechanical transition → direct
-Before: "Furthermore, our method leverages block-level decomposition to facilitate more efficient compression."
-After: "Our method uses block-level decomposition for more efficient compression."
-
-### Vague participial tail → trim
-Before: "L2 reduces perplexity from 42.1 to 19.3, demonstrating the effectiveness of the proposed optimization."
-After: "L2 reduces perplexity from 42.1 to 19.3."
-
-### Weasel attribution → named or cut
-Before: "Experts argue that activation-aware rank search is the stronger approach."
-After: "ASVD reports that activation-aware rank search outperforms uniform truncation."
-Reason: If no such source exists, the claim gets cut rather than attributed to nobody.
-
-### Fragmented header → cut the warm-up
-Before: "\paragraph{Module type is the supported resolution.} Which types receive rank is load-bearing. A budget-matched permutation..."
-After: "\paragraph{Module type is the supported resolution.} A budget-matched permutation..."
-
-### Scar tissue and shadowboxing → state the design
-Before: "An obvious approach would be to retrain the tokenizer on the target domain, but this discards the pretrained embeddings, so we keep the original vocabulary. This is not to say that domain-specific tokenizers are never worthwhile."
-After: "We keep the original vocabulary so that the pretrained embeddings remain usable."
-Reason: Tokenizer retraining is never evaluated or cited, so the rejection is drafting residue; the disclaimer answers an objection the text never raised. If the comparison is a result, it goes in the experiments with a number.
-
-### Already natural → keep unchanged
-Before: "We use singular value decomposition (SVD) to initialize the low-rank factors."
-After: [unchanged]
-Reason: The sentence is direct, technical, and natural.
-
-### Contribution list → keep
-Before: "Our contributions are: \begin{itemize} \item A block-wise SVD initialization. \item A calibration strategy. \item Evaluation on five benchmarks. \end{itemize}"
-After: [unchanged, unless the user asks for paragraph form]
-Reason: Contribution lists are standard in introductions.
-
----
-
-## Self-Check Before Output
-
-1. **Naturalness:** Does it sound like a person wrote it? Read it aloud mentally.
-2. **Necessity:** Does every edit genuinely improve readability? (Swapping synonyms for no reason → revert.)
-3. **Claim preservation:** Did any technical claim become stronger or weaker? If so, revert that edit.
-4. **Fabrication:** Does the rewrite state any number, name, citation, or qualifier absent from the source? That is a defect even when it reads better.
+- **Part 1 [Text]**: the rewritten passage, or the original if nothing changed.
+- **Part 2 [Log]**:
+  - the baseline table with allowances, or "no baseline available";
+  - each finding with its family, triggering phrase, and fix;
+  - each dismissed candidate with its reason, one line each;
+  - findings left in place because fixing them would merge or reorder the author's sentences, and any suspected overclaim;
+  - the step-6 recount, and any edit reverted in step 5 or 6.
+  - If nothing changed: "[PASS] Reads as the author's writing; no candidate survived adjudication. Returned unchanged."
