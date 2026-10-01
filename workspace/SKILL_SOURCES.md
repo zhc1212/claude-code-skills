@@ -1,4 +1,10 @@
-# Active Third-Party Skill Sources
+# Third-Party Skill Sources
+
+## Current snapshot (2026-10-01)
+
+v1.0.15 includes all 158 readable active user-level skills by explicit user request, including third-party copies. This supersedes the external-only policy in the historical sections below. The [current inventory](USER_SKILLS_MANIFEST.json) records installed SKILL.md hashes, observed source clone revisions, and exact-match status; observed clone HEADs must not be mistaken for exact installed revisions. [Snapshot notes](USER_LEVEL_SYNC.md) explain exclusions and restoration. Upstream licenses are retained [alongside this inventory](third-party-licenses/) and inside skills where installed. Local revisions are preserved.
+
+## Historical inventory
 
 This is the exposure manifest for the workspace that uses `zhc-skills` v1.0.10. It records the **66** third-party skill symlinks active as of 2026-07-20; upstream repositories remain their sole source of code.
 

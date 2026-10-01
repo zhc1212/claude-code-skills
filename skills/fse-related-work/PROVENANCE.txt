@@ -1,0 +1,2 @@
+source: https://github.com/brycewang-stanford/Awesome-Journal-Skills (FSE-Skills v1.1.0, MIT)
+installed: 2026-09-15

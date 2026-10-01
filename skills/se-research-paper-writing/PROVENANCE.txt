@@ -1,0 +1,2 @@
+source: https://github.com/Emmanuelwh/SE-Research-Paper-Writing-Skills (MIT)
+installed: 2026-09-15

@@ -1,6 +1,7 @@
 ---
 name: deai-latex
-description: Use when English prose from an academic paper, in LaTeX or plain text, should lose its AI writing style: "去AI味", "de-AI", "deai", "remove AI style", "AI tells", "reads like ChatGPT", or after pasting paper text that ChatGPT or Claude wrote or polished. Also reached from /oral-paragraph-audit Check 6. General polishing with no AI-style complaint (grammar, flow) goes to paper-polish or polish-english-paper; prose that is not from a paper goes to /humanizer.
+description: >-
+  Use when English prose from an academic paper, in LaTeX or plain text, should lose its AI writing style: "去AI味", "de-AI", "deai", "remove AI style", "AI tells", "reads like ChatGPT", or after pasting paper text that ChatGPT or Claude wrote or polished. Also reached from /oral-paragraph-audit Check 6. General polishing with no AI-style complaint (grammar, flow) goes to paper-polish or polish-english-paper; prose that is not from a paper goes to /humanizer.
 ---
 
 # De-AI Paper Prose

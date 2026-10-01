@@ -1,6 +1,6 @@
 {
   "name": "zhc-skills",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Research workflow skills: cross-model debate, experiment management, paper writing, figure pipeline",
   "author": {
     "name": "Dr. Zhang",
@@ -8,7 +8,6 @@
   },
   "homepage": "https://github.com/zhc1212/claude-code-skills",
   "repository": "https://github.com/zhc1212/claude-code-skills",
-  "license": "MIT",
   "keywords": [
     "research",
     "academic",
@@ -19,8 +18,5 @@
   ],
   "skills": [
     "./skills/"
-  ],
-  "commands": [
-    "./commands/"
   ]
 }

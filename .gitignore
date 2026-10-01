@@ -37,3 +37,10 @@
 hooks/state/
 plugins/cache/
 skills/*/evals/results/
+
+# User-level snapshots: keep private evaluation fixtures and local metadata out
+**/.git/
+**/.pytest_cache/
+**/.venv/
+skills/oral-paragraph-audit/evals/0[89]-*.yaml
+skills/oral-paragraph-audit/evals/1[0-3]-*.yaml

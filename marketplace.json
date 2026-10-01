@@ -12,13 +12,12 @@
       "name": "zhc-skills",
       "source": "./",
       "description": "Research workflow skills: cross-model debate, experiments, papers, figures",
-      "version": "1.0.14",
+      "version": "1.0.15",
       "author": {
         "name": "Dr. Zhang"
       },
       "homepage": "https://github.com/zhc1212/claude-code-skills",
       "repository": "https://github.com/zhc1212/claude-code-skills",
-      "license": "MIT",
       "keywords": [
         "research",
         "academic",

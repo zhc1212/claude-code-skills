@@ -1,10 +1,10 @@
 # zhc-skills
 
-Dr. Zhang's research workflow skills for Claude Code. Third-party skills normally remain independent plugin installs or source clones. The explicitly vendored `citation-verification` copy includes its upstream license and pinned [provenance](skills/citation-verification/PROVENANCE.md); other external sources are recorded in [workspace/SKILL_SOURCES.md](workspace/SKILL_SOURCES.md).
+Dr. Zhang's user-level Claude Code configuration and research workflow skills. This repository snapshots the active user-level skills, including third-party copies and their supporting resources. See the [snapshot notes](workspace/USER_LEVEL_SYNC.md), [source inventory](workspace/USER_SKILLS_MANIFEST.json), and [third-party licenses](workspace/third-party-licenses/).
 
 ## What This Plugin Does
 
-60 bundled skills (v1.0.14; original provenance audit 2026-07-19):
+159 bundled skills (v1.0.15): 158 active user-level skills plus the retained `run-pipeline` skill. The original research bundle covers:
 
 - **Cross-model debate** — structured Claude+Codex deliberation (codex-debate, codex-debug-pair, codex-experiment-critic, codex-paper-adversary, codex-skill-optimizer)
 - **Experiment management** — GPU job orchestration on A800 (run-experiment, run-gpu-experiment, run-pipeline, monitor-experiment, collect-results, analyze-results, experiment-bridge, experiment-plot-advisor, upload-hf)
@@ -15,14 +15,21 @@ Dr. Zhang's research workflow skills for Claude Code. Third-party skills normall
 
 Provenance: 3 adapted hybrids (paper-write, paper-plan, paper-figure) carry PROVENANCE headers naming their upstream sources. `citation-verification` is an MIT-licensed copy from Galaxy-Dawn/claude-scholar, with source provenance and three EOF whitespace normalizations recorded separately. 20 third-party imports were removed 2026-07-19.
 
+The snapshot also includes the installed engineering, Nature, FSE, slide, and writing suites. Third-party files retain their own licenses, including MIT, Apache-2.0, and CC BY-NC-SA-4.0; the bundle is not uniformly MIT licensed. Historical updates below describe earlier releases.
+
 ## Workspace Configuration
 
-This repository also tracks the portable parts of the workspace that uses these skills:
+This repository tracks both the user-level snapshot and the earlier portable workspace example:
 
+- [`workspace/USER_CLAUDE.md`](workspace/USER_CLAUDE.md) — the exact active `~/.claude/CLAUDE.md` snapshot, including user-specific routing and paths.
 - [`workspace/CLAUDE.md`](workspace/CLAUDE.md) — project-level operating rules, with machine- and user-specific values replaced by placeholders.
-- [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md) — the historical 66-skill third-party workspace inventory, plus later source updates and the explicit citation-verification vendoring exception.
+- [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md) — current source policy and the historical third-party workspace inventory.
 
-Copy and adapt these files into a project-level `.claude/` setup; do not treat the example infrastructure names as live configuration.
+Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
+
+## User-Level Snapshot — v1.0.15
+
+Synchronized all 158 readable user-level skills and `~/.claude/CLAUDE.md` on 2026-10-01. The snapshot includes third-party skills, templates, scripts, and licenses; `slide-maker` is materialized from its symlink. The broken `run-baseline` symlink, nested Git metadata, caches, generated evaluation results, and unpublished `oral-paragraph-audit` fixtures 08–13 are excluded. Existing `run-pipeline` and project-level workspace configuration are retained. See [snapshot notes](workspace/USER_LEVEL_SYNC.md) for restore instructions and limitations.
 
 ## deai-latex Review Fixes — v1.0.14
 
@@ -64,9 +71,11 @@ retained, locally absent `run-pipeline` are documented in
 
 ## Installation
 
-Install from this repository as a Claude Code marketplace/plugin, then enable third-party sources separately according to [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md).
+Install from this repository as a Claude Code marketplace/plugin. The user-level skill copies are now included; independently installed plugins and parked skills are outside this snapshot. Avoid enabling duplicate copies of the same skills. For restoring the user-level configuration and skills directly, see [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
 ## Ecosystem (complements, does not duplicate)
+
+The following describes the historical workspace ecosystem; plugin settings are not included in the snapshot.
 
 Active plugins: ecc (engineering; blocker hooks disabled via ECC_DISABLED_HOOKS), claude-scientific-writer, academic-research-skills, ai-research-skills ×3, superpowers, planning-with-files, codex.
 Skill-sources clones: mattpocock-skills, nature-skills, sci-brain-repo, khazix-skills.
