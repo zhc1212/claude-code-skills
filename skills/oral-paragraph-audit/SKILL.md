@@ -46,22 +46,41 @@ well-formedness under Check 9, not as an unsupported claim under Check 8.
    - **Major**: weakens clarity, evidence, or flow but does not invalidate.
    - **Minor**: style or polish with low effect on reviewer judgment.
 
-   **Severity test**: a Major must name what the reviewer would misread or
-   fail to find. If the smallest fix is a one-clause edit or a word swap, the
-   finding is Minor.
+   **Severity test**: rate what leaving the text unchanged costs the reader,
+   not the size of the fix. A Major must name what the reviewer would misread
+   or fail to find; a one-word fix is Major when the word changes the claim or
+   the computation.
 
    **Blocking defaults** — everything else starts at Major or Minor:
    - Section role: a ¶ that does another section's job, or whose `\paragraph{}`
      heading names a job the body does not do.
-   - Check 7: an Experiments or Discussion ¶ that opens on a number instead of
-     a claim.
+   - Check 7: an Experiments or Discussion ¶ that opens on numbers whose metric
+     or claim the reader cannot tell. A number-first opening the reader can map
+     to a claim is rated by the severity test.
    - Check 8: a strong claim the supplied text neither supports nor scopes
      ("outperforms all", "significantly", "the primary cause").
    - Check 9: a symbol undefined at first use or carrying two meanings.
+
+   **Anchors**:
+   | Case | Severity |
+   |---|---|
+   | A dropped "not", a wrong dimension, a number attached to the wrong model | Major or Blocking, though the fix is one word |
+   | "reducing the error from A to B" where A and B are different objectives | Minor (Check 9) |
+   | A claim unscoped in S1 that later sentences of the ¶ narrow | Minor |
+   | A detail the ¶ lacks that another part of the paper may give (seed, split, harness) | Needs verification (Edge Cases), not a finding |
+   | A clear, correct paragraph | 0 Blocking / 0 Major, with the evidence lines |
 3. Provide replacement text with reasoning for Blocking and Major issues. For
    a Minor issue a one-line note suffices when the fix is obvious. Flag every
    Minor even when you don't rewrite it: at oral level they accumulate into
    reviewer friction.
+4. Check every Revised text against its Original before output: no claim,
+   mechanism, cause, or scope that neither the paragraph nor a source you read
+   gives; the same negations; each number, citation, and macro still attached
+   to its noun. When a Revised text replaces a whole sentence or more, write
+   the Original and the final Revised to temp files, run `python3 <this skill's
+   directory>/../deai-latex/scripts/audit_style.py compare ORIGINAL REVISED`,
+   and resolve each difference and review signal; rerun it after any change.
+   A statement that fails the check becomes `[fill: …]`.
 
 ## Edge Cases
 
@@ -69,7 +88,8 @@ well-formedness under Check 9, not as an unsupported claim under Check 8.
   figure, cited paper, or other-section content you cannot access, mark as
   "Needs verification — [source] not available" rather than flagging as
   unsupported. Reserve "unsupported" for claims the *supplied text* fails to
-  back.
+  back. The same holds for a detail the ¶ omits that a part of the paper you
+  have not read may give; once that part is read and lacks it, it is a finding.
 - **Light review**: if the user asks for a quick look ("快速看一下", "top issues
   only"), run all checks but present only the top 3 highest-severity findings.
 - **Long excerpts (>5 paragraphs)**: audit every paragraph, then run Check 5
@@ -197,7 +217,9 @@ hyperparameters in Method (they go in Experiments Setup), detailed numerical
 comparisons in Related Work (brief prior-work numbers for context are fine).
 When other sections are supplied or the paragraph came from a file, also flag
 a sentence or argument that another section already states: name both
-locations and keep the copy where the claim does its work. A repeated sentence
+locations and keep the copy where the claim does its work. An Introduction
+preview, a contribution or findings list, a Limitations item, or a Conclusion
+that restates the argument in a sentence is not a repeat. A repeated sentence
 is MINOR; a repeated argument of several sentences is MAJOR, because in a
 page-capped paper it takes space the argument needs.
 
@@ -282,7 +304,8 @@ Pick the shape from the request's verb:
 - **Rewrite**: the user asks to change the text (改, 帮我改, 改一下, rewrite,
   fix, polish) and not to check it (检查, 看看, audit, review). Run every check,
   then output only the revised paragraph, the `Finding summary:` line, the
-  F-lines as one line each, and `Added facts:`.
+  F-lines as one line each, and `Added facts:`; no check lines and no
+  verification notes.
 - **Audit**: every other request. Output the template below.
 
 ```
@@ -299,7 +322,7 @@ Strengths: [what works well]
 5a. Consistency: [OK / skipped (single ¶, no other section) / MAJOR: terminology drift]
 5b. First use:  [TERM → spelled out / defined in §_ / never / skipped (no other part of the paper)]
 5c. Placement:  [OK / S_ belongs in {Experiments/Setup/...} / S_ repeats §_]
- 6. De-AI:      [PASS / MINOR: isolated hits / MAJOR: hits cluster in one sentence]
+ 6. De-AI:      [PASS / MINOR: isolated hits / MAJOR: hits cluster in one sentence]; baseline: [type and file / none]; findings: ["phrase" (family), …]; dismissed: ["phrase" — reason, …]
  7. Section:    [OK / MAJOR: ...]
  8. Claims:     [OK / MAJOR: "X" unsupported / scope missing]
  9. Formulas:   [OK / skipped / BLOCKING: symbol X undefined]
@@ -329,7 +352,8 @@ Under each Blocking or Major F-line, provide:
 - **Original**: the problematic text
 - **Revised**: the replacement, built only from facts in the supplied text and
   in sources you read; a fact the fix needs but the text lacks goes in as
-  `[fill: what is needed]`
+  `[fill: what is needed]`. Keep what the text supplies: a `[fill]` stands
+  only for a missing fact, never for content the text already has
 - **Why**: one-sentence reasoning
 
 After the last F-line, emit `Added facts:` followed by `none`, or by each

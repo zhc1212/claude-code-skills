@@ -1,7 +1,7 @@
 """Checks for audit_style.py. Run: python3 scripts/test_audit_style.py (stdlib only)."""
 import os, sys, unittest
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from audit_style import allowance, features, new_words, protected, protected_diff
+from audit_style import allowance, features, negations, new_words, order_changed, protected, protected_diff
 
 def counts(text):
     return features(text)["counts"]
@@ -22,6 +22,14 @@ class Masking(unittest.TestCase):
         f = features("The method improves speed by 7.7% over the baseline on every run. However, it uses more memory.")
         self.assertEqual((f["sentences"], f["counts"]["conn initial"]), (2, 1))
         self.assertEqual(protected("It gains 7.7% over the baseline.")[("number", "7.7")], 1)
+
+    def test_header_line_of_saved_baseline_is_not_prose(self):
+        f = features("% type: unassisted; provenance: user, thesis 2021; section: method\nThe loss is small and stable.")
+        self.assertEqual((f["words"], f["counts"]["semicolon (clause)"]), (6, 0))
+
+    def test_fill_placeholder_colon_is_not_prose(self):
+        f = features("Each level lowers [fill: metric] from 42.1 to 19.1 after block optimization.")
+        self.assertEqual((f["counts"]["elab colon"], f["words"]), (0, 9))  # the placeholder is one word
 
     def test_run_in_heading_is_not_a_sentence(self):
         f = features("\\textbf{Hardware-aware optimization surface.} A full unitary has many entries for each qubit.")
@@ -97,6 +105,33 @@ class Compare(unittest.TestCase):
     def test_earlier_version_counts_as_source(self):
         rw = "We use the tuned $\\alpha$ from 42.1 to 19.3."
         self.assertEqual({w for w, _ in new_words(self.SRC, rw, earlier="We use it.")}, set())
+
+class MeaningSignals(unittest.TestCase):
+    # Rewrites that keep every protected span and add no content word, yet change the claim.
+    def test_removed_negation_is_reported(self):
+        self.assertEqual((negations("The pruned model is not within a point."), negations("The pruned model is within a point.")), (1, 0))
+
+    def test_number_abbreviation_is_not_a_negation(self):
+        self.assertEqual((negations("See No. 3 and no. 4 in Table 2."), negations("It needs no separate pass.")), (0, 1))
+
+    def test_swapped_numbers_are_reported(self):
+        self.assertIsNotNone(order_changed("It solves 52 problems against 47 for the baseline.",
+                                           "It solves 47 problems against 52 for the baseline."))
+
+    def test_swapped_citations_are_reported(self):
+        self.assertIsNotNone(order_changed("A~\\cite{a} is fast and B~\\cite{b} is small.",
+                                           "A~\\cite{b} is fast and B~\\cite{a} is small."))
+
+    def test_swapped_macro_is_reported(self):
+        diff = {(kind, value) for kind, value, _, _ in protected_diff(protected("\\ours{} solves 52 problems."),
+                                                                     protected("\\baseline{} solves 52 problems."))}
+        self.assertEqual(diff, {("command", "ours"), ("command", "baseline")})
+
+    def test_split_sentence_raises_no_signal(self):
+        src = "The profiler runs once per build~\\cite{a}, so its cost of 42 ms is not repeated."
+        rw = "The profiler runs once per build~\\cite{a}. Its cost of 42 ms is not repeated."
+        self.assertEqual((order_changed(src, rw), negations(src) - negations(rw),
+                          protected_diff(protected(src), protected(rw))), (None, 0, []))
 
 if __name__ == "__main__":
     unittest.main()

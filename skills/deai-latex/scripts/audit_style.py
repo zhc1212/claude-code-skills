@@ -31,6 +31,7 @@ def _is_latex(t):
     return re.search(r"\\[a-zA-Z]+", t) is not None  # in plain text, % is a percent sign
 
 def _mask_math(t):
+    t = re.sub(r"(?m)^[ \t]*%.*", "", t)  # a whole-line comment, e.g. a saved baseline's header
     if _is_latex(t):
         t = re.sub(r"(?<!\\)%.*", "", t)
     t = re.sub(r"\\begin\{(%s)\*?\}.*?\\end\{\1\*?\}" % DISPLAY, BREAK, t, flags=re.S)
@@ -40,6 +41,7 @@ def _mask_math(t):
 def prose(text):
     """Prose with comments, math, keys and commands masked; BREAK marks a hard sentence boundary."""
     t = _mask_math(text)
+    t = re.sub(r"\[fill:[^\]]*\]", "FILL", t)  # an audit placeholder, not prose
     t = re.sub(r"\\(%s)\*?(\[[^\]]*\])*%s" % (DROP_ARG, BR), "", t)
     t = re.sub(r"\\(%s)\*?(\[[^\]]*\])?%s" % (HEADING, BR), BREAK, t)
     t = re.sub(r"\\(textbf|textit|emph)%s" % BR, lambda m: BREAK if m.group(2).strip().endswith((".", ":")) else m.group(0), t)
@@ -104,7 +106,7 @@ def allowance(base_count, base_words, words):
     return math.ceil(base_count / base_words * words - 1e-9) if base_words else 0
 
 def protected(text):
-    """Multiset of spans a rewrite must keep: math, citation and reference keys, prose numbers, comments."""
+    """Multiset of spans a rewrite must keep: math, citation and reference keys, prose numbers, comments, command names."""
     spans = Counter()
     t = text
     if _is_latex(text):
@@ -117,10 +119,30 @@ def protected(text):
         group = "cite" if kind.startswith("cite") else "label" if kind == "label" else "ref"
         spans.update((group, k.strip()) for k in keys.split(",") if k.strip())
     spans.update(("number", n) for n in re.findall(r"(?<![A-Za-z\d.])\d+(?:\.\d+)?", prose(text)))
+    spans.update(("command", c) for c in re.findall(r"\\([a-zA-Z]+)", _mask_math(text)))
     return spans
 
 def protected_diff(src, rw):
     return sorted((k, v, src[(k, v)], rw[(k, v)]) for (k, v) in set(src) | set(rw) if src[(k, v)] != rw[(k, v)])
+
+def negations(text):
+    return len(re.findall(r"\b(not|never|neither|nor|none|cannot|without)\b|\bno\b(?!\.\s*\d)|n't\b", prose(text).lower()))
+
+def _sequences(text):
+    keys = [k.strip() for _, ks in re.findall(r"\\(cite[a-zA-Z]*|ref|eqref|autoref|cref|Cref)\*?(?:\[[^\]]*\])*\{([^}]*)\}", text)
+            for k in ks.split(",") if k.strip()]
+    return {"number": re.findall(r"(?<![A-Za-z\d.])\d+(?:\.\d+)?", prose(text)), "citation/reference": keys}
+
+def order_changed(src, rw):
+    """Kinds whose shared values appear in a different order: a number or key may now attach to another noun."""
+    a, b = _sequences(src), _sequences(rw)
+    out = []
+    for kind in a:
+        common = set(a[kind]) & set(b[kind])
+        sa, sb = [v for v in a[kind] if v in common], [v for v in b[kind] if v in common]
+        if sa != sb:
+            out.append((kind, sa, sb))
+    return out or None
 
 def stem(w):
     for suf in ("ations", "ation", "ings", "ing", "ency", "ence", "ies", "ied", "ness", "ments", "ment", "ent", "ly", "ed", "es", "d", "s", "e"):
@@ -188,6 +210,13 @@ def cmd_compare(a):
     print("\nprotected spans that differ (restore each):" if diff else "\nprotected spans: identical")
     for k, v, ns, nr in diff:
         print(f"  {k} {v!r}: source {ns}, rewrite {nr}")
+    ns, nr = negations(src), negations(rw)
+    moved = order_changed(src, rw) or []
+    print("\nreview signals (check each against the source sentence):" if ns != nr or moved else "\nreview signals: none")
+    if ns != nr:
+        print(f"  negations: source {ns}, rewrite {nr} (polarity)")
+    for kind, sa, sb in moved:
+        print(f"  {kind} order: source {sa}, rewrite {sb} (each still attached to its noun?)")
     words = new_words(src, rw, _read(a.earlier) if a.earlier else "")
     print("\ncontent words absent from the source (repair, a finding's plain word, or an addition):" if words else "\nnew content words: none")
     for w, s in words:

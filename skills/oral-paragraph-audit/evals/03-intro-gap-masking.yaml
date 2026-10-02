@@ -12,12 +12,12 @@ prompt: '/oral-paragraph-audit Audit this Introduction paragraph from an ML pape
 expected_behavior:
 - Identifies section as Introduction
 - Flags 'remarkable success' as booster / vague achievement claim (Check 6, deai-latex vocabulary)
-- Flags 'Moreover' and/or 'In addition' as gap-masking connectors (Check 4)
-- Flags S2-S3-S4 as parallel list structure rather than progressive deepening (Check 1 or Check
-  4)
+- Flags 'Moreover' and/or 'In addition' as gap-masking connectors (Check 2)
+- Flags S2-S3-S4 as parallel list structure rather than progressive deepening (Check 2 or Check
+  3a)
 - Flags 'significant challenges' as vague or booster language (Check 6)
-- Flags S5 as weak ending — 'motivated a growing body of work' is throat-clearing (Check 1 Step
-  D or Check 2)
+- Flags S5 as weak ending — 'motivated a growing body of work' is throat-clearing (Check 3a Step
+  D or Check 8)
 required_markers:
 - 'Section role\W{0,3}:'
 - 'Transitions\W{0,3}:'

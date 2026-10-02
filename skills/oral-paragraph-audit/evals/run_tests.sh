@@ -9,9 +9,10 @@
 #
 # One command, auto mode:
 #   bash evals/run_tests.sh          # regenerates a test only if its saved
-#                                    # output is missing or older than
-#                                    # SKILL.md / the test YAML; then runs
-#                                    # deterministic marker checks (the gate)
+#                                    # output is missing or its prompt, the
+#                                    # model, or a file in DEPS changed; then
+#                                    # runs deterministic marker checks (the
+#                                    # gate: output format only)
 # Options:
 #   bash evals/run_tests.sh 03       # single test
 #   bash evals/run_tests.sh --fresh  # force regeneration of all
@@ -21,6 +22,10 @@ set -euo pipefail
 
 SKILL_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 SKILL_FILE="$SKILL_DIR/SKILL.md"
+DEAI_DIR="$SKILL_DIR/../deai-latex"
+DEPS=("$SKILL_FILE" "$SKILL_DIR"/references/*.md "$DEAI_DIR"/SKILL.md "$DEAI_DIR"/references/*.md "$DEAI_DIR"/scripts/audit_style.py)
+GEN_MODEL=sonnet
+JUDGE_MODEL="${JUDGE_MODEL:-opus}"
 EVALS_DIR="$SKILL_DIR/evals"
 RESULTS_DIR="$EVALS_DIR/results"
 mkdir -p "$RESULTS_DIR"
@@ -105,24 +110,23 @@ sys.exit(0 if d.get('prompt') and d.get('required_markers') else 1)"; then
         gen_err=$((gen_err + 1)); return
     fi
 
-    # regenerate only when stale (or --fresh): output missing, SKILL.md newer,
-    # or the test prompt changed (hash) — marker-only edits never force regen
-    local hash_file="$RESULTS_DIR/${test_name}.prompt.md5"
+    # regenerate only when stale (or --fresh): output missing, or the hash of
+    # prompt + model + DEPS changed — marker-only edits never force regen
+    local hash_file="$RESULTS_DIR/${test_name}.key.md5"
     local cur_hash
-    cur_hash=$(yaml_get "$test_file" prompt | md5sum | cut -d' ' -f1)
+    cur_hash=$( { yaml_get "$test_file" prompt; echo "$GEN_MODEL"; cat "${DEPS[@]}"; } | md5sum | cut -d' ' -f1)
     local need_gen=0
     if [ "$FRESH" -eq 1 ] || [ ! -s "$output_file" ] \
-       || [ "$SKILL_FILE" -nt "$output_file" ] \
        || [ ! -f "$hash_file" ] || [ "$(cat "$hash_file")" != "$cur_hash" ]; then
         need_gen=1
     fi
 
     if [ "$need_gen" -eq 1 ]; then
         local prompt; prompt=$(yaml_get "$test_file" prompt)
-        echo "  Generating via real skill invocation (claude -p, model=sonnet)..."
+        echo "  Generating via real skill invocation (claude -p, model=$GEN_MODEL)..."
         local raw_file="$RESULTS_DIR/${test_name}.raw.jsonl"
         local exit_code=0
-        CLAUDE_WRAPPER_ASSUME_Y=Y timeout 300 claude -p --model sonnet --output-format json "$prompt" > "$raw_file" 2>/dev/null </dev/null || exit_code=$?
+        CLAUDE_WRAPPER_ASSUME_Y=Y timeout 300 claude -p --model "$GEN_MODEL" --output-format json "$prompt" > "$raw_file" 2>/dev/null </dev/null || exit_code=$?
         extract_claude_response < "$raw_file" > "$output_file" 2>/dev/null || true
         if [ $exit_code -ne 0 ] || [ ! -s "$output_file" ]; then
             echo -e "  ${RED}GENERATION ERROR (exit=$exit_code, output empty)${NC}"
@@ -152,17 +156,21 @@ sys.exit(0 if d.get('prompt') and d.get('required_markers') else 1)"; then
     # advisory judge (opt-in)
     if [ "$JUDGE" -eq 1 ]; then
         local output; output=$(cat "$output_file")
+        local task; task=$(yaml_get "$test_file" prompt)
         while IFS= read -r behavior; do
             [ -z "$behavior" ] && continue
             local judge_result
-            judge_result=$(CLAUDE_WRAPPER_ASSUME_Y=Y timeout 60 claude -p --model haiku --output-format json "You are a test judge. Given a skill output and an expected behavior criterion, determine if the output satisfies the criterion.
+            judge_result=$(CLAUDE_WRAPPER_ASSUME_Y=Y timeout 120 claude -p --model "$JUDGE_MODEL" --output-format json "You are a test judge. Given the task a skill received, its output, and one expected-behavior criterion, decide whether the output satisfies the criterion. Judge the behavior; a check number in parentheses is a hint, not a requirement. Read the whole output before answering FAIL.
 
-Answer ONLY 'PASS' or 'FAIL' on the first line, then one sentence of evidence.
+Answer ONLY 'PASS' or 'FAIL' on the first line, then one sentence of evidence quoting the output.
 
 Expected behavior: $behavior
 
-Skill output (truncated):
-${output:0:12000}" 2>/dev/null </dev/null | extract_claude_response || echo "SKIP: judge failed")
+Task given to the skill:
+$task
+
+Skill output:
+${output:0:30000}" 2>/dev/null </dev/null | extract_claude_response || echo "SKIP: judge failed")
             local first_line; first_line=$(echo "$judge_result" | head -1)
             if echo "$first_line" | grep -qi "PASS"; then
                 adv_pass=$((adv_pass + 1)); echo -e "  ${GREEN}~ advisory PASS${NC}: $behavior"

@@ -13,13 +13,13 @@ prompt: '/oral-paragraph-audit Audit this Experiments paragraph from an LLM comp
 
   '
 expected_behavior:
-- Flags S1 as mechanical signpost or recap of previous section (Check 1 Step A or Check 2)
-- Flags 'Furthermore' and/or 'Additionally' as gap-masking connectors (Check 4)
+- Flags S1 as mechanical signpost or recap of previous section (Check 3a Step A or Check 3b)
+- Flags 'Furthermore' and/or 'Additionally' as gap-masking connectors (Check 2)
 - Flags 'remarkable' or 'crucial' or 'underscore' as booster/filler/watchlist word (Check 6)
-- Flags 'utilising' or 'demonstrates' as Latinate over Anglo-Saxon (Check 6, deai-latex vocabulary)
-- Flags 'Taken together' as a watched sentence opener (Check 6, deai-latex additional watchlist)
+- Does NOT flag 'utilising' or 'demonstrates' as an AI-style finding (deai-latex finds no measured excess for Latinate words)
+- Does NOT flag 'Taken together' on its own as a de-AI finding (paragraph-closing interpretations are not a tell); counting it inside the S6 cluster is fine
 - Flags 'significantly better than all competing methods' as unscoped or missing table reference
-  (Check 3)
+  (Check 8)
 - Does NOT flag 'we' or 'our' as a register violation
 required_markers:
 - 'Section role\W{0,3}:'

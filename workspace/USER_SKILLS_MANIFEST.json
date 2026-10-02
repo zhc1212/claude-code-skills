@@ -128,7 +128,7 @@
     },
     {
       "name": "codex-debate",
-      "installed_skill_sha256": "c517d933210eacac6a73e20962b33d5f31d513ea07a4f76d7b6bb8fe4e7ddb10",
+      "installed_skill_sha256": "99c38e2b62375a7e0603be091c908bdb71e8471251498c87dfe4dfe1dab0366c",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },
@@ -178,7 +178,7 @@
     },
     {
       "name": "deai-latex",
-      "installed_skill_sha256": "1fce53587538d51ff3eeec0dea7483bbce1b1cb764616c82cd347ba27f03bf0f",
+      "installed_skill_sha256": "0c88045056cd350d58ca8a6a0e4ae4f9d9c3389e2f7eb3b2219b59cf27ec98b0",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence.",
       "packaging_note": "Description encoded as a YAML folded scalar; wording unchanged."
@@ -743,7 +743,7 @@
     },
     {
       "name": "oral-paragraph-audit",
-      "installed_skill_sha256": "c4a604730d10a6ab337ef338456b37cf05138ed2c79d026e1e5e289dad981c35",
+      "installed_skill_sha256": "df1b28d2ccaf2ae32b1c71423cd60ddbb2499fe580d3ad400d57e124bacef01c",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },

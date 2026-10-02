@@ -62,10 +62,9 @@ The difference is not vocabulary or polish. It is information architecture:
    the weight. Boosters (really, very, remarkably) inflate importance without adding
    information. Stakes-raisers (Interestingly, Indeed, Unsurprisingly) editorialize
    where the reader should judge for themselves. Overclaim verbs (prove, demonstrate
-   conclusively) promise what evidence rarely delivers. Prefer Anglo-Saxon over Latinate
-   when no precision is gained: use not utilise, show not demonstrate, about not
-   regarding. Respect venue and author style — this is a heuristic, not a universal rule.
-   *(Drives Check 6 categories B and C)*
+   conclusively) promise what evidence rarely delivers. Latinate words ("utilise",
+   "demonstrate") are not a tell: `/deai-latex` finds no measured excess.
+   *(Drives Checks 6 and 8)*
 
 10. **Paragraphs are vectors, not items in a list.** Each paragraph should relate to the
     previous one through contrast, specification, deepening, or mechanism — not mere

@@ -27,6 +27,26 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
+## Skill Evaluation Fixes — v1.0.16
+
+Synchronized `codex-debate`, `oral-paragraph-audit`, `deai-latex` and the new `shared-references/codex-cli.md`
+from the user level on 2026-10-02, after a Claude–Codex evaluation of the three skills:
+- `deai-latex`: `audit_style.py compare` now reports changed command names and flags removed negations and
+  numbers or citation keys in a new order. Eight new tests cover these, plus `[fill: …]` placeholders and
+  saved-baseline header lines. Step 1 names three reference types, the third being a co-written style
+  reference the user picks, and reuses saved baselines from `~/.claude/deai-baselines/`. A PASS states what
+  the passage was checked against.
+- `oral-paragraph-audit`: severity follows the consequence for the reader, with anchors. Revised text is
+  checked against the original before output, and `[fill]` stands only for missing facts. A detail another
+  section may give is Needs verification. The eval oracle is corrected, the cache keys on the references,
+  `deai-latex` and the model, and the advisory judge sees the task.
+- `codex-debate`: every Codex prompt is read-only. The exchange is saved to disk, and decision-bearing
+  citations are verified before synthesis. Round 3 or later needs a stated purpose. Codex calls go through
+  the CLI (`shared-references/codex-cli.md`).
+
+This is a partial sync. The CLI migration of the other Codex-calling skills is installed at the user level
+but not included here.
+
 ## User-Level Snapshot — v1.0.15
 
 Synchronized all 158 readable user-level skills and `~/.claude/CLAUDE.md` on 2026-10-01. The snapshot includes third-party skills, templates, scripts, and licenses; `slide-maker` is materialized from its symlink. The broken `run-baseline` symlink, nested Git metadata, caches, generated evaluation results, and unpublished `oral-paragraph-audit` fixtures 08–13 are excluded. Existing `run-pipeline` and project-level workspace configuration are retained. See [snapshot notes](workspace/USER_LEVEL_SYNC.md) for restore instructions and limitations.

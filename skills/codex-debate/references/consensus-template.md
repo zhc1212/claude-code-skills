@@ -3,6 +3,9 @@
 Date: {YYYY-MM-DD}
 Rounds: {N}
 Outcome: {consensus | decision-ready tradeoff | evidence-needed | stalemate}
+Codex: {model}, {effort}, thread {threadId}
+Exchange: docs/debates/{date}-{topic-slug}/
+Evidence revisions: {repo@commit, … for the code and data the cruxes rest on}
 
 ## Final Conclusion
 

@@ -14,6 +14,7 @@ expected_behavior:
 - Does NOT flag the paragraph for low density — enumerative content is expected here
 - Does NOT heavily penalize the final sentence for lacking an analytic conclusion (Step D relaxed)
 - Checks are mostly OK or minor — this is a well-formed setup paragraph
+- Treats details another part of the paper may give (seed value, splits, harness) as Needs verification, not as a Major omission
 required_markers:
 - 'Section role\W{0,3}:'
 - 'Structure\W{0,3}:'

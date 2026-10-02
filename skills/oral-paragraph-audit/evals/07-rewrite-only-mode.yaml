@@ -8,8 +8,9 @@ prompt: '/oral-paragraph-audit 帮我改一下这段 experiments paragraph for I
   '
 expected_behavior:
 - Recognizes '帮我改' as a rewrite-only request
-- Presents revised text rather than the full 10-check scorecard
+- Presents revised text rather than the full audit template
 - Includes a brief severity summary of what was fixed
+- The revised text keeps the facts the input supplies (11.4 on WikiText-2 for LLaMA-7B, tests on PTB and C4, Table 1) and uses [fill] only for facts the input lacks
 - The revised text removes throat-clearing from S1
 - The revised text removes or replaces 'Furthermore', 'Additionally', 'Indeed'
 - The revised text removes 'showcase the effectiveness of our novel approach' or replaces with
@@ -17,5 +18,5 @@ expected_behavior:
 required_markers:
 - \b(Blocking|Major|Minor)\b
 forbidden_markers:
-- 'Section role\W{0,3}:'
-- 'Transitions\W{0,3}:'
+- '^[\s\-*]*Section role\**\s*:'
+- '^[\s\-*\d.]*Transitions\**\s*:'

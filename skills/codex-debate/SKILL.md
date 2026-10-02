@@ -1,9 +1,11 @@
 ---
 name: codex-debate
-description: Conducts structured multi-round debates between Claude and Codex (GPT via MCP) on research directions, code architecture, experiment design, or technical tradeoffs. Elicits independent blind opening positions using Toulmin argumentation, identifies cruxes, requires steel-manning before rebuttals, and synthesizes a consensus or documented disagreement with calibrated confidence. Use whenever the user wants two models to deliberate — triggers on "和codex讨论", "codex debate", "codex brainstorm", "让codex和你辩", "多轮探讨", "头脑风暴codex", "cross-model debate", "codex discuss", "两个模型讨论", "让两个模型辩一下", "两个AI讨论", "pros and cons with codex", "和codex头脑风暴", "codex 你怎么看" (when back-and-forth is intended). Not for code review (/codex-review) or quick one-shot questions (/codex consult).
+description: Conducts structured multi-round debates between Claude and Codex (GPT via Codex CLI) on research directions, code architecture, experiment design, or technical tradeoffs. Elicits independent blind opening positions using Toulmin argumentation, identifies cruxes, requires steel-manning before rebuttals, and synthesizes a consensus or documented disagreement with calibrated confidence. Use whenever the user wants two models to deliberate — triggers on "和codex讨论", "codex debate", "codex brainstorm", "让codex和你辩", "多轮探讨", "头脑风暴codex", "cross-model debate", "codex discuss", "两个模型讨论", "让两个模型辩一下", "两个AI讨论", "pros and cons with codex", "和codex头脑风暴", "codex 你怎么看" (when back-and-forth is intended). Not for code review (/codex-review) or quick one-shot questions (/codex consult).
 ---
 
 # Codex Debate
+
+> Codex calls (`codex exec`, `codex exec resume`) follow `../shared-references/codex-cli.md`.
 
 Stress-test technical decisions by eliciting independent positions from Claude and
 Codex, identifying cruxes, and producing either a justified consensus or a clear
@@ -84,11 +86,13 @@ logic rather than talking past each other.
 
 ## Phase 2: Blind Opening
 
-Send Codex the evidence packet and topic. Via `mcp__codex__codex` with
+Send Codex the evidence packet and topic. Via `codex exec` with
 `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`:
 
 ```
 ## Independent Position Request: {topic}
+
+Read-only: analyse and report; do not create, modify, or delete any file.
 
 ### Evidence Packet
 {neutral evidence packet from Phase 1}
@@ -115,7 +119,12 @@ Also provide:
 [failure modes, edge cases]
 ```
 
-Save the `threadId` — all subsequent rounds use `mcp__codex__codex-reply`.
+Save the `threadId` — all subsequent rounds use `codex exec resume`.
+
+Keep the exchange on disk as it happens, in `docs/debates/{date}-{topic-slug}/`:
+`packet.md`, `thread_id`, and per round `r{N}-prompt.md` (written before
+sending) and `r{N}-codex.md` (the `-o` file), with the blind opening as round 0.
+The saved document links here instead of reconstructing the exchange.
 
 ### Optional Context Follow-Up
 
@@ -164,10 +173,12 @@ After crux identification, briefly present the crux ledger inline (positions,
 agreements, cruxes) and **proceed directly to Round 1** without waiting for
 user input. The user can interrupt at any point if they want to steer.
 
-Then send Round 1 via `mcp__codex__codex-reply`:
+Then send Round 1 via `codex exec resume`:
 
 ```
 ## Round 1 — Claude's Position + Crux Analysis
+
+Read-only: analyse and report; do not create, modify, or delete any file.
 
 ### Claude's Opening Position
 {Toulmin-structured claims, now revealed}
@@ -199,6 +210,9 @@ Respond with:
 ## Phase 4: Focused Rounds
 
 Expect 2-3 rounds. Continue to 6 only while crux statuses are still changing.
+Before round 3 and each later round, name the crux it can resolve and whether
+raw evidence (reading the code, a run) would resolve it more cheaply; if
+neither, stop.
 
 Each round uses a lighter **delta format** — only new decision-relevant claims
 need full warrant + qualifier + falsifier. Concessions and restatements are
@@ -218,12 +232,14 @@ free-form. This keeps the debate focused without making every message a form.
 > **Round N**: Codex challenged [X] — conceded [confidence: high→low] because [reason].
 > Defending [Y] [confidence: high] with [counter-evidence]. Cruxes resolved: [A]. Open: [B].
 
-### 4c. Send next round via `mcp__codex__codex-reply`
+### 4c. Send next round via `codex exec resume`
 
 Summarize prior rounds instead of pasting full transcripts.
 
 ```
 ## Round {N} — Claude's Response
+
+Read-only: analyse and report; do not create, modify, or delete any file.
 
 ### Steel-Man
 [Codex's strongest current argument, restated]
@@ -265,6 +281,9 @@ A useful documented disagreement is better than artificial agreement.
 
 Before summarizing, verify:
 - Every crux has a final status in the ledger
+- Every decision-bearing or disputed file:line citation, from either model, has
+  been opened and checked; one that cannot be checked is labelled unverified and
+  the recommendation says it depends on it
 - The recommended action follows from resolved cruxes (not from rhetoric)
 - Empirical claims are supported or labeled as hypotheses
 - Unresolved disagreements are preserved, not smoothed into fake consensus
@@ -328,12 +347,14 @@ Template: see [references/consensus-template.md](references/consensus-template.m
 - Track confidence changes explicitly. If you went from high to low on a claim,
   say so and say why — this is the most valuable signal in the debate.
 
-## Codex MCP
+## Codex CLI
 
-- **First call**: `mcp__codex__codex` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
-- **Follow-ups**: `mcp__codex__codex-reply` with saved `threadId` + `prompt`
-- Starting a fresh `mcp__codex__codex` mid-debate erases Codex's memory of
+- **First call**: `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
+- **Follow-ups**: `codex exec resume` with saved `threadId` + `prompt`
+- Every prompt, first and follow-up, carries the read-only line from the Phase 2
+  template: the `codex` wrapper runs with write access inside the Claude sandbox
+- Starting a fresh `codex exec` mid-debate erases Codex's memory of
   prior rounds — always use the reply endpoint after the first call
-- On MCP error (including initial connection failure): tell the user, ask
+- On Codex CLI error (including initial connection failure): tell the user, ask
   whether to retry or summarize current state. If Codex is unreachable before
   the debate starts, offer to proceed as a solo analysis instead

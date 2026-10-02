@@ -25,8 +25,9 @@ Strengths: concrete numbers, clear progression across levels
 5a. Consistency: skipped (single ¶, no other section)
 5b. First use:  skipped (no other part of the paper)
 5c. Placement:  S1-S2: OK. S3: generic, belongs nowhere. MAJOR (F2).
- 6. De-AI:      "robust" (S2, watchlist), "demonstrates the effectiveness" (S3, vague
-               achievement claim). One hit per sentence, no cluster. MAJOR (F3), MAJOR (F2).
+ 6. De-AI:      MAJOR (F2); baseline: none; findings: "demonstrates the effectiveness"
+               (S3, vague achievement, isolated); dismissed: "robust" (S2, Tier 2 with no
+               other hit in its sentence).
  7. Section:    Experiments ¶ must open with a claim, not data. BLOCKING (F1).
  8. Claims:     "robust" — no table ref, no scope qualifier. MAJOR (F3).
                "effectiveness" — vague, not refutable. MAJOR (F2).
@@ -37,12 +38,12 @@ Finding summary: 1 Blocking / 2 Major / 0 Minor
 F1 BLOCKING (Checks 3a, 7): S1 opens on data, not a claim.
    - **Original**: "42.1 drops to 19.1 after block optimization and 11.4 after full-model optimization."
    - **Revised**: "Each optimization level lowers [fill: metric]: from 42.1 to 19.1 after block optimization and to 11.4 after full-model optimization ([fill: table ref])."
-   - **Why**: claim-first structure; the table ref grounds the evidence.
+   - **Why**: the reader cannot tell what the numbers measure or what they show; the table ref grounds the evidence.
 F2 MAJOR (Checks 1, 2, 3a, 3b, 5c, 6, 8): S3 restates S1–S2 and adds nothing.
    - **Original**: "This demonstrates the effectiveness of our approach."
    - **Revised**: [delete]
    - **Why**: the sentence carries no claim a reader could check.
-F3 MAJOR (Checks 6, 8): "robust" is unsupported and unscoped.
+F3 MAJOR (Check 8): "robust" is unsupported and unscoped.
    - **Original**: "The gains are robust across five architectures."
    - **Revised**: "The gains hold across five architectures ([fill: table ref])."
    - **Why**: "hold" states what was measured; the table ref supports it.
