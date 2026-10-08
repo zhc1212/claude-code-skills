@@ -158,7 +158,7 @@
     },
     {
       "name": "codex-skill-optimizer",
-      "installed_skill_sha256": "a88b2e4ab4398817170e27858b508ba83f4afa7eb4aa5b47d17d1b8654df9d40",
+      "installed_skill_sha256": "4369b415aeecf489d8d5b83c6eab5dc04a2c5aac76e870b1d067dbb8119e2ccc",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },
@@ -1148,19 +1148,20 @@
       "skill_md_matches_clone": true
     },
     {
+      "name": "writing-for-agents",
+      "installed_skill_sha256": "551adca942227b44192edba88acd4e8db911f0121ce58ad16944ccf6a896a74a",
+      "source": "https://github.com/mattpocock/skills",
+      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
+      "source_path": "skills/productivity/writing-for-agents/SKILL.md",
+      "skill_md_matches_clone": true
+    },
+    {
       "name": "writing-fragments",
       "installed_skill_sha256": "298b0edd23df229183630de592ed8aa4289233560f2040691f6eb77caeaad4ea",
       "source": "https://github.com/mattpocock/skills",
       "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
       "source_path": "skills/in-progress/writing-fragments/SKILL.md",
       "skill_md_matches_clone": true
-    },
-    {
-      "name": "writing-great-skills",
-      "installed_skill_sha256": "10e8265961c0c4cd4a4142d5d659f2b0d0903b7e020d69870c635d0749e679b9",
-      "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "note": "Installed copy retained; original path absent in current clone. Commit is an observed clone HEAD, not an exact installed revision."
     },
     {
       "name": "writing-shape",

@@ -1,6 +1,6 @@
 ---
 name: codex-skill-optimizer
-description: "Use when evaluating, auditing, or improving any Claude Code skill — whether project-local or global. Runs a cross-model optimization pipeline: domain research, blind Claude+Codex debate, consensus-driven rewrites, and structured final audit. Triggers on \"evaluate skill\", \"optimize skill\", \"audit skill\", \"improve skill\", \"skill quality check\", \"评估skill\", \"优化skill\", \"skill审查\", \"检查skill质量\", or when the user points at a SKILL.md and wants it improved. Not for creating skills from scratch (use /writing-great-skills) or for debating non-skill topics (/codex-debate)."
+description: "Use when evaluating, auditing, or improving any Claude Code skill — whether project-local or global. Runs a cross-model optimization pipeline: domain research, blind Claude+Codex debate, consensus-driven rewrites, and structured final audit. Triggers on \"evaluate skill\", \"optimize skill\", \"audit skill\", \"improve skill\", \"skill quality check\", \"评估skill\", \"优化skill\", \"skill审查\", \"检查skill质量\", or when the user points at a SKILL.md and wants it improved. Not for creating skills from scratch (use /writing-for-agents) or for debating non-skill topics (/codex-debate)."
 ---
 
 # Codex Skill Optimizer
@@ -23,11 +23,11 @@ audit, this catches problems that no single-pass review would find.
 - Auditing an existing skill for quality gaps
 - Optimizing a skill after initial creation
 - Bringing an old skill up to current standards
-- After creating a skill with /writing-great-skills
+- After creating a skill with /writing-for-agents
 
 ## When NOT to Use
 
-- Creating a skill from scratch — use /writing-great-skills
+- Creating a skill from scratch — use /writing-for-agents
 - Debating a non-skill topic — use /codex-debate
 - Quick one-off skill check — just read the SKILL.md and comment
 

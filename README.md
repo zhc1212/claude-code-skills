@@ -27,6 +27,12 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
+## writing-for-agents — v1.0.18
+
+`writing-great-skills` is replaced by its upstream successor `writing-for-agents` (mattpocock/skills renamed
+and restructured it), which the updated `ask-matt` refers to. `codex-skill-optimizer` and
+`workspace/USER_CLAUDE.md` point to the new name.
+
 ## Upstream Skill Updates — v1.0.17
 
 Synchronized from the user level on 2026-10-08:

@@ -62,7 +62,7 @@ About 160 skills from several suites are installed and many overlap. When a task
 | Code review | Cross-model, multi-round: `codex-review` (audit-only by default; prefer it when Codex should read the repo, and over `auto-review-loop`, which is for ML-paper scoring). Standards + spec review of a diff: local `code-review` |
 | Debugging | `codex-debug-pair` for a second model's hypotheses |
 | TDD | `tdd` |
-| Writing skills | Design vocabulary: `writing-great-skills`. Inside a plugin: `plugin-dev:skill-development` |
+| Writing skills | Skills, CLAUDE.md and other agent-read docs: `writing-for-agents`. Inside a plugin: `plugin-dev:skill-development` |
 | Slides | pptx: `slide-maker` (default) or `ppt-master` (brand/template workspaces). Typst: `write-slides`. Paper → Chinese deck: `nature-paper2ppt`. Quarto/Beamer layout audit: `visual-audit-slides` |
 | TS/frontend engineering | mattpocock suite (`tdd`, `code-review`, `prototype`, …) |
 
