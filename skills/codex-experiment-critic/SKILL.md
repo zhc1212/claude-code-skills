@@ -5,6 +5,8 @@ description: Reviews experimental designs via Codex (GPT) before committing GPU 
 
 # Codex Experiment Critic
 
+> Codex calls (`codex exec`, `codex exec resume`) follow `../shared-references/codex-cli.md`.
+
 Catch flawed experimental designs before they waste GPU weeks. Claude prepares
 the experiment plan, Codex critiques it blind — independent review from a
 different model family catches design flaws that self-review misses, because
@@ -103,7 +105,7 @@ without being steered by Claude's framing.
 
 ## Phase 4: Codex Blind Critique
 
-Send via `mcp__codex__codex` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`:
+Send via `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`:
 
 ```
 ## Experiment Design Critique
@@ -205,7 +207,7 @@ After presenting:
 The user decides. Three paths:
 
 1. **Revise**: fix the flagged issues, optionally re-run the critique on
-   the revised plan via `mcp__codex__codex-reply` with the saved threadId
+   the revised plan via `codex exec resume` with the saved threadId
 2. **Proceed anyway**: the user understands the risks and wants to run —
    acknowledge and note which findings they accepted
 3. **Redesign**: go back to hypothesis formulation
@@ -216,7 +218,7 @@ findings, let them choose.
 ## Follow-Up
 
 The user can ask to:
-- **Clarify a finding**: use `mcp__codex__codex-reply` with the saved
+- **Clarify a finding**: use `codex exec resume` with the saved
   threadId to ask Codex to elaborate or reconsider
 - **Re-critique after revision**: send the updated plan elements to Codex
   for a delta review
@@ -239,11 +241,11 @@ The user can ask to:
 - Separate "reviewer would ask" from "results would be invalid." Missing
   a nice-to-have ablation is different from having a confounded comparison.
 
-## Codex MCP
+## Codex CLI
 
-- **First call**: `mcp__codex__codex` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
-- **Follow-ups**: `mcp__codex__codex-reply` with saved `threadId` + `prompt`
-- Starting a fresh `mcp__codex__codex` mid-critique erases Codex's memory of
+- **First call**: `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
+- **Follow-ups**: `codex exec resume` with saved `threadId` + `prompt`
+- Starting a fresh `codex exec` mid-critique erases Codex's memory of
   the experiment context — always use the reply endpoint after the first call
-- On MCP error: tell the user, offer to retry or proceed with Claude-only
+- On Codex CLI error: tell the user, offer to retry or proceed with Claude-only
   assessment (clearly labeled as single-model, not cross-validated)

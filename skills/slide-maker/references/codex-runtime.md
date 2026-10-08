@@ -22,12 +22,17 @@ The adapter has two kinds of rules:
   frame with no image in it are not judgment calls. If a bar genuinely should not be measured,
   do not tag it — an untagged bar is unchecked, which is an honest state, unlike a waived one.
 - **Accessibility floors (`STRICT_WARNINGS`): remediate or waive, never ignore.** `ICON CONTRAST`
-  and `NON-TEXT CONTRAST` are WCAG 1.4.11's 3:1 floor for marks that carry meaning. They arrive as
+  and `NON-TEXT CONTRAST` are WCAG 1.4.11's 3:1 floor for marks that carry meaning. `TEXT CONTRAST` is
+  WCAG 1.4.3's 4.5:1 for text under 14pt, or under 18pt and not bold, on a fill — the finding names the
+  nearest ink that keeps the hue; use it. The set is `lint_deck.A11Y_BLOCKING`, read by both runtimes. They arrive as
   per-slide *warnings*, a stream the gate previously had no strict path for at all — so a deck
   could ship an icon at 2.69:1 and pass. To waive one, record
   `{"kind": "a11y", "warning": "<CODE>", "reason": "<why this mark is decorative>"}`; a decorative
   flourish whose meaning is carried by an adjacent label is a legitimate waiver, and a bare "ok"
-  is refused. Only floors with an arithmetic answer live here: a ratio either clears 3:1 or it
+  is refused. For a mark that is pure decoration you BUILD (a pale washi tape, a hairline flourish),
+  prefer declaring it in the build script: `dk.decorative(shape, "<why nothing rides on seeing it>")`.
+  The lint then never raises the warning for that shape and prints the exemption with its reason;
+  the deck-level waiver stays for marks you cannot edit. Only floors with an arithmetic answer live here: a ratio either clears 3:1 or it
   does not. Density, component reach and form variety stay judgment calls — forcing a judgment
   through a waiver form turns it into a rubber stamp.
 - **Taste-sensitive calls that stay explainable:** components, icon dosage, and form variety. Do not
@@ -196,6 +201,55 @@ be reconstructed post-hoc at the delivery gate.
 2u. 🔴 **The direction you rendered and the deck you ship must be the same one.** `codex_delivery_gate.py` runs `check_direction_applied.py`: ground, accent presence, display/body faces and `centred` vs `low-left` are compared against the picked entry in `directions.json`. Record a deliberate move per axis in `design.direction_deviations` — an unrecorded one is the version the user cannot see. And a direction's `cover_motif`/`ambient_motif` must DRAW (svg / a styled box), never describe: the preview renders them, so prose ships as text on the sample tiles.
 
 2w. 🔴 **Build the register's SURFACE with `register_surface.py`, not by hand from the prose.** `ground(slide, reg, role=…, index=n)` paints the register's furniture and returns the content rect that is left; `card(slide, reg, x, y, w, h)` returns its card FORM; the marks (`halftone`/`starburst`/`boomerang`/`zigzag`/`tri`/`scanlines`/`color_band`) are callable alone for a bespoke look. **All 18 registers have a kit**; a name that is not a register RAISES rather than silently giving you a plain page, and painting a surface before `presets.apply()` set the palette says so instead of dying on a blend. `python3 scripts/sigs.py ground card halftone …` resolves these the same way it resolves deckkit's helpers — look them up before hand-rolling a mark. Kits scale to any canvas the format table supports (13.33in, portrait, A0/A1 posters). `codex_delivery_gate.py` NOTES a deck that declared a kitted register and built none of its surface.
+2s. 🔴 **Editorial forms are library calls — look them up, do not hand-roll them.** A photo in a
+   circle / arch / chamfered / notched card / blob is `picture(..., fit="cover", shape=…, focus=…)`;
+   a tilted pinned print is `picture(..., rotation=-4)` held by `ornaments.tape(..., holds=pic)`; one
+   word on a highlighter block is `dk.mark(run, color)` inside a `text()` paragraph (never a box
+   behind the word — it drifts off when the line wraps); hand-made marks are `ornaments.squiggle` /
+   `scribble` / `brush_stroke` / `scallop` (motif-tagged — a number set ON a brush swash or badge is
+   declared with `overlap_intent` on the TEXT); a die-cut sticker is `image_fx.sticker_outline` on a
+   transparent cut-out; real frosted glass over a photo is `frosted_panel` (it returns the ink to use).
+   `python3 scripts/sigs.py --search "mask|tape|glass|highlight|ornament"` finds all of them and
+   `--example <name>` hands back a call the smoke suite runs. Both gates measure rotated shapes where
+   they paint, so tilted prints and vertical margin labels are checked like any other shape.
+
+2t. 🔴 **An image-led deck runs the SERIES pipeline.** When the picked direction is image-led, record
+   `"design": {"imagery": "series", "image_series": "<deck>/series.json"}` in the evidence file, write
+   the plan (`references/image-generation.md` → "Image-led decks — the SERIES exception": every slot's
+   `meaning`, `referent` and `kind`), then run, in order, the command each step prints:
+   `python3 scripts/image_series.py check <deck>/series.json` →
+   `python3 scripts/image_series.py prompts <deck>/series.json <deck>/assets/generated` →
+   `python3 scripts/generate_images_codex.py <deck>/assets/generated/image_prompt_manifest.json --only <key-id>`
+   (LOOK at the key image) → the same command with `--style-ref <the key image>` instead of `--only` →
+   `python3 scripts/image_series.py cutout <deck>/series.json --dir <deck>/assets/generated` →
+   `python3 scripts/image_series.py qc <deck>/series.json --dir <deck>/assets/generated`. Place every
+   slot with `image_series.slot_picture(s, plan, "<id>", x, y, w, h, image_dir=…)` (`plan =
+   image_series.load("<deck>/series.json")`; a build script outside `scripts/` first does
+   `sys.path.insert(0, "<skill>/scripts")`) — never
+   `dk.picture` for a series image: the delivery gate blocks an image-led deck with no slot placed
+   through it, a generated picture with no slot, and a generated person beside a name/role/quote with
+   no visible 'fictional' label. `python3 scripts/sigs.py --example slot_picture` prints a call the
+   smoke suite runs.
+
+2u. 🔴 **A visual language builds with its page functions.** When the picked direction is a visual
+   language (`"vl"` in `directions.json`) — or the USER named one ("make it editorial"): then there was no
+   competition to stage, so record `design.direction` as `{"branch": "user-named", "look": "visual language:
+   <name>", "user_words": "<their words, verbatim>"}` and `design.direction_gate` as `"n/a - user supplied the
+   look"` (no preview directions; the gate checks the two agree and that the look names the recorded
+   `visual_language`) — read `references/visual-languages.md`, then in the build
+   script: `k = visual_languages.use("<name>", prs)` and one page function per slide —
+   `k.cover / section / image_text / quote / data / closing(k.new_slide(), …)`, each inside its own
+   `def slide_NN(prs, k):` (the gate maps every `design.slides[].function` to a `def` in the build script and
+   reads the calls inside it, so module-level calls read as "function absent") — with ordinary pages
+   ALSO started with `k.new_slide()` and built on `register_surface.card(slide, "<name>", …)` and
+   `k.run(text, size)` runs. `python3 scripts/sigs.py cover section quote` prints the kit's page functions
+   as `Kit.<name>` (a bare `cover` also exists in deckkit — a different call). Record it with the command
+   `python3 scripts/visual_languages.py --gates <name> --ground <ground> --deck <deck> --for "<what the deck is for>"`
+   prints: six values, that ground's own palette hexes included (Codex evidence: the same six under
+   `design`). Build with `use(name, prs, ground="auto")` — it prints the ground it chose (the contrast one
+   after a run of cream decks; printed boards stay light). The delivery gate blocks a recorded language that
+   was not applied, or an unknown ground.
+   `python3 scripts/sigs.py --example vl_cover` prints a call the smoke suite runs.
 
 2v. 🔴 **An invented register gets a KIT, not hand-built style code.** `register_surface.register(name, ground=…, card=…, forbids=…)` — then `ground()`/`card()` work for it as for a preset, and `check_register_guard` enforces the prohibitions it declares. `python3 scripts/register_surface.py --new "<name>"` scaffolds one with the contracts wired; `python3 scripts/bespoke_kits.py --sample <out.pptx>` renders the four library registers (`current` · `transit-signage` · `ledger` · `k-space`) to adapt from. `save_register.py` records the kit file at hand-off. 🔴 **Write the kit into the DECK FOLDER** (`--out <deck-dir>/surface_<name>.py`): `check_register_guard` loads `surface_*.py` from beside the deck, which is the only reason a bespoke register's prohibitions are enforceable at gate time — the gate runs in a fresh process and a kit that was never imported there does not exist. The gate also tells you whether an invented register has a kit at all.
 
@@ -349,8 +403,22 @@ interview answer at all — each reads the built file itself):
    from rendered alternatives or it was not, and both are recordable.
 
    ```json
-   "direction_gate": {"candidates": "directions.json", "picked": "<the one chosen>"}
+   "direction_gate": {"candidates": "directions.json", "picked": "<the one chosen>", "images": "photos"}
    "direction_gate": "n/a - <locked template | mimic | user supplied the look | tiny ask>"
+   ```
+
+   `images` (`photos | illustrations | none`) states the KIND of pictures the deck will carry — the user's, or
+   ones you generate or fetch — or none. `none` while `image_sources` records `generated`/`sourced` pictures (or
+   `imagery` is `series`) is refused as a contradiction. With pictures, at least ONE candidate is a visual language
+   (`visual_languages.direction("<name>")`: photos → editorial / soft / collage, illustrations → storybook),
+   or the gate holds the deck; the set's named `waived` is the escape.
+   With `images: none`, at least ONE candidate is a native language (`visual_languages.direction("ink" | "poster"
+   | "cutpaper" | "drafting")`) and the record carries `native_fit` BESIDE `images`; `codex_delivery_gate.py`
+   holds a set without it:
+
+   ```json
+   "direction_gate": {"candidates": "directions.json", "picked": "<the one chosen>", "images": "none",
+                      "native_fit": {"language": "ink", "why": "a talk on tea craft: culture and ritual"}}
    ```
 
    `codex_delivery_gate.py` runs `scripts/directions_diversity.py` over the candidates ITSELF, so
@@ -436,7 +504,8 @@ interview answer at all — each reads the built file itself):
    a callout next to a title, a component value next to a neighbouring diagram, or an icon whose glyph
    carries a specific meaning. Each zone names its exact text target or geometry, what it must clear,
    and a minimum `0.12in` gap; each semantic icon records the actual `lucide:*` build token and a
-   sentence explaining its job. After render, run `codex_visual_contract.py` to recompute these checks
+   sentence explaining its job. The manifest opens `{"schema": "slide-maker-codex-visual-contract/v1",
+   "zones": [...], "icons": [...]}` (empty lists are legal). After render, run `codex_visual_contract.py` to recompute these checks
    against the final PPTX and produce small PNG crops for review. This is intentionally not a generic
    box-overlap lint: it makes the few high-risk relationships explicit without penalising deliberate
    overlays or bespoke composition.
@@ -519,7 +588,8 @@ python3 scripts/codex_delivery_gate.py --init .codex-deck-evidence.json
 Fill it from actual artifacts, not memory. The v2 record binds the final PPTX and build script to their
 SHA-256 hashes; stores the source/claim ledger, content and design checkpoint records, **both
 competitions — the CONTENT arc (`content.arc`: the arc that won, the ones it beat with the clause that
-lost each, and `arc_divergence.py`'s verdict) and the DESIGN direction** (`design.direction`), **the
+lost each, and `arc_divergence.py`'s verdict; `python3 scripts/arc_divergence.py --template` prints a skeleton and
+the CLOSED list of `shape` values the gate accepts) and the DESIGN direction** (`design.direction`), **the
 governing picture** (`design.concept`: chosen + the two it beat), per-slide form
 ledger, four clean-branch direction tokens and preview, final rendered signature proof, categorical
 icon assets, visual-contract manifest/result, and two separate critic JSON files.
@@ -556,8 +626,9 @@ placeholder, an empty page, planned icons the reader cannot see → `fixed`), **
 `refuted` is a legal exit and a fake fix is not. Measured on a shipped 15-page deck: ten hard
 findings, one of them a body-vs-source-line number contradiction that had already cleared the
 provenance gate, the critic, and fifteen `ok` self-check verdicts. No independent reader in this
-runtime? Claim `waived_category: "no-reader"` — it records that the deck shipped **unread**, which
-is a different statement from claiming it was read.
+runtime? REPLACE `answers` and `findings` with `{"waived": "<why no independent reader read this deck>",
+"waived_category": "no-reader"}` (both keys; a category beside unanswered `answers` is not a waiver) — it
+records that the deck shipped **unread**, which is a different statement from claiming it was read.
 🔴 **The taste ledger is consulted at design time** — `scripts/taste_ledger.py list --binds-at
 design --format prompt` prints what THIS user has already corrected by hand on earlier decks, and
 `design_plan.taste_applied` records one row per active entry (`applied: true`, or `applied: false`

@@ -2,10 +2,13 @@
 name: experiment-bridge
 description: "Workflow 1.5: Bridge between idea discovery and auto review. Reads EXPERIMENT_PLAN.md, implements experiment code, deploys to GPU, collects initial results. Use when user says \"实现实验\", \"implement experiments\", \"bridge\", \"从计划到跑实验\", \"deploy the plan\", or has an experiment plan ready to execute."
 argument-hint: [experiment-plan-path-or-topic]
-allowed-tools: Bash(*), Read, Write, Edit, Grep, Glob, Agent, Skill, mcp__codex__codex, mcp__codex__codex-reply
+allowed-tools: Bash(*), Read, Write, Edit, Grep, Glob, Agent, Skill
 ---
 
 # Workflow 1.5: Experiment Bridge
+
+> Codex calls (`codex exec`, `codex exec resume`) follow `../shared-references/codex-cli.md`.
+> Not installed on this machine: `/experiment-queue` and `/experiment-plan`. `/run-experiment` lacks the queue's retry, dependency and persistence guarantees, so when a milestone would route to `/experiment-queue`, say so and ask the user how to run that batch.
 
 Implement and deploy experiments from plan: **$ARGUMENTS**
 
@@ -109,7 +112,7 @@ For each milestone (in order), write the experiment scripts:
 Before deploying, send the experiment code to GPT-6-Astra xhigh for review:
 
 ```
-mcp__codex__codex:
+codex exec:
   model: gpt-6-astra
   config: {"model_reasoning_effort": "xhigh"}
   prompt: |
@@ -138,7 +141,7 @@ mcp__codex__codex:
 **On review results:**
 - **No CRITICAL issues** → proceed to Phase 3
 - **CRITICAL issues found** → fix them, then re-submit for review (max 2 rounds)
-- **Codex MCP unavailable** → skip silently, proceed to Phase 3 (graceful degradation)
+- **Codex CLI unavailable** → skip silently, proceed to Phase 3 (graceful degradation)
 
 ### Phase 3: Sanity Check (if SANITY_FIRST = true)
 

@@ -27,6 +27,20 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
+## Upstream Skill Updates — v1.0.17
+
+Synchronized from the user level on 2026-10-08:
+- 23 third-party skills updated to their current upstream: `ppt-master` 6.7.0 (the local removal of
+  `scripts/gemini_watermark_remover.py` is kept, see its `INSTALL_NOTE.txt`), `archify` 3.0, `slide-maker` 5.7.0,
+  `aihot`, `nature-figure`, `nature-reviewer`, `nature-academic-search`, and 16 mattpocock skills (`ask-matt`,
+  `claude-handoff`, `code-review`, `codebase-design`, `domain-modeling`, `grilling`, `handoff`, `implement`,
+  `improve-codebase-architecture`, `setup-matt-pocock-skills`, `tdd`, `teach`, `to-tickets`, `triage`, `wayfinder`,
+  `wizard`). Upstream heads are recorded in `workspace/USER_SKILLS_MANIFEST.json`.
+- 21 skills that call Codex move from the Codex MCP tools to `codex exec` / `codex exec resume`, following
+  `shared-references/codex-cli.md`.
+- The superpowers plugin was uninstalled: `workspace/USER_CLAUDE.md` drops its routing rows, and
+  `codex-debug-pair` and `codex-skill-optimizer` no longer point to `superpowers:*` skills.
+
 ## Skill Evaluation Fixes — v1.0.16
 
 Synchronized `codex-debate`, `oral-paragraph-audit`, `deai-latex` and the new `shared-references/codex-cli.md`

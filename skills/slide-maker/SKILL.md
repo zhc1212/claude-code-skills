@@ -1378,6 +1378,30 @@ The helper set, by job:
   seventeen times internally and exposed it nowhere. `disc(s, x, y, d, fill=…, line=…, line_w=…)`
   takes the same grammar as `box`, places from the TOP-LEFT like every other primitive, and is
   flattened so it carries no inherited theme shadow.
+- **Editorial picture forms:** `picture(..., fit="cover", shape="ellipse"|"arch"|"snip"|"notch"|"blob")`
+  clips a photo to a circle, an arch, chamfered corners, a notched card or an organic blob (the
+  mask is real in the render, not just the XML); `focus=(fx, fy)` aims the crop so a face is not
+  cut off; `rotation=` tilts a pinned print. Both gates measure a rotated shape where it PAINTS —
+  exact at 90°, so a vertical margin label is safe. A cut-out PNG becomes a sticker with
+  `image_fx.sticker_outline(path)` (it refuses an opaque photo: cut the subject out first).
+  🔴 A masked or rotated picture is still a CONTENT image — alt text and the referent rule apply.
+- **Highlighted words:** `dk.mark(run, color)` puts one run on a highlighter block inside a
+  `text()` paragraph — native `<a:highlight>`, follows the wrap, works for CJK. A shape drawn behind
+  the word instead is placed by guesswork and drifts off it when the line wraps. `mark()` refuses an
+  ink under WCAG on its highlight (pick the ink with `dk.on(color)`); the render gate reads the
+  highlight as that run's backing.
+- **Hand-made marks (`scripts/ornaments.py`):** `squiggle` · `scribble` · `brush_stroke` · `tape` ·
+  `scallop` — native editable geometry, tagged as quiet motif (`loud=True` for a hero), so the motif
+  budget counts them and TEXT_OVER_MOTIF sees a caption laid across one. Use one or two that MEAN
+  something (a squiggle under the claim, `tape(..., holds=pic)` holding the print — `holds=`
+  declares that one overlap and refuses a print the tape does not touch), never confetti. A number set on a
+  small `scallop` badge reads as text over a device: declare it with `dk.overlap_intent(<the TEXT
+  shape>, "<why>")` — the check reads the declaration from the text, not from the badge.
+- **Pure decoration:** `dk.decorative(shape, "<why>")` declares that nothing a viewer must read
+  rides on a shape — a pale washi tape, a hairline flourish — so the hand-off floor NON-TEXT CONTRAST
+  (WCAG 1.4.11, which exempts decoration) does not hold it. Per shape, with a sentence (CJK counts
+  double toward the floor); the lint PRINTS every exemption with its reason. Undeclared, a mark under
+  3:1 on the page ground is still held — the check cannot tell ornament from a meaningful mark.
 - **Text & blocks:** `bullet`, `callout` (auto-grows), `chip`, `modbox` (a labelled MODULE box —
   reach for it as the node when mapping architecture modules / code files / system parts joined by
   `connector`, where a plain `node` is too bare; role word + optional filename/tag), `arrow`, `table` (highlight
@@ -1544,6 +1568,10 @@ The helper set, by job:
   synthesises the same background record from `<p:bg>`, so contrast, dark-plate and density
   checks are unchanged. **Non-solid backdrops keep the rect/`picture()`/`scrim_overlay` path**:
   gradients, images and alpha have no `<p:bg>` route here.
+- **Glass over a photo:** `frosted_panel(slide, backdrop_pic, x, y, w, h)` blurs exactly the part of
+  the placed photo under the panel and returns `(x, y, w, h, ink)` — the ink measured against the
+  glass's own dark and light ends, at the lightest wash that lets it clear 4.5:1 (or it raises).
+  `glass_card` stays the vector fake for dark UI grounds.
 - **Publication & math:** `cover`/`colophon` (bookend the deck), `sources_page`, `specimen_card`;
   **`equation_native`** (EDITABLE LaTeX-subset math — real text runs, renders everywhere; the default) /
   `equation_png` (rasterised LaTeX, for 2-D math: fractions/matrices) / `eq_par` (inline runs).
@@ -1631,6 +1659,12 @@ The helper set, by job:
   on;** a chart whose source sits 14 pages away is unsourced at the moment someone doubts it.
 - **Photo on-brand (`scripts/image_fx.py`):** `duotone` / `grayscale` so a colour photo doesn't fight
   the accent (riso/brutalist/ink/luxury/museum), then `picture(fit="cover")`.
+- **Image-led decks (`imagery: series`):** when the picked direction is image-led, imagery may sit on
+  most pages as ONE art-directed series — plan it in `series.json` (every slot's meaning line, the
+  REFERENT RULE, the people rule), generate the key image first and the rest with `--style-ref`, QC it,
+  and place every slot with `image_series.slot_picture` (never `dk.picture`: the gate reads its tags).
+  Read `references/image-generation.md` → "Image-led decks — the SERIES exception" BEFORE writing the
+  plan; `python3 scripts/image_series.py check` refuses a plan that breaks it.
 
 If the user gave a **style example** (Q4),
 build to your **style brief** of it *per the chosen mimic mode* (`references/style-analysis.md`) —
@@ -1639,6 +1673,21 @@ build to your **style brief** of it *per the chosen mimic mode* (`references/sty
 borrowed components + signature motif, but keep the topic-fit palette/type already locked in the
 Step-2 design plan — do NOT carry the example's colours.
 A few rules that matter (see `references/design-principles.md`):
+- **Visual languages (`editorial` · `soft` · `collage` · `storybook`):** when the picked direction is a
+  visual language (`"vl"` in `directions.json`), READ `references/visual-languages.md` before the build
+  script: `visual_languages.use(name, prs)` gives the palette, system fonts (both platforms by default,
+  per script for CJK) and ground, and its six page functions lay out your own copy and images — never
+  hand-roll those pages. Record `design_plan.visual_language`; the delivery gate checks it was applied.
+  A deck that will carry photos or illustrations OFFERS at least one visual language among its directions —
+  the user's pictures, or ones you will GENERATE (an image tool is available and the plan uses imagery) or
+  FETCH (`direction_gate.images: photos | illustrations | none`, whoever made them — both gates hold it and read
+  it against `image_sources` / `imagery`, so `none` on a deck that generates its pictures is refused;
+  `references/interview-protocol.md`).
+  A deck with NO pictures offers one of the four NATIVE visual languages (`ink` · `poster` · `cutpaper` ·
+  `drafting`, drawn, no pictures needed) — the one that fits the topic — and records why in
+  `direction_gate.native_fit` (both gates hold it; `references/visual-languages.md`).
+  Build with `ground="auto"` (light paper, or the language's contrast ground when your last decks already
+  sit on light paper) and record what it printed with `visual_languages.py --gates NAME --ground G`.
 - **Use the source's own figures, WHOLE — integral is the default.** For *any* deck
   (research, work, exec, teaching): if the source — paper, report, doc, existing slide, or a
   chart already produced from the code/data — has a figure (architecture, results, a plot),
@@ -2115,6 +2164,10 @@ monochrome icon vs its backing — icons are PICTURES, so the check above cannot
 include **TEXT ON IMAGE** — a render-pixel contrast estimate (<1.5:1) for text sitting on a
 photo/gradient with no opaque backing, exactly the class solid-fill contrast checks can't see;
 its 1.5–3.0 band is the TEXT-ON-IMAGE CONTRAST `[warn]`.
+**TEXT CONTRAST** (WCAG 1.4.3) is in the accessibility set too: text under 14pt, or under 18pt and not bold,
+below 4.5:1 on a fill is held at hand-off (not advisory), and the finding names the nearest ink that keeps the hue.
+A slide whose visible title is not first in reading order (a kicker above it) or sits low: `deckkit.a11y_title(slide,
+"<title>")` declares it — a TITLE placeholder above the canvas, nothing drawn; the visual-language pages call it themselves.
 
 **🔴 RECORD the delivery mode once, in the build script, instead of retyping a flag:**
 `dk.declare_delivery(OUT, "selfread")` beside `prs.save(OUT)` — one of `presented` · `textheavy` ·

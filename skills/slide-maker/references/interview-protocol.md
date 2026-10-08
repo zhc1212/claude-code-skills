@@ -242,6 +242,33 @@ four template choices:
        - **This gate also fires on the lighter case-(b) offer** (unsure-on-style / brand-defining,
          2–3 directions) because it is the same machinery — which is the right default, since those
          are exactly the decks where an invented register pays most.
+       - **A curated visual language.** A direction may be one of the four visual languages —
+         `visual_languages.direction("editorial" | "soft" | "collage" | "storybook")` returns its entry for
+         `directions.json`, previewed by its bundled sample ("style sample — not your content"). It counts
+         as a STYLED direction, never as the topic-invented bespoke one. Picking it records
+         `design_plan.visual_language` (`references/visual-languages.md`). 🔴 **When the deck will carry pictures —
+         the user's photos or illustrations, OR pictures you will generate (an image tool is available and the
+         plan uses imagery) or fetch (real public images) — at least ONE offered direction is a visual
+         language** (photos → editorial / soft / collage by tone; illustrations → storybook), and the gate
+         record states it: `direction_gate.images: photos | illustrations | none` — the KIND of picture,
+         whoever made it. Both runtimes' gates hold a picture deck whose set has none, unless the set records
+         a named `waived`, and they read `images` against the deck's own image records: `none` on a deck whose
+         `image_sources` say `generated`/`sourced` (or whose `imagery` is `series`) is refused as a
+         contradiction. The user's own figures (`provided`) do not count — a paper's plots are not a photo deck.
+       - **A native visual language when the deck has no pictures.** When `direction_gate.images` is `none`, at
+         least one offered direction is a NATIVE language — `ink` (culture, history, craft), `poster` (launch,
+         manifesto, brand, opinion), `cutpaper` (children, teaching, workshop, community) or `drafting` (research,
+         engineering, technical) — and the record states the pick and its reason:
+         `direction_gate.native_fit: {"language": "<name>", "why": "<topic reason>"}`. The guidance is an offer,
+         not a rule; the record is the rule. Both runtimes hold it; a named `waived` is the escape.
+       - **An image-led direction (only when an image tool is available).** One of the offered
+         directions MAY be image-led: its visual language is a coherent series of art-directed
+         pictures on most pages, and its preview shows an imagery-led composition. Mark it in
+         `directions.json` with `"imagery": "series"` — the diversity checker ignores the key, and the
+         direction fills one of the existing slots, never an extra one. Picking it records
+         `design_plan.imagery: "series"` + `design_plan.image_series: "<deck>/series.json"` and runs
+         the SERIES pipeline (`references/image-generation.md` → "Image-led decks — the SERIES
+         exception"); picking any other direction keeps `imagery: "selective"`, today's rule.
        - 🔴 **DIVERGENCE IS A PAIRWISE RULE, NOT AN EXHORTATION: any two directions must differ on
          ≥2 of four axes — {palette mood · type attitude · density/scale · COMPOSITION ENVELOPE}.**
          "Distinct light/dark, warm/cool, serif/sans" describes *knobs*; a dark version and a light

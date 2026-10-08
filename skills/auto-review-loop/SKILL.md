@@ -1,11 +1,13 @@
 ---
 name: auto-review-loop
-description: Autonomous multi-round research review loop. Repeatedly reviews via Codex MCP, implements fixes, and re-reviews until positive assessment or max rounds reached. Use when user says "auto review loop", "review until it passes", or wants autonomous iterative improvement.
+description: Autonomous multi-round research review loop. Repeatedly reviews via Codex CLI, implements fixes, and re-reviews until positive assessment or max rounds reached. Use when user says "auto review loop", "review until it passes", or wants autonomous iterative improvement.
 argument-hint: [topic-or-scope]
-allowed-tools: Bash(*), Read, Grep, Glob, Write, Edit, Agent, Skill, mcp__codex__codex, mcp__codex__codex-reply
+allowed-tools: Bash(*), Read, Grep, Glob, Write, Edit, Agent, Skill
 ---
 
 # Auto Review Loop: Autonomous Research Improvement
+
+> Codex calls (`codex exec`, `codex exec resume`) follow `../shared-references/codex-cli.md`.
 
 Autonomously iterate: review → implement fixes → re-review, until the external reviewer gives a positive assessment or MAX_ROUNDS is reached.
 
@@ -16,13 +18,13 @@ Autonomously iterate: review → implement fixes → re-review, until the extern
 - MAX_ROUNDS = 4
 - POSITIVE_THRESHOLD: score >= 6/10, or verdict contains "accept", "sufficient", "ready for submission"
 - REVIEW_DOC: `review-stage/AUTO_REVIEW.md` (cumulative log) *(fall back to `./AUTO_REVIEW.md` for legacy projects)*
-- REVIEWER_MODEL = `gpt-6-astra` — Model used via Codex MCP. Must be an OpenAI model (e.g., `gpt-6-astra`, `gpt-5.6-sol`, `gpt-5.5`)
-- **REVIEWER_BACKEND = `codex`** — Default: Codex MCP (xhigh). Override with `— reviewer: oracle-pro` for GPT-5.6-sol via Oracle MCP. See `shared-references/reviewer-routing.md`.
+- REVIEWER_MODEL = `gpt-6-astra` — Model used via Codex CLI. Must be an OpenAI model (e.g., `gpt-6-astra`, `gpt-5.6-sol`, `gpt-5.5`)
+- **REVIEWER_BACKEND = `codex`** — Default: Codex CLI (xhigh). Override with `— reviewer: oracle-pro` for GPT-5.6-sol via Oracle MCP. See `shared-references/reviewer-routing.md`.
 - **OUTPUT_DIR = `review-stage/`** — All review-stage outputs go here. Create the directory if it doesn't exist.
 - **HUMAN_CHECKPOINT = false** — When `true`, pause after each round's review (Phase B) and present the score + weaknesses to the user. Wait for user input before proceeding to Phase C. The user can: approve the suggested fixes, provide custom modification instructions, skip specific fixes, or stop the loop early. When `false` (default), the loop runs fully autonomously.
 - **COMPACT = false** — When `true`, (1) read `EXPERIMENT_LOG.md` and `findings.md` instead of parsing full logs on session recovery, (2) append key findings to `findings.md` after each round.
 - **REVIEWER_DIFFICULTY = medium** — Controls how adversarial the reviewer is. Three levels:
-  - `medium` (default): Current behavior — MCP-based review, Claude controls what context GPT sees.
+  - `medium` (default): Current behavior — curated review, Claude controls what context GPT sees.
   - `hard`: Adds **Reviewer Memory** (GPT tracks its own suspicions across rounds) + **Debate Protocol** (Claude can rebut, GPT rules).
   - `nightmare`: Everything in `hard` + **GPT reads the repo directly** via `codex exec` (Claude cannot filter what GPT sees) + **Adversarial Verification** (GPT independently checks if code matches claims).
 
@@ -82,12 +84,12 @@ Long-running loops may hit the context window limit, triggering automatic compac
 
 **Route by REVIEWER_DIFFICULTY:**
 
-##### Medium (default) — MCP Review
+##### Medium (default) — Curated Review
 
 Send comprehensive context to the external reviewer:
 
 ```
-mcp__codex__codex:
+codex exec:
   model: REVIEWER_MODEL
   config: {"model_reasoning_effort": "xhigh"}
   prompt: |
@@ -106,14 +108,14 @@ mcp__codex__codex:
     Be brutally honest. If the work is ready, say so clearly.
 ```
 
-If this is round 2+, use `mcp__codex__codex-reply` with the saved threadId to maintain conversation context.
+If this is round 2+, use `codex exec resume` with the saved threadId to maintain conversation context.
 
-##### Hard — MCP Review + Reviewer Memory
+##### Hard — Curated Review + Reviewer Memory
 
 Same as medium, but **prepend Reviewer Memory** to the prompt:
 
 ```
-mcp__codex__codex:
+codex exec:
   model: REVIEWER_MODEL
   config: {"model_reasoning_effort": "xhigh"}
   prompt: |
@@ -142,7 +144,7 @@ mcp__codex__codex:
 
 ##### Nightmare — Codex Exec (GPT reads repo directly)
 
-**Do NOT use MCP.** Instead, let GPT access the repo autonomously via `codex exec`:
+**Do NOT curate the context.** Instead, let GPT access the repo autonomously via `codex exec`:
 
 ```bash
 codex exec "$(cat <<'PROMPT'
@@ -242,9 +244,9 @@ Rules for Claude's rebuttal:
 
 Send Claude's rebuttal back to GPT for a ruling:
 
-*Hard mode (MCP):*
+*Hard mode (curated):*
 ```
-mcp__codex__codex-reply:
+codex exec resume:
   threadId: [saved]
   config: {"model_reasoning_effort": "xhigh"}
   prompt: |
@@ -427,7 +429,7 @@ When loop ends (positive assessment or max rounds):
 - **Large file handling**: If the Write tool fails due to file size, immediately retry using Bash (`cat << 'EOF' > file`) to write in chunks. Do NOT ask the user for permission — just do it silently.
 
 - ALWAYS set `config: {"model_reasoning_effort": "xhigh"}` — the model's own default is `low`, and the key must be `model_reasoning_effort` (a bare `reasoning_effort` is silently ignored)
-- Save threadId from first call, use `mcp__codex__codex-reply` for subsequent rounds
+- Save threadId from first call, use `codex exec resume` for subsequent rounds
 - **Anti-hallucination citations**: When adding references during fixes, NEVER fabricate BibTeX. Use the same DBLP → CrossRef → `[VERIFY]` chain as `/paper-write`: (1) `curl -s "https://dblp.org/search/publ/api?q=TITLE&format=json"` → get key → `curl -s "https://dblp.org/rec/{key}.bib"`, (2) if not found, `curl -sLH "Accept: application/x-bibtex" "https://doi.org/{doi}"`, (3) if both fail, mark with `% [VERIFY]`. Do NOT generate BibTeX from memory.
 - Be honest — include negative results and failed experiments
 - Do NOT hide weaknesses to game a positive score
@@ -440,7 +442,7 @@ When loop ends (positive assessment or max rounds):
 ## Prompt Template for Round 2+
 
 ```
-mcp__codex__codex-reply:
+codex exec resume:
   threadId: [saved from round 1]
   config: {"model_reasoning_effort": "xhigh"}
   prompt: |
@@ -460,4 +462,4 @@ mcp__codex__codex-reply:
 
 ## Review Tracing
 
-After each `mcp__codex__codex` or `mcp__codex__codex-reply` reviewer call, save the trace following `shared-references/review-tracing.md`. Use `tools/save_trace.sh` or write files directly to `.aris/traces/<skill>/<date>_run<NN>/`. Respect the `--- trace:` parameter (default: `full`).
+After each `codex exec` or `codex exec resume` reviewer call, save the trace following `shared-references/review-tracing.md`. Use `tools/save_trace.sh` or write files directly to `.aris/traces/<skill>/<date>_run<NN>/`. Respect the `--- trace:` parameter (default: `full`).

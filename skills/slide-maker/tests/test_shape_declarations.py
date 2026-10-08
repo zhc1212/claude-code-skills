@@ -59,7 +59,10 @@ OPS = {"motif": lambda sh: dk.tag_motif(sh, loud=True),
        # `mark_datum` and `tag_motif` erased each other in BOTH directions, and the datum-first
        # order produced `deckkit-motif-loud:bars:12.0` — a name that parses as a motif whose
        # "reason" is the lost datum record. A motif page drawn AS bars uses both.
-       "datum": lambda sh: dk.mark_datum(sh, 12.0, group="bars")}
+       "datum": lambda sh: dk.mark_datum(sh, 12.0, group="bars"),
+       # the FIFTH (2026-10-03): `decorative` — pure ornament, exempt from NON-TEXT CONTRAST. A
+       # washi tape is a motif that holds its print (overlap) and is decoration, all at once.
+       "decor": lambda sh: dk.decorative(sh, "washi tape is ornament; no meaning rides on it")}
 
 lost = []
 for order in itertools.permutations(OPS):
@@ -67,13 +70,48 @@ for order in itertools.permutations(OPS):
     for k in order:
         OPS[k](sh)
     if not (dk._is_motif(sh) and dk._is_motif(sh, loud=True)
-            and dk._declared_overlap(sh) and "+bleed" in sh.name and "+datum" in sh.name):
+            and dk._declared_overlap(sh) and "+bleed" in sh.name and "+datum" in sh.name
+            and "+decor" in sh.name):
         lost.append("->".join(order) + " => " + sh.name)
 check(not lost,
-      "🔴 all 24 orders of tag_motif / bleed_intent / overlap_intent / mark_datum keep every "
+      "🔴 all 120 orders of tag_motif / bleed_intent / overlap_intent / mark_datum / decorative keep every "
       "declaration — "
       "the composer parses the name back to a SET and re-renders it, so order cannot matter "
       "(lost: %s)" % (lost or "none"))
+
+# the SIXTH: a generated picture's provenance (image_series.slot_picture) — a flag in the name HEAD, so it
+# never takes the one reason slot the others share. Composes with motif / bleed / overlap / decor.
+GEN_OPS = {k: v for k, v in OPS.items() if k != "datum"}          # a generated picture is never a datum bar
+GEN_OPS["gen"] = lambda sh: dk._compose_tag(sh, gen="s03-kettle")
+lost_g = []
+for order in itertools.permutations(GEN_OPS):
+    sh = fresh()
+    for k in order:
+        GEN_OPS[k](sh)
+    if not (dk.generated_slot(sh) == "s03-kettle" and dk._is_motif(sh) and dk._declared_overlap(sh)
+            and "+bleed" in sh.name and "+decor" in sh.name):
+        lost_g.append("->".join(order) + " => " + sh.name)
+check(not lost_g, "all 120 orders keep the generated-slot tag beside the other four (lost: %s)" % (lost_g or "none"))
+sh = fresh()
+dk._compose_tag(sh, gen="hero")
+check(sh.name == "deckkit-gen.hero" and dk.generated_slot(sh) == "hero", "gen alone: " + sh.name)
+check(dk.generated_slot(fresh()) is None, "an untagged shape has no generated slot")
+
+VL_OPS = dict(GEN_OPS)
+VL_OPS["vl"] = lambda sh: dk._compose_tag(sh, vl="collage")
+lost_v = []
+for order in itertools.permutations(["motif", "overlap", "gen", "vl", "decor"]):
+    sh = fresh()
+    for k in order:
+        VL_OPS[k](sh)
+    if not (dk.vl_name(sh) == "collage" and dk.generated_slot(sh) == "s03-kettle" and dk._is_motif(sh)
+            and dk._declared_overlap(sh) and "+decor" in sh.name):
+        lost_v.append("->".join(order) + " => " + sh.name)
+check(not lost_v, "all orders keep the visual-language tag beside the others (lost: %s)" % (lost_v or "none"))
+sh = fresh()
+dk._compose_tag(sh, vl="editorial")
+check(sh.name == "deckkit-vl.editorial" and dk.vl_name(sh) == "editorial", "vl alone: " + sh.name)
+check(dk.vl_name(fresh()) is None, "an untagged shape has no language")
 
 # The single-declaration paths are the common case and must stay exactly as they were.
 for label, fn, want in (
@@ -81,7 +119,9 @@ for label, fn, want in (
         ("overlap alone", lambda sh: dk.overlap_intent(sh, OVER_WHY), "deckkit-overlap:"),
         ("quiet motif alone", lambda sh: dk.tag_motif(sh, loud=False), "deckkit-motif-quiet"),
         ("loud motif alone", lambda sh: dk.tag_motif(sh, loud=True), "deckkit-motif-loud"),
-        ("datum alone", lambda sh: dk.mark_datum(sh, 12.0, group="bars"), "deckkit-datum:")):
+        ("datum alone", lambda sh: dk.mark_datum(sh, 12.0, group="bars"), "deckkit-datum:"),
+        ("decorative alone", lambda sh: dk.decorative(sh, "washi tape is ornament; no meaning rides on it"),
+         "deckkit-decor:")):
     sh = fresh()
     fn(sh)
     check(sh.name.startswith(want) and "+bleed+bleed" not in sh.name
@@ -121,7 +161,8 @@ check(_floor,
       "without one")
 
 src = (ROOT / "scripts" / "deckkit.py").read_text(encoding="utf-8")
-_family = ("def tag_motif", "def bleed_intent", "def overlap_intent", "def mark_datum")
+_family = ("def tag_motif", "def bleed_intent", "def overlap_intent", "def mark_datum",
+           "def decorative")
 _bare = []
 for _d in _family:
     _i = src.index(_d)
@@ -140,6 +181,62 @@ dk.tag_motif(sh, loud=True)
 check(dk._is_motif(sh, loud=True) and sh.name.endswith("bars:12.0"),
       "🔴 datum-then-motif keeps BOTH — this order used to produce `deckkit-motif-loud:bars:12.0`, "
       "which parses as a motif whose reason is the datum record it destroyed")
+
+# 🔴 MEASURED 2026-10-04: a visual-language kit stamps `+vl.<name>` on every shape it draws, so an
+# overlap declaration on a collage print is saved as `deckkit-overlap+vl.collage:<why>` — a THIRD
+# spelling. The reader knew only `deckkit-overlap:` and `+overlap`, so the render-time lint refused
+# twelve declared overlaps on a three-print collage cover that the build-time gate had passed.
+for extra in ({"vl": "collage"}, {"gen": "s01-cover"}, {"vl": "collage", "gen": "s01-cover"}):
+    sh = fresh()
+    dk.overlap_intent(sh, OVER_WHY)
+    dk._compose_tag(sh, **extra)
+    check(dk._declared_overlap(sh),
+          "overlap declaration survives a later %s tag (name %r)" % ("+".join(extra), sh.name))
+
+# 🔴 The same composed spelling reaches EVERY reader of a `<base>:` tag, not just the render-time
+# overlap one fixed above — found by listing all of them (2026-10-05). Two more were blind to it:
+#   · build-time TEXT_OVERLAP read `deckkit-overlap:` only, so a kit-stamped text box carrying a
+#     declared overlap was refused as a collision — the declaration the render gate now honours;
+#   · DATUM SCALE read `deckkit-datum:` only, so a bar declared decorative or stamped by a kit
+#     (`deckkit-datum+decor:g:2.0`) dropped out of the truth check while its group still printed.
+def _lint_codes(p):
+    with __import__("contextlib").redirect_stdout(__import__("io").StringIO()):
+        return {(n, code) for n, _sev, code, *_ in dk.lint_layout(p, verbose=False)}
+
+
+for extra in ({}, {"vl": "collage"}, {"gen": "s01-cover", "vl": "collage"}):
+    p2 = dk.blank_deck()
+    s2 = dk.add_slide(p2)
+    big = dk.text(s2, 0.5, 1.0, 6.0, 1.4, [[("GIANT", 80, dk.DEEP, True, False)]])
+    dk.overlap_intent(big, OVER_WHY)
+    if extra:
+        dk._compose_tag(big, **extra)
+    dk.text(s2, 1.0, 1.4, 4.0, 0.5, [[("a caption riding it", 14, dk.DEEP, False, False)]])
+    check((1, "TEXT_OVERLAP") not in _lint_codes(p2),
+          "build-time TEXT_OVERLAP honours a declaration with {} composed onto it (name {!r})"
+          .format("+".join(extra) or "nothing", big.name))
+p3 = dk.blank_deck()
+s3 = dk.add_slide(p3)
+dk.text(s3, 0.5, 1.0, 6.0, 1.4, [[("GIANT", 80, dk.DEEP, True, False)]])
+dk.text(s3, 1.0, 1.4, 4.0, 0.5, [[("a caption riding it", 14, dk.DEEP, False, False)]])
+check((1, "TEXT_OVERLAP") in _lint_codes(p3), "control: an UNDECLARED text collision is still TEXT_OVERLAP")
+
+for extra in ({}, {"flag": "+decor", "reason": None}, {"vl": "collage"}):
+    p4 = dk.blank_deck()
+    s4 = dk.add_slide(p4)
+    # values 1 and 2 drawn 2.0in and 3.0in long: the lengths say 1 : 1.5, the data says 1 : 2
+    for i, (v, ln) in enumerate(((1.0, 2.0), (2.0, 3.0))):
+        bar = dk.box(s4, 1.0, 1.0 + i * 0.6, ln, 0.3, fill="2F5BEA")
+        dk.mark_datum(bar, v, group="probe")
+        if extra:
+            kw = dict(extra)
+            if kw.get("reason", 1) is None:
+                kw.pop("reason")
+            dk._compose_tag(bar, **kw)
+    names = [sh.name for sh in s4.shapes]
+    check(any(code == "DATUM SCALE" for _n, _sev, code, *_ in dk._datum_faults(p4)),
+          "DATUM SCALE still reads a datum with {} composed onto it ({})"
+          .format("+".join(k.strip("+") for k in extra) or "nothing", names[0]))
 
 for line in ok:
     print("  ok   " + line)

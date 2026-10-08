@@ -22,8 +22,9 @@
             btn_confirm: "Confirm",
             btn_confirm_contract: "Confirm contract & continue →",
             btn_confirm_final_plan: "Confirm final plan →",
-            deriving: "Generating the downstream options from your choices…",
+            deriving: "Preparing the final plan and verifying your selected templates…",
             template_selection_required: "Choose free design or use templates. When using templates, select at least one workspace.",
+            template_selection_conflict: "Choose at most one workspace per kind.",
             connection_lost: "Connection to the confirm server was interrupted; retrying. If this keeps failing, return to the chat for confirmation.",
             confirmed_title: "✓ Confirmed",
             confirmed_hint: "Your choices are saved. You can close this page and return to the chat.",
@@ -35,9 +36,9 @@
             template_use_title: "Use templates",
             template_use_desc: "Select one or more reusable Brand, Style, Layout, Deck, or specified workspaces.",
             sec_template_library: "Template combination",
-            template_library_hint: "Choose at most one registered template for each type. Brand, Style, Layout, and Deck can be combined.",
+            template_library_hint: "Choose at most one workspace per kind. All four kinds can combine; Layout takes structural precedence over Deck.",
             sec_template_explicit: "Specified templates",
-            template_explicit_hint: "Choose at most one exact workspace supplied for this run. Its source path is shown for verification.",
+            template_explicit_hint: "Choose exact workspaces supplied for this run with non-overlapping kinds; every kind in each selected root is applied. Source paths are shown for verification.",
             template_kind_brand: "Brand",
             template_kind_style: "Style",
             template_kind_layout: "Layout",
@@ -63,6 +64,12 @@
             sec_proactive_execution: "Proactive execution",
             sec_mode: "Generation mode",
             sec_refine: "Review the Design Spec first",
+            sec_design_spec_depth: "Design Spec depth",
+            design_spec_depth_brief: "Brief",
+            design_spec_depth_brief_desc: "A short block list per page; no full page copy.",
+            design_spec_depth_complete: "Complete",
+            design_spec_depth_complete_desc: "Full page briefs with complete wording.",
+            design_spec_depth_locked: "Locked to Complete because split mode or Design Spec refinement is enabled.",
             sec_design_directions: "Coherent design directions",
             design_directions_hint: "The recommended complete direction is applied first. Choose another or fine-tune the projected fields below; use Restore to return an adjusted direction to its authored bundle.",
             direction_active: "Applied",
@@ -71,8 +78,8 @@
             direction_restore: "Restore authored direction",
             scheme_component_options: "Project-specific custom choices · select a card to edit",
             sec_template_application: "Template application",
-            template_application_hint: "The AI recommends how to apply the installed template to this deck. Revise the plan directly in natural language.",
-            placeholder_template_application: "Describe which template pages or prototypes to use, skip, repeat, or reorder; what must stay; and what may be replaced or reorganized.",
+            template_application_hint: "After reading every installed template SVG, the AI proposes one natural-language application plan. Edit it directly; this is not a mode selector.",
+            placeholder_template_application: "Name exact SVG files for page-specific rules; describe what to use, skip, repeat, or reorder, what stays fixed, and what may be replaced or reorganized.",
             sub_mode: "Narrative mode",
             sub_visual: "Visual style",
             sub_divergence: "Material divergence (how freely to reshape vs. stay close to the source)",
@@ -104,7 +111,6 @@
             placeholder_audience: "Who is this deck for?",
             placeholder_pages: "e.g. 12-15",
             hex_override: "Custom HEX override:",
-            formula_policy: "Formula rendering policy",
             image_ai_path: "AI image source",
             image_strategy: "Generated image style",
             image_strategy_empty: "No preset style references are available. You can still use a custom style.",
@@ -189,7 +195,7 @@
             mode_continuous_desc: "Generate the whole deck in one pass.",
             mode_split_desc: "Stop after the spec; resume SVG generation in a fresh window.",
             refine_off_desc: "Write the Design Spec and execution lock in sequence, then auto-proceed.",
-            refine_on_desc: "Stop after the Design Spec. Revise any part in chat; approval then creates the execution lock and continues generation.",
+            refine_on_desc: "Stop after the Design Spec. A review page opens: edit any page directly or leave comments; approval in chat then creates the execution lock and continues generation.",
             off_default: "Off",
             on: "On",
             option_prefix: "Option",
@@ -205,8 +211,9 @@
             btn_confirm: "確定",
             btn_confirm_contract: "契約内容を確定して次へ →",
             btn_confirm_final_plan: "最終プランを確定 →",
-            deriving: "選択内容をもとに後続の選択肢を生成しています…",
+            deriving: "最終プランを準備し、選択したテンプレートを確認しています…",
             template_selection_required: "自由デザインまたはテンプレート利用を選んでください。テンプレート利用時は、1つ以上のワークスペースを選択してください。",
+            template_selection_conflict: "種類ごとにワークスペースを1件まで選択してください。",
             connection_lost: "確認ページのサーバー接続が中断されました。再試行しています。失敗が続く場合はチャットで確認してください。",
             confirmed_title: "✓ 確定しました",
             confirmed_hint: "選択内容を保存しました。このページを閉じてチャットに戻ってください。",
@@ -218,9 +225,9 @@
             template_use_title: "テンプレートを使用",
             template_use_desc: "Brand、Style、Layout、Deck、または指定ワークスペースから1つ以上選択します。",
             sec_template_library: "テンプレートの組み合わせ",
-            template_library_hint: "登録済みテンプレートは種類ごとに1件まで選択でき、Brand、Style、Layout、Deck を組み合わせられます。",
+            template_library_hint: "種類ごとにワークスペースを1件まで選択できます。4種類はすべて組み合わせ可能で、構造は Layout が Deck より優先されます。",
             sec_template_explicit: "指定テンプレート",
-            template_explicit_hint: "この実行で指定された正確なワークスペースを1件まで選択できます。確認用に参照元パスを表示します。",
+            template_explicit_hint: "この実行で指定されたワークスペースを、種別が重複しない範囲で複数選択できます。各ルートに含まれる全種別が適用され、確認用に参照元パスを表示します。",
             template_kind_brand: "Brand",
             template_kind_style: "Style",
             template_kind_layout: "Layout",
@@ -246,6 +253,12 @@
             sec_proactive_execution: "能動的な実行",
             sec_mode: "生成モード",
             sec_refine: "先に設計仕様を確認",
+            sec_design_spec_depth: "設計仕様の詳細度",
+            design_spec_depth_brief: "簡潔",
+            design_spec_depth_brief_desc: "各ページを短いブロック一覧で記し、全文は書きません。",
+            design_spec_depth_complete: "完全",
+            design_spec_depth_complete_desc: "完全な文言を含む各ページの詳細なブリーフを記載します。",
+            design_spec_depth_locked: "分割モードまたは設計仕様のレビューが有効なため、「完全」に固定されています。",
             sec_design_directions: "統合デザイン方針",
             design_directions_hint: "おすすめの全体案が最初に適用されています。別案を選ぶか、下の各項目を微調整できます。調整後は「元の案に戻す」で最初の組み合わせを復元できます。",
             direction_active: "適用中",
@@ -254,8 +267,8 @@
             direction_restore: "元の案に戻す",
             scheme_component_options: "プロジェクト専用カスタム案 · カードを選んで編集",
             sec_template_application: "テンプレートの適用方法",
-            template_application_hint: "AIが現在の内容に合わせたテンプレートの使い方を提案します。自然言語で直接修正できます。",
-            placeholder_template_application: "使用・省略・反復・並べ替えするページやプロトタイプ、保持する要素、差し替え・再構成できる内容を記述します。",
+            template_application_hint: "AIがインストール済みテンプレートの全SVGを確認し、自然言語の適用方針を1段落で提案します。モード選択ではなく、文章を直接修正できます。",
+            placeholder_template_application: "ページ固有の規則は正確なSVGファイル名で示し、使用・省略・反復・並べ替え、固定する要素、差し替え・再構成できる内容を記述します。",
             sub_mode: "ナラティブモード",
             sub_visual: "ビジュアルスタイル",
             sub_divergence: "素材からの発散度（どこまで自由に再構成するか、原文に忠実か）",
@@ -287,7 +300,6 @@
             placeholder_audience: "この資料は誰に向けたもの？",
             placeholder_pages: "例：12-15",
             hex_override: "カスタムHEXで上書き：",
-            formula_policy: "数式レンダリング方針",
             image_ai_path: "AI画像の生成元",
             image_strategy: "生成画像のスタイル",
             image_strategy_empty: "プリセットのスタイル見本を利用できません。カスタムスタイルは引き続き使用できます。",
@@ -372,7 +384,7 @@
             mode_continuous_desc: "デッキ全体を一気に生成します。",
             mode_split_desc: "設計仕様の作成後に停止し、別ウィンドウでSVG生成を再開します。",
             refine_off_desc: "設計仕様と実行ロックを順番に作成し、そのまま自動で進みます。",
-            refine_on_desc: "設計仕様の作成後に停止します。チャットで任意の箇所を修正し、承認後に実行ロックを作成して生成を続けます。",
+            refine_on_desc: "設計仕様の作成後に停止します。レビューページが開き、各ページを直接編集するかコメントを残せます。チャットで承認すると実行ロックを作成して生成を続けます。",
             off_default: "オフ",
             on: "オン",
             option_prefix: "案",
@@ -388,8 +400,9 @@
             btn_confirm: "确认",
             btn_confirm_contract: "确认沟通契约并继续 →",
             btn_confirm_final_plan: "确认最终方案 →",
-            deriving: "正在根据你的选择生成下游选项…",
+            deriving: "正在准备最终方案并核验所选模板…",
             template_selection_required: "请选择自由设计或使用模板；选择使用模板时，至少选择一个工作区。",
+            template_selection_conflict: "每种模板最多选择一个工作区。",
             connection_lost: "确认页服务连接中断，正在重试；如果持续失败，请回到聊天窗口走聊天确认。",
             confirmed_title: "✓ 已确认",
             confirmed_hint: "选择已保存，可关闭此页并回到聊天窗口。",
@@ -401,9 +414,9 @@
             template_use_title: "使用模板",
             template_use_desc: "选择一个或多个 Brand、Style、Layout、Deck 或指定工作区。",
             sec_template_library: "模板组合",
-            template_library_hint: "每种已注册模板最多选择一个；Brand、Style、Layout、Deck 可以组合使用。",
+            template_library_hint: "每种模板最多选择一个工作区；四种模板均可组合，结构由 Layout 优先于 Deck。",
             sec_template_explicit: "指定模板",
-            template_explicit_hint: "本次运行明确提供的精确工作区最多选择一个；显示来源路径供你核对。",
+            template_explicit_hint: "可选择本次运行提供的多个精确工作区，各根的模板类型不得重叠；选中的根会采用其全部类型，来源路径供你核对。",
             template_kind_brand: "Brand",
             template_kind_style: "Style",
             template_kind_layout: "Layout",
@@ -429,6 +442,12 @@
             sec_proactive_execution: "主动执行",
             sec_mode: "生成模式",
             sec_refine: "先审核设计规范",
+            sec_design_spec_depth: "设计规范深度",
+            design_spec_depth_brief: "简要",
+            design_spec_depth_brief_desc: "每页只写简短的内容块列表，不写整页文案。",
+            design_spec_depth_complete: "完整",
+            design_spec_depth_complete_desc: "写入包含完整文案的逐页简报。",
+            design_spec_depth_locked: "分段模式或设计规范审核已开启，因此固定为“完整”。",
             sec_design_directions: "成套设计方向",
             design_directions_hint: "AI 最倾向的成套方案已默认应用；你可以改选其他方案，或在下方微调各项。调整后可用“恢复原方案”还原整套预设。",
             direction_active: "已应用",
@@ -437,8 +456,8 @@
             direction_restore: "恢复原方案",
             scheme_component_options: "项目专属自定义方案 · 选中卡片后可编辑",
             sec_template_application: "模板应用方式",
-            template_application_hint: "AI 会根据当前内容推荐如何使用已安装模板；你可以直接用自然语言修改。",
-            placeholder_template_application: "说明使用、跳过、重复或重排哪些模板页面/原型，哪些内容必须保留，哪些可以替换或重组。",
+            template_application_hint: "AI 会先阅读已安装模板的全部 SVG，再给出一段自然语言应用方案；这不是模式选择，你可以直接修改文字。",
+            placeholder_template_application: "页面级规则请写明精确 SVG 文件名；说明使用、跳过、重复或重排哪些原型，哪些内容固定，哪些可以替换或重组。",
             sub_mode: "叙事模式",
             sub_visual: "视觉风格",
             sub_divergence: "材料发散度（多大程度重塑，还是贴近源材料）",
@@ -470,7 +489,6 @@
             placeholder_audience: "这份演示文稿面向谁？",
             placeholder_pages: "如：12-15",
             hex_override: "自定义色值覆盖：",
-            formula_policy: "公式渲染策略",
             image_ai_path: "生成配图来源",
             image_strategy: "生成图风格",
             image_strategy_empty: "当前没有可用的预设风格参考，仍可使用自定义风格。",
@@ -555,21 +573,215 @@
             mode_continuous_desc: "一次性连续生成整份演示文稿。",
             mode_split_desc: "写完设计规范后停止，另开窗口继续生成页面。",
             refine_off_desc: "依次生成设计规范和执行锁，然后自动继续。",
-            refine_on_desc: "生成设计规范后暂停；你可在聊天中修改任何部分，明确确认后再生成执行锁并继续制作。",
+            refine_on_desc: "生成设计规范后暂停，并打开评审页面：可逐页直接修改或留下修改意见；在聊天中明确确认后再生成执行锁并继续制作。",
             off_default: "关",
             on: "开",
             option_prefix: "方案",
             error_retry: "出错，请重试"
+        },
+        "zh-TW": {
+            page_title: "確認設計方案",
+            topbar_hint: "回答開放問題，或選擇並調整推薦項，然後繼續。",
+            stage_anchors: "第一階段 · 溝通契約",
+            stage_final_plan: "第二階段 · 最終方案與製作",
+            loading: "載入中…",
+            load_error: "無法載入推薦檔案，需在啟動前寫入。",
+            btn_confirm: "確認",
+            btn_confirm_contract: "確認溝通契約並繼續 →",
+            btn_confirm_final_plan: "確認最終方案 →",
+            deriving: "正在準備最終方案並核驗所選範本…",
+            template_selection_required: "請選擇自由設計或使用範本；選擇使用範本時，至少選擇一個工作區。",
+            template_selection_conflict: "每種範本最多選擇一個工作區。",
+            connection_lost: "確認頁服務連線中斷，正在重試；如果持續失敗，請回到聊天視窗走聊天確認。",
+            confirmed_title: "✓ 已確認",
+            confirmed_hint: "選擇已儲存，可關閉此頁並回到聊天視窗。",
+            lang_toggle_title: "切換語言",
+            sec_template_choice: "設計基礎",
+            template_choice_hint: "選擇這份簡報如何建立設計系統。",
+            template_free_title: "根據目前內容從零設計",
+            template_free_desc: "不使用可重複使用的範本工作區，由 Strategist 根據目前專案推導視覺系統。",
+            template_use_title: "使用範本",
+            template_use_desc: "選擇一個或多個 Brand、Style、Layout、Deck 或指定工作區。",
+            sec_template_library: "範本組合",
+            template_library_hint: "每種範本最多選擇一個工作區；四種範本均可組合，結構由 Layout 優先於 Deck。",
+            sec_template_explicit: "指定範本",
+            template_explicit_hint: "可選擇本次執行提供的多個精確工作區，各根的範本類型不得重疊；選中的根會採用其全部類型，來源路徑供你核對。",
+            template_kind_brand: "Brand",
+            template_kind_style: "Style",
+            template_kind_layout: "Layout",
+            template_kind_deck: "Deck",
+            template_source_library: "範本庫",
+            template_source_explicit: "指定地址",
+            template_source_path: "來源路徑",
+            template_select_none: "無",
+            template_none_registered: "尚無已註冊範本",
+            template_none_explicit: "本次執行沒有指定範本",
+            sec_canvas: "畫布格式",
+            sec_pages: "頁數",
+            sec_audience: "目標受眾",
+            sec_communication: "這份簡報要完成什麼",
+            sec_delivery: "如何使用、之後留下什麼",
+            sec_narrative: "敘事方向",
+            sec_visual: "視覺方向",
+            sec_color: "色彩方案",
+            sec_icons: "圖示使用",
+            sec_type: "字型方案",
+            sec_images: "圖片使用",
+            sec_image_production: "圖片產製",
+            sec_proactive_execution: "主動執行",
+            sec_mode: "生成模式",
+            sec_refine: "先審閱設計規範",
+            sec_design_spec_depth: "設計規範深度",
+            design_spec_depth_brief: "簡要",
+            design_spec_depth_brief_desc: "每頁只寫簡短的內容區塊清單，不寫整頁文案。",
+            design_spec_depth_complete: "完整",
+            design_spec_depth_complete_desc: "寫入包含完整文案的逐頁簡報。",
+            design_spec_depth_locked: "分段模式或設計規範審閱已開啟，因此固定為「完整」。",
+            sec_design_directions: "成套設計方向",
+            design_directions_hint: "AI 最傾向的成套方案已預設套用；你可以改選其他方案，或在下方微調各項。調整後可用「還原原始方案」還原整套預設。",
+            direction_active: "已套用",
+            direction_adjusted: "已調整",
+            direction_apply_hint: "按一下即可套用這套完整方案。",
+            direction_restore: "還原原始方案",
+            scheme_component_options: "專案專屬自訂方案 · 選取卡片後可編輯",
+            sec_template_application: "範本套用方式",
+            template_application_hint: "AI 會先閱讀已安裝範本的全部 SVG，再提出一段自然語言套用方案；這不是模式選擇，你可以直接修改文字。",
+            placeholder_template_application: "頁面級規則請寫明精確 SVG 檔名；說明使用、略過、重複或重排哪些原型，哪些內容固定，哪些可以替換或重組。",
+            sub_mode: "敘事模式",
+            sub_visual: "視覺風格",
+            sub_divergence: "材料發散度（多大程度重塑，還是貼近源材料）",
+            placeholder_divergence: "用你自己的話寫，例如「嚴格貼著文件來」/「在源材料範圍內自由重組並展開」。留空則按平衡處理。",
+            communication_intent: "這份簡報需要完成什麼？",
+            communication_intent_hint: "開放回答，可按需組合：告知、解釋、說服、決策、對齊、教學、報告與問責、動員、留檔與交接。必要時說明主次或先後，不需要選擇標籤。",
+            placeholder_communication_intent: "例如：先報告進展並暴露風險，再推動管理階層決定下一階段投入。",
+            audience_outcome: "期望的受眾變化 / 成功條件",
+            placeholder_audience_outcome: "結束後，受眾應該知道、理解、相信、決定或採取什麼行動？",
+            core_message: "核心資訊 / 決策請求 / 行動",
+            placeholder_core_message: "即使其他內容沒有被記住，受眾至少需要接住哪些主張、請求或行動？",
+            delivery_context: "傳遞場景（明確主要模式）",
+            delivery_context_hint: "區分演講者主導、讀者主導、混合、錄製/自動播放；混合場景要說明哪一種主導，以及還要兼顧什麼次要用途。",
+            placeholder_delivery_context: "例如：主要為有主講的 20 分鐘管理階層現場評審；次要為會後獨立閱讀的簽核文件。",
+            artifact_afterlife: "簡報後的成果用途",
+            placeholder_artifact_afterlife: "例如：簽核、評審、稽核、留檔、交接或重複使用；沒有後續用途時可留空。",
+            stage1_current_value_hint: "可編輯欄位中是推薦內容。你可以保留、修改或清空；確認時會按目前內容原樣儲存，空白也會保持為空。",
+            content_divergence_locked_hint: "目前流程要求原文和頁面結構保持不變，因此該欄位已鎖定。",
+            custom: "自訂",
+            custom_placeholder: "輸入自訂內容…",
+            ai_custom_candidate: "AI 自訂方案",
+            ai_custom_candidate_hint: "始終展示完整內容用於比較；預設不選取，選擇後可編輯。",
+            custom_behavior_required: "已選擇的 AI 自訂方案不能為空。",
+            custom_color_required: "請先填寫自訂配色說明，再繼續確認。",
+            design_system_required: "請先選擇完整的配色與字型方案，再繼續確認。",
+            mode_behavior_placeholder: "描述敘事階段、標題語氣、頁面節奏和表達姿態。",
+            visual_style_behavior_placeholder: "描述形狀語言、構圖、裝飾密度、留白、字型氣質和紋理。",
+            recommended: "推薦",
+            placeholder_audience: "這份簡報面向誰？",
+            placeholder_pages: "如：12-15",
+            hex_override: "自訂色值覆蓋：",
+            image_ai_path: "生成配圖來源",
+            image_strategy: "生成圖風格",
+            image_strategy_empty: "目前沒有可用的預設風格參考，仍可使用自訂風格。",
+            image_strategy_required: "請選擇一種生成圖預設，或填寫自訂風格。",
+            image_strategy_invalid: "所選生成圖預設目前不可用。",
+            image_strategy_select_placeholder: "選擇生成圖預設…",
+            image_strategy_recommended_group: "本專案推薦",
+            image_strategy_all_group: "全部預設風格",
+            image_strategy_rendering: "渲染風格",
+            image_strategy_visual: "視覺",
+            image_strategy_mood: "情緒",
+            image_strategy_ai_custom: "AI 自訂方案",
+            image_strategy_ai_custom_desc: "一套全新或綜合多個已有風格的渲染方案；選擇後可以編輯。",
+            image_strategy_custom_placeholder: "描述生成圖的具體方向、主體、構圖、風格關鍵字或需要避免的內容。",
+            image_strategy_reference_hint: "參考圖只展示渲染風格；最終 AI 圖片直接繼承上方已選的整套 PPT 配色。",
+            image_strategy_no_reference: "自訂選擇沒有參考圖。",
+            image_source_summary: "已選圖片來源",
+            image_production_hint: "圖片來源和渲染方向已在上方選擇；這裡僅決定實際產製路徑。",
+            image_usage_notes: "圖片補充要求",
+            image_usage_notes_placeholder: "例如：優先真實洗手場景；不要卡通病菌；產品照片保持原樣。",
+            image_usage_required: "請至少選擇一種圖片使用方式。",
+            image_usage_none_exclusive: "「不使用圖片」不能和其他圖片選項同時選擇。",
+            proactive_execution_hint: "這些預設開關只在你沒有明確要求時生效；你最新的明確指令始終優先。",
+            proactive_speaker_notes: "主動生成演講者備註",
+            proactive_speaker_notes_desc: "預設開啟。無需另行要求，Agent 也會生成演講者備註。",
+            proactive_custom_animations: "主動生成自訂動畫",
+            proactive_custom_animations_desc: "預設關閉。策略師的動畫建議仍會保留；開啟後，Agent 可在沒有另行要求時實際製作自訂動畫。",
+            proactive_narration_audio: "主動生成旁白音訊",
+            proactive_narration_audio_desc: "預設關閉。這裡保留原始選擇，不改寫演講者備註開關；策略師會在設計規範中解析旁白所需的最終備註狀態。",
+            font_heading: "標題",
+            font_body: "正文",
+            font_selection: "字型選擇",
+            primary_language_font: "主要語言字型",
+            english_font: "英文字型",
+            font_picker_hint: "選擇推薦方案會同步下方字型；修改任一下拉或手動字型後會標記為已自訂。",
+            other_installed_font: "其他已安裝字型…",
+            other_font_placeholder: "輸入精確的已安裝字型名稱",
+            customized: "已自訂",
+            font_body_size: "正文基準字級",
+            font_body_size_hint: "所有字級按這個正文基準推導。",
+            body_size_unit_relation: "SVG px 與 PPT pt 的換算：1px = 0.75pt。",
+            body_size_pt_hint: "約 {pt} pt（按 1px = 0.75pt 換算；提交仍儲存 px）。",
+            role_size_pt_hint: "約 {pt} pt",
+            body_size_hint_canvas: "目前畫布建議 ~{lo}–{hi}px（依有效畫布跨距計算）。",
+            body_size_hint_purpose: "該閱讀模式推薦 {def}px（單一固定值，非區間）。",
+            body_size_hint_oor: "（目前數值超出該畫布的常用範圍——請確認單位無誤、是否合適。）",
+            delivery_purpose: "閱讀模式",
+            delivery_purpose_hint: "決定資訊主要由頁面還是講者承擔：近讀型用完整句、短段落和細節自洽；演講型一頁一意，以簡短主張和視覺證據為主。",
+            size_override: "逐角色字級覆蓋：",
+            size_role_title: "標題",
+            size_role_subtitle: "副標題",
+            size_role_annotation: "註解",
+            custom_typography: "自訂字型方案",
+            custom_color: "自訂配色",
+            custom_color_placeholder: "用文字描述配色，如：深藍主色、暖橙強調、白色背景——或直接貼上 HEX 值…",
+            role_background: "背景",
+            role_secondary_bg: "次級背景",
+            role_primary: "主色",
+            role_accent: "強調",
+            role_secondary_accent: "次強調",
+            role_body_text: "正文文字",
+            cjk: "中文",
+            latin: "西文",
+            sample_heading_cjk: "主題方案標題",
+            sample_heading_latin: "Presentation Title",
+            sample_body_cjk: "關鍵資訊摘要",
+            sample_body_latin: "Key message summary",
+            style_preview_label: "整體形象（配色 + 字型 + 圖示）",
+            style_preview_body: "· 僅大致形象，非實際版式",
+            no_icons: "無圖示",
+            preview_big_title: "大標題",
+            preview_section_title: "章節標題",
+            preview_latin_title: "Section Title",
+            preview_body_intro: "正文內容用於判斷基礎字級、行距和顏色對比。",
+            preview_latin_body: "Body text sample for checking Latin typography.",
+            preview_point_1_title: "正文內容",
+            preview_point_1_text: "這裡展示普通段落的密度和閱讀節奏。",
+            preview_point_2_title: "要點說明",
+            preview_point_2_text: "圖示和文字放在一起，判斷真實使用效果。",
+            preview_point_3_title: "結論建議",
+            preview_point_3_text: "組合效果需要在簡報場景下保持清晰可讀。",
+            mode_continuous_desc: "一次性連續生成整份簡報。",
+            mode_split_desc: "寫完設計規範後停止，另開視窗繼續生成頁面。",
+            refine_off_desc: "依次生成設計規範和執行鎖，然後自動繼續。",
+            refine_on_desc: "生成設計規範後暫停，並開啟評審頁面：可逐頁直接修改或留下修改意見；在聊天中明確確認後再生成執行鎖並繼續製作。",
+            off_default: "關",
+            on: "開",
+            option_prefix: "方案",
+            error_retry: "出錯，請重試"
         }
     };
 
     var LANG = (function () {
         try {
             var stored = window.localStorage.getItem("ppt_lang");
-            if (stored === "zh" || stored === "en" || stored === "ja") return stored;
+            if (stored === "zh" || stored === "en" || stored === "ja" ||
+                    stored === "zh-TW") return stored;
         } catch (e) { /* ignore */ }
         var nav = (navigator.language || navigator.userLanguage || "en").toLowerCase();
-        if (nav.indexOf("zh") === 0) return "zh";
+        if (nav.indexOf("zh") === 0) {
+            if (/\bhans\b/.test(nav)) return "zh";
+            if (/\bhant\b/.test(nav) || /\b(tw|hk|mo)\b/.test(nav)) return "zh-TW";
+            return "zh";
+        }
         if (nav.indexOf("ja") === 0) return "ja";
         return "en";
     })();
@@ -579,37 +791,59 @@
         return dict[key] != null ? dict[key] : key;
     }
 
-    // Fallback stays LANG-relative: zh/en users never see Japanese labels,
-    // ja pages fall back ja → en → zh.
-    var LANG_FALLBACK = { zh: ["zh", "en", "ja"], en: ["en", "zh", "ja"], ja: ["ja", "en", "zh"] };
+    // zh / zh-TW / ja text takes a full-width colon and no space between sentences.
+    function isCjkUi() {
+        return LANG === "zh" || LANG === "zh-TW" || LANG === "ja";
+    }
+
+    function labelSep() {
+        return isCjkUi() ? "：" : ": ";
+    }
+
+    // Preserve the existing locale order, then accept zh_tw-only candidate
+    // prose from any persisted UI language so browser and server validation agree.
+    // Entries are FIELD SUFFIXES, not BCP-47 tags: "zh-TW" data lives in
+    // `<base>_zh_tw` keys, so a hyphenless suffix is used here and in langField().
+    var LANG_FALLBACK = {
+        zh: ["zh", "en", "ja", "zh_tw"],
+        en: ["en", "zh", "ja", "zh_tw"],
+        ja: ["ja", "en", "zh", "zh_tw"],
+        "zh-TW": ["zh_tw", "zh", "en", "ja"]
+    };
+    // Suffix used to look up localized catalog/recommendation fields.
+    var LANG_FIELD = { "zh-TW": "zh_tw" };
+
+    function langField(lang) {
+        return LANG_FIELD[lang] || lang;
+    }
     var IMAGE_COMPARISON_LABELS = {
         rendering: {
-            "vector-illustration": { zh: "矢量插画", en: "Vector illustration", ja: "ベクターイラスト" },
-            flat: { zh: "扁平插画", en: "Flat illustration", ja: "フラットイラスト" },
-            "3d-isometric": { zh: "3D 等距", en: "3D isometric", ja: "3Dアイソメトリック" },
-            "digital-dashboard": { zh: "数字仪表盘", en: "Digital dashboard", ja: "デジタルダッシュボード" },
-            "corporate-photo": { zh: "企业摄影", en: "Corporate photo", ja: "企業写真" },
-            blueprint: { zh: "蓝图线稿", en: "Blueprint", ja: "ブループリント" },
-            editorial: { zh: "编辑杂志", en: "Editorial", ja: "エディトリアル" },
-            "sketch-notes": { zh: "手绘笔记", en: "Sketch notes", ja: "スケッチノート" },
-            "ink-notes": { zh: "墨线笔记", en: "Ink notes", ja: "インクノート" },
-            chalkboard: { zh: "粉笔黑板", en: "Chalkboard", ja: "チョークボード" },
-            watercolor: { zh: "水彩", en: "Watercolor", ja: "水彩" },
-            "warm-scene": { zh: "暖调场景", en: "Warm scene", ja: "暖色シーン" },
-            "screen-print": { zh: "丝网印刷", en: "Screen print", ja: "スクリーンプリント" },
-            "fantasy-animation": { zh: "幻想动画", en: "Fantasy animation", ja: "ファンタジーアニメ" },
-            "pixel-art": { zh: "像素艺术", en: "Pixel art", ja: "ピクセルアート" },
-            nature: { zh: "自然有机", en: "Nature", ja: "自然・オーガニック" },
-            "minimalist-swiss": { zh: "瑞士极简", en: "Minimalist Swiss", ja: "スイスミニマル" },
-            glassmorphism: { zh: "玻璃拟态", en: "Glassmorphism", ja: "グラスモーフィズム" },
-            "vintage-poster": { zh: "复古海报", en: "Vintage poster", ja: "ヴィンテージポスター" },
-            "paper-cut": { zh: "剪纸拼贴", en: "Paper cut", ja: "ペーパーカット" }
+            "vector-illustration": { zh: "矢量插画", zh_tw: "向量插畫", en: "Vector illustration", ja: "ベクターイラスト" },
+            flat: { zh: "扁平插画", zh_tw: "扁平插畫", en: "Flat illustration", ja: "フラットイラスト" },
+            "3d-isometric": { zh: "3D 等距", zh_tw: "3D 等距", en: "3D isometric", ja: "3Dアイソメトリック" },
+            "digital-dashboard": { zh: "数字仪表盘", zh_tw: "數位儀表板", en: "Digital dashboard", ja: "デジタルダッシュボード" },
+            "corporate-photo": { zh: "企业摄影", zh_tw: "企業攝影", en: "Corporate photo", ja: "企業写真" },
+            blueprint: { zh: "蓝图线稿", zh_tw: "藍圖線稿", en: "Blueprint", ja: "ブループリント" },
+            editorial: { zh: "编辑杂志", zh_tw: "編輯雜誌", en: "Editorial", ja: "エディトリアル" },
+            "sketch-notes": { zh: "手绘笔记", zh_tw: "手繪筆記", en: "Sketch notes", ja: "スケッチノート" },
+            "ink-notes": { zh: "墨线笔记", zh_tw: "墨線筆記", en: "Ink notes", ja: "インクノート" },
+            chalkboard: { zh: "粉笔黑板", zh_tw: "粉筆黑板", en: "Chalkboard", ja: "チョークボード" },
+            watercolor: { zh: "水彩", zh_tw: "水彩", en: "Watercolor", ja: "水彩" },
+            "warm-scene": { zh: "暖调场景", zh_tw: "暖調場景", en: "Warm scene", ja: "暖色シーン" },
+            "screen-print": { zh: "丝网印刷", zh_tw: "絲網印刷", en: "Screen print", ja: "スクリーンプリント" },
+            "fantasy-animation": { zh: "幻想动画", zh_tw: "幻想動畫", en: "Fantasy animation", ja: "ファンタジーアニメ" },
+            "pixel-art": { zh: "像素艺术", zh_tw: "像素藝術", en: "Pixel art", ja: "ピクセルアート" },
+            nature: { zh: "自然有机", zh_tw: "自然有機", en: "Nature", ja: "自然・オーガニック" },
+            "minimalist-swiss": { zh: "瑞士极简", zh_tw: "瑞士極簡", en: "Minimalist Swiss", ja: "スイスミニマル" },
+            glassmorphism: { zh: "玻璃拟态", zh_tw: "玻璃擬態", en: "Glassmorphism", ja: "グラスモーフィズム" },
+            "vintage-poster": { zh: "复古海报", zh_tw: "復古海報", en: "Vintage poster", ja: "ヴィンテージポスター" },
+            "paper-cut": { zh: "剪纸拼贴", zh_tw: "剪紙拼貼", en: "Paper cut", ja: "ペーパーカット" }
         }
     };
 
     function localized(obj, base) {
         if (!obj) return "";
-        var langKey = base + "_" + LANG;
+        var langKey = base + "_" + langField(LANG);
         if (obj[langKey] != null) return obj[langKey];
         var order = LANG_FALLBACK[LANG] || LANG_FALLBACK.en;
         var i;
@@ -663,13 +897,13 @@
     }
 
     function applyStaticTranslations() {
-        document.documentElement.setAttribute("lang", LANG === "zh" ? "zh-CN" : (LANG === "ja" ? "ja" : "en"));
+        document.documentElement.setAttribute("lang", LANG === "zh" ? "zh-CN" : (LANG === "zh-TW" ? "zh-TW" : (LANG === "ja" ? "ja" : "en")));
         document.querySelectorAll("[data-i18n]").forEach(function (node) {
             node.textContent = t(node.getAttribute("data-i18n"));
         });
     }
 
-    var LANG_NAMES = { zh: "中文", en: "English", ja: "日本語" };
+    var LANG_NAMES = { zh: "中文", en: "English", ja: "日本語", "zh-TW": "繁體中文" };
 
     function refreshLangToggle(toggleBtn) {
         // Custom dropdown (OS-independent): button shows the CURRENT language.
@@ -812,7 +1046,7 @@
         var value = String(id || "").trim();
         if (!value || value === "custom") return "";
         if (!/^[A-Za-z0-9_.-]+$/.test(value)) return "";
-        return "/ai-image-comparison/" + kind + "/" + encodeURIComponent(value) + ".png";
+        return "/ai-image-comparison/" + kind + "/" + encodeURIComponent(value) + ".webp";
     }
 
     function appendImageStrategyPreviews(card, candidate) {
@@ -887,6 +1121,7 @@
             throw new Error("template_options.default_mode must be free_design or templates");
         }
         var normalized = {
+            options_sha256: data && data.options_sha256,
             lang: data && data.lang,
             default_mode: defaultMode,
             library: {},
@@ -918,18 +1153,27 @@
             if (!candidate || !slot) {
                 throw new Error("Invalid preselected template key: " + key);
             }
-            if (TEMPLATE_SELECTIONS[slot]) {
+            if (slot === "explicit") {
+                if (TEMPLATE_SELECTIONS.explicit.indexOf(candidate.workspace_root) < 0) {
+                    TEMPLATE_SELECTIONS.explicit.push(candidate.workspace_root);
+                }
+                return;
+            }
+            if (TEMPLATE_SELECTIONS[slot] && TEMPLATE_SELECTIONS[slot] !== key) {
                 throw new Error("Multiple preselected templates for slot: " + slot);
             }
             TEMPLATE_SELECTIONS[slot] = key;
         });
+        // Publish options before syncing: expanding an explicit root into its
+        // kinds reads TEMPLATE_OPTIONS, so a preselected root would otherwise
+        // resolve to zero keys on first load.
+        TEMPLATE_OPTIONS = normalized;
         syncTemplateSelectionState();
         TEMPLATE_MODE = normalized.default_mode;
-        TEMPLATE_OPTIONS = normalized;
     }
 
     function emptyTemplateSelections() {
-        return { brand: "", style: "", layout: "", deck: "", explicit: "" };
+        return { brand: "", style: "", layout: "", deck: "", explicit: [] };
     }
 
     function templateSelectionSlot(candidate) {
@@ -949,11 +1193,44 @@
         return null;
     }
 
+    function explicitCandidatesForRoot(workspaceRoot) {
+        var root = String(workspaceRoot || "");
+        if (!root) return [];
+        return ((TEMPLATE_OPTIONS && TEMPLATE_OPTIONS.explicit) || [])
+            .filter(function (candidate) { return candidate.workspace_root === root; });
+    }
+
+    // One supplied path is one workspace, and its kinds compose rather than
+    // compete. Selecting that root therefore takes every kind it exposes.
+    function explicitRootOptions() {
+        var roots = [];
+        var seen = Object.create(null);
+        ((TEMPLATE_OPTIONS && TEMPLATE_OPTIONS.explicit) || []).forEach(function (candidate) {
+            var root = candidate.workspace_root || "";
+            if (!root || seen[root]) return;
+            seen[root] = true;
+            var kinds = explicitCandidatesForRoot(root).map(function (item) {
+                return templateKindLabel(item.kind);
+            });
+            roots.push({
+                key: root,
+                label: candidate.label || root,
+                summary: kinds.join(" + "),
+                workspace_root: root
+            });
+        });
+        return roots;
+    }
+
     function syncTemplateSelectionState() {
         TEMPLATE_SELECTED_KEYS = TEMPLATE_KINDS.map(function (kind) {
             return TEMPLATE_SELECTIONS[kind];
         });
-        TEMPLATE_SELECTED_KEYS.push(TEMPLATE_SELECTIONS.explicit);
+        TEMPLATE_SELECTIONS.explicit.forEach(function (root) {
+            explicitCandidatesForRoot(root).forEach(function (candidate) {
+                TEMPLATE_SELECTED_KEYS.push(candidate.key);
+            });
+        });
         TEMPLATE_SELECTED_KEYS = TEMPLATE_SELECTED_KEYS.filter(Boolean);
     }
 
@@ -983,6 +1260,16 @@
 
     function chooseTemplateForSlot(slot, key) {
         TEMPLATE_SELECTIONS[slot] = String(key || "");
+        syncTemplateSelectionState();
+        TEMPLATE_MODE = "templates";
+        updateTemplateSelectionControls();
+    }
+
+    function chooseExplicitTemplateRoot(root, selected) {
+        TEMPLATE_SELECTIONS.explicit = TEMPLATE_SELECTIONS.explicit.filter(function (value) {
+            return value !== root;
+        });
+        if (selected) TEMPLATE_SELECTIONS.explicit.push(root);
         syncTemplateSelectionState();
         TEMPLATE_MODE = "templates";
         updateTemplateSelectionControls();
@@ -1023,20 +1310,29 @@
         });
         field.appendChild(select);
 
-        if (slot === "explicit") {
-            field.appendChild(el(
-                "div",
-                "template-select-help",
-                candidates.length ? t("template_explicit_hint") : t("template_none_explicit")
-            ));
-            var path = el("div", "template-selected-path");
-            path.id = "template-explicit-path";
-            path.appendChild(el("span", "template-selected-path-label", t("template_source_path") + ":"));
-            var code = el("code", "template-selected-path-value");
-            code.id = "template-explicit-path-value";
-            path.appendChild(code);
-            field.appendChild(path);
-        }
+        return field;
+    }
+
+    function renderExplicitTemplateChoices() {
+        var field = el("div", "template-select-field template-select-field-explicit");
+        field.appendChild(el("div", "template-select-label", t("template_source_explicit")));
+        var roots = explicitRootOptions();
+        field.appendChild(el("div", "template-select-help",
+            roots.length ? t("template_explicit_hint") : t("template_none_explicit")));
+        roots.forEach(function (candidate) {
+            var label = el("label", "template-select-help");
+            var checkbox = el("input", "template-explicit-choice");
+            checkbox.type = "checkbox";
+            checkbox.value = candidate.workspace_root;
+            checkbox.checked = TEMPLATE_SELECTIONS.explicit.indexOf(checkbox.value) >= 0;
+            checkbox.addEventListener("change", function () {
+                chooseExplicitTemplateRoot(checkbox.value, checkbox.checked);
+            });
+            label.appendChild(checkbox);
+            label.appendChild(el("span", "", templateCandidateTitle(candidate) + " · " + candidate.summary));
+            label.appendChild(el("code", "template-selected-path-value", candidate.workspace_root));
+            field.appendChild(label);
+        });
         return field;
     }
 
@@ -1079,26 +1375,11 @@
             var candidates = TEMPLATE_OPTIONS.library[kind] || [];
             grid.appendChild(renderTemplateSelectField(kind, templateKindLabel(kind), candidates));
         });
-        grid.appendChild(renderTemplateSelectField(
-            "explicit",
-            t("template_source_explicit"),
-            TEMPLATE_OPTIONS.explicit || []
-        ));
+        grid.appendChild(renderExplicitTemplateChoices());
         panel.appendChild(grid);
         sec.appendChild(panel);
         host.appendChild(sec);
         updateTemplateSelectionControls();
-    }
-
-    function updateTemplateExplicitPath() {
-        var path = document.getElementById("template-explicit-path");
-        var value = document.getElementById("template-explicit-path-value");
-        if (!path || !value) return;
-        var candidate = templateCandidateByKey(TEMPLATE_SELECTIONS.explicit);
-        var workspaceRoot = candidate && candidate.workspace_root ? candidate.workspace_root : "";
-        path.hidden = !workspaceRoot;
-        value.textContent = workspaceRoot;
-        value.title = workspaceRoot;
     }
 
     function updateTemplateSelectionControls() {
@@ -1117,11 +1398,13 @@
             useChoice.setAttribute("aria-expanded", templatesSelected ? "true" : "false");
         }
         if (selectorPanel) selectorPanel.hidden = !templatesSelected;
-        TEMPLATE_KINDS.concat(["explicit"]).forEach(function (slot) {
+        TEMPLATE_KINDS.forEach(function (slot) {
             var select = document.getElementById("template-select-" + slot);
             if (select) select.value = TEMPLATE_SELECTIONS[slot] || "";
         });
-        updateTemplateExplicitPath();
+        document.querySelectorAll(".template-explicit-choice").forEach(function (checkbox) {
+            checkbox.checked = TEMPLATE_SELECTIONS.explicit.indexOf(checkbox.value) >= 0;
+        });
         var status = document.getElementById("confirm-status");
         if (status) status.textContent = "";
     }
@@ -1149,7 +1432,6 @@
         if (field === "icons") return REC.icons && REC.icons.value;
         if (field === "image_usage") return REC.images && REC.images.value;
         if (field === "image_ai_path") return REC.image_ai_path || (REC.images && REC.images.ai_path);
-        if (field === "formula_policy") return REC.typography && REC.typography.formula_policy && REC.typography.formula_policy.value;
         if (field === "generation_mode") return REC.generation_mode && REC.generation_mode.value;
         return REC[field] && REC[field].value;
     }
@@ -1192,6 +1474,7 @@
     function enumField(parent, list, recommendedId, getVal, setVal, opts2) {
         list = list || [];
         opts2 = opts2 || {};
+        var disabled = opts2.disabled === true;
         var grouped = list.length && list[0] && list[0].items;
         var flat = grouped ? list.reduce(function (a, g) { return a.concat(g.items || []); }, []) : list;
         var ids = flat.map(function (o) { return o.id; });
@@ -1260,7 +1543,7 @@
                 label = label + (o.dim ? " · " + o.dim : "");
             } else {
                 if (o.dim) label += " · " + o.dim;
-                if (desc) label += (LANG === "zh" || LANG === "ja" ? "：" : " — ") + desc;
+                if (desc) label += (isCjkUi() ? "：" : " — ") + desc;
                 if (spec && spec.note) label += " · " + spec.note;
             }
             copy.appendChild(el("span", "chip-text", label));
@@ -1274,7 +1557,13 @@
             }
             chip.appendChild(copy);
             if (!isCustom && o.id === cur) chip.classList.add("selected");
+            if (disabled) {
+                chip.setAttribute("aria-disabled", "true");
+                chip.style.cursor = "not-allowed";
+                chip.style.opacity = "0.65";
+            }
             chip.addEventListener("click", function () {
+                if (disabled) return;
                 deselect();
                 chip.classList.add("selected");
                 if (!aiCustom) customInput.style.display = "none";
@@ -1447,7 +1736,7 @@
     }
 
     function setUiLanguageAttributes(node) {
-        node.lang = LANG === "zh" ? "zh-CN" : (LANG === "ja" ? "ja-JP" : "en-US");
+        node.lang = LANG === "zh" ? "zh-CN" : (LANG === "zh-TW" ? "zh-TW" : (LANG === "ja" ? "ja-JP" : "en-US"));
         node.dir = "ltr";
     }
 
@@ -2451,6 +2740,9 @@
     // Replaced when the final plan's image-production section mounts; image-use
     // edits call it so the conditional AI path stays synchronized on the page.
     var refreshImageProduction = function () {};
+    // Replaced when the Design Spec depth section mounts; generation/refinement
+    // edits call it so the forced-complete coupling stays synchronized.
+    var refreshDesignSpecDepth = function () {};
     // Replaced when the typography section mounts; the canvas section calls it so
     // the body-size hint tracks the chosen canvas dimensions.
     var refreshBodySizeHint = function () {};
@@ -3020,15 +3312,16 @@
         // Everything is px — lo/hi are only a sanity envelope for the OOR flag.
         refreshBodySizeHint = function () {
             var txt = t("font_body_size_hint");
+            var sep = isCjkUi() ? "" : " ";
             var lo, hi;
             if (isPptCanvas(STATE.canvas)) {
                 var pb = deliveryBodyPx(STATE.delivery_purpose);
                 lo = pb.lo; hi = pb.hi;
-                txt += " " + t("body_size_hint_purpose").replace("{def}", pb.def);
+                txt += sep + t("body_size_hint_purpose").replace("{def}", pb.def);
             } else {
                 var band = bodySizeBandForCanvas(STATE.canvas, STATE.delivery_purpose);
                 lo = band.lo; hi = band.hi;
-                txt += " " + t("body_size_hint_canvas")
+                txt += sep + t("body_size_hint_canvas")
                     .replace("{lo}", lo).replace("{hi}", hi);
             }
             // Flag (hint only) a value far outside the
@@ -3039,7 +3332,7 @@
                 ? t("body_size_pt_hint").replace("{pt}", formatPtFromPx(cur))
                 : "";
             if (isFinite(cur) && isFinite(lo) && isFinite(hi) && (cur < lo || cur > hi)) {
-                txt += " " + t("body_size_hint_oor");
+                txt += sep + t("body_size_hint_oor");
             }
             sizeHint.textContent = txt;
         };
@@ -3117,7 +3410,7 @@
         var signatureMatch = -1;
         var stateSignature = typographySignature(STATE.typography || {});
         if (STATE.typography && STATE.typography.name !== "custom") cands.forEach(function (c, i) {
-            var sameName = [localized(c, "name"), c.name_zh, c.name_en, c.name_ja]
+            var sameName = [localized(c, "name"), c.name_zh, c.name_zh_tw, c.name_en, c.name_ja]
                 .some(function (name) { return name === STATE.typography.name; });
             if (!sameName && c.name && typeof c.name === "object") {
                 sameName = Object.keys(c.name).some(function (key) {
@@ -3141,13 +3434,6 @@
         } else {
             syncCustomInputs();
         }
-    }
-
-    function renderFormulaPolicy(host) {
-        var sec = section("F", "formula_policy");
-        enumField(sec, CAT.formula_policy, recOrFirst("formula_policy", CAT.formula_policy),
-            function () { return STATE.formula_policy; }, function (v) { STATE.formula_policy = v; });
-        host.appendChild(sec);
     }
 
     // Combined color + typography + icon preview — not a separate confirmation, just a
@@ -3276,11 +3562,11 @@
                         t("image_strategy_select_placeholder")));
             var parts = [];
             if (strategy.rendering) {
-                parts.push(t("image_strategy_rendering") + ": " +
+                parts.push(t("image_strategy_rendering") + labelSep() +
                     comparisonValueLabel("rendering", strategy.rendering));
             }
-            if (strategy.visual) parts.push(t("image_strategy_visual") + ": " + strategy.visual);
-            if (strategy.mood) parts.push(t("image_strategy_mood") + ": " + strategy.mood);
+            if (strategy.visual) parts.push(t("image_strategy_visual") + labelSep() + strategy.visual);
+            if (strategy.mood) parts.push(t("image_strategy_mood") + labelSep() + strategy.mood);
             if (strategy.behavior) parts.push(strategy.behavior);
             desc.textContent = parts.join(" · ") || t("image_strategy_reference_hint");
         }
@@ -3438,7 +3724,7 @@
                 ["image_strategy_visual", customStrategy.visual],
                 ["image_strategy_mood", customStrategy.mood]
             ].forEach(function (row) {
-                if (row[1]) customCard.appendChild(el("div", "color-note", t(row[0]) + "：" + row[1]));
+                if (row[1]) customCard.appendChild(el("div", "color-note", t(row[0]) + labelSep() + row[1]));
             });
             var customCopy = el("div", "ai-custom-candidate-copy",
                 customStrategy.behavior || t("image_strategy_custom_placeholder"));
@@ -3536,7 +3822,7 @@
         (CAT.image_usage || []).forEach(function (option) {
             var label = optionLabel(option);
             var desc = optionDesc(option);
-            if (desc) label += (LANG === "zh" || LANG === "ja" ? "：" : " — ") + desc;
+            if (desc) label += (isCjkUi() ? "：" : " — ") + desc;
             var chip = el("div", "chip");
             chip.appendChild(el("span", "chip-text", label));
             if (recommendedIds.indexOf(option.id) >= 0) {
@@ -3603,7 +3889,11 @@
             setSectionNote(sec, STATE.generation_mode === "split" ? t("mode_split_desc") : t("mode_continuous_desc"));
         }
         enumField(sec, CAT.generation_mode, recOrFirst("generation_mode", CAT.generation_mode),
-            function () { return STATE.generation_mode; }, function (v) { STATE.generation_mode = v; refresh(); });
+            function () { return STATE.generation_mode; }, function (v) {
+                STATE.generation_mode = v;
+                refresh();
+                refreshDesignSpecDepth();
+            });
         refresh();
         host.appendChild(sec);
     }
@@ -3654,8 +3944,54 @@
         }
         enumField(sec, opts, STATE.refine_spec ? "on" : "off",
             function () { return STATE.refine_spec ? "on" : "off"; },
-            function (v) { STATE.refine_spec = (v === "on"); refresh(); });
+            function (v) {
+                STATE.refine_spec = (v === "on");
+                refresh();
+                refreshDesignSpecDepth();
+            });
         refresh();
+        host.appendChild(sec);
+    }
+
+    function designSpecDepthCatalog() {
+        if (CAT.design_spec_depth && CAT.design_spec_depth.length) {
+            return CAT.design_spec_depth;
+        }
+        return [
+            {
+                id: "brief",
+                label: t("design_spec_depth_brief"),
+                desc: t("design_spec_depth_brief_desc")
+            },
+            {
+                id: "complete",
+                label: t("design_spec_depth_complete"),
+                desc: t("design_spec_depth_complete_desc")
+            }
+        ];
+    }
+
+    function renderDesignSpecDepth(host) {
+        var sec = section("D", "sec_design_spec_depth");
+        var body = el("div", "design-spec-depth-body");
+        var recommended = REC.design_spec_depth && REC.design_spec_depth.value;
+        if (recommended !== "brief" && recommended !== "complete") recommended = "brief";
+        sec.appendChild(body);
+        refreshDesignSpecDepth = function () {
+            var locked = STATE.generation_mode === "split" || STATE.refine_spec;
+            if (locked) STATE.design_spec_depth = "complete";
+            body.innerHTML = "";
+            enumField(
+                body,
+                designSpecDepthCatalog(),
+                locked ? null : recommended,
+                function () { return STATE.design_spec_depth; },
+                function (value) { STATE.design_spec_depth = value; },
+                { disabled: locked }
+            );
+            setSectionNote(sec, locked ? t("design_spec_depth_locked") : "");
+        };
+        refreshDesignSpecDepth();
         host.appendChild(sec);
     }
 
@@ -3690,6 +4026,7 @@
         refreshStylePreview = function () {};
         refreshImageStrategyPreview = function () {};
         refreshImageProduction = function () {};
+        refreshDesignSpecDepth = function () {};
         refreshBodySizeHint = function () {};
         refreshSizeInputs = function () {};
         DIRECTION_COMPONENT_PAINTERS = [];
@@ -3721,10 +4058,10 @@
             host.appendChild(styleGroup);
             renderImageDirection(host);
             renderImageProduction(host);
-            renderFormulaPolicy(host);
             renderProactiveExecution(host);
             renderMode(host);
             renderRefine(host);
+            renderDesignSpecDepth(host);
             var refreshDirectionIndicators = function () {
                 window.setTimeout(function () {
                     refreshDesignDirectionState();
@@ -3878,7 +4215,6 @@
     }
 
     function initProductionState() {
-        STATE.formula_policy = pick("formula_policy", CAT.formula_policy);
         STATE.image_ai_path = pick("image_ai_path", CAT.image_ai_path);
         STATE.proactive_speaker_notes = booleanRecommendation("proactive_speaker_notes", true);
         STATE.proactive_custom_animations = booleanRecommendation("proactive_custom_animations", false);
@@ -3886,6 +4222,11 @@
 
         STATE.generation_mode = pick("generation_mode", CAT.generation_mode);
         STATE.refine_spec = !!((REC.refine_spec && REC.refine_spec.value) || (REC.recommend && REC.recommend.refine_spec));
+        var designSpecDepth = REC.design_spec_depth && REC.design_spec_depth.value;
+        STATE.design_spec_depth = designSpecDepth === "complete" ? "complete" : "brief";
+        if (STATE.generation_mode === "split" || STATE.refine_spec) {
+            STATE.design_spec_depth = "complete";
+        }
     }
 
     function initState() {
@@ -3921,6 +4262,7 @@
     function stage1Payload() {
         var payload = communicationPayload();
         payload.stage = "stage1";
+        payload.options_sha256 = TEMPLATE_OPTIONS.options_sha256;
         payload.template_selection = {
             mode: TEMPLATE_MODE,
             selection_keys: TEMPLATE_MODE === "templates"
@@ -4044,8 +4386,22 @@
         if (!valid) {
             document.getElementById("confirm-status").textContent =
                 t("template_selection_required");
+            return false;
         }
-        return valid;
+        if (TEMPLATE_MODE === "templates") {
+            var seenKinds = Object.create(null);
+            for (var i = 0; i < TEMPLATE_SELECTED_KEYS.length; i += 1) {
+                var candidate = templateCandidateByKey(TEMPLATE_SELECTED_KEYS[i]);
+                if (!candidate) continue;
+                if (seenKinds[candidate.kind]) {
+                    document.getElementById("confirm-status").textContent =
+                        t("template_selection_conflict");
+                    return false;
+                }
+                seenKinds[candidate.kind] = true;
+            }
+        }
+        return true;
     }
 
     function submitStage1() {
@@ -4061,6 +4417,7 @@
         document.getElementById("sections").style.display = "none";
         document.getElementById("actionbar").style.display = "none";
         var l = document.getElementById("loading");
+        l.setAttribute("data-i18n", "deriving");
         l.textContent = t("deriving");
         l.style.display = "block";
     }
@@ -4187,9 +4544,10 @@
 
     function applyServerLanguage(data) {
         var requested = data && data.lang;
-        if (requested !== "zh" && requested !== "en" && requested !== "ja") return;
+        if (requested !== "zh" && requested !== "en" && requested !== "ja" &&
+                requested !== "zh-TW") return;
         var hasStored = false;
-        try { hasStored = !!window.localStorage.getItem("ppt_lang"); } catch (e) { /* ignore */ }
+        try { hasStored = ["zh", "en", "ja", "zh-TW"].indexOf(window.localStorage.getItem("ppt_lang")) >= 0; } catch (e) { /* ignore */ }
         if (hasStored) return;
         LANG = requested;
         applyStaticTranslations();
@@ -4239,12 +4597,13 @@
         var chooseLang = function (v) {
             setMenuOpen(false);
             toggleBtn.focus();
-            if (v !== "ja" && v !== "en" && v !== "zh") return;
+            if (v !== "ja" && v !== "en" && v !== "zh" && v !== "zh-TW") return;
+            try { window.localStorage.setItem("ppt_lang", v); } catch (e2) { /* ignore */ }
             if (v === LANG) return;
             LANG = v;
-            try { window.localStorage.setItem("ppt_lang", LANG); } catch (e2) { /* ignore */ }
             applyStaticTranslations();
             refreshLangToggle(toggleBtn);
+            document.getElementById("confirm-status").textContent = "";
             if (REC && CAT) {
                 renderAll();   // STATE persists → selections preserved
             }

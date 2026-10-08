@@ -1,9 +1,11 @@
 ---
 name: codex-skill-optimizer
-description: "Use when evaluating, auditing, or improving any Claude Code skill — whether project-local or global. Runs a cross-model optimization pipeline: domain research, blind Claude+Codex debate, consensus-driven rewrites, and structured final audit. Triggers on \"evaluate skill\", \"optimize skill\", \"audit skill\", \"improve skill\", \"skill quality check\", \"评估skill\", \"优化skill\", \"skill审查\", \"检查skill质量\", or when the user points at a SKILL.md and wants it improved. Not for creating skills from scratch (use /skillify or /document-skills:skill-creator) or for debating non-skill topics (/codex-debate)."
+description: "Use when evaluating, auditing, or improving any Claude Code skill — whether project-local or global. Runs a cross-model optimization pipeline: domain research, blind Claude+Codex debate, consensus-driven rewrites, and structured final audit. Triggers on \"evaluate skill\", \"optimize skill\", \"audit skill\", \"improve skill\", \"skill quality check\", \"评估skill\", \"优化skill\", \"skill审查\", \"检查skill质量\", or when the user points at a SKILL.md and wants it improved. Not for creating skills from scratch (use /writing-great-skills) or for debating non-skill topics (/codex-debate)."
 ---
 
 # Codex Skill Optimizer
+
+> Codex calls (`codex exec`, `codex exec resume`) follow `../shared-references/codex-cli.md`.
 
 Evaluate and improve any Claude Code skill through cross-model research,
 blind debate, and structured audit. This skill was itself built using this
@@ -21,11 +23,11 @@ audit, this catches problems that no single-pass review would find.
 - Auditing an existing skill for quality gaps
 - Optimizing a skill after initial creation
 - Bringing an old skill up to current standards
-- After creating a skill with /skillify or /document-skills:skill-creator
+- After creating a skill with /writing-great-skills
 
 ## When NOT to Use
 
-- Creating a skill from scratch — use /document-skills:skill-creator or /skillify
+- Creating a skill from scratch — use /writing-great-skills
 - Debating a non-skill topic — use /codex-debate
 - Quick one-off skill check — just read the SKILL.md and comment
 
@@ -111,7 +113,7 @@ Build a neutral evidence packet containing:
 
 Exclude: Claude's position, Claude's specific claims, user reactions.
 
-Send via `mcp__codex__codex` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`:
+Send via `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`:
 
 ```
 ## Independent Skill Review: {skill name}
@@ -158,7 +160,7 @@ From seed runs (6 skills), the pattern was:
 - ~15% are Claude-only → re-examine, sometimes valuable, sometimes noise
 - Most debates converged in 1 round, but add rounds for unresolved cruxes
 
-Send Round 1 to Codex via `mcp__codex__codex-reply`: reveal Claude's
+Send Round 1 to Codex via `codex exec resume`: reveal Claude's
 position, steel-man Codex's strongest points, identify specific cruxes,
 and ask targeted questions on open disagreements.
 
@@ -193,7 +195,7 @@ real issues creates churn.
 ### Adaptive Scoring
 
 Score across 10 dimensions. Mark dimensions as N/A when they don't apply
-(e.g., MCP Integration for non-Codex skills, Follow-Up for one-shot skills):
+(e.g., Codex Integration for non-Codex skills, Follow-Up for one-shot skills):
 
 | Dimension | What to check |
 |-----------|---------------|
@@ -205,7 +207,7 @@ Score across 10 dimensions. Mark dimensions as N/A when they don't apply
 | Cross-File Consistency | References align with SKILL.md, shared terminology |
 | Safety | Secrets, consent, destructive operations |
 | Follow-Up | threadId preserved, follow-up modes documented |
-| MCP Integration | max config, error handling, initial failure path |
+| Codex Integration | max config, error handling, initial failure path |
 | Craftsmanship | Line count, progressive disclosure, organization |
 
 For each dimension: score 1-10, note issues found. Fix all issues
@@ -249,15 +251,15 @@ boundaries referencing sibling skills.
 without reasoning. Progressive structure (high at boundaries, light in
 middle). Evidence-grounded claims with confidence + falsifiers.
 
-**MCP**: `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`. Save threadId. Handle
+**Codex CLI**: `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`. Save threadId. Handle
 initial connection failure. Reply endpoint for follow-ups.
 
 **Organization**: SKILL.md under 500 lines. Reference files for domain
 detail, categories, templates. Lean body, rich references.
 
-## Codex MCP
+## Codex CLI
 
-- **First call**: `mcp__codex__codex` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
-- **Follow-ups**: `mcp__codex__codex-reply` with saved `threadId`
-- On MCP error: tell user, offer Claude-only audit (still valuable, just
+- **First call**: `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
+- **Follow-ups**: `codex exec resume` with saved `threadId`
+- On Codex CLI error: tell user, offer Claude-only audit (still valuable, just
   not cross-model validated)

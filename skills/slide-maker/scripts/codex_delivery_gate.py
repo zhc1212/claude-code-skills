@@ -68,6 +68,15 @@ def _a11y_codes():
 
 
 STRICT_WARNINGS = _a11y_codes()
+
+
+def _a11y_remedy(code):
+    """lint_deck.A11Y_REMEDY[code] — the same remedy render_deck prints (never a second, drifting copy)."""
+    try:
+        import lint_deck as _ld                     # noqa: PLC0415 - deliberate late import
+        return _ld.A11Y_REMEDY.get(code) or "remediate it"
+    except Exception:
+        return "remediate it"
 ICON_HELPERS = {"icon", "icon_card", "icon_tile", "icon_badge", "icon_ghost"}
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -252,6 +261,16 @@ TEMPLATE = {
         "checkpoint": {"mode": "approved", "record": "<decision record>"},
     },
     "design": {
+        # image-led decks only (references/image-generation.md, the SERIES exception): picking the
+        # image-led direction records "series" + the path of its series.json; everything else stays
+        # "selective" (today's rule) and the image-series gate reads NOT CHECKED.
+        "imagery": "selective",
+        "image_series": None,
+        # a curated visual language (references/visual-languages.md): its name + "both" | "mac" fonts + the
+        # ground it was built on ("light" or its contrast ground — visual_languages.py --gates prints all)
+        "visual_language": None,
+        "vl_fonts": "both",
+        "vl_ground": None,
         # 🔴 REQUIRED, and absent from this template until it was measured alongside
         # `interview.picks`. Step 4 COMPETES the signature page: build 2-3 different
         # compositions of it, render them in ONE pass, read them blind, pick by what you SAW.
@@ -339,7 +358,8 @@ TEMPLATE = {
         # is not in the example scaffold is a capability that does not get produced.
         # A deck with no content images writes the string "n/a - <why>".
         # The direction competition: the candidates themselves, re-scored at delivery.
-        "direction_gate": {"candidates": "directions.json", "picked": "<the chosen direction>"},
+        "direction_gate": {"candidates": "directions.json", "picked": "<the chosen direction>",
+                           "images": "<photos | illustrations | none: the user's, generated or fetched; with none, also native_fit: {language, why}>"},
         "image_sources": [
             "slide <n> | <subject> | sourced - <origin> (<licence>) | <file>",
             "slide <n> | <subject> | generated - <tool>",
@@ -897,9 +917,9 @@ def check_lint(lint: dict[str, Any], delivery: str, evidence: dict[str, Any], er
                                         ", ".join(str(n) for n in sorted(hit[code])))
                      if hit[code] else "")
             errors.append(
-                f"{code}{where} is below the WCAG 1.4.11 3:1 floor — remediate it, or record a "
-                f"waiver {{\"kind\": \"a11y\", \"warning\": \"{code}\", \"reason\": \"…\"}} saying "
-                f"why this mark is decorative")
+                f"{code}{where} is an accessibility floor — {_a11y_remedy(code)}; or record a waiver "
+                f"{{\"kind\": \"a11y\", \"warning\": \"{code}\", \"reason\": \"…\"}} saying why it is "
+                f"acceptable for this deck's readers")
 
 
 def check_render_selfcheck(
@@ -1431,6 +1451,14 @@ def note_register_kit(evidence: dict[str, Any], deck_path: Path | None,
             name = sr._bespoke_name(design.get("style_pick"))
             if not name:
                 return
+            cvl_path = Path(__file__).with_name("check_visual_language.py")
+            cvl_spec = importlib.util.spec_from_file_location("slide_maker_cvl_kit", cvl_path)
+            cvl = importlib.util.module_from_spec(cvl_spec)
+            cvl_spec.loader.exec_module(cvl)
+            lib = cvl.library_kit(evidence, name)
+            if lib:
+                print(f"  {lib}")
+                return
             if list(deck_path.parent.glob(module.KIT_GLOB)):
                 print(f"  `{name}` ships as a surface KIT — the contracts apply to it")
             else:
@@ -1657,6 +1685,71 @@ def check_qa_backup(evidence: dict[str, Any], deck_path: Path | None,
             f"evidence file.")
 
 
+def check_visual_language(evidence: dict[str, Any], deck_path: Path | None,
+                          errors: list[str]) -> None:
+    """A recorded visual language must be BUILT in — same module as `render_deck.py --gate-check`.
+    The record is `design.visual_language` (+ `design.vl_fonts`); none recorded is NOT CHECKED, out loud."""
+    if deck_path is None:
+        return
+    try:
+        import importlib.util
+        path = Path(__file__).with_name("check_visual_language.py")
+        spec = importlib.util.spec_from_file_location("slide_maker_check_visual_language", path)
+        if spec is None or spec.loader is None:
+            raise RuntimeError("could not load check_visual_language.py")
+        cvl = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cvl)
+    except Exception as exc:
+        not_checked(f"  [--] VISUAL LANGUAGE NOT CHECKED — {exc.__class__.__name__}: {exc} (not the same as clean)")
+        return
+    rec = cvl.recorded_language(evidence)
+    if rec is None:
+        not_checked("  [--] visual language NOT CHECKED — none recorded (design.visual_language)")
+        return
+    findings, facts = cvl.check(str(deck_path), rec)
+    mark = "[!!]" if any(f[0] == "block" for f in findings) else "[ok]"
+    print("  {} visual language {}: {} of {} slide(s) built with it".format(mark, rec["name"], facts["tagged"], facts["slides"]))
+    for sev, code, why in findings:
+        if sev == "block":
+            errors.append(f"visual language {code}: {why}")
+
+
+def check_image_series(evidence: dict[str, Any], deck_path: Path | None,
+                       errors: list[str]) -> None:
+    """An image-led deck's generated series — same module as `render_deck.py --gate-check`.
+    The record is `design.imagery: "series"` + `design.image_series: <series.json>`; anything else
+    is NOT CHECKED, out loud."""
+    if deck_path is None:
+        return
+    try:
+        import importlib.util
+        path = Path(__file__).with_name("check_image_series.py")
+        spec = importlib.util.spec_from_file_location("slide_maker_check_image_series", path)
+        if spec is None or spec.loader is None:
+            raise RuntimeError("could not load check_image_series.py")
+        cis = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cis)
+    except Exception as exc:
+        not_checked(f"  [--] IMAGE SERIES NOT CHECKED — {exc.__class__.__name__}: {exc} (not the same as clean)")
+        return
+    rec = cis.recorded_series(evidence)
+    if rec is None:
+        not_checked("  [--] image series NOT CHECKED — not an image-led deck (design.imagery is not 'series')")
+        return
+    try:
+        findings, facts = cis.check(str(deck_path), rec, str(deck_path.resolve().parent))
+    except Exception as exc:
+        not_checked(f"  [--] image series NOT CHECKED — {exc} (not clean)")
+        return
+    print("  [ok] image series: {} of {} slot(s) placed, {} generated picture(s)".format(
+        facts["placed"], facts["slots"], facts["generated"]))
+    for sev, code, why in findings:
+        if sev == "block":
+            errors.append(f"image series {code}: {why}")
+        else:
+            print(f"  [--] image series: {code}: {why}")
+
+
 def check_citations(evidence: dict[str, Any], deck_path: Path | None,
                     errors: list[str]) -> None:
     """Every marker resolves, every entry is cited, and every line comes from the .bib.
@@ -1797,6 +1890,28 @@ def check_register_pixels(evidence: dict[str, Any], deck_path: Path | None,
         errors.append("{}: {}".format(code, msg.replace("\n", " ")))
 
 
+def _check_user_named_direction(direction: dict[str, Any], design: dict[str, Any], errors: list[str]) -> None:
+    """design.direction branch "user-named": the USER named the look (a visual language by name), so there was no
+    competition to stage — record the look and their own words instead of four preview directions. direction_gate
+    already had this carve ("n/a - user supplied the look"); design.direction had none, and a docs-only agent whose user
+    said "editorial" stayed blocked on "four named preview directions" (2026-10-04). The two records must agree."""
+    look = direction.get("look")
+    if not isinstance(look, str) or not look.strip():
+        errors.append('design.direction (user-named) needs `look`: the look the user named, e.g. "visual language: editorial"')
+        look = ""
+    if reason_width(direction.get("user_words")) < 8:
+        errors.append("design.direction (user-named) needs `user_words`: the user's own words naming the look, verbatim "
+                      "(not a paraphrase, not 'ok')")
+    dg = design.get("direction_gate")
+    if not (isinstance(dg, str) and dg.strip().lower().replace("—", "-").startswith("n/a")):
+        errors.append('design.direction is user-named but design.direction_gate records a competition — a look the user '
+                      'named is recorded there as "n/a - user supplied the look"')
+    vlang = design.get("visual_language")
+    if isinstance(vlang, str) and vlang.strip() and vlang.strip().lower() not in look.lower():
+        errors.append("design.direction (user-named) look {!r} does not name the recorded visual_language {!r} — the "
+                      "look built must be the one the user named".format(look, vlang))
+
+
 def check_design(
     evidence: dict[str, Any],
     root: Path,
@@ -1811,6 +1926,8 @@ def check_design(
     direction = design.get("direction")
     if not isinstance(direction, dict):
         errors.append("design.direction missing")
+    elif direction.get("branch") == "user-named":
+        _check_user_named_direction(direction, design, errors)
     else:
         branch = direction.get("branch")
         if branch not in {"clean", "provided-template", "generated-template", "mimic"}:
@@ -1989,6 +2106,14 @@ def check_design(
                               "motif-less colourway")
                 if _r["colourway_excess"]:
                     _f.append("more than one motif-less colourway")
+                _imgf = _dd.images_fault(_dg.get("images"), _c,          # same rule as render_deck.py
+                                         image_sources=design.get("image_sources"),
+                                         imagery=design.get("imagery"))
+                if _imgf:
+                    _f.append(_imgf)
+                _natf = _dd.native_fault(_dg.get("images"), _c, _dg.get("native_fit"))   # same rule as render_deck.py
+                if _natf:
+                    _f.append(_natf)
                 if _f and not str(_dg.get("waived", "")).strip():
                     errors.append("design.direction_gate does not hold up when re-scored: "
                                   + "; ".join(_f) + " — rediverge, or record `waived`")
@@ -2733,6 +2858,8 @@ def evaluate(
         check_fonts_resolve(evidence, deck_path, errors)
         check_talk_time(evidence, deck_path, errors)
         check_qa_backup(evidence, deck_path, errors)
+        check_image_series(evidence, deck_path, errors)
+        check_visual_language(evidence, deck_path, errors)
         check_citations(evidence, deck_path, errors)
         check_register_pixels(evidence, deck_path, errors)
         # DECLARED -> OBEYED. The two lines above read the source and the colour;

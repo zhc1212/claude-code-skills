@@ -26,6 +26,7 @@ import re
 import secrets
 import shutil
 import subprocess
+import shlex
 import sys
 import tempfile
 from pathlib import Path
@@ -133,6 +134,34 @@ def _thread_id(stdout):
         if isinstance(ev, dict) and ev.get("type") == "thread.started":
             tid = str(ev.get("thread_id") or "")
             return tid if _THREAD_ID.match(tid) else None
+    return None
+
+
+_PLAN_TYPE = re.compile(r'"plan_type"\s*:\s*"([a-z_]+)"')
+
+
+def _why_no_image(rollout):
+    """WHY a session produced no image, read from its own transcript — or None when the transcript
+    shows no cause (never a guess). Measured 2026-10-03: the ChatGPT account Codex was signed into had
+    dropped to the FREE plan, which gives a codex session no image tool; the agent's calls failed with
+    "is not a function", it answered TOOL_RETURNS_NO_FILE, and all this script could say was "no image
+    produced"."""
+    if rollout is None:
+        return None
+    try:
+        txt = Path(rollout).read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return None
+    plans = _PLAN_TYPE.findall(txt)
+    no_tool = "is not a function" in txt and ("image_gen" in txt or "image_generation" in txt)
+    if plans and plans[-1] == "free":
+        return ("the ChatGPT account codex is signed into is on the FREE plan, which gives a codex session "
+                "no image tool. Sign in with a Plus/Pro account (`codex logout && codex login`), or — only "
+                "with the user's explicit go-ahead, it is metered — use scripts/generate_images_openai.py.")
+    if no_tool:
+        return ("codex exposed no image tool in this session (the agent's image calls failed with \"is not "
+                "a function\"). Check `codex features list` shows image_generation enabled and the account's "
+                "plan includes image generation.")
     return None
 
 
@@ -299,6 +328,20 @@ def _ref_clause(refs, intent):
     ).format(names, REF_INTENTS[intent])
 
 
+def style_clause(name):
+    """Instruction text for a staged STYLE reference — an earlier image of the SAME series (the
+    approved key image). The opposite of `_ref_clause`: match its LOOK, never its subject. The hosted
+    image tool only reads the prompt (see _RENDER_MODE below), so the agent must put the observed look
+    INTO the prompt in words; telling it to "match the reference" alone would never reach the tool."""
+    return ("\n\nBEFORE generating, OPEN and look at the STYLE reference ./{} in the current directory. "
+            "It is an earlier image of the SAME series: match its palette, light, colour temperature, "
+            "grain or brushwork and rendering, so the two read as one series — describe that look in "
+            "concrete words INSIDE the image prompt you pass to the tool (the tool cannot see the file). "
+            "Do NOT copy its subject, its objects or its composition — the subject is the one in the "
+            "prompt above. If the prompt asks for a flat background colour (a cut-out), the prompt's "
+            "background wins over the reference's.").format(name)
+
+
 # MEASURED, twice, on real generations. Putting "render it as an illustration, not a photograph"
 # in the WRAPPER instruction does nothing: the wrapper steers the agent, and the hosted image tool
 # only ever sees the verbatim <IMAGE_PROMPT> block. A reference-conditioned plate of the TU Delft
@@ -321,6 +364,14 @@ def _render_clause(intent):
     return _RENDER_MODE if intent in ("stylized-illustration", "fallback-rung") else ""
 
 
+def _orientation_for(item, default):
+    """An item's own `orientation` wins over the CLI default. An image-series item states its slot's
+    aspect inside its prompt and carries "auto", because the default ("landscape", appended INSIDE the
+    prompt) would ask a tall arch slot for a wide 16:9 picture."""
+    o = item.get("orientation")
+    return o if o in ("landscape", "portrait", "auto") else default
+
+
 def _orient_clause(orientation):
     # appended INSIDE the verbatim <IMAGE_PROMPT> block, so it steers the generation (not plumbing)
     if orientation == "landscape":
@@ -330,7 +381,7 @@ def _orient_clause(orientation):
     return ""
 
 
-def _generate_one(prompt, out_path, *, orientation, timeout, refs=(), ref_intent=None):
+def _generate_one(prompt, out_path, *, orientation, timeout, refs=(), ref_intent=None, style_ref=None):
     """Generate one plate into `out_path`. True on success.
 
     The sub-agent runs in a fresh EMPTY directory — its whole writable world, since it runs with no
@@ -348,9 +399,14 @@ def _generate_one(prompt, out_path, *, orientation, timeout, refs=(), ref_intent
                 staged.append(dst)
             except OSError as exc:
                 print("  [warn] could not stage reference {}: {}".format(r.name, exc), file=sys.stderr)
+        style_txt = ""
+        if style_ref is not None:
+            sdst = work / ("_style-ref" + Path(style_ref).suffix.lower())
+            shutil.copyfile(style_ref, sdst)       # a failure here is loud: the series would drift
+            style_txt = style_clause(sdst.name)
         instr = build_instruction(prompt, nonce=secrets.token_hex(8),
                                   orient=_orient_clause(orientation) + _render_clause(ref_intent),
-                                  refs_clause=_ref_clause(staged, ref_intent))
+                                  refs_clause=_ref_clause(staged, ref_intent) + style_txt)
         cmd = ["codex", "exec", "--json", "--skip-git-repo-check", "--sandbox", "workspace-write",
                "-c", 'approval_policy="never"', instr]
         stdout = ""
@@ -377,6 +433,9 @@ def _generate_one(prompt, out_path, *, orientation, timeout, refs=(), ref_intent
                       file=sys.stderr)
                 _extract_from_rollout(roll, produced)
         if not _valid_image(produced):
+            why = _why_no_image(_rollout_for_thread(_thread_id(stdout)))
+            if why:
+                print("  WHY: " + why, file=sys.stderr)
             return False
         out_path.parent.mkdir(parents=True, exist_ok=True)
         shutil.move(str(produced), str(out_path))
@@ -454,6 +513,38 @@ def topic_terms(s):
 
 MIN_SUBJECT_NOUNS = 6
 
+# Chinese has no spaces, so topic_terms() counts a Chinese subject as 0 — a Chinese prompt passed the
+# gate only on its English boilerplate. A Chinese subject is counted by its own characters once the
+# style/mood words and particles are removed, two characters to a term.
+_ZH_STYLE = ("抽象", "渐变", "背景", "柔和", "色彩", "颜色", "风格", "氛围", "质感", "光影", "光线", "纹理",
+             "简约", "高级", "唯美", "梦幻", "科技感", "未来感", "意境", "画面", "图案", "插画", "照片", "水彩")
+_ZH_PARTICLES = "的了和与在里上中下着地得是很很一个"
+SERIES_MIN_SUBJECT_TERMS = 2
+
+
+def subject_terms(s):
+    """Content terms of an image SUBJECT, language-fair: English words via topic_terms, plus Chinese
+    content characters (style words and particles removed) counted two to a term."""
+    s = s or ""
+    terms = set(topic_terms(s))
+    han = s
+    for w in _ZH_STYLE:
+        han = han.replace(w, "")
+    han = "".join(ch for ch in han if "\u4e00" <= ch <= "\u9fff" and ch not in _ZH_PARTICLES)
+    terms |= {"zh:" + han[i:i + 2] for i in range(0, len(han) - 1, 2)}
+    # every other script counts too (generality probe, 2026-10-03: Korean, Arabic, Russian and kana-only
+    # subjects scored 0 and were refused): a word of a space-separated script (Hangul, Arabic, Cyrillic,
+    # Greek, Devanagari…) is a term; an unspaced run (kana, Thai) counts one term per 3 characters
+    for tok in re.findall(r"[^\W\d_]+", s):
+        rest = "".join(ch for ch in tok if not ("\u4e00" <= ch <= "\u9fff") and ord(ch) > 127)
+        if len(rest) < 2:
+            continue
+        if any("\u3040" <= ch <= "\u30ff" or "\u0e00" <= ch <= "\u0e7f" for ch in rest):
+            terms |= {"u:" + rest[i:i + 3] for i in range(0, len(rest) - 2, 3)}
+        else:
+            terms.add("u:" + rest.lower())
+    return terms
+
 
 def check_prompt_topicality(items, min_nouns=MIN_SUBJECT_NOUNS):
     """(findings, ...) — prompts too thin on SUBJECT vocabulary to be depicting anything.
@@ -477,19 +568,53 @@ def check_prompt_topicality(items, min_nouns=MIN_SUBJECT_NOUNS):
     """
     out = []
     for i, it in enumerate(items):
+        if it.get("subject"):
+            # an image-series item: its prompt is mostly shared boilerplate ("presentation deck", "same
+            # hand", "crop") that alone cleared this gate — measured: "an abstract soft gradient
+            # backdrop" scored 38. Its SUBJECT is what must name a thing.
+            nouns = sorted(subject_terms(it["subject"]))
+            if len(nouns) < SERIES_MIN_SUBJECT_TERMS:
+                out.append((i, it.get("filename") or it.get("path") or "?", nouns))
+            continue
         nouns = sorted(topic_terms(it.get("prompt", "")))
         if len(nouns) < min_nouns:
             out.append((i, it.get("filename") or it.get("path") or "?", nouns))
     return out
 
 
-def main():
+
+def _series_next(items, script, manifest, out_of, only, style_ref, failed=False):
+    """The NEXT line after a successful run of an image-SERIES manifest, so an agent that follows only
+    printed output reaches the end (final review, 2026-10-03: neither generator printed a next step)."""
+    plans = {it.get("series_plan") for it in items if it.get("series_plan")}
+    if len(plans) != 1:
+        return None
+    plan = plans.pop()
+    if failed:      # a failed run still names its next step: the same command, once the cause is fixed
+        again = (" --only " + shlex.quote(str(only))) if only else ""
+        again += (" --style-ref " + shlex.quote(str(style_ref))) if style_ref else ""
+        return "NEXT (once the cause above is fixed): python3 scripts/{} {}{}".format(
+            script, shlex.quote(str(manifest)), again)
+    if only:
+        key = out_of(items[0])
+        return ("NEXT (LOOK at {} first; to redo it: --overwrite --only {}): python3 scripts/{} {} --style-ref {}"
+                .format(key, only, script, shlex.quote(str(manifest)), shlex.quote(str(key))))
+    if style_ref:
+        return "NEXT: python3 scripts/image_series.py cutout {} --dir {}".format(
+            shlex.quote(plan), shlex.quote(str(Path(manifest).resolve().parent)))
+    return None
+
+
+def main(argv=None):
     ap = argparse.ArgumentParser(description="Generate images from a manifest via the Codex CLI (no API key).")
     ap.add_argument("manifest", help="Path to image_prompt_manifest.json.")
     ap.add_argument("--out-dir", help="Override output directory (else manifest item paths/filenames).")
     ap.add_argument("--orientation", choices=["landscape", "portrait", "auto"], default="landscape",
                     help="Hint the composition (the hosted tool steers size by prompt). Default: landscape.")
     ap.add_argument("--limit", type=int, help="Only the first N entries.")
+    ap.add_argument("--only", metavar="ID",
+                    help="generate only the item whose id (or filename stem) is ID — the series KEY "
+                         "image first, so it can be looked at before the rest are made in its style")
     ap.add_argument("--overwrite", action="store_true", help="Regenerate existing files (default: skip).")
     ap.add_argument("--timeout", type=int, default=360, help="Per-image timeout (seconds).")
     ap.add_argument("--ref-dir", help="Folder of REAL reference photographs (fetch_images.py fetch "
@@ -501,6 +626,10 @@ def main():
                          "class of object) · stylized-illustration (a real subject in a declared "
                          "stylized register) · fallback-rung (no usable photo exists). A real, "
                          "specific subject WITH a usable photo is not on this list: use the photo.")
+    ap.add_argument("--style-ref", metavar="PATH",
+                    help="an earlier image of the SAME series (the approved key), staged beside every "
+                         "generation with an instruction to match its look — palette, light, grain or "
+                         "brushwork, rendering — and NOT its subject or composition")
     ap.add_argument("--dry-run", action="store_true", help="Print planned outputs without calling codex.")
     ap.add_argument("--allow-generic", action="store_true",
                     help="generate anyway when a prompt looks generic")
@@ -508,7 +637,7 @@ def main():
                     help="Images generated in parallel (each is a `codex exec` subprocess). Default "
                          "scales with the machine (cores//3, clamped to 2-4); set 1 to serialize if "
                          "you hit rate limits. Speeds a multi-image deck.")
-    args = ap.parse_args()
+    args = ap.parse_args(argv)
     if args.ref_dir and not args.ref_intent:
         # A hard stop, not a default. Defaulting would pick the permissive reading of a
         # double-edged capability on the user's behalf — and the permissive reading is the one that
@@ -545,6 +674,30 @@ def main():
             return 2
     if args.limit is not None:
         items = items[: max(0, args.limit)]
+    if args.only:
+        # EXACT id first, then exact stem, then a unique "-ID" suffix — never several: with slots "hero"
+        # and "s04-hero" a suffix match picked both, and the second was made without the style reference
+        def _stem(it):
+            return Path(str(it.get("filename") or it.get("path") or "")).stem
+        sel = ([it for it in items if it.get("id") == args.only]
+               or [it for it in items if _stem(it) == args.only]
+               or [it for it in items if _stem(it).endswith("-" + args.only)])
+        if not sel:
+            print(f"error: no manifest item matches --only {args.only!r}", file=sys.stderr)
+            return 2
+        if len(sel) > 1:
+            print(f"error: --only {args.only!r} matches {len(sel)} items ({', '.join(_stem(i) for i in sel)}) — "
+                  f"pass the exact slot id", file=sys.stderr)
+            return 2
+        items = sel
+    style_ref = None
+    if args.style_ref:
+        style_ref = Path(args.style_ref).expanduser()
+        if not style_ref.is_file() or style_ref.suffix.lower() not in (".jpg", ".jpeg", ".png", ".webp"):
+            print(f"error: --style-ref {style_ref} is not an image file — generate and LOOK at the key "
+                  f"first (--only <key-id>), then pass its path", file=sys.stderr)
+            return 2
+        print(f"style reference: {style_ref} (staged beside every generation)")
 
     # FUSION gate, before the spend: a generic prompt yields generic art, and one generation +
     # render + review round is the cost of finding that out afterwards.
@@ -593,10 +746,10 @@ def main():
         worklist.append((item, out_path))
 
     def _work(item, out_path):                              # independent per item (own file, own subprocess)
-        return _generate_one(item["prompt"], out_path, orientation=args.orientation,
+        return _generate_one(item["prompt"], out_path, orientation=_orientation_for(item, args.orientation),
                              timeout=args.timeout,
                              refs=item.get("_refs") or refs_for(item, args.ref_dir),
-                             ref_intent=args.ref_intent)
+                             ref_intent=args.ref_intent, style_ref=style_ref)
 
     conc = max(1, min(args.concurrency, len(worklist)))
     if conc <= 1 or len(worklist) <= 1:
@@ -617,6 +770,11 @@ def main():
                     print(f"  FAILED: {out_path} — {exc}", file=sys.stderr); failed += 1
 
     print(f"done: generated {ok}, skipped {skipped}, failed {failed}")
+    if not args.dry_run:
+        nxt = _series_next(items, "generate_images_codex.py", manifest, lambda it: resolved[id(it)],
+                           args.only, style_ref, failed=bool(failed))
+        if nxt:
+            print(nxt)
     return 1 if failed else 0
 
 

@@ -151,6 +151,15 @@ def template(slides=None, delivery="presented"):
                 "divergence": "<ok|flagged … → rediverged|justified: …>"},
         },
         "design_plan": {
+            # image-led decks only (references/image-generation.md, the SERIES exception): "series"
+            # + the path of its series.json; any other deck keeps "selective" (today's rule).
+            "imagery": "selective",
+            "image_series": None,
+            # a curated visual language (references/visual-languages.md): name + "both" | "mac" fonts + the
+            # ground it was built on ("light" or its contrast ground — visual_languages.py --gates prints all)
+            "visual_language": None,
+            "vl_fonts": "both",
+            "vl_ground": None,
             "concept": {"chosen": "<what this deck is a PICTURE of — via <core concepts> → "
                                   "<visual language>>",
                         "rejected": [{"concept": "<the runner-up>", "why_lost": "<one clause>"},
@@ -186,7 +195,8 @@ def template(slides=None, delivery="presented"):
                 "why": "<what you SAW that decided it — name the versions you compared>"},
             "direction_gate": {"verdict": "<the directions_diversity.py verdict>",
                                "picked": "<the direction the user chose>",
-                               "candidates": "<path to directions.json>"},
+                               "candidates": "<path to directions.json>",
+                               "images": "<photos | illustrations | none — the pictures this deck will carry: the user's, generated or fetched; with none, also add native_fit: {language, why}>"},
             "build_shape": "<fanout — <n> sections | solo — <reason>>",
             "checkpoint": {"mode": "<approved|auto>", "record": "<how it was delivered>"},
         },

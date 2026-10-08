@@ -238,6 +238,18 @@ and tell the user which font the deck expects.
   **widening the box / lowering the size a touch / rebreaking the line** so punctuation stays attached
   to its character; for a hard case, hand-place the break. Same idea in Latin: don't let a lone ")" or
   "." wrap to its own line.
+  `measure_text` and lint count lines the way LibreOffice sets them under the deck default
+  `hangingPunct="1"` (probed and checked against renders): in pure-CJK text ONE closing mark
+  (`，。、；：！？．`) hangs past the measure instead of wrapping; a closing bracket (`）」』》】〉〕`) or
+  a second mark takes the character before it down to the next line; an opening bracket never ends a
+  line. Text that also carries Latin or digits never hangs — the renderer's autospace between the
+  scripts is not modelled, so such lines are counted conservatively.
+  Korean wraps at SPACES: a Hangul word that fits a line is measured whole; a word wider than the whole
+  line breaks between syllables ("인공지능기반의 / 료영상재구성"), as LibreOffice sets it.
+- **The gap before a comma in a preview is the renderer, not your text.** LibreOffice's autospace puts a
+  visible gap between Hangul/CJK and ASCII punctuation or Latin (`고맙습니다 .`, `토스터 ,`, `87% 。`) —
+  it is not in the file, and language tags on the run do not remove it (probed 2026-10-04). Do not edit the
+  copy to chase it. (PowerPoint was not available to check; it has no such autospace setting for slides.)
 - **Density.** A CJK character carries more meaning per glyph, so for a **presented** deck terse
   points matter even more — resist filling the line just because it fits. *(A read-alone / reference
   CJK deck may run denser like any read-alone deck — then keep the script-aware leading (never below ~1.25× font size — `line_spacing` ≈1.04 — for CJK body) and the

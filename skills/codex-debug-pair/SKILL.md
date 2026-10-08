@@ -1,9 +1,11 @@
 ---
 name: codex-debug-pair
-description: "Cross-model pair-debugging: when Claude encounters a non-trivial bug, both Claude and Codex (GPT via MCP) independently form hypotheses about the root cause, then compare and synthesize. Leverages different training distributions to expand the hypothesis search space and avoid confirmation bias. Use when user says \"codex debug\", \"codex help debug\", \"cross-model debug\", \"pair debug with codex\", \"codex一起debug\", \"让codex帮我找bug\", \"codex调试\", \"两个模型调试\", \"codex帮我排查\", \"两个模型一起调试\". Not for code review (/codex-review), implementation (/codex-tdd-implementer), or debate (/codex-debate). Not for trivial bugs (typos, import errors, missing semicolons) that don't benefit from cross-model hypothesis diversity."
+description: "Cross-model pair-debugging: when Claude encounters a non-trivial bug, both Claude and Codex (GPT via Codex CLI) independently form hypotheses about the root cause, then compare and synthesize. Leverages different training distributions to expand the hypothesis search space and avoid confirmation bias. Use when user says \"codex debug\", \"codex help debug\", \"cross-model debug\", \"pair debug with codex\", \"codex一起debug\", \"让codex帮我找bug\", \"codex调试\", \"两个模型调试\", \"codex帮我排查\", \"两个模型一起调试\". Not for code review (/codex-review), implementation (/tdd), or debate (/codex-debate). Not for trivial bugs (typos, import errors, missing semicolons) that don't benefit from cross-model hypothesis diversity."
 ---
 
 # Codex Debug Pair
+
+> Codex calls (`codex exec`, `codex exec resume`) follow `../shared-references/codex-cli.md`.
 
 Cross-model pair-debugging for non-trivial bugs. Claude and Codex form
 independent blind hypotheses about the root cause, then compare and
@@ -24,7 +26,7 @@ model behavior, or when a first debugging attempt already failed.
 1. Gather bug context (error, logs, recent changes, affected code)
 2. Claude forms 3-5 independent hypotheses (shown to user, hidden from Codex)
 3. Build neutral evidence packet (error + context, NOT Claude's hypotheses)
-4. Codex forms blind independent hypotheses via MCP
+4. Codex forms blind independent hypotheses via Codex CLI
 5. Compare: both-flagged = high priority; unique = new leads
 6. Design verification experiments for top hypotheses
 7. Execute tests, update hypothesis confidence
@@ -121,7 +123,7 @@ as neutral description.
 
 ## Phase 4: Codex Blind Hypotheses
 
-Send the evidence packet to Codex via `mcp__codex__codex` with
+Send the evidence packet to Codex via `codex exec` with
 `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`. The high
 reasoning effort is worth it here because hypothesis generation benefits from
 deeper exploration of the search space.
@@ -162,9 +164,9 @@ Also provide:
 - **What you would test first**: the single most informative experiment
 ```
 
-Save the `threadId` -- follow-up rounds use `mcp__codex__codex-reply`.
+Save the `threadId` -- follow-up rounds use `codex exec resume`.
 
-If Codex MCP is unavailable (connection error, timeout), tell the user
+If Codex CLI is unavailable (connection error, timeout), tell the user
 and offer to proceed as solo debugging with Claude's hypotheses only.
 
 ## Phase 5: Cross-Model Synthesis
@@ -286,7 +288,7 @@ Present the finding with full evidence chain:
 Identified by: {Claude-only / Codex-only / both models converged}
 ```
 
-If appropriate, send the root cause to Codex via `mcp__codex__codex-reply`
+If appropriate, send the root cause to Codex via `codex exec resume`
 for a sanity check on the proposed fix. This is optional -- use it when
 the fix touches numerical code, concurrency, or other areas where a
 second opinion on the fix itself (not just the diagnosis) adds value.
@@ -349,12 +351,12 @@ when similar bugs recur -- the ledger is a searchable diagnostic record.
   out a medium-confidence hypothesis is better than a 2-hour eval run
   that tests the top hypothesis.
 
-## Codex MCP
+## Codex CLI
 
-- **First call**: `mcp__codex__codex` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
-- **Follow-ups**: `mcp__codex__codex-reply` with saved `threadId` + `prompt`
-- Starting a fresh `mcp__codex__codex` mid-session erases Codex's memory
+- **First call**: `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
+- **Follow-ups**: `codex exec resume` with saved `threadId` + `prompt`
+- Starting a fresh `codex exec` mid-session erases Codex's memory
   of the evidence packet and prior hypotheses -- always use the reply
   endpoint after the first call
-- On MCP error (including initial connection failure): tell the user, ask
+- On Codex CLI error (including initial connection failure): tell the user, ask
   whether to retry or proceed with Claude-only debugging

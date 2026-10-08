@@ -55,6 +55,9 @@ from pptx.enum.shapes import MSO_SHAPE_TYPE, PP_PLACEHOLDER
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.oxml.ns import qn
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import rotgeom  # noqa: E402 — where a rotated shape PAINTS; the same definition lint_layout uses
+
 EMU = 914400.0
 TOL = 0.05        # inches — ignore hairline/touching overlaps
 CONTAIN = 0.90    # A is "inside" B when >=90% of A's area lies within B
@@ -76,6 +79,10 @@ try:                                                  # reuse deckkit's font-ava
 except Exception:
     def _fsub(_name):                                 # can't check → never warn (no false positive)
         return False
+# ONE reading of an overlap declaration — deckkit's: both spellings, composed onto a motif or not. There used
+# to be an inline copy as a fallback; a second copy is how two readings drift apart, and deckkit sits in this
+# folder with the same dependencies, so a failure to import it is a broken install that should say so.
+from deckkit import _declared_overlap, _ink_reaching   # noqa: E402
 try:                                                  # real glyph advances, same metrics the build uses
     from deckkit import _pil_font as _dk_pil_font, _MEAS_PREC as _dk_prec
 except Exception:
@@ -105,6 +112,7 @@ def _no_real_alt(descr):
 
 _A = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
 _GROUP_SKIP = []          # (slide#, why) — groups whose geometry cannot be mapped, reported at the end
+_DECOR_SEEN = []          # (slide#, why) — shapes DECLARED decorative, exempt from NON-TEXT CONTRAST
 
 
 def _group_tf(g):
@@ -274,6 +282,20 @@ def _slide_bg_box(slide, sw, sh):
             "declared": False, "hollow": False, "motif": False, "bled": False}
 
 
+_A11Y_TITLE_TAG = "deckkit-a11ytitle"
+
+
+def _a11y_title_text(slide):
+    """The text of deckkit.a11y_title()'s screen-reader title when it is the slide's FIRST shape, else None."""
+    try:
+        first = next(iter(slide.shapes))
+    except StopIteration:
+        return None
+    if str(getattr(first, "name", "") or "").startswith(_A11Y_TITLE_TAG) and getattr(first, "has_text_frame", False):
+        return first.text_frame.text.strip() or None
+    return None
+
+
 def _boxes(slide, sw, sh, slide_no=None, record=True):
     out = []
     _bg = _slide_bg_box(slide, sw, sh)
@@ -281,6 +303,8 @@ def _boxes(slide, sw, sh, slide_no=None, record=True):
         out.append(_bg)                                  # index 0 = below every real shape
     for zi, (s, tf, grp) in enumerate(_flat_shapes(slide.shapes, slide_no=slide_no,
                                                   record=record)):
+        if str(getattr(s, "name", "") or "").startswith(_A11Y_TITLE_TAG):
+            continue                                     # deckkit.a11y_title: off-canvas by design, read by the title checks only
         try:
             dx, dy, sx, sy = tf
             l = (s.left * sx + dx) / EMU
@@ -290,9 +314,38 @@ def _boxes(slide, sw, sh, slide_no=None, record=True):
             continue
         if not w or not h or w <= 0 or h <= 0:
             continue
+        # Where the shape PAINTS. `s.left/top/width/height` are the UNROTATED frame; a rotated
+        # shape paints that frame turned about its centre. Every geometry check below reads
+        # l/t/w/h, so they become the placed footprint (exact at 90deg multiples); text still
+        # WRAPS inside the frame, so the frame is kept as fl/ft/fw/fh for the text-flow checks.
+        # Measured 2026-10-03: reading the frame made a correct vertical margin label a hard
+        # OVERFLOW and let the same label run through a paragraph with no finding at all.
+        try:
+            _rot = rotgeom.norm(s.rotation)
+        except Exception:
+            _rot = 0.0
+        # (underscored: this function already binds `ft` to the FILL TYPE further down)
+        # POSITION comes from where it paints (l/t/r/b); SIZE CLASSIFICATION (thin rule, card,
+        # small mark, page background) comes from the shape's true size. At 90deg multiples the
+        # two agree exactly. For a TILT they do not: the axis box of a 5.45 x 0.28 rail at 9deg is
+        # 1.13in tall — a "card" — and of a 5.6 x 0.03 rule at 2deg 0.22in — no longer "thin".
+        # Measured (final review, 2026-10-03): that one confusion produced false hard TEXT
+        # PADDING on a real deck AND silenced RULE THROUGH TEXT. So a tilted record keeps its
+        # frame w/h, and r/b carry the painted extent.
+        _fl, _ft, _fw, _fh = l, t, w, h
+        poly = None
+        _pr = _pb = None
+        if _rot:
+            _pl, _pt, _pw, _ph = rotgeom.placed(_fl, _ft, _fw, _fh, _rot)
+            l, t, _pr, _pb = _pl, _pt, _pl + _pw, _pt + _ph
+            if rotgeom.is_axis(_rot):
+                w, h = _pw, _ph
+            else:
+                poly = rotgeom.corners(_fl, _ft, _fw, _fh, _rot)
         full = s.text_frame.text.strip() if s.has_text_frame else ""
         txt = full.replace("\n", " ")[:26]
         paras, size, align, anchor, mathfont = [], 0.0, None, None, None
+        pspace = []                                      # (space_before, space_after) pt, one per kept paragraph
         _face, _bold = None, False
         if s.has_text_frame:
             size = max((r.font.size.pt for p in s.text_frame.paragraphs for r in p.runs if r.font.size),
@@ -314,6 +367,11 @@ def _boxes(slide, sw, sh, slide_no=None, record=True):
                         mathfont = r.font.name           # an equation_native run in a math font
                 if pr:
                     paras.append(pr)
+                    try:                                 # paragraph spacing in points (None = inherited 0)
+                        pspace.append((p.space_before.pt if p.space_before is not None else 0.0,
+                                       p.space_after.pt if p.space_after is not None else 0.0))
+                    except Exception:
+                        pspace.append((0.0, 0.0))
             if _faces:
                 (_face, _bold) = max(_faces, key=_faces.get)
             else:
@@ -330,6 +388,8 @@ def _boxes(slide, sw, sh, slide_no=None, record=True):
         except Exception:
             descr = None
         run_colors = []                                  # (snippet, RGB-hex or None=inherited)
+        run_hl = []                                      # per run, aligned: <a:highlight> hex or None
+        run_fmt = []                                     # per run, aligned: (size pt or None, bold True/False/None)
         if s.has_text_frame:
             for p in s.text_frame.paragraphs:
                 for r in p.runs:
@@ -339,6 +399,21 @@ def _boxes(slide, sw, sh, slide_no=None, record=True):
                         except Exception:
                             run_colors.append((r.text.strip()[:24],
                                                None if r.font.color.type is None else "THEME"))
+                        # a HIGHLIGHT is that run's backing, whatever the shape is filled with
+                        # (deckkit.mark() writes it; a hand-made deck can too)
+                        _h = None
+                        try:
+                            _rpr = r._r.find(qn("a:rPr"))
+                            _hc = (None if _rpr is None
+                                   else _rpr.find(qn("a:highlight") + "/" + qn("a:srgbClr")))
+                            _h = None if _hc is None else str(_hc.get("val") or "").upper() or None
+                        except Exception:
+                            _h = None
+                        run_hl.append(_h)
+                        try:
+                            run_fmt.append((r.font.size.pt if r.font.size is not None else None, r.font.bold))
+                        except Exception:
+                            run_fmt.append((None, None))
         fill_rgb = None                                  # solid-fill colour of this shape, if resolvable
         fill_unk = False                                 # True = fill exists but colour unknowable
         try:                                             #   (gradient/picture/pattern, or theme solid)
@@ -376,11 +451,13 @@ def _boxes(slide, sw, sh, slide_no=None, record=True):
                 PP_PLACEHOLDER.TITLE, PP_PLACEHOLDER.CENTER_TITLE)
         except Exception:
             tph = False
-        out.append({"l": l, "t": t, "w": w, "h": h, "r": l + w, "b": t + h, "zi": zi,
-                    "runs": run_colors, "fill": fill_rgb, "unk": fill_unk, "pic": is_pic, "grad": is_grad,
+        out.append({"l": l, "t": t, "w": w, "h": h, "zi": zi,
+                    "r": l + w if _pr is None else _pr, "b": t + h if _pb is None else _pb,
+                    "rot": _rot, "fl": _fl, "ft": _ft, "fw": _fw, "fh": _fh, "poly": poly,
+                    "runs": run_colors, "run_hl": run_hl, "run_fmt": run_fmt, "fill": fill_rgb, "unk": fill_unk, "pic": is_pic, "grad": is_grad,
                     "icon": icon_ink,
                     "st": str(s.shape_type).split()[0], "txt": txt, "full": full, "size": size or 12.0,
-                    "paras": paras, "solid": s.shape_type in SOLID, "align": align, "anchor": anchor,
+                    "paras": paras, "pspace": pspace, "solid": s.shape_type in SOLID, "align": align, "anchor": anchor,
                     "font": _face, "bold": _bold,
                     "text": bool(s.has_text_frame and txt), "descr": descr, "mathfont": mathfont,
                     "title_ph": tph, "bg": (w * h) >= 0.95 * (sw * sh), "grp": grp,
@@ -388,7 +465,15 @@ def _boxes(slide, sw, sh, slide_no=None, record=True):
                     # as the motif and watermark tags), so it survives the save and can be read
                     # here from the file — which is the only reason this gate can honour the same
                     # declaration the build-time gate does.
-                    "declared": str(getattr(s, "name", "") or "").startswith("deckkit-overlap"),
+                    # BOTH spellings, as deckkit._declared_overlap reads them: a motif that also
+                    # declares an overlap is named `deckkit-motif-quiet+overlap:<why>`, and reading
+                    # the prefix only refused here what lint_layout honoured (measured 2026-10-03:
+                    # tape holding a print was a hard OVERLAP at render time only).
+                    "declared": _declared_overlap(s),
+                    # `decorative()` — pure ornament, exempt from NON-TEXT CONTRAST, with a reason
+                    "decor": ("+decor" in str(getattr(s, "name", "") or "").split(":", 1)[0]
+                              or str(getattr(s, "name", "") or "").startswith("deckkit-decor")),
+                    "decor_why": str(getattr(s, "name", "") or "").partition(":")[2],
                     # The motif tag, read from the NAME for the same reason `declared` is: it
                     # survives the save, so this file-level gate can reason about the deck's
                     # signature device exactly as the build-time one does.
@@ -614,8 +699,20 @@ _CLOSERS = set("。．，、！？：；）》】」』〕〗｝….,!?:;)]}、�
 def _cjk(t): return any(ord(ch) > 0x2E80 for ch in t["full"])
 
 
+def _frame(t):
+    """The record as its UNROTATED frame — where its text wraps. The same object when unrotated."""
+    if not t.get("rot"):
+        return t
+    f = dict(t)
+    f.update(l=t["fl"], t=t["ft"], w=t["fw"], h=t["fh"], r=t["fl"] + t["fw"],
+             b=t["ft"] + t["fh"], rot=0.0, poly=None)
+    return f
+
+
 def _txt_h(t):
-    return _est_lines(t["paras"], t["w"], t.get("font"), t.get("bold", False)) * (t["size"] / 72.0) * (1.4 if _cjk(t) else 1.25)
+    f = _frame(t)
+    return _est_lines(f["paras"], f["w"], f.get("font"), f.get("bold", False)) * \
+        (f["size"] / 72.0) * (1.4 if _cjk(f) else 1.25)
 
 
 def _nat_width(t):                                       # natural one-line width of the widest paragraph
@@ -624,7 +721,30 @@ def _nat_width(t):                                       # natural one-line widt
                 for pr in t["paras"]), default=0.0)
 
 
+def _wcag_normal(size_pt, bold):
+    """WCAG 1.4.3: True only when the run is KNOWN to be normal (not "large": >=18pt, or >=14pt bold) — it needs
+    4.5:1. `size_pt`/`bold` are what the run itself carries (None = inherited, not read): under 14pt it is normal at
+    any weight; 14-18pt is normal only when it is known not bold. Anything not read is not judged — a template title
+    inheriting 28pt was held as "12pt text" (the fallback size) in the final review."""
+    if size_pt is None:
+        return False
+    return size_pt < 14 or (size_pt < 18 and bold is False)
+
+
 def _rbox(t):
+    """The RENDERED bounding box of the text on the slide. For a rotated box the ink is laid out
+    in the frame, then turned with the frame about the FRAME's centre."""
+    if not t.get("rot"):
+        return _rbox_frame(t)
+    f = _frame(t)
+    l, tt, r, b = _rbox_frame(f)
+    cx, cy = f["l"] + f["w"] / 2.0, f["t"] + f["h"] / 2.0
+    bl, bt, bw, bh = rotgeom.bbox(rotgeom.rotate(rotgeom.rect_poly(l, tt, r - l, b - tt),
+                                                 cx, cy, t["rot"]))
+    return (bl, bt, bl + bw, bt + bh)
+
+
+def _rbox_frame(t):
     """The RENDERED bounding box of the text — alignment- and anchor-aware (so a centred /
     middle-anchored label isn't mistaken for cramped-against-the-edge)."""
     tw = min(_nat_width(t), t["w"]) or t["w"]; eh = _txt_h(t)
@@ -718,13 +838,26 @@ def _run_cjk_no_ea(run):
 
 
 def _inter(a, b):
-    return (max(0.0, min(a["r"], b["r"]) - max(a["l"], b["l"])),
-            max(0.0, min(a["b"], b["b"]) - max(a["t"], b["t"])))
+    """(x-extent, y-extent) of the overlap of two records. When either is TILTED, the product is
+    the EXACT intersection area (rotgeom): x-extent is the overlap's real horizontal span and
+    y-extent the area-equivalent height. Every caller multiplies the pair or thresholds each side
+    against a hairline, and both stay meaningful. Synthetic rect dicts (l/t/r/b only) work too."""
+    pa, pb = a.get("poly"), b.get("poly")
+    if pa is None and pb is None:
+        return (max(0.0, min(a["r"], b["r"]) - max(a["l"], b["l"])),
+                max(0.0, min(a["b"], b["b"]) - max(a["t"], b["t"])))
+    A, bb = rotgeom.overlap(
+        pa or rotgeom.rect_poly(a["l"], a["t"], a["r"] - a["l"], a["b"] - a["t"]),
+        pb or rotgeom.rect_poly(b["l"], b["t"], b["r"] - b["l"], b["b"] - b["t"]))
+    if not A or bb is None or bb[2] <= 0:
+        return (0.0, 0.0)
+    return (bb[2], A / bb[2])
 
 
 def _frac_inside(a, b):
     ix, iy = _inter(a, b)
-    return (ix * iy) / (a["w"] * a["h"] + 1e-9)
+    # the shape's TRUE area: a tilted frame's axis box over-states it
+    return (ix * iy) / (a.get("fw", a["w"]) * a.get("fh", a["h"]) + 1e-9)
 
 
 def _lum(hex6):
@@ -778,11 +911,31 @@ def _glyph_bands(im, s, sw, sh):
         return None                                      # too few pixels to be evidence
     line_h = max(s.get("size", 12), 1) / 72.0 * 1.2
     n = max(1, min(12, int(round((rb - rt) / line_h))))
+    pix_bands = [(y0 + int((y1 - y0) * i / float(n)), y0 + int((y1 - y0) * (i + 1) / float(n))) for i in range(n)]
+    # Paragraph SPACING moves every later line down: equal bands over the ink rect then fall into the gaps, and a
+    # healthy spaced list read "line 2 of 5 renders as a flat field" (a docs-only run's agenda, 2026-10-04). With
+    # spacing recorded, place each line where it is: paragraph by paragraph, the same pitch the ink rect uses.
+    ps = s.get("pspace") or []
+    if not s.get("rot") and ps and len(ps) == len(s.get("paras") or []) and any(b_ or a_ for b_, a_ in ps):
+        f = _frame(s)
+        pitch = (s["size"] / 72.0) * (1.4 if _cjk(f) else 1.25)
+        rows, y = [], 0.0
+        for i, pr in enumerate(s["paras"]):
+            if i:
+                y += ps[i][0] / 72.0
+            for _ in range(max(1, _est_lines([pr], f["w"], f.get("font"), f.get("bold", False)))):
+                rows.append((y, y + pitch))
+                y += pitch
+            if i < len(s["paras"]) - 1:
+                y += ps[i][1] / 72.0
+        an = s.get("anchor")
+        k = 0.5 if an == MSO_ANCHOR.MIDDLE else (1.0 if an == MSO_ANCHOR.BOTTOM else 0.0)
+        top = rt - (y - (rb - rt)) * k                   # the anchor holds the BLOCK's top/middle/bottom
+        pix_bands = [(max(0, min(H - 1, int((top + a_) / sh * H))), max(0, min(H, int((top + b_) / sh * H))))
+                     for a_, b_ in rows[:12]]
     px = im.load()
     out = []
-    for i in range(n):
-        by0 = y0 + int((y1 - y0) * i / float(n))
-        by1 = y0 + int((y1 - y0) * (i + 1) / float(n))
+    for by0, by1 in pix_bands:
         if by1 - by0 < 4:
             return None                                  # bands too thin to judge
         step = max(1, (x1 - x0) // 220)                   # cap the walk; glyph edges survive it
@@ -1725,7 +1878,7 @@ def _slide_stats(slide, bx, sw, sh):
         if _s["bg"] or _s["t"] >= footer_y or _s["w"] <= 0 or _s["h"] <= 0:
             continue
         _a = _s["w"] * _s["h"]
-        _lean_num += _a * (_s["l"] + _s["w"] / 2.0)
+        _lean_num += _a * ((_s["l"] + _s["r"]) / 2.0 if _s.get("poly") else _s["l"] + _s["w"] / 2.0)
         _lean_den += _a
     lean_x = ((_lean_num / _lean_den) - sw / 2.0) / (sw / 2.0) if _lean_den > 0 else 0.0
     # card-dominance input: how much of the canvas is covered by LARGE solid panels/cards (the
@@ -1986,9 +2139,9 @@ _PIXEL_CHECKS = ("TEXT NOT VISIBLE", "CAPTION NOT ALIGNED", "TEXT-ON-IMAGE CONTR
 # or it is not, a ratio either clears 3:1 or it does not. What they cost when missed is not taste:
 # a screen-reader user gets an unlabelled rectangle, or nothing at all.
 A11Y_CODES = ("MISSING ALT-TEXT", "NO SLIDE TITLE", "DUPLICATE SLIDE TITLES", "READING ORDER",
-              "NON-TEXT CONTRAST", "ICON CONTRAST")
+              "NON-TEXT CONTRAST", "ICON CONTRAST", "TEXT CONTRAST")
 # The subset that is a HARD floor: an external standard answers it, so there is nothing to weigh.
-A11Y_WCAG = ("NON-TEXT CONTRAST", "ICON CONTRAST")
+A11Y_WCAG = ("NON-TEXT CONTRAST", "ICON CONTRAST", "TEXT CONTRAST")
 # 🔴 …and the subset a GATE may hold a deck on, which is not all of them. `NO SLIDE TITLE` is
 # excluded deliberately: this file's own message for it says "an off-canvas-invisible title is a
 # sanctioned trick for statement slides", i.e. the skill EXPECTS slides that look untitled, and
@@ -2004,7 +2157,22 @@ A11Y_WCAG = ("NON-TEXT CONTRAST", "ICON CONTRAST")
 # screen-reader navigation, a title that is not first in z-order is read out of order, and a
 # contrast ratio either clears 3:1 or it does not.
 A11Y_BLOCKING = ("MISSING ALT-TEXT", "DUPLICATE SLIDE TITLES", "READING ORDER",
-                 "NON-TEXT CONTRAST", "ICON CONTRAST")
+                 "NON-TEXT CONTRAST", "ICON CONTRAST", "TEXT CONTRAST")
+
+# What to DO about each held code — one table both runtimes print, so the remedy cannot drift between them (the codex
+# gate called every code "the WCAG 1.4.11 3:1 floor … why this mark is decorative", text included).
+A11Y_REMEDY = {
+    "MISSING ALT-TEXT": "deckkit.alt_text(shape, '<one line>') on each informative image (alt='' only when purely decorative)",
+    "DUPLICATE SLIDE TITLES": "give each slide its own title",
+    "READING ORDER": "add each slide's title FIRST, so the z-order a screen reader follows matches the reading order, "
+                     "or declare it: deckkit.a11y_title(slide, '<title>') sits first, off the canvas",
+    "NO SLIDE TITLE": "deckkit.a11y_title(slide, '<title>') — a title for screen readers, off the canvas, first in order",
+    "NON-TEXT CONTRAST": "raise the mark to 3:1 against what is behind it (WCAG 1.4.11), or, for pure ornament, "
+                         "deckkit.decorative(shape, '<why nothing rides on seeing it>')",
+    "ICON CONTRAST": "recolour the icon to 3:1 against its backing (WCAG 1.4.11)",
+    "TEXT CONTRAST": "set the ink the finding names (it keeps the hue and reaches 4.5:1, WCAG 1.4.3), lighten the fill, "
+                     "or set the text large (18pt, or 14pt bold) — text is never decorative",
+}
 
 SAMENESS_CODES = ("LAYOUT SAMENESS", "SKELETON VARIETY", "CARD DOMINANCE",
                   "BOTTOM-STRIP MONOCULTURE", "TITLE-RULE MONOCULTURE",
@@ -2237,6 +2405,18 @@ def _report_group_skip():
     # so the TypeError would have discarded a whole clean run's result.
     return sorted(((sn, sorted(w)) for sn, w in by_slide.items()),
                   key=lambda kv: (kv[0] is None, kv[0]))
+
+
+def _report_decorative():
+    """Every NON-TEXT CONTRAST exemption, with the reason the author wrote — a declared exception
+    is printed, never silent, so a deck that declares its way out of everything is visible."""
+    by = {}
+    for sn, why in _DECOR_SEEN:
+        by.setdefault(why, []).append(sn)
+    for why, sns in by.items():
+        print("  [declared] decorative ×%d (slide %s) — exempt from NON-TEXT CONTRAST: %s"
+              % (len(sns), ", ".join(str(v) for v in sorted(set(sns))), why))
+    return sorted(by.items())
 
 
 def _report_pixel_skip():
@@ -3011,6 +3191,7 @@ def lint(path, mode="presented", json_out=None, renders_dir=None, static_ok=Fals
     136 words a slide and the gate said 4. Read-only channel; nothing about lint changes.
     """
     _GROUP_SKIP.clear()          # a second lint() in one process must not inherit the first's skips
+    _DECOR_SEEN.clear()
     try:
         prs = Presentation(path)
     except Exception:
@@ -3142,9 +3323,15 @@ def lint(path, mode="presented", json_out=None, renders_dir=None, static_ok=Fals
                 r0 = max(0, int((o["t"] - _rt) / rh_ * GH))
                 r1 = min(GH, int(math.ceil((o["b"] - _rt) / rh_ * GH)))
                 thin_shape = min(o["w"], o["h"]) <= 0.06
+                # a TILTED occluder covers only the cells inside its polygon, not its axis box
+                _poly = o.get("poly")
                 for rr in range(r0, max(r1, r0 + 1)):
                     row, rrow = cov[rr], rules[rr]
+                    _cy = _rt + (rr + 0.5) / GH * rh_
                     for cc in range(c0, max(c1, c0 + 1)):
+                        if _poly is not None and not rotgeom.contains_point(
+                                _poly, (_rl + (cc + 0.5) / GW * rw_, _cy)):
+                            continue
                         row[cc] = 1
                         if thin_shape:
                             rrow[cc] = 1
@@ -3178,39 +3365,83 @@ def lint(path, mode="presented", json_out=None, renders_dir=None, static_ok=Fals
                                 f"end of the block above it, or draw it before the text")
                             break
                         b0 = None
+            # A TILTED thin shape painted over the text: the row bands above cannot see it — it
+            # crosses the rows diagonally, so no single row reaches the 50% that makes a band
+            # (measured, final review 2026-10-03: a 2deg strike rule through a line went silent).
+            # Measure its centreline inside the glyph zone (above the underline band) instead.
+            if not any(f.startswith("RULE THROUGH TEXT") and s["txt"][:28] in f for f in finds):
+                _lh = max(s.get("size", 12), 1) / 72.0 * 1.25
+                _zone = (_rl, _rt, _rr - _rl, (_rb - min(0.045, 0.30 * _lh)) - _rt)
+                for k in range(ti + 1, len(bx)):
+                    o = bx[k]
+                    if (not o.get("poly") or o["text"] or o.get("bg") or o.get("unk") or o["pic"]
+                            or not o["fill"] or min(o["w"], o["h"]) > 0.06):
+                        continue
+                    p_, q_ = rotgeom.centreline(o["poly"], o["w"], o["h"])
+                    span = rotgeom.seg_in_rect(p_, q_, _zone)
+                    if span >= 0.5 * (_rr - _rl):
+                        finds.append(
+                            f"RULE THROUGH TEXT: a tilted {span:.2f}in rule is painted OVER "
+                            f"'{s['txt'][:28]}' — derive the rule's position from the measured "
+                            f"end of the block above it, or draw it before the text")
+                        break
             back = _backing_fill(bx, ti, chrome=chrome)
+            # A run on a HIGHLIGHT is judged against the highlight, whatever the shape backing
+            # resolves to — otherwise dark ink on a dark highlight passes, because the backing this
+            # check reads is the shape's fill. Unhighlighted runs take the original path exactly.
+            _hls = s.get("run_hl") or [None] * len(s["runs"])
+            _resolved_back = bool(back) and back != "UNKNOWN"
             if back == "UNKNOWN":
-                continue                                 # picture/gradient backing → unknowable, skip
-            _resolved_back = bool(back)
-            if not back:
-                if dark_plate or unk_plate:
-                    continue                             # unresolved / plate canvas → skip (no false positive)
-                back = "FFFFFF"                          # confident light canvas → check grey-on-white
-            for snip, rc in s["runs"]:
+                back = None                              # picture/gradient backing → unknowable
+            elif not back:
+                # unresolved / plate canvas → unknowable; confident light canvas → grey-on-white
+                back = None if (dark_plate or unk_plate) else "FFFFFF"
+            if back is None and not any(_hls):
+                continue                                 # unknowable, and nothing highlighted
+            _fmts = s.get("run_fmt") or [(None, None)] * len(s["runs"])
+            for (snip, rc), _hl, (_rsz, _rb) in zip(s["runs"], _hls, _fmts):
+                _bk = _hl or back
+                if _bk is None:
+                    continue
+                _res = True if _hl else _resolved_back   # a highlight IS a resolved backing
                 if rc == "THEME":
                     continue
                 ink = rc if rc else "000000"
-                ratio = _contrast(ink, back)
+                ratio = _contrast(ink, _bk)
                 if ratio < 1.8:
                     finds.append(f"INVISIBLE TEXT: '{snip}' ink #{ink}"
                                  + (" (no explicit colour, defaults to black)" if rc is None else "")
-                                 + f" on fill #{back} — contrast {ratio:.2f}:1, unreadable")
+                                 + f" on fill #{_bk} — contrast {ratio:.2f}:1, unreadable")
                 elif ratio < 3.0:
                     # 3:1 is WCAG's floor for text at ANY size — large-text and bold carve-outs
                     # only relax the bar to 3.0, never below it. So a RESOLVED backing under 3.0 is
                     # unreadable on every reading of the spec and is a hard finding; the promotion
                     # needs no knowledge of size or weight, which is why it is safe to make here.
-                    msg = (f"LOW CONTRAST: '{snip}' ink #{ink} on fill #{back} — {ratio:.2f}:1 "
+                    msg = (f"LOW CONTRAST: '{snip}' ink #{ink} on fill #{_bk} — {ratio:.2f}:1 "
                            f"(under 3:1, the floor for text at ANY size)")
-                    (finds if _resolved_back else warns).append(msg)
+                    (finds if _res else warns).append(msg)
+                elif ratio < 4.5 and _res and _wcag_normal(_rsz, _rb):
+                    # WCAG 1.4.3 needs NO judgement here: "large text" is >=18pt, or >=14pt BOLD, so text
+                    # under 14pt is normal at any weight and needs 4.5:1. This band was a WARN because
+                    # "this pass does not collect weight" — weight only matters from 14pt up, and the run's
+                    # own size and weight are read now. A 12.5pt caption at 3.38:1 passed the hand-off
+                    # a11y gate clean (a docs-only run, 2026-10-03). Held there as TEXT CONTRAST.
+                    _sz_ = _rsz                          # read from the run (_wcag_normal needs it)
+                    try:                                 # the nearest ink that clears it, hue kept — pasteable
+                        _fix = "#{} keeps the hue at 4.5:1".format(_ink_reaching(ink, _bk, 4.5))
+                    except ValueError:                   # a mid-toned fill no ink reaches 4.5:1 on
+                        _fix = "no ink reaches 4.5:1 on this fill — change the fill"
+                    warns.append(f"TEXT CONTRAST: '{snip}' ink #{ink} on fill #{_bk} — {ratio:.2f}:1; "
+                                 f"{_sz_:g}pt{' bold' if _rb else ''} text needs 4.5:1 (WCAG 1.4.3 — only 18pt, "
+                                 f"or 14pt bold, is large text) — {_fix}, or lighten the fill")
                 elif ratio < 4.5 and s["size"] >= 12:
-                    # The 3.0-4.5 band stays a WARN on purpose. WCAG relaxes the bar to 3:1 for
-                    # large text (>=18pt, or >=14pt BOLD) and this pass does not collect weight, so
-                    # a hard failure here would rest on a guess about whether a 12pt label is bold.
-                    # Measured: promoting this band hard-failed the skill's OWN reference deck four
-                    # times, on accent labels at 4.27:1 — a 0.23 shortfall on a kicker is a judgement
-                    # call, not a defect, and a gate that blocks on it teaches people to bypass it.
-                    warns.append(f"BODY CONTRAST: '{snip}' ink #{ink} on fill #{back} — {ratio:.2f}:1 "
+                    # Reached only by LARGE text (>=18pt, or >=14pt bold) or a run whose size is not
+                    # set: WCAG AA asks 3:1 of large text, so this is advice, not a floor. Normal-size
+                    # text in this band is TEXT CONTRAST above. (The reference deck's four 4.27:1
+                    # accent labels that once made promoting this band look wrong were deckkit's own
+                    # callout label — fixed at the source: `_ink_reaching` lifts the label text to
+                    # 4.5:1 and keeps the accent bar exact.)
+                    warns.append(f"BODY CONTRAST: '{snip}' ink #{ink} on fill #{_bk} — {ratio:.2f}:1 "
                                  f"(body-size text targets >=4.5:1; large/bold text may sit here)")
         # 1c) TEXT-ON-IMAGE contrast (render-based): text whose backing resolves to a picture /
         #     gradient ("UNKNOWN") is exactly what 1b must skip — when renders exist, sample the
@@ -3224,6 +3455,11 @@ def lint(path, mode="presented", json_out=None, renders_dir=None, static_ok=Fals
             for ti, s in enumerate(bx):
                 if not s["text"] or not s["runs"] or s["size"] < 8:
                     continue
+                if s.get("run_hl") and all(s["run_hl"]):
+                    # every run sits on its own HIGHLIGHT: what the reader sees behind the glyphs
+                    # is the highlight, which 1b judged — the photo around the word is not it
+                    # (measured: white on navy on a light photo read as a hard 1.46:1 here)
+                    continue
                 back = _backing_fill(bx, ti, chrome=chrome)
                 if not (back == "UNKNOWN" or (back is None and unk_plate)):
                     continue                             # solid/resolvable backing → 1b's territory
@@ -3236,9 +3472,13 @@ def lint(path, mode="presented", json_out=None, renders_dir=None, static_ok=Fals
                 if im_r is False:
                     break                                # render unreadable → skip the slide
                 worst = None                             # (est, snip) — one verdict per shape
-                for snip, rc in s["runs"]:
+                _hl_1c = s.get("run_hl") or [None] * len(s["runs"])
+                for (snip, rc), _h1c in zip(s["runs"], _hl_1c):
                     if rc == "THEME" or len(snip) < 4:
                         continue                         # theme ink unresolvable; tiny runs skipped
+                    if _h1c:
+                        continue                         # a highlighted run reads on its highlight (1b judges
+                                                         # it); in a MIXED box it read as 1.23:1 on the photo
                     ink_lum = _lum(rc if rc else "000000")
                     bg = _region_bg_lum(im_r, s, sw, sh, ink_lum)
                     if bg is None:
@@ -3477,9 +3717,19 @@ def lint(path, mode="presented", json_out=None, renders_dir=None, static_ok=Fals
         # a "card" for padding is a SMALL filled block (not a full/half-slide scrim or background plate)
         cards = [s for s in bx if s["solid"] and not s["bg"] and not s["text"] and s["h"] > 0.35
                  and s["w"] * s["h"] < 0.45 * sw * sh]
-        for t in [s for s in bx if s["text"]]:
+        for t0 in [s for s in bx if s["text"]]:
+            # Padding is a question about text in a card of the SAME orientation, asked in their
+            # shared FRAME (exactly the base behaviour for such a pair). A label at 270deg reaching
+            # into an unrotated picture is not "running past its bottom" — measured on a real deck,
+            # the placed-space version called a rotated arrow label that fits a padding fault.
+            _tr = t0.get("rot") or 0.0
+            t = _frame(t0)
             host = None
-            for c in cards:
+            for c0 in cards:
+                _d = ((c0.get("rot") or 0.0) - _tr) % 180.0   # a card has no text: 180deg-periodic
+                if min(_d, 180.0 - _d) > 0.5:
+                    continue                     # different orientation: not this check's question
+                c = _frame(c0)
                 if c["l"] - 0.12 <= t["l"] and t["r"] <= c["r"] + 0.12 and c["t"] - 0.12 <= t["t"] <= c["b"] - 0.05:
                     if host is None or c["b"] < host["b"]:
                         host = c
@@ -3495,7 +3745,7 @@ def lint(path, mode="presented", json_out=None, renders_dir=None, static_ok=Fals
             squarish = 0.6 <= (host["w"] / max(0.01, host["h"])) <= 1.7
             if glyphs <= 2 and squarish and host["w"] <= 1.2:
                 continue
-            rl, rt, rr, rb = _rbox(t)
+            rl, rt, rr, rb = _rbox_frame(t)                   # `t` is the frame record here
             nlines = _est_lines(t["paras"], t["w"], t.get("font"), t.get("bold", False))
             if rb > host["b"] - PAD:                          # rendered text crammed against / past the card bottom
                 kind = "runs PAST" if rb > host["b"] + 0.03 else "is cramped against (< pad)"
@@ -3508,17 +3758,19 @@ def lint(path, mode="presented", json_out=None, renders_dir=None, static_ok=Fals
             pill = next((c for c in fills if abs(c["l"] - t["l"]) < 0.06 and abs(c["t"] - t["t"]) < 0.06
                          and abs(c["w"] - t["w"]) < 0.16 and abs(c["h"] - t["h"]) < 0.16), None)
             if pill:
-                nl = _est_lines(t["paras"], t["w"] - 0.10, t.get("font"), t.get("bold", False))         # inner pad
-                if nl * (t["size"] / 72.0) * (1.4 if _cjk(t) else 1.25) > t["h"] - 0.02:
+                nl = _est_lines(t["paras"], _frame(t)["w"] - 0.10, t.get("font"), t.get("bold", False))  # inner pad
+                if nl * (t["size"] / 72.0) * (1.4 if _cjk(t) else 1.25) > _frame(t)["h"] - 0.02:
                     finds.append(f"CHIP/LABEL TOO SMALL: '{t['txt']}' (~{nl} lines) overruns its "
                                  f"{round(t['w'],2)}×{round(t['h'],2)}in pill — size the chip to its text (or shorten)")
         # 6e) TEXT-vs-TEXT collision: the RENDERED bottom of an upper text box overruns the rendered TOP of a
         #     lower one in the same column (the wrap-collision a 'declared-box' overlap check never sees).
         txts = [s for s in bx if s["text"] and not s["bg"] and s["t"] < sh - 0.55 and len(s["full"].strip()) > 1]
         for a in txts:
+            if a.get("rot"):
+                continue                                         # 6f owns rotated text, exactly
             arl, art, arr, arb = _rbox(a)
             for b in txts:
-                if b is a:
+                if b is a or b.get("rot"):
                     continue
                 brl, brt, brr, brb = _rbox(b)
                 if brt <= art + 0.05:                                  # b must sit clearly below a
@@ -3526,15 +3778,45 @@ def lint(path, mode="presented", json_out=None, renders_dir=None, static_ok=Fals
                 if min(arr, brr) - max(arl, brl) < 0.30:               # must share an x-column
                     continue
                 if arb > brt + 0.06:
-                    finds.append(f"TEXT COLLISION: '{a['txt']}' (~{_est_lines(a['paras'], a['w'])} lines) overruns "
+                    finds.append(f"TEXT COLLISION: '{a['txt']}' (~{_est_lines(a['paras'], _frame(a)['w'])} lines) overruns "
                                  f"into the text below '{b['txt']}' — add vertical gap or size the box")
+                    break
+        # 6f) a ROTATED text's ink laid across another text's ink. 6e reasons about COLUMNS of
+        #     horizontal text (>=0.30in shared) and a vertical label's ink is about that wide, so
+        #     a label run straight through a paragraph passed it (measured 2026-10-03). Exact
+        #     polygons, rotated text only — an unrotated deck never enters this loop.
+        def _rpoly(t):
+            if not t.get("rot"):
+                l_, t_, r_, b_ = _rbox(t)
+                return rotgeom.rect_poly(l_, t_, r_ - l_, b_ - t_)
+            f = _frame(t)
+            l_, t_, r_, b_ = _rbox_frame(f)
+            return rotgeom.rotate(rotgeom.rect_poly(l_, t_, r_ - l_, b_ - t_),
+                                  f["l"] + f["w"] / 2.0, f["t"] + f["h"] / 2.0, t["rot"])
+        _seen6f = set()
+        for a in [x for x in txts if x.get("rot")]:
+            pa_ = _rpoly(a)
+            for b in txts:
+                if b is a or (b.get("grp") is not None and b.get("grp") == a.get("grp")):
+                    continue
+                if frozenset((id(a), id(b))) in _seen6f:
+                    continue                                     # the pair, from its other side
+                A_, _ = rotgeom.overlap(pa_, _rpoly(b))
+                # the same absolute floor as build-time TEXT_OVERLAP (overlap_tol=0.05in2): the
+                # ink boxes are ESTIMATES, and two vertical labels set at an ordinary line pitch
+                # overlapped by 0.02-0.04in2 of estimate on a real deck while their glyphs did not
+                if A_ > 0.05:
+                    _seen6f.add(frozenset((id(a), id(b))))
+                    finds.append(f"TEXT COLLISION: rotated '{a['txt']}' runs across '{b['txt']}' "
+                                 f"({A_:.2f}in² of ink overlap) — move the label into the margin "
+                                 f"or shorten it")
                     break
         # 6b) orphaned punctuation / widow: a wrapped box whose LAST line is just a punctuation mark
         #     (the 避头尾 bug — a lone 。/，pushed to its own row) or a single orphaned CJK glyph
         for t in [s for s in bx if s["text"] and s["w"] > 0]:
-            if _est_lines(t["paras"], t["w"], t.get("font"), t.get("bold", False)) < 2:
+            if _est_lines(t["paras"], _frame(t)["w"], t.get("font"), t.get("bold", False)) < 2:
                 continue
-            ll = _last_line(t["paras"], t["w"], t.get("font"), t.get("bold", False)).strip()
+            ll = _last_line(t["paras"], _frame(t)["w"], t.get("font"), t.get("bold", False)).strip()
             if ll and all(c in _CLOSERS for c in ll):
                 finds.append(f"ORPHANED PUNCTUATION: the last line of '{t['txt']}' is just '{ll}' — "
                              f"widen the box / lower the size / reword so the mark stays attached (避头尾)")
@@ -3571,6 +3853,16 @@ def lint(path, mode="presented", json_out=None, renders_dir=None, static_ok=Fals
                 break
         # 7) uneven card heights in a row (sibling cards must share ONE height)
         cset = [s for s in bx if s["solid"] and not s["bg"] and not s["text"] and s["h"] > 0.5 and s["w"] < 0.6 * sw]
+
+        # A shape NESTED inside another candidate is part of that card (a photo inside its print
+        # border, a panel inside a frame), never its sibling. Rows are bucketed by a rounded top, so
+        # without this a nested shape joined its own container's row or not depending on the third
+        # decimal of a coordinate (measured 2026-10-04: two equal taped prints reported as uneven).
+        def _nested(a, b, tol=0.02):
+            return (a is not b and a["w"] * a["h"] < b["w"] * b["h"]
+                    and a["l"] >= b["l"] - tol and a["t"] >= b["t"] - tol
+                    and a["l"] + a["w"] <= b["l"] + b["w"] + tol and a["t"] + a["h"] <= b["t"] + b["h"] + tol)
+        cset = [c for c in cset if not any(_nested(c, o) for o in cset)]
         bycol = {}                                  # dedupe layered shapes per (top,left): keep the tallest (the card, not its header band)
         for c in cset:
             key = (round(c["t"] * 10), round(c["l"] * 10))
@@ -3598,19 +3890,23 @@ def lint(path, mode="presented", json_out=None, renders_dir=None, static_ok=Fals
         # --- a11y structure [warn]s: slide title presence + reading order (screen readers
         #     navigate by title and read shapes in z-order) ---
         t_idx = _find_title(bx, sh)
-        if t_idx is not None:
+        _a11y_t = _a11y_title_text(slide)               # deckkit.a11y_title: the title, first in order by construction
+        if _a11y_t:
+            titles.append((si + 1, " ".join(_a11y_t.split()).lower(), _a11y_t.replace("\n", " ")[:40]))
+        elif t_idx is not None:
             titles.append((si + 1, " ".join(bx[t_idx]["full"].split()).lower(),
                            bx[t_idx]["full"].replace("\n", " ")[:40]))
-        if si > 0 and any((s["text"] or s["solid"]) and not s["bg"] for s in bx):
+        if si > 0 and not _a11y_t and any((s["text"] or s["solid"]) and not s["bg"] for s in bx):
             if t_idx is None:
                 warns.append("NO SLIDE TITLE: screen readers navigate by titles — give the slide a "
-                             "title (an off-canvas-invisible title is a sanctioned trick for "
-                             "statement slides)")
+                             "title: deckkit.a11y_title(slide, '<title>') adds one off the canvas (nothing "
+                             "is drawn), first in reading order")
             else:
                 first_txt = next((i for i, s in enumerate(bx) if s["text"]), None)
                 if first_txt is not None and first_txt != t_idx:
                     warns.append("READING ORDER: the title is not first in shape order — screen "
-                                 "readers read z-order; reorder so the title is added first")
+                                 "readers read z-order; add the title first, or declare it with "
+                                 "deckkit.a11y_title(slide, '<title>') (first by construction)")
         # --- NON-TEXT CONTRAST [warn] (WCAG 1.4.11): small solid marks (icon discs, chips) and
         #     connector lines vs the resolvable fill BEHIND them. A chip that merely backs a
         #     coincident text label is the text checks' territory; anything unresolvable
@@ -3619,6 +3915,10 @@ def lint(path, mode="presented", json_out=None, renders_dir=None, static_ok=Fals
         seen_pairs = set()
         for i, s in enumerate(bx):
             if not s["solid"] or s["text"] or s["bg"] or s["pic"] or not s["fill"]:
+                continue
+            if s.get("decor"):
+                # DECLARED pure decoration (WCAG 1.4.11 exempts it) — printed, never silent
+                _DECOR_SEEN.append((si + 1, s.get("decor_why") or "(no reason recorded)"))
                 continue
             if s["w"] * s["h"] >= 1.2:                   # small marks only — panels/cards excluded
                 continue
@@ -3660,6 +3960,10 @@ def lint(path, mode="presented", json_out=None, renders_dir=None, static_ok=Fals
                 from pptx.enum.dml import MSO_FILL
                 if shp.line.fill.type != MSO_FILL.SOLID:
                     continue
+                _nm = str(getattr(shp, "name", "") or "")
+                if "+decor" in _nm.split(":", 1)[0] or _nm.startswith("deckkit-decor"):
+                    _DECOR_SEEN.append((si + 1, _nm.partition(":")[2] or "(no reason recorded)"))
+                    continue                             # DECLARED pure decoration — printed
                 lc = str(shp.line.color.rgb)             # theme colour raises → silent skip
                 mx = (shp.left + shp.width / 2) / EMU
                 my = (shp.top + shp.height / 2) / EMU
@@ -3687,6 +3991,20 @@ def lint(path, mode="presented", json_out=None, renders_dir=None, static_ok=Fals
             j_warns.append({"slide": si + 1, "text": m, "severity": "warning"})
         total += len(finds)
         warn_total += len(warns)
+    # PowerPoint safety (ooxml_safety): values PowerPoint repairs that LibreOffice renders, and geometry past
+    # the slide edge, which PowerPoint shows while editing. Both read from the file, never from a render.
+    try:
+        import ooxml_safety as _ox
+        for _sn, _m in _ox.xml_findings(path):
+            print(f"  slide {_sn}: {_m}")
+            j_findings.append({"slide": _sn, "text": _m, "severity": "error"})
+            total += 1
+        for _sn, _m in _ox.beyond_page(prs):
+            print(f"  slide {_sn}: [warn] {_m}")
+            j_warns.append({"slide": _sn, "text": _m, "severity": "warning"})
+            warn_total += 1
+    except ImportError:
+        print("  [lint] ooxml_safety.py is missing — PowerPoint safety NOT CHECKED")
     # duplicate slide titles (deck-level, advisory): screen-reader navigation needs UNIQUE titles
     by_title = {}
     for sn, norm, disp in titles:
@@ -3753,6 +4071,7 @@ def lint(path, mode="presented", json_out=None, renders_dir=None, static_ok=Fals
     print(f"\n{path}: {total} layout finding(s){tail}")
     _report_pixel_skip()   # "clean" must never mean "clean, but three checks never ran"
     _report_group_skip()   # nor "clean, but one slide's shapes were never mapped"
+    _report_decorative()   # nor "clean" when shapes were declared out of a WCAG floor
     if _STATS_ERR:
         print("  [BROKEN] per-slide statistics crashed on %d slide(s) — NOT checked on them: "
               "TEXT WALL, LAYOUT SAMENESS, UNDERFILLED, FLAT RHYTHM, body-size floor. This is a "
@@ -3820,6 +4139,12 @@ except Exception:
 
 if __name__ == "__main__":
     argv = sys.argv[1:]
+    if any(a in ("-h", "--help") for a in argv):         # was an "unrecognised option" error (non-Claude run)
+        print("usage: python3 lint_deck.py DECK.pptx [--selfread | --briefing | --surface | --textheavy | --static]\n"
+              "                            [--renders RENDER_DIR] [--gates GATES.json] [--json OUT.json]\n"
+              "  each delivery mode is also spelled --mode=NAME; renders default to the 'render' folder beside the deck.\n"
+              "  What each code means and its first fix: references/troubleshooting-faq.md")
+        sys.exit(0)
     args = [a for a in argv if not a.startswith("--")]
     mode = "selfread" if any(a in ("--mode=selfread", "--selfread") for a in argv) else "presented"
     if any(a in ("--mode=surface", "--surface") for a in argv):

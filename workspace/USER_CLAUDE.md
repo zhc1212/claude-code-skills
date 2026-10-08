@@ -1,117 +1,79 @@
-# CLAUDE.md
+# User-level instructions
 
-User-level defaults. Merge with project-specific instructions as needed.
+Defaults for every session. Project CLAUDE.md files add to these and win on conflict.
 
-## 1. Think Before Coding
+## Working agreement
 
-**Don't assume. Don't hide confusion. Surface tradeoffs.**
+- Before building, check for a simpler route and say so if one exists; disagree when the request looks wrong.
+- Make a reasonable assumption and keep moving. Stop only for a real blocker that no safe assumption covers, and name it.
+- No asking needed for: the project's own test/lint/build/format commands, read-only git, read-only inspection, and edits to `~/.claude` config or memory.
+- Ask first for: deleting data, force-pushing, or changing anything outside the current repo/workspace.
+- Subagents (Agent tool of any type, including Explore and fork) only when I ask. A skill I invoked whose method is dispatching subagents counts as asking.
+- The advisor tool is not a subagent; call it when you judge it worth the cost. It already sees the whole transcript, your reasoning included, so state a plan in the conversation and never write a plan or draft file just to show it. Its "make your deliverable durable before calling" means saving the real output (the edited file, a result), not drafts.
 
-Before implementing:
-- If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear and no assumption is safe, stop and name the blocker. Do not stop for questions an assumption can cover.
+## Changing code
 
-Standing permission: run the project's own test, lint, build, and formatting commands, plus read-only git and read-only inspection, without asking. Ask only before external or destructive actions: deleting data, force-pushing, or changing anything outside the current repository or workspace (editing `~/.claude` config and memory is in scope).
+- Solve exactly what was asked with the least code. No speculative features, single-use abstractions, unrequested options, or handling for cases that can't happen. Between two correct versions, take the shorter.
+- Keep diffs narrow: leave neighbouring code, comments, and formatting alone; follow the existing style unless tooling or correctness forces otherwise.
+- Clean up only what your change orphaned (imports, variables, functions). Point out other dead code instead of deleting it.
+- Every changed line should be traceable to the request.
 
-Subagents: don't spawn one (Agent tool, any type, including Explore and fork) unless the user asks for it. Do the work in the main session instead. A skill the user invoked that dispatches subagents as its method counts as asking.
+## Verifying and reporting
 
-## 2. Simplicity First
+- Match verification effort to risk. Test-first for behaviour changes and reproducible bugs; skip tests for small reversible edits that would just restate the implementation. Run the checks the change touches, and widen only when failures or open risk call for it.
+- If the repo has GitHub CI, run only the affected tests locally and treat CI's result as the one to report.
+- Mark conclusions you didn't directly verify, and say what evidence would change them.
+- When a check reproduced a bug, show its output before and after the fix, not just "tests pass". In long sessions, restate the goal in one line before reporting.
+- Multi-step work: one-line plan, then execute without waiting. Put progress in the same message as the next action. Pause only when you need me or hit an ask-first action. A "Next:" line lists only things I have to do myself.
+- Long tasks (many steps, or likely to survive a compaction): track them in `TASKS.md` in the working directory, one line per step, ticked off as done. Mirror the task tool if there is one. Re-read the file after a compaction. If another task's `TASKS.md` exists, use `TASKS-<topic>.md`. In git repos add `TASKS*.md` to `.git/info/exclude`. Delete the file when finished.
 
-**Minimum code that solves the problem. Nothing speculative.**
+## How to answer
 
-- No features beyond what was asked.
-- No abstractions for single-use code.
-- No "flexibility" or "configurability" that wasn't requested.
-- No error handling for impossible scenarios.
-- Prefer the shorter version when both are correct.
+Optimise for a reader with ADHD:
 
-## 3. Surgical Changes
+- Open with the deliverable (command, path, snippet). No warm-up phrases.
+- Number multi-step work and repeat "step N of M" each turn.
+- No closing pleasantries, no recap of what was just done.
+- Show at most ~5 list items, most important first. This trims presentation only; never drop relevant findings.
+- Give time estimates in concrete units ("~15 min").
 
-**Touch only what you must. Clean up only your own mess.**
+Exceptions: "explain" / "walk me through" gets full length. Destructive actions still need confirmation. "What are my options" gets 2–4 ranked options, recommendation first. Showing before/after evidence outranks brevity.
 
-When editing existing code:
-- Don't "improve" adjacent code, comments, or formatting.
-- Don't refactor things that aren't broken.
-- Match existing style, even if you'd do it differently, subject to required tooling and correctness.
-- If you notice unrelated dead code, mention it - don't delete it.
+## Skill routing
 
-When your changes create orphans:
-- Remove imports/variables/functions that YOUR changes made unused.
-- Don't remove pre-existing dead code unless asked.
+About 160 skills from several suites are installed and many overlap. When a task fits a row, use that row's skill rather than whichever name looks closest. This covers model-invocable skills only, not user-only slash commands.
 
-The test: Every changed line should trace directly to the user's request.
+- Invoke a skill when the task actually matches its trigger. Single questions, one-file edits, or steps already determined by context don't need a process skill.
+- Treat this table as the authority.
+- If a skill seems to require pausing or approval, cite the file and the exact line. Advisory wording is not an approval gate.
 
-## 4. Goal-Driven Execution
-
-**Define success criteria. Loop until verified.**
-
-Scale verification to impact. Write tests first for behavioral changes and reproducible defects, not for every edit — skip tests for reversible, low-impact changes that would only mirror the implementation. Run the checks the change actually affects; broaden or repeat only when new changes, failures, or unresolved risk justify it.
-
-When the repo has GitHub CI, run only the tests the change touches locally; CI owns the full suite, and its verdict is the one to report.
-
-Two reporting rules:
-- When a conclusion rests on something you did not directly verify, say so and name what evidence would overturn it.
-- If you ran a check that reproduced the defect, show its output before and after the fix — not just "tests pass". On long sessions, restate the current goal in one line before reporting.
-
-For multi-step work, state the plan in one line, then execute it without waiting for confirmation. When a step does not need my input, keep going: put status notes (including "step N of M") in the same message as your next action. Stop and ask only when you cannot continue without me, or before the actions listed in §1. A "Next:" line is for actions only I can take; if you can take it, take it.
-
-For long tasks (many steps, or likely to outlast a context compaction), keep the checklist in `TASKS.md` in the working directory: one line per step, ticked as each finishes. If a task tool is available, the file mirrors it rather than adding a second list to narrate. After a compaction, re-read it instead of the scrollback. If a `TASKS.md` for another task already exists, use `TASKS-<topic>.md`. In a git repo, add `TASKS*.md` to `.git/info/exclude` so it never gets committed; delete the file when the task is done.
-
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
-
-## 5. Output Shape
-
-**Lead with the answer. The reader has ADHD.**
-
-The `i-have-adhd` skill's full ruleset is injected every session by its SessionStart hook, gated on `~/.claude/.i-have-adhd-always`. The lines below are the durable subset — they hold for subagents and any context the hook misses:
-
-- First line is the action: command, path, or snippet. No "Let me...", "Great question", "I'll now...".
-- Number multi-step work and restate "step N of M" each turn; working memory does not survive a message boundary.
-- No closers ("Hope this helps", "Let me know if..."), no recap of what you just did.
-- Cap visible lists at ~5 items, most relevant first. Presentation only — never drop relevant findings from analysis, search, or tool results.
-- Time estimates in concrete units ("~15 min if tests cover this"), not "some work".
-
-Overrides: "explain" or "walk me through" gets full length; destructive actions still get confirmation; "what are my options" gets 2–4 ranked options with the recommendation first. Section 4 outranks brevity — when a check reproduced the defect, show its output.
-
-## 6. Skill Routing
-
-~158 skills are installed from multiple suites with overlapping triggers. When a task matches a row below, prefer the designated suite; don't pick by fuzzy name match. Rows govern model-invocable skills only; user-only slash commands (`disable-model-invocation: true`) are out of scope.
-
-Invoke a skill when the task matches its trigger, not when a match is merely possible. A single question, a one-file edit, or a step already determined by what you just read needs no process skill. `using-superpowers`' "1% chance → you MUST invoke" is scaffolding for weaker models; this paragraph and the rows below override it. This also overrides its plan-mode brainstorming gate — brainstorm only when the design is genuinely open. It still cedes to user instructions, and the rows decide every head-to-head between a superpowers process skill and a local skill.
-
-Most installed skills reach the session as a bare name, with no description attached. So this table is the routing source of truth, not a tiebreaker, and a bare name is never grounds to rule a skill out — read its SKILL.md before deciding it doesn't fit.
-
-If a skill makes you pause, ask permission, or leave authorized work unfinished, name the file, quote the instruction, and say how it applies. Do not manufacture an approval requirement out of advisory wording.
-
-| Task | Designated suite / entry points |
+| Task | Use |
 |---|---|
-| ML conference paper, full pipeline (NeurIPS/ICML/ACL, LaTeX) | zhc suite: `research-pipeline` (orchestrator) → `idea-discovery` / `paper-writing` / `paper-write` / `paper-presubmit-audit`. `paper-writer` (active, not sci-brain's) drafts from the author's own materials outside the pipeline, incl. non-STEM |
-| Improve ML/CV/NLP paper quality (reviewer-friendly, claim-support, self-review) | `research-paper-writing` — the quality-lift step, not line-level grammar polish |
-| Find / evaluate research ideas | `idea-discovery` (pipeline), `idea-creator`, `idea-evaluator`; `propose` when the outcome is a GitHub issue. `superpowers:brainstorming` is for non-research feature work only, never for paper ideas |
-| Paper review / pre-submission check | `pre-submission-reviewer`, `paper-presubmit-audit`, `reviewer-view-paper` (single harsh reviewer) |
-| Nature-family journal submission | nature suite: `nature-writing` / `nature-reviewer` / `nature-figure` / `nature-literature-pipeline` |
-| SE conference/journal paper (FSE, ICSE, ASE, ISSTA, MSR, TSE, TOSEM) | Section drafting and claim-evidence alignment → `se-research-paper-writing` (Tool Paper vs Empirical Study, RQ map, Threats to Validity). FSE venue mechanics → `fse-*` pack (`fse-writing-style`, `fse-experiments`, `fse-submission`, `fse-author-response` for the PACMSE Major Revision, `fse-artifact-evaluation`, etc.; re-verify page limits against the live call). Note FSE/PACMSE is acmart `acmsmall` single-column, so `paper-write venue: ACM` (sigconf) is the wrong template |
-| Paper figures | `paper-figure` (generate), `figure-pipeline` (fix visual issues), `paper-illustration` (AI illustrations) |
-| Style polish / de-AI writing | Split by scope, not by trigger word: paper prose (LaTeX or plain) → `deai-latex` (sole owner of the de-AI catalogue; `oral-paragraph-audit` Check 6 delegates to it). Grant proposals (NSF Project Summary/Description, NIH Specific Aims, fellowships) → `academic-humanizer`; it does not take papers, theses, or rebuttals from `deai-latex`, and its claim-evidence edits can add numbers the source lacks, so check every number it introduces. Any non-paper prose → `humanizer`, even when the ask is "de-AI". Also `khazix-writer`, `polish-english-paper`, `paper-polish` (grammar/flow plus zh→en rewrite at submission quality), `nature-polishing` (Nature register only) |
-| Deep literature research | ARS plugin `/ars-*`; local `deep-research` for a survey-grade report, `academic-research-skills:deep-research` only inside an ARS run. Knowledge-base survey → `survey` then `survey-writer`; quick related-work lookup → `research-lit`; idea novelty → `novelty-check`; non-paper fact gathering into a repo Markdown file → `research` |
-| GPT/codex as adversary | `codex-debate`, `codex-paper-adversary`, `codex-debug-pair`, `codex-experiment-critic`, `research-review` |
-| Cross-model code review, rounds until it ships | `codex-review` — audit-only by default; blocking is decided by oracle + materiality, not by testability, and the rest goes to a ledger. Prefer over the local `code-review` (single-model, single-round) when Codex should read the repo itself, and over `auto-review-loop` (ML-paper scoring loop) for anything code |
-| Standards + spec review of a diff | local `code-review` (two-axis, parallel sub-agents). The `code-review:code-review` plugin is disabled; `pr-review-toolkit:review-pr` is routed away |
-| Debugging | `superpowers:systematic-debugging` for the loop; `codex-debug-pair` when a second model's hypotheses help; `diagnosing-bugs` is parked |
-| Test-driven development | `tdd` for TS/frontend; `superpowers:test-driven-development` everywhere else |
-| Writing / editing a skill | `writing-great-skills` for design vocabulary; `superpowers:writing-skills` for the verify-before-deploy loop; `plugin-dev:skill-development` only inside a plugin |
-| Slides | pptx → `slide-maker` (default) or `ppt-master` (brand/template workspaces); Typst → `write-slides`; paper → Chinese deck → `nature-paper2ppt`; Quarto/Beamer layout audit → `visual-audit-slides` |
-| TS/frontend engineering | mattpocock suite: `tdd`, `code-review`, `prototype`, etc. |
+| Full ML conference paper (NeurIPS/ICML/ACL, LaTeX) | `research-pipeline` orchestrates → `idea-discovery`, `paper-writing`, `paper-write`, `paper-presubmit-audit`. Drafting from my own materials outside the pipeline (incl. non-STEM): `paper-writer` |
+| Lift ML/CV/NLP paper quality (claims vs. evidence, reviewer-friendliness) | `research-paper-writing` (not line-level polish) |
+| Research ideas | `idea-discovery` (pipeline), `idea-creator`, `idea-evaluator`; `propose` if the output is a GitHub issue. |
+| Pre-submission review | `pre-submission-reviewer`, `paper-presubmit-audit`; one harsh reviewer: `reviewer-view-paper` |
+| Nature-family journals | `nature-writing`, `nature-reviewer`, `nature-figure`, `nature-literature-pipeline` |
+| SE venues (FSE/ICSE/ASE/ISSTA/MSR/TSE/TOSEM) | Content, RQs, threats to validity: `se-research-paper-writing`. FSE mechanics: `fse-*` (`fse-writing-style`, `fse-experiments`, `fse-submission`, `fse-author-response`, `fse-artifact-evaluation`, …); re-check page limits against the live call. FSE/PACMSE uses acmart `acmsmall`, so `paper-write venue: ACM` (sigconf) is the wrong template |
+| Figures | Generate: `paper-figure`. Fix visual issues: `figure-pipeline`. AI illustrations: `paper-illustration` |
+| De-AI / style polish | Paper prose: `deai-latex` (owns the de-AI catalogue; `oral-paragraph-audit` Check 6 hands off to it). Grant proposals (NSF/NIH/fellowships): `academic-humanizer`, and verify any number it adds. Non-paper prose: `humanizer`. Also `khazix-writer`, `polish-english-paper`, `paper-polish` (grammar/flow, zh→en), `nature-polishing` (Nature register) |
+| Literature | Survey-grade report: `deep-research` (use `academic-research-skills:deep-research` only inside an `/ars-*` run). Knowledge-base survey: `survey` → `survey-writer`. Quick related work: `research-lit`. Novelty: `novelty-check`. Non-paper facts into a repo Markdown file: `research` |
+| Second model as adversary | `codex-debate`, `codex-paper-adversary`, `codex-debug-pair`, `codex-experiment-critic`, `research-review` |
+| Code review | Cross-model, multi-round: `codex-review` (audit-only by default; prefer it when Codex should read the repo, and over `auto-review-loop`, which is for ML-paper scoring). Standards + spec review of a diff: local `code-review` |
+| Debugging | `codex-debug-pair` for a second model's hypotheses |
+| TDD | `tdd` |
+| Writing skills | Design vocabulary: `writing-great-skills`. Inside a plugin: `plugin-dev:skill-development` |
+| Slides | pptx: `slide-maker` (default) or `ppt-master` (brand/template workspaces). Typst: `write-slides`. Paper → Chinese deck: `nature-paper2ppt`. Quarto/Beamer layout audit: `visual-audit-slides` |
+| TS/frontend engineering | mattpocock suite (`tdd`, `code-review`, `prototype`, …) |
 
-Parked duplicates live in `~/.claude/skills-parked/` (not loaded; `mv` back to restore): sci-brain's copies of `paper-writer`/`paper-reviewer`/`brainstorm-ideas`/`autoresearch*` (the active `paper-writer` is a different skill), `diagnosing-bugs`, plus `slide-maker-4.8.0.bak`. "Routed away" means still loaded and listed, but a row above names the skill to use instead.
+Not installed on this machine: `diagnosing-bugs`, `run-baseline`, `i-have-adhd`, the `ecc`, `ai-research-skills` and `superpowers` plugins (superpowers uninstalled 2026-10-08). Disabled: the `claude-scientific-writer` and `planning-with-files` plugins (`TASKS.md` covers task tracking). Add a row here in the same edit whenever a skill or plugin is added or removed.
 
-## 7. Environment
+## Environment (this machine)
 
-Auto-memory is keyed by launch directory, so the user-level environment facts below are invisible to sessions started in a sub-repo. Before acting, read the matching file in `~/.claude/projects/-home-huichengzhang-huicheng/memory/`:
-
-| Before... | Read | Short version |
-|---|---|---|
-| non-interactive `claude`, pip/conda installs, Codex launches | `claude-proxy-and-wrapper.md` | `CLAUDE_WRAPPER_ASSUME_Y=Y claude …`; unset proxy vars for installs from domestic mirrors |
-| editing settings.json, plugins, MCP, advisor | `claude-code-settings-and-plugins.md` | plugins need `claude plugin install`; hand-editing is not enough |
-| adding, pulling, or parking a skill | `skill-suite-provenance.md` | update §6 in the same edit |
-
-A Bash call that starts with `sleep N` needs `timeout: (N + 30) * 1000` in the same call; the default 120 s timeout kills the sleep, not the job. Past `sleep 560`, use `run_in_background` instead of polling.
+- The real home is `/home/huichengzhang`; inside the sandbox `/home/user` is a symlink to it, and Claude starts from the real path (project memory is keyed by it). Only the real path exists on the host, so don't hard-code `/home/user/...` into project code; use relative or configurable paths.
+- Claude stays in its bwrap sandbox by default. Follow the user-level `~/.claude/rules/sandbox-runtime.md` for resource tasks and independent training jobs; do not default to a `claude-real` relaunch. Runtime details: `~/huicheng/config/claude-sandbox.md`. Distinguish proxy CONNECT rejection from a remote HTTP 403 before changing network rules. `BASH_ENV` re-exports `HOME` in every bash call, so `HOME=/tmp/x cmd` does not isolate; use `env -u BASH_ENV HOME=/tmp/x cmd`.
+- The sandbox's privacy env vars switch off server feature flags, so a flag-gated feature (e.g. `/advisor`) can look missing. Check for a flag gate before concluding a feature doesn't exist.
+- Conda env `compactifai` was relocated, so its entry-point shebangs point at the old path. Use `python3 -m pip` (not `pip`) and `python3 -m <tool>`.
+- Plugins need `claude plugin marketplace add` + `claude plugin install`; editing settings.json by hand is not enough.
+- The skills are a copy of https://github.com/zhc1212/claude-code-skills. Pulling that repo does not update `~/.claude/skills/`.
+- Bash calls starting with `sleep N` need `timeout: (N + 30) * 1000`; for anything past ~560 s use `run_in_background` instead of polling.

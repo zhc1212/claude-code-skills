@@ -8,7 +8,7 @@ no shell required. The .sh wrapper just delegates here.
 Usage:
     python3 render_deck.py /path/to/deck.pptx [out_dir]
     # Windows:  python scripts\\render_deck.py C:\\path\\deck.pptx
-Output: <out_dir>/slide01.png, slide02.png, ...   (default out_dir: ./render)
+Output: <out_dir>/slide01.png, slide02.png, ...   (default out_dir: render/ beside the deck)
 
 Requires: LibreOffice + pymupdf (python -m pip install pymupdf). One-time installs.
 Override LibreOffice discovery with the SOFFICE env var (full path to the binary).
@@ -17,6 +17,7 @@ import contextlib
 import json
 import os
 import re
+import shlex
 import sys
 import shutil
 import tempfile
@@ -1517,7 +1518,8 @@ def _direction_gate(design, deck_dir):
         die('`design_plan.direction_gate` is missing. The look was either CHOSEN from rendered\n'
             '    alternatives (branch c) or it was not, and both are recordable:\n'
             '      "direction_gate": {"candidates": "directions.json" | [ {...}, ... ],\n'
-            '                         "picked": "<the direction the user chose>"}\n'
+            '                         "picked": "<the direction the user chose>",\n'
+            '                         "images": "photos | illustrations | none"}  (the user\'s, generated or fetched)\n'
             '      "direction_gate": "n/a - <locked template | mimic | user supplied the look | '
             'tiny ask>"\n'
             '    It is re-scored here with scripts/directions_diversity.py, the way the arc\n'
@@ -1559,6 +1561,13 @@ def _direction_gate(design, deck_dir):
     if r["colourway_excess"]:
         faults.append("more than one motif-less colourway: {}".format(
             ", ".join(r["colourway_excess"])))
+    _imgf = directions_diversity.images_fault(                     # pictures -> a visual language offered
+        dg.get("images"), cands, image_sources=design.get("image_sources"), imagery=design.get("imagery"))
+    if _imgf:
+        faults.append(_imgf)
+    _natf = directions_diversity.native_fault(dg.get("images"), cands, dg.get("native_fit"))   # no pictures -> native
+    if _natf:
+        faults.append(_natf)
     if faults and not str(dg.get("waived", "")).strip():
         die("the direction competition does not hold up when re-scored:\n    - "
             + "\n    - ".join(faults)
@@ -1755,6 +1764,11 @@ def _LD_A11Y_WCAG():
     return _ld.A11Y_WCAG
 
 
+def _LD_A11Y_REMEDY():
+    import lint_deck as _ld
+    return _ld.A11Y_REMEDY
+
+
 def _LD_A11Y_ALL():
     import lint_deck as _ld
     return _ld.A11Y_CODES
@@ -1806,7 +1820,7 @@ def _check_a11y(pptx, delivery, gates):
     waiver = _section(gates, "a11y")
     if not hits:
         print("[gates] a11y: 0 of {} floor(s) fired (alt-text · slide titles · reading order · "
-              "non-text contrast)".format(len(codes)))
+              "non-text contrast · text contrast)".format(len(codes)))
         return
     fired = " · ".join("{} ({} slide{})".format(c, len(v), "" if len(v) == 1 else "s")
                        for c, v in sorted(hits.items()))
@@ -1823,10 +1837,9 @@ def _check_a11y(pptx, delivery, gates):
     die("this deck does not clear the accessibility floors:\n    - " + fired
         + ("\n    {} of those are WCAG ratios, which are arithmetic rather than judgement."
            .format(len(wcag)) if wcag else "")
-        + "\n    Fix: deckkit.alt_text(shape, '<one line>') on informative images (alt='' for "
-          "purely decorative); give every slide a title (an off-canvas title is a sanctioned trick "
-          "for statement slides) and add it FIRST so z-order matches reading order; raise "
-          "icon/mark contrast to 3:1.\n    Or waive in writing: "
+        + "\n    Fix:" + "".join("\n      - {}: {}".format(c, _LD_A11Y_REMEDY().get(c, "remediate it"))
+                             for c in sorted(hits))
+        + "\n    Or waive in writing: "
           '{"a11y": {"waived": "<who reads this deck, and how>", "waived_category": "<kind>"}}')
 
 
@@ -1859,6 +1872,11 @@ def _register_kit_note(pptx, gates):
             import save_register as sr
             name = sr._bespoke_name(d.get('style_pick'))
             if not name:
+                return
+            import check_visual_language as cvl
+            lib = cvl.library_kit(gates, name)
+            if lib:
+                print("[gates] " + lib)
                 return
             if list(deck_dir.glob(rs.KIT_GLOB)):
                 print("[gates] `{}` ships as a surface KIT — the contracts (content rect, "
@@ -2310,6 +2328,59 @@ def _qa_backup_gate(pptx, gates):
         + '\n    Link the backup slide (dk.link / agenda(targets=) / dk.back_link), correct the '
           'slide number in content.qa, or record '
           '{"qa_backup": {"waived": "<why the answer lives somewhere else>"}}')
+
+
+def _visual_language_gate(pptx, gates):
+    """A deck recording a visual language must be BUILT in it (cover + half the pages carry its tag, its
+    display face is used) and keep its prohibitions. Same module as codex_delivery_gate.py. No language
+    recorded -> NOT CHECKED, out loud."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    try:
+        import check_visual_language as cvl
+    except Exception as exc:
+        not_checked(f"  [--] VISUAL LANGUAGE: NOT CHECKED — {exc.__class__.__name__}: {exc}")
+        return
+    rec = cvl.recorded_language(gates)
+    if rec is None:
+        not_checked("  [--] visual language: NOT CHECKED — none recorded (design_plan.visual_language)")
+        return
+    findings, facts = cvl.check(pptx, rec)
+    print("[gates] visual language {}: {} of {} slide(s) built with it".format(rec["name"], facts["tagged"], facts["slides"]))
+    blocks = [f for f in findings if f[0] == "block"]
+    if blocks:
+        die("the recorded visual language does not hold:\n    - "
+            + "\n    - ".join("{}: {}".format(c, m) for _s, c, m in blocks))
+
+
+def _image_series_gate(pptx, gates):
+    """An image-led deck's generated series, read from the FILE (+gen.<slot> tags) and series.json:
+    every generated picture planned, the people rule, the series QC. Not an image-led deck -> NOT
+    CHECKED, out loud. Same module as codex_delivery_gate.py."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    try:
+        import check_image_series as cis
+    except Exception as exc:
+        not_checked(f"  [--] IMAGE SERIES: NOT CHECKED — {exc.__class__.__name__}: {exc}")
+        return
+    rec = cis.recorded_series(gates)
+    if rec is None:
+        not_checked("  [--] image series: NOT CHECKED — not an image-led deck "
+                    "(design_plan.imagery is not 'series')")
+        return
+    try:
+        findings, facts = cis.check(pptx, rec, str(Path(pptx).resolve().parent))
+    except Exception as exc:
+        not_checked(f"  [--] image series: NOT CHECKED — {exc}")
+        return
+    print("[gates] image series: {} of {} slot(s) placed, {} generated picture(s)".format(
+        facts["placed"], facts["slots"], facts["generated"]))
+    for sev, code, why in findings:
+        if sev != "block":
+            print(f"  [--] image series: {code}: {why}")
+    blocks = [f for f in findings if f[0] == "block"]
+    if blocks:
+        die("the image series does not hold:\n    - "
+            + "\n    - ".join("{}: {}".format(c, m) for _s, c, m in blocks))
 
 
 def _surface_gate(pptx, gates):
@@ -3773,6 +3844,12 @@ def _handoff_gate_checks(pptx, mode="presented", gate_check=False):
     with _gate_section('citations'):
         with _gate_step():
             _citations_gate(pptx, gates)
+    with _gate_section('image_series'):
+        with _gate_step():
+            _image_series_gate(pptx, gates)
+    with _gate_section('visual_language'):
+        with _gate_step():
+            _visual_language_gate(pptx, gates)
 
     with _gate_section('fonts'):
         with _gate_step():
@@ -4289,7 +4366,21 @@ def _design_plan_and_checkpoint_present(deck_dir):
     return False
 
 
+_OPTIONS = """
+Options (the output dir is POSITIONAL; default: render/ beside the deck, where the gates read it):
+  --slides N[,M]      render only these 1-indexed slides (a probe: up to 3, not all — the design checkpoint holds
+                      a render of every slide)
+  --fast              re-render only the slides that changed since the last render
+  --deliverables      also write the PDF and viewer.html beside the deck (alias --final; the hand-off run)
+  --gate-check        run every hand-off gate on the saved deck, without rendering
+  --selfread / --textheavy / --surface   lint modes (also spelled --mode=NAME)
+  -h, --help          this text"""
+
+
 def main(argv):
+    if any(a in ("-h", "--help") for a in argv):          # it answered "unrecognised option(s): --help"
+        print((__doc__ or "").strip() + "\n" + _OPTIONS)
+        return 0
     # --deliverables (alias --final): ALSO park the PDF beside the .pptx and write viewer.html.
     # OFF by default: while a deck is still being iterated, those two are pure churn — they are
     # regenerated every round, clutter the deck root, and go stale the moment the user hand-edits
@@ -4384,7 +4475,9 @@ def main(argv):
         die("usage: python3 render_deck.py /path/to/deck.pptx [out_dir] "
             "[--fast | --slides N[,M]] [--deliverables] [--gate-check]")
     pptx = argv[0]
-    out = argv[1] if len(argv) > 1 else "./render"
+    # BESIDE the deck by default — where lint_deck, the register-pixels gate and --gate-check read renders.
+    # It was "./render" (the process's working directory): run from anywhere else and every reader came up empty.
+    out = argv[1] if len(argv) > 1 else os.path.join(os.path.dirname(os.path.abspath(pptx)), "render")
 
     if not os.path.isfile(pptx):
         die("no such file: " + pptx)
@@ -4410,10 +4503,14 @@ def main(argv):
     # before the plan is final); a deck with fewer slides than the plan (a probe/sample build); a deck
     # with no content plan or a 1–3 slide tiny ask (`_cp >= 4`). --gate-check / --deliverables already
     # run the deeper hand-off design_plan gate, so they are past this by construction.
-    if only is None and not gate_only and not deliverables:
+    # A PROBE is a few slides (<= 3) and fewer than all of them; `--slides` naming every slide is a full render
+    # with extra steps, and was a way past this gate (found by a docs-only run, 2026-10-04).
+    _n_slides = _pptx_slide_count(pptx) if os.path.isfile(pptx) else 0
+    _probe = only is not None and len(set(only)) <= 3 and len(set(only)) < _n_slides
+    if not _probe and not gate_only and not deliverables:
         _dd = os.path.dirname(os.path.abspath(pptx)) or "."
         _cp = _content_plan_slide_count(_dd)
-        if _cp >= 4 and _pptx_slide_count(pptx) >= _cp and not _design_plan_and_checkpoint_present(_dd):
+        if _cp >= 4 and _n_slides >= _cp and not _design_plan_and_checkpoint_present(_dd):
             die("STEP 2 NOT DONE — this deck has an approved content plan ({0} slides) but no design "
                 "plan + design checkpoint recorded, and it is about to be FULL-rendered.\n"
                 "  Step 2 (design plan + \U0001f534 design checkpoint) is BRANCH-INVARIANT — it runs on "
@@ -4426,7 +4523,8 @@ def main(argv):
                 "CHECKPOINT, and record it: in `.deck-gates.json` as `design_plan` + "
                 "`design_plan.checkpoint` ({{\"mode\": \"approved\"|\"auto\", \"record\": \"…\"}}), "
                 "or on the Codex path in `.codex-deck-evidence.json` as `design` + `design.checkpoint`.\n"
-                "  Rendering ONE probe slide first is expected and exempt — use `--slides N`.".format(_cp))
+                "  Rendering a probe first is expected and exempt — `--slides N` (up to 3 slides, not all of "
+                "them).".format(_cp))
 
     soffice = find_soffice()
     if not soffice:
@@ -4522,7 +4620,8 @@ def main(argv):
     if fast and changed is not None and not changed:
         print("no slide changed since the last render — nothing to re-render")
         print("next: python3 {} {} --renders {}".format(
-            os.path.join(os.path.dirname(os.path.abspath(__file__)), "lint_deck.py"), pptx, out))
+            shlex.quote(os.path.join(os.path.dirname(os.path.abspath(__file__)), "lint_deck.py")),
+            shlex.quote(pptx), shlex.quote(out)))
         return 0
 
 
@@ -4819,7 +4918,8 @@ def main(argv):
                   "without --fast) before handing the deck over".format(
                       " and ".join(_stale), "is" if len(_stale) == 1 else "are"), file=sys.stderr)
     print("next: python3 {} {} --renders {}  # render-time lint, then the actor-critic loop".format(
-        os.path.join(os.path.dirname(os.path.abspath(__file__)), "lint_deck.py"), pptx, out))
+        shlex.quote(os.path.join(os.path.dirname(os.path.abspath(__file__)), "lint_deck.py")),
+        shlex.quote(pptx), shlex.quote(out)))
     # The render self-check is the single largest round-trip sink in the pipeline: one image Read
     # per slide, one message each, every message re-sending the whole conversation. SKILL.md Step 5
     # says to batch those reads, and a measured run showed the prose alone did not move it — the
@@ -4841,8 +4941,9 @@ def main(argv):
                   "variety, chrome repetition. It CANNOT settle a per-slide question (body text "
                   "is unreadable at that size), so it never replaces the reads below.".format(_cs))
         print("      then read ALL {} slide PNGs in ONE message (one tool block per slide, same "
-              "message), and record a one-line verdict per slide:".format(len(_pngs)))
-        print("      " + "  ".join(os.path.join(out, f) for f in _pngs))
+              "message), and record a one-line verdict per slide — one path per line:".format(len(_pngs)))
+        for f in _pngs:                       # one per line: a path with a space cannot be split wrongly
+            print("      " + os.path.join(out, f))
 
 
 def _viewer_html(title, slides):

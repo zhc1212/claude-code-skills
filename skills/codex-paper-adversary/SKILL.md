@@ -1,11 +1,13 @@
 ---
 name: codex-paper-adversary
-description: "Adversarial paper review via Codex MCP — Codex's job is to REJECT, grounded in venue reviewer standards with fatality gates and venue-calibrated scoring. Use whenever the user wants Codex to review their paper adversarially, even if they just say '让codex看看论文' without explicitly saying 'adversarial'. Triggers: \"codex review my paper\", \"hostile review\", \"adversarial paper review\", \"try to reject my paper\", \"codex审我的论文\", \"codex当reviewer\", \"codex挑刺\", \"论文对抗审查\", \"模拟拒稿\", \"让codex看看论文\", \"codex帮我审论文\". Not for code review (/codex-review), multi-persona review (/academic-paper-reviewer), or single-reviewer harsh review (/reviewer-view-paper)."
+description: "Adversarial paper review via Codex CLI — Codex's job is to REJECT, grounded in venue reviewer standards with fatality gates and venue-calibrated scoring. Use whenever the user wants Codex to review their paper adversarially, even if they just say '让codex看看论文' without explicitly saying 'adversarial'. Triggers: \"codex review my paper\", \"hostile review\", \"adversarial paper review\", \"try to reject my paper\", \"codex审我的论文\", \"codex当reviewer\", \"codex挑刺\", \"论文对抗审查\", \"模拟拒稿\", \"让codex看看论文\", \"codex帮我审论文\". Not for code review (/codex-review), multi-persona review (/academic-paper-reviewer), or single-reviewer harsh review (/reviewer-view-paper)."
 ---
 
 # Codex Paper Adversary
 
-Get a hostile paper review from GPT via Codex MCP — a standards-bound
+> Codex calls (`codex exec`, `codex exec resume`) follow `../shared-references/codex-cli.md`.
+
+Get a hostile paper review from GPT via Codex CLI — a standards-bound
 prosecutor, not a balanced reviewer. Codex finds reasons to REJECT,
 grounded in the same evaluation dimensions real reviewers use.
 
@@ -122,7 +124,7 @@ hints about what might be weak. Blind independence is the entire point.
 
 ## Step 2: Codex Adversarial Review
 
-Call `mcp__codex__codex` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`.
+Call `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`.
 See `references/codex-prompt-template.md` for the full prompt.
 
 Key elements of the prompt:
@@ -207,7 +209,7 @@ Before presenting, verify:
 
 ### Rebuttal Gate
 
-When the user challenges an attack, send to Codex via `mcp__codex__codex-reply`
+When the user challenges an attack, send to Codex via `codex exec resume`
 with this structure:
 
 ```
@@ -231,8 +233,8 @@ If Codex refuses valid rebuttals across multiple attacks, Claude flags
 
 ### Other Follow-Up
 
-- **Elaborate**: "expand on A03" → `mcp__codex__codex-reply`
-- **Review revisions**: fresh `mcp__codex__codex` call (blind to prior round)
+- **Elaborate**: "expand on A03" → `codex exec resume`
+- **Review revisions**: fresh `codex exec` call (blind to prior round)
 - **Escalate**: section review → full-tex or multi-pass review
 
 ### Calibration Mode (optional, post-submission)
@@ -279,10 +281,10 @@ when X is in a section Codex hasn't seen yet.
   and venue criterion. Hostility without standards is noise.
 - **Number every attack**: A01, A02, ... for unambiguous rebuttal reference.
 
-## Codex MCP
+## Codex CLI
 
-- **First call**: `mcp__codex__codex` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
-- **Follow-ups on same section**: `mcp__codex__codex-reply` with saved `threadId`
-- **New section or re-review**: fresh `mcp__codex__codex` call (independent)
-- On MCP error: tell user, offer Claude-only adversarial review (single-model,
+- **First call**: `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
+- **Follow-ups on same section**: `codex exec resume` with saved `threadId`
+- **New section or re-review**: fresh `codex exec` call (independent)
+- On Codex CLI error: tell user, offer Claude-only adversarial review (single-model,
   loses cross-model blind-spot coverage — note this limitation to the user)

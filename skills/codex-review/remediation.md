@@ -27,7 +27,7 @@ it is obtained (`git diff`, `git diff --cached`, the untracked list), and leave
 the user's index and commit history as they are.
 
 ```
-mcp__codex__codex-reply:
+codex exec resume:
   threadId: <saved>
   prompt: |
     Delta round — the last of a 2-round budget. Reviewing the fixes applied

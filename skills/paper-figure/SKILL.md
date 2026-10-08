@@ -2,7 +2,7 @@
 name: paper-figure
 description: "Generate publication-quality figures and tables from experiment results. Use when user says \"画图\", \"作图\", \"generate figures\", \"paper figures\", or needs plots for a paper."
 argument-hint: [figure-plan-or-data-path]
-allowed-tools: Bash(*), Read, Write, Edit, Grep, Glob, Agent, mcp__codex__codex, mcp__codex__codex-reply
+allowed-tools: Bash(*), Read, Write, Edit, Grep, Glob, Agent
 ---
 
 <!-- PROVENANCE (audited 2026-07-19): adapted hybrid.
@@ -10,6 +10,8 @@ Sources: jimliu/baoyu-skills (type x style design matrix); pedrohcgs/claude-code
 Local: pipeline integration, table/figure ID scheme, priority planning. -->
 
 # Paper Figure: Publication-Quality Plots from Experiment Data
+
+> Codex calls (`codex exec`, `codex exec resume`) follow `../shared-references/codex-cli.md`.
 
 Generate all figures and tables for a paper based on: **$ARGUMENTS**
 
@@ -34,7 +36,7 @@ Generate all figures and tables for a paper based on: **$ARGUMENTS**
 - **COLOR_PALETTE = `tab10`** — Default matplotlib color cycle. Options: `tab10`, `Set2`, `colorblind` (deuteranopia-safe)
 - **FONT_SIZE = 10** — Base font size (matches typical conference body text)
 - **FIG_DIR = `figures/`** — Output directory for generated figures
-- **REVIEWER_MODEL = `gpt-6-astra`** — Model used via Codex MCP for figure quality review.
+- **REVIEWER_MODEL = `gpt-6-astra`** — Model used via Codex CLI for figure quality review.
 
 ## Inputs
 
@@ -206,7 +208,7 @@ Save all snippets to `figures/latex_includes.tex` for easy copy-paste into the p
 Send figure descriptions and captions to GPT-6-Astra for review:
 
 ```
-mcp__codex__codex:
+codex exec:
   model: gpt-6-astra
   config: {"model_reasoning_effort": "xhigh"}
   prompt: |

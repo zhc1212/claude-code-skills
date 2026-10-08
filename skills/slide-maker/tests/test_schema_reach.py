@@ -219,6 +219,39 @@ ck(cc.recorded_citations(_half) is None,
    "...and a plan with a bibliography but NO keys reads as nothing recorded — half a plan cannot "
    "be checked against the deck, and reporting it as clean is the failure this suite exists for")
 
+print("\n— IMAGE SERIES: an image-led deck's series plan must be readable from both records")
+import check_image_series as cis                                          # noqa: E402
+
+# The shared record keeps plan-side fields in `design_plan`, the Codex file in `design`. Picking the
+# image-led direction writes imagery: "series" + the series.json path; every scaffold starts at
+# "selective", which must read as NOT an image-led deck — never as a series with no plan.
+sh_s = json.loads(json.dumps(SH)); sh_s["design_plan"].update(imagery="series", image_series="s.json")
+cx_s = json.loads(json.dumps(CX)); cx_s.setdefault("design", {}).update(imagery="series", image_series="s.json")
+for rec, label in ((sh_s, "shared .deck-gates.json"), (cx_s, "Codex evidence")):
+    got = cis.recorded_series(rec)
+    ck(got == {"imagery": "series", "plan": "s.json"}, "%s -> the series plan reads back (got %r)" % (label, got))
+ck(SH["design_plan"].get("imagery") == "selective" and CX["design"].get("imagery") == "selective",
+   "both scaffolds WRITE the switch, at its default — an agent can see it exists")
+ck(cis.recorded_series(SH) is None and cis.recorded_series(CX) is None,
+   "an unfilled scaffold is NOT an image-led deck on either runtime — the gate says NOT CHECKED")
+_noplan = json.loads(json.dumps(SH)); _noplan["design_plan"]["imagery"] = "series"
+ck(cis.recorded_series(_noplan) == {"imagery": "series", "plan": None},
+   "...and 'series' with no plan path reads as a series WITHOUT a plan, which the gate blocks")
+
+print("\n— VISUAL LANGUAGE: a recorded visual language must be readable from both records")
+import check_visual_language as cvl                                       # noqa: E402
+
+sh_v = json.loads(json.dumps(SH)); sh_v["design_plan"].update(visual_language="collage", vl_fonts="mac", vl_ground="slate")
+cx_v = json.loads(json.dumps(CX)); cx_v.setdefault("design", {}).update(visual_language="collage", vl_fonts="mac", vl_ground="slate")
+for rec, label in ((sh_v, "shared .deck-gates.json"), (cx_v, "Codex evidence")):
+    got = cvl.recorded_language(rec)
+    ck(got == {"name": "collage", "fonts": "mac", "ground": "slate"},
+       "%s -> the visual language and its ground read back (got %r)" % (label, got))
+ck(all(k in SH["design_plan"] for k in ("visual_language", "vl_ground")) and all(k in CX["design"] for k in ("visual_language", "vl_ground")),
+   "both scaffolds WRITE the visual-language and ground fields, so an agent can see they exist")
+ck(cvl.recorded_language(SH) is None and cvl.recorded_language(CX) is None,
+   "an unfilled scaffold records no language on either runtime — the gate says NOT CHECKED")
+
 print("\n— the loop is closed: every record-FED gate section is covered here")
 import re                                                                 # noqa: E402
 import check_gate_parity as gp                                            # noqa: E402

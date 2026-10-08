@@ -1,11 +1,13 @@
 ---
 name: codex-review
-description: "Cross-model adversarial code review via Codex MCP: Codex reads the repo itself, findings pass an oracle + materiality gate, and everything else goes to a ledger. Audit-only by default; fixing requires the user to ask for it, and runs at most two Codex rounds. Use when the user wants Codex to review code, a branch, a PR, or a commit range — \"codex review\", \"让codex review这个PR/分支\", \"codex审代码\", or \"keep fixing until codex is happy\". Not for papers (/codex-paper-adversary), a known bug (/codex-debug-pair), experiment design (/codex-experiment-critic), architecture debate (/codex-debate), standards+spec review (/code-review), or the ML-paper score loop (/auto-review-loop)."
+description: "Cross-model adversarial code review via Codex CLI: Codex reads the repo itself, findings pass an oracle + materiality gate, and everything else goes to a ledger. Audit-only by default; fixing requires the user to ask for it, and runs at most two Codex rounds. Use when the user wants Codex to review code, a branch, a PR, or a commit range — \"codex review\", \"让codex review这个PR/分支\", \"codex审代码\", or \"keep fixing until codex is happy\". Not for papers (/codex-paper-adversary), a known bug (/codex-debug-pair), experiment design (/codex-experiment-critic), architecture debate (/codex-debate), standards+spec review (/code-review), or the ML-paper score loop (/auto-review-loop)."
 ---
 
 # Codex Review
 
-Adversarial code review from GPT via Codex MCP. GPT and Claude have different
+> Codex calls (`codex exec`, `codex exec resume`) follow `../shared-references/codex-cli.md`.
+
+Adversarial code review from GPT via Codex CLI. GPT and Claude have different
 blind spots, and Codex reading the repo itself sees what a curated diff would
 hide. But an LLM asked to find problems always finds one more: every finding
 becomes a fix, fixes breed defects, and the change never ships. The gate and the
@@ -18,7 +20,7 @@ round cap below end that loop.
 | **audit** (default) | The user asked for a review | 1 | None to code or tests |
 | **remediation-loop** | The user asked to fix findings, or to iterate until clean | 2: the full sweep, then one delta round over the fixes | Material blockers only |
 
-- **A round is one Codex MCP call**: `codex` for round 1, `codex-reply` for
+- **A round is one Codex CLI call**: `codex exec` for round 1, `codex exec resume` for
   round 2. Claude's blind pass, evidence attempts, class sweeps and fixes are not
   rounds.
 - Round 2 runs only if a fix followed round 1.
@@ -215,9 +217,8 @@ not-merging, not a PR comment.
 ## Round 1 prompt
 
 ```
-mcp__codex__codex:
+codex exec:
   model: gpt-6-astra
-  sandbox: read-only
   cwd: <the tree from the snapshot — the worktree, not the primary checkout>
   config: {"model_reasoning_effort": "xhigh"}
   prompt: |
@@ -311,13 +312,12 @@ The full ledger always goes to the user. Writing it into a PR body, issue
 comment, or commit trailer is an external write that needs the user to ask, and
 then only the items they accept as real debt go out.
 
-## MCP
+## Codex CLI
 
-**Call shape.** `model` and `sandbox` are top-level parameters of
-`mcp__codex__codex`; reasoning effort goes in `config` as
-`model_reasoning_effort`. A bare `reasoning_effort` key passes schema validation
-(`config` is `additionalProperties: true`) but is silently ignored, leaving the
-model default `low` — verified by a live call on 2026-09-04. Use `xhigh`; reserve
+**Call shape.** Pass the model as `-m`, the tree as `-C`, and reasoning effort as
+`-c model_reasoning_effort=xhigh` before `exec`; leave the sandbox at its default
+(`../shared-references/codex-cli.md`). A bare `reasoning_effort` key is silently
+ignored, leaving the model default `low` — verified by a live call on 2026-09-04. Use `xhigh`; reserve
 `max`/`ultra` for genuinely subtle code. `gpt-6-astra` answered a live call on
 2026-09-24; an unsupported model name returns HTTP 400 rather than falling back,
 so that error means the pin needs updating, not a transient failure.

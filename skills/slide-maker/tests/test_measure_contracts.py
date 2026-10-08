@@ -42,6 +42,13 @@ LONG = ("A much longer interpretation that keeps going well past what a two-inch
         "room, and nobody measured it before placing the rail, and nothing in the pipeline asked.")
 
 
+def _try(fn):
+    try:
+        return fn()
+    except Exception as e:                       # the old behaviour: a crash, reported as a value that matches nothing
+        return "raised " + repr(e)[:80]
+
+
 def check(name, cond, detail=""):
     (PASS if cond else FAIL).append(name)
     print(("  ok   " if cond else "  FAIL ") + name
@@ -237,6 +244,121 @@ def main():
         check("a table and a timeline pack into one vstack with no CRITICAL", crit == [], crit)
     except Exception as exc:
         check("a table and a timeline pack into one vstack with no CRITICAL", False, repr(exc))
+
+    # CJK line ends, as LibreOffice renders them (probe, 2026-10-03: six ideographs + one mark in a box six
+    # ideographs wide, 24pt Songti SC). The deck's default text style declares hangingPunct="1": the eight
+    # marks below HANG past the measure (one line); a closing bracket does not — the ideograph before it
+    # moves down with it (two lines). measure_text counted the hung marks as a second line, so a clause
+    # title that renders in two lines read as three to lint and tripped TEXT_OVER_MOTIF on its own squiggle.
+    em24 = 24 / 72.0
+    for mark in "，。、；：！？．":
+        n = dk._measure_lines([("一二三四五六" + mark, False)], 24, 6 * em24 + 0.02, font="Songti SC")
+        check("measure_text hangs %s at the line end (renders as one line)" % mark, n == 1, n)
+    for mark in "）」』》】〉〕":
+        n = dk._measure_lines([("一二三四五六" + mark, False)], 24, 6 * em24 + 0.02, font="Songti SC")
+        check("measure_text wraps before a closing bracket %s (renders as two lines)" % mark, n == 2, n)
+    # only ONE mark hangs; a bracket after it, or a second mark, takes the mark and the ideograph down
+    # ("一二三四五 / 六。」", "一二三四五 / 六！？", "一二三四五 / 六」。" — same probe)
+    for tail in ("。」", "，」", "！？", "」。"):
+        n = dk._measure_lines([("一二三四五六" + tail, False)], 24, 6 * em24 + 0.02, font="Songti SC")
+        check("measure_text pushes 六%s down as one unit (renders as two lines)" % tail, n == 2, n)
+    # an opening bracket never ends a line (corpus render: "数据显示，/ 参与者的满 / 意度很高 / （详见附 / 录）。")
+    n = dk._measure_lines([("数据显示，参与者的满意度很高（详见附录）。", False)], 48, 3.57, font="Songti SC")
+    check("measure_text moves an opening bracket down to its text (five lines, as rendered)", n == 5, n)
+    # a line carrying Latin never hangs (autospace fills it) — both rendered in LibreOffice, corpus 2026-10-03
+    n = dk._measure_lines([("用 Python 写一个脚本：读取 CSV、清洗数据、画图。工具其实很少：一把小铲、一个喷壶、一卷麻绳。",
+                            False)], 28, 2.14, font="Hiragino Sans GB")
+    check("measure_text does not hang a mark on a line that carries Latin (10 lines, as rendered)", n == 10, n)
+    n = dk._measure_lines([("2026年的数据（n=120）显示，满意度为 87%。", False)], 28, 7.75, font="Songti SC")
+    check("a full stop after '87%' does not hang (two lines, as rendered)", n == 2, n)
+    # one ideograph per line (a 60pt line in a 1-1.9in column) — the renderer cannot hang there; rendered
+    # 17 lines at all three widths, and an under-count is the direction that hides a real overflow
+    for w_ in (1.04, 1.38, 1.62):
+        n = dk._measure_lines([("他说：「先从一个花盆开始。」然后笑了。", False)], 60, w_, font="Songti SC")
+        check("a one-ideograph column never under-counts (>= 17 rendered lines at %.2fin)" % w_, n >= 17, n)
+    n = dk._measure_lines([("一二三四五六。」七八九十一二", False)], 24, 6 * em24 + 0.02, font="Songti SC")
+    check("after the push the next line holds 六。」 + four ideographs, then wraps (three lines)", n == 3, n)
+
+    # hanging is the DECK's declaration, not an assumption (final review, 2026-10-04): with hangingPunct="0", or
+    # absent everywhere in the inheritance chain, LibreOffice does not hang and "一二三四五六。" renders on 2 lines
+    prs_h = dk.blank_deck()
+    check("python-pptx's default template declares hanging punctuation", dk.deck_hangs_punct(prs_h) is True)
+    for el in [prs_h.part._element] + [m._element for m in prs_h.slide_masters]:
+        for node in el.iter():
+            if node.get("hangingPunct") is not None:
+                node.set("hangingPunct", "0")
+    check("a deck that declares hangingPunct=0 does not hang", dk.deck_hangs_punct(prs_h) is False)
+    _prev = dk.HANG_PUNCT
+    dk.lint_layout(prs_h, verbose=False)
+    check("lint_layout restores the hanging flag after its run", dk.HANG_PUNCT == _prev, dk.HANG_PUNCT)
+    dk.HANG_PUNCT = False
+    try:
+        n = dk._measure_lines([("一二三四五六。", False)], 24, 6 * em24 + 0.02, font="Songti SC")
+        check("without declared hanging the mark wraps (two lines)", n == 2, n)
+    finally:
+        dk.HANG_PUNCT = _prev
+    # Korean wraps at SPACES; a word wider than the whole line breaks between syllables (LibreOffice renders,
+    # 2026-10-04: "옥상에서도 / 채소가 자란다"; "가나다라마바사 / 아자차", "인공지능기반의 / 료영상재구성",
+    # "데이터품질관 / 리 체계 구축"). Syllable breaks everywhere under-counted 11 of 60 rendered cases; a whole
+    # over-wide word counted as ONE line under-counted every compound longer than the line (final review).
+    for t_, f_ in (("가나다라마바사아자차", "Apple SD Gothic Neo"), ("인공지능기반의료영상재구성", "Apple SD Gothic Neo"),
+                   ("데이터품질관리 체계 구축", "AppleMyungjo")):
+        n = dk._measure_lines([(t_, False)], 24, 6 * em24 + 0.02, font=f_)
+        # never FEWER than rendered (one em a syllable is a deliberate over-estimate of SD Gothic's 0.865 em)
+        check("an over-wide Korean word breaks between syllables: {} (>= two lines, as rendered)".format(t_), 2 <= n <= 3, n)
+    n = dk._measure_lines([("옥상에서도 채소가 자란다", False)], 24, 7 * em24 + 0.02, font="Apple SD Gothic Neo")
+    check("Korean breaks at the space (two lines, as rendered)", n == 2, n)
+    for t_, sz_, w_, want in (("동네 수리 카페는 한 달에 한 번 저녁에 열립니다. 동네 수리 카페는 한 달에 한 번 저녁에 열립니다.", 40, 3.72, 10),
+                              ("작은 화분 하나로 시작하면 충분합니다. 고장 난 물건을 가져오세요. 고쳐서 가져가세요.", 24, 2.29, 8)):
+        if dk._font_substituted("AppleMyungjo"):   # rendered on macOS; its spaces are AppleMyungjo's 0.4 em
+            print("  skip rendered Korean case ({} lines): AppleMyungjo is not installed here".format(want))
+            continue
+        n = dk._measure_lines([(t_, False)], sz_, w_, font="AppleMyungjo")
+        check("a rendered Korean case is not under-counted ({} lines rendered)".format(want), n >= want, n)
+
+    # A Latin token wider than the line BREAKS mid-word in a wrap-on box (LibreOffice renders, 2026-10-04) — it was
+    # counted as one line, under-counting every identifier, URL, long compound and big number in a narrow box.
+    for t_, sz_, w_, f_, rendered in (("99.9%", 40, 1.2, "Arial", 2), ("BROKEN", 120, 3.5, "Impact", 2),
+                                      ("torch.nn.functional.scaled_dot_product_attention", 20, 3.0, "Arial", 3),
+                                      ("https://example.com/a/very/long/path/to/the/report.pdf", 16, 2.5, "Arial", 3),
+                                      ("Donaudampfschifffahrtsgesellschaft", 28, 3.0, "Arial", 3)):
+        if dk._font_substituted(f_):
+            print("  skip over-wide token {!r}: {} is not installed here".format(t_[:20], f_))
+            continue
+        n = dk._measure_lines([(t_, False)], sz_, w_, font=f_)
+        check("an over-wide token breaks mid-word: {} (rendered {})".format(t_[:24], rendered), rendered <= n <= rendered + 1, n)
+
+    # measure_text / fit_text_size measured at the BOX width, but text() sets its text in the box minus its 2pt
+    # insets: a title exactly as wide as its box measured ONE line and rendered TWO (LibreOffice, 2026-10-04 — the
+    # P1 Japanese run's "measure_text mispredicts a headline wrap after widening a box"; Latin too).
+    if not dk._font_substituted("Hiragino Sans GB"):
+        lh = 38 / 72.0 * 1.2 * dk.CJK_LS
+        h = dk.measure_text([("都市の菜園、はじめよう", True)], 5.806, 38, font="Hiragino Sans GB")
+        check("a CJK title exactly its box's width measures two lines (rendered 2)", h >= 1.9 * lh, round(h / lh, 2))
+    if not dk._font_substituted("Arial"):
+        lh = 40 / 72.0 * 1.12
+        h = dk.measure_text([("Bring it broken today", True)], 5.603, 40, font="Arial")
+        check("a Latin title 0.02in wider than its text measures two lines (rendered 2)", h >= 1.9 * lh, round(h / lh, 2))
+        sz = dk.fit_text_size([("Bring it broken today", True)], 5.603, 0.75, 40, font="Arial")
+        check("fit_text_size fits it on one line inside the insets", sz < 40, sz)
+
+    # A plain string is one regular run (it was iterated per character and died on an unpacking error naming
+    # nothing — the first call made with a string, twice); a lone (text, bold) pair is one run; a text() run
+    # tuple says what is wanted instead of being read with its SIZE as the bold flag.
+    T = "Bring it broken, take it home working"
+    check("measure_text takes a plain string as one regular run",
+          _try(lambda: dk.measure_text(T, 2.4, 20)) == dk.measure_text([(T, False)], 2.4, 20))
+    check("fit_text_size takes a plain string",
+          _try(lambda: dk.fit_text_size(T, 2.4, 0.8, 30)) == dk.fit_text_size([(T, False)], 2.4, 0.8, 30))
+    check("a lone (text, bold) pair is one run",
+          _try(lambda: dk.measure_text((T, True), 2.4, 20)) == dk.measure_text([(T, True)], 2.4, 20))
+    try:
+        dk.measure_text([(T, 20, dk.DEEP, True, False)], 2.4, 20)
+        check("a text() run tuple is refused, naming the (text, bold) shape", False, "accepted")
+    except TypeError as e:
+        check("a text() run tuple is refused, naming the (text, bold) shape", "(text, bold)" in str(e), str(e))
+    except Exception as e:
+        check("a text() run tuple is refused, naming the (text, bold) shape", False, repr(e))
 
     print("\n{} passed, {} failed".format(len(PASS), len(FAIL)))
     return 1 if FAIL else 0

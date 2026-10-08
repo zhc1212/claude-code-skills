@@ -1,5 +1,8 @@
 # User-level snapshot — 2026-10-01
 
+Update 2026-10-08 (v1.0.17): unlike the snapshot below, this sync follows an upgrade of 23 installed
+third-party skills to their current upstream; the README lists them. The installed files remain the source of truth.
+
 Version 1.0.15 snapshots the user's active `~/.claude/CLAUDE.md` and all 158
 readable top-level skills in `~/.claude/skills/`. The existing repository-only
 `run-pipeline` remains, giving 159 packaged skills. The installed files are the

@@ -13,6 +13,7 @@ editable PowerPoint objects or faithful source figures.
 
 ## Table of contents
 - Decide by taste and purpose — not by a rule or a quota
+- Image-led decks — the SERIES exception (`imagery: series`)
 - When to use image generation
 - Place plates consistently — and a content plate is NOT a header
 - Real brand / product assets come first — never fill with a generic stand-in
@@ -48,6 +49,123 @@ generated *content* images. It is **separate from** Q1's "generate a template wi
 path (that makes the text-free *visual identity*; this makes *content* plates for specific slides).
 Offer it whenever an image tool is available, let the user decide, and — critically — **even when the
 user opts in, generate for only the few slides that earn it, never every slide.**
+
+## Image-led decks — the SERIES exception (`imagery: series`)
+
+The default above — plates only where they earn their place — holds for every deck EXCEPT one whose
+picked direction is **image-led**: a deck whose visual language IS a coherent run of art-directed
+pictures (an editorial magazine, a craft or food brand, a travel story). There imagery may sit on most
+pages, because it is the deck's register, not decoration. *(Measured 2026-10-03: the 33 image-led
+"visual language" decks studied on skillry.dev carry a series-consistent image on nearly every page;
+this skill could only give a few slides a plate, each prompted alone, and no image held another's
+look.)* It is entered ONLY by picking an image-led direction at the direction gate
+(`interview-protocol.md`); picking it records `design_plan.imagery: "series"` and
+`design_plan.image_series: "<deck>/series.json"` (Codex evidence: the same two keys under `design`) —
+an absolute path, or one relative to the deck folder; `imagery` takes only `"series"` or `"selective"`.
+Write them with `python3 scripts/deck_gates.py set <deck> design_plan.imagery series` and
+`python3 scripts/deck_gates.py set <deck> design_plan.image_series series.json`.
+Every other deck keeps `imagery: "selective"` — the rule above, unchanged.
+
+Three floors that do not relax:
+1. **Every slot carries a meaning line** — what this image SAYS on its slide (`meaning`, at least 24
+   wide; CJK counts 2). A slot with nothing to say does not exist; `image_series.py check` refuses it.
+2. **Evidence is never generated** — charts, source figures, screenshots and logos stay real; a chart
+   page may carry no image at all.
+3. **The REFERENT RULE stands** — a real, specific subject gets a real photo (or `referent:
+   "stylized"` with `render: "illustration"`), never a photographic fake; `referent:
+   "real-specific"` is refused.
+
+**People (the user's rule).** `kind: "generic-person"` — ordinary, non-identifiable people, with no
+name, role or quote beside them. `kind: "persona"` — a fictional persona may carry a name ONLY with a
+visible label on its slide (`persona_label`, e.g. "Illustrative persona" / "虚构人物"). Team members,
+customers, testimonials and any real person are NOT generatable (`check` refuses the kind): a real
+photo, or no portrait. A subject that NAMES people ("volunteers' hands…", "一位老人…") is a person
+slot whatever else it shows — `check` refuses it under `scene`/`object`/`illustration` (measured: a
+"scene" of volunteers' hands came back as four people, out of the people gate's sight). The delivery
+gate reads English and Chinese credit lines; in any other language a name set beside a generated
+person is NOT caught (telling a place name from a person's name there would block ordinary headings),
+so the persona label is the rule whatever the language. It blocks a generated person set beside a
+name joined to a role,
+a quote attribution, or team / testimonial wording, when the slide carries no 'fictional' label.
+
+**The plan — `series.json`.** One JSON object; `python3 scripts/image_series.py check` names every
+field it refuses, but write it right the first time:
+
+| field | value |
+|---|---|
+| `art_direction` | one line a stranger could paint from (≥ 24 wide; CJK counts 2) — verbatim in every prompt |
+| `palette` | 2-8 `"RRGGBB"` strings |
+| `render` | `photo` or `illustration` — the render clause goes INSIDE every prompt |
+| `chroma` | the cut-out key — only these two values: `00B140` (default) or `FF00FF` (when the subject or palette is green; `check` refuses a key near a palette colour). It is the colour the generator is ASKED for, not one sampled from an image |
+| `key` | optional slot id of the KEY image (default: the first slot); it must not be a cut-out |
+| `slots` | a list of slot objects, below |
+
+| slot field | value |
+|---|---|
+| `id` | `[a-z0-9-]`, 1-40 chars, unique — the image file is `slide-NN-<id>.png` (NN = `slide`, two digits) |
+| `slide` | the deck slide number it sits on (≥ 1) |
+| `frame` | `{"shape": …, "w": inches, "h": inches}` — `shape` is `rect`, `ellipse`, `arch`, `snip`, `notch` or `blob`; `w`/`h` the box it will fill (its aspect steers the generation) |
+| `subject` | what is in the picture (≥ 12 wide) |
+| `kind` | `scene`, `object`, `illustration`, `generic-person` or `persona` (with `persona_label`); `team-member`, `customer`, `testimonial` and `real-person` are refused |
+| `cutout` | `true` → generated on the `chroma` key and cut out; default `false` |
+| `calm_zone` | optional — where text will sit over the image, as words (`"left"`, `"upper left"`, `"right"`), or `"none"`; it goes into the prompt as "leave a calm, low-detail area at …" |
+| `focus` | optional `[fx, fy]`, each 0..1 — the point a cover crop keeps (default `[0.5, 0.5]`) |
+| `alt` | the alt text (required) |
+| `meaning` | what this image SAYS on its slide (≥ 24 wide) |
+| `referent` | `generic-concrete`, `stylized` (needs `render: "illustration"`) — `real-specific` is refused |
+| `persona_label` | `persona` only: the visible label set on its slide, e.g. "Illustrative persona" / "虚构人物" |
+
+**The commands, in order** (each prints the next one):
+
+```bash
+python3 scripts/image_series.py check <deck>/series.json
+python3 scripts/image_series.py prompts <deck>/series.json <deck>/assets/generated
+python3 scripts/generate_images_codex.py <deck>/assets/generated/image_prompt_manifest.json --only <key-id>
+#   LOOK at the key image; regenerate it (--overwrite --only <key-id>) until it IS the series' look
+python3 scripts/generate_images_codex.py <deck>/assets/generated/image_prompt_manifest.json --style-ref <deck>/assets/generated/slide-NN-<key-id>.png
+python3 scripts/image_series.py cutout <deck>/series.json --dir <deck>/assets/generated
+python3 scripts/image_series.py qc <deck>/series.json --dir <deck>/assets/generated
+```
+
+The key image is generated ALONE first so it can be judged before anything is made in its style;
+`--style-ref` then stages it beside every other generation with an instruction to match its palette,
+light, grain and rendering — never its subject. `cutout` keys every cut-out slot off the plan's own
+`chroma` (`image_fx.chroma_cutout(path, key=…)`) and refuses, loudly, a background that is not that
+key colour, not flat, a subject touching the frame edge, or a key that leaves no subject — regenerate
+rather than ship a fringe. *(Measured: a watercolour key image's paper won over the prompt and a
+cut-out came back on cream; keyed anyway, its own cream highlights went with the background.)* `qc` compares every image
+with the key (mean colour + hue histogram; a cut-out on its subject only), flags MISSING / OFF-SERIES
+/ ASPECT / CUTOUT plus `image_qc`'s per-file flags, and writes `series-qc.json` and
+`_series_contact.png` — LOOK at the contact sheet. For every flagged slot `qc` prints the exact
+command that regenerates it; a slot kept ON PURPOSE (the flag is the style itself) gets a reason in
+`series-qc.json` → `"acknowledged": {"<id>": "<why it stays>"}` (a reason, not "ok"), which survives
+re-runs — then rerun `qc` until it prints the placement NEXT line.
+
+**Placement.** In the deck's build script (it usually lives in the deck folder, outside `scripts/`):
+
+```python
+import sys
+sys.path.insert(0, "<skill>/scripts")      # the folder holding deckkit.py and image_series.py
+import deckkit as dk
+import image_series as ims
+
+plan = ims.load("<deck>/series.json")      # the same plan `check` passed
+pic = ims.slot_picture(s, plan, "hero", 0.6, 0.6, 4.2, 5.6, image_dir="<deck>/assets/generated")
+```
+
+`image_series.load(path)` reads the plan (a refusal names the file);
+`image_series.slot_picture(s, plan, "<id>", x, y, w, h, image_dir=…)` applies the slot's frame shape,
+focus and alt text, places the keyed PNG for a cut-out, and tags the
+picture `+gen.<id>`. Never place a series image with `dk.picture` directly: the delivery gate reads
+the tags from the saved file and blocks an image-led deck with no slot placed, or a generated picture
+with no slot. A cut-out that wants a die-cut border: `slot_picture(..., sticker=True)` (it runs `image_fx.sticker_outline` on the `.cut.png` and keeps the tag). The gate also recognises a series file placed any other way by its bytes and blocks it as UNTAGGED SERIES IMAGE, so `dk.picture` is never a way round the people rule.
+
+Billing is unchanged: the Codex subscription path above; `generate_images_openai.py` only with the
+user's explicit go-ahead (the BILLING GATE below). When the Codex run fails, its `WHY:` line names the
+cause it read from the session (measured: an account on the FREE plan has no image tool). With that
+go-ahead, the metered path runs the same two steps — `python3 scripts/generate_images_openai.py
+<manifest> --only <key-id>`, then `--style-ref <the key image>` — taking each slot's size from its
+`aspect` and sending the key image itself to the edits endpoint.
 
 ## When to use image generation
 
@@ -602,8 +720,13 @@ request a key when native imagegen or `codex` is present.
 export OPENAI_API_KEY="$(cat ~/.openai_key)"
 python3 scripts/generate_images_openai.py \
   ~/Downloads/<deck>/assets/generated/image_prompt_manifest.json \
-  --model gpt-image-2 --size 2048x1152 --quality medium
+  --model gpt-image-2 --quality medium
 ```
+
+Leave `--size` off: each item's `aspect` (an image-series slot's frame) picks the nearest size the API
+takes — a tall arch gets a portrait image — and an item without one gets 2048x1152. `--size WxH` forces
+that one size on EVERY item. `--moderation` applies to generations only (the style-reference request has
+no such parameter; the script says so and leaves it out).
 
 Both scripts share the manifest format and the `--out-dir` / `--limit` / `--overwrite` / `--dry-run`
 flags, save each output to the manifest path (e.g. `slide-01.png`), and skip existing files by default.

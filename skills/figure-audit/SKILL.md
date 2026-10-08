@@ -5,6 +5,8 @@ description: "Audits compiled paper PDFs for figure/table readability, print qua
 
 # Figure & Table Audit for Conference Papers
 
+> Codex calls (`codex exec`, `codex exec resume`) follow `../shared-references/codex-cli.md`.
+
 Systematic quality audit for all figures and tables in a compiled paper.
 Checks the final PDF output — not the source code — because what matters
 is what the reviewer sees.
@@ -29,7 +31,7 @@ All phases, all 14 checks. Phase 3 two-pass verification is mandatory.
 For pre-submission.
 
 ### 精益求精 (Full + Codex)
-Full audit + Codex cross-review (see Codex MCP section). Phase 3
+Full audit + Codex cross-review (see Codex CLI section). Phase 3
 mandatory. Target score ≥ 9.0/10 from GPT. For when the user demands
 100% satisfaction.
 
@@ -175,15 +177,15 @@ Do not silently edit plotting scripts. Present findings, user decides.
 - `references/venues.md` — venue widths, font minimums, scale tables, DPI requirements
 - `references/fixes-and-antipatterns.md` — common fixes + known anti-patterns from real audits
 
-## Codex MCP (精益求精 mode)
+## Codex CLI (精益求精 mode)
 
-For 精益求精 quality, send figure descriptions to GPT via Codex MCP for
+For 精益求精 quality, send figure descriptions to GPT via Codex CLI for
 independent cross-model review. GPT catches semantic inconsistencies and
 predicts print-scale readability from figsize + font descriptions alone.
 
-- **First call**: `mcp__codex__codex` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
-- **Follow-ups**: `mcp__codex__codex-reply` with saved `threadId`
-- On MCP error: tell user, proceed with Claude-only audit (single-model,
+- **First call**: `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
+- **Follow-ups**: `codex exec resume` with saved `threadId`
+- On Codex CLI error: tell user, proceed with Claude-only audit (single-model,
   loses cross-model blind-spot coverage)
 
 **Prompt template** (adapt per paper):

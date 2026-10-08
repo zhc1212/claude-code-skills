@@ -548,6 +548,34 @@ def _every_scaffold_runs():
                 for _x in range(_bx, min(_bx + 28, 640)):
                     _sp[_x, _y] = (52, 56, 64) if ((_x + _y) % 11) else (206, 198, 158)
         _sky.save(os.path.join(TMP, "skyline.png"))
+        # The sticker scaffold needs a CUT-OUT — a subject on transparency, as background removal
+        # leaves it — not a photo: sticker_outline refuses an opaque image by design.
+        _cut = _SmkIm.new("RGBA", (300, 360), (0, 0, 0, 0))
+        from PIL import ImageDraw as _SmkDraw
+        _SmkDraw.Draw(_cut).ellipse((40, 30, 260, 330), fill=(214, 92, 60, 255))
+        _cut.save(os.path.join(TMP, "cutout.png"))
+        # The chroma_cutout scaffold keys a subject off a FLAT key colour, as image_series generates it.
+        _key = _SmkIm.new("RGB", (300, 360), (0, 255, 0))
+        _SmkDraw.Draw(_key).ellipse((40, 30, 260, 330), fill=(214, 92, 60))
+        _key.save(os.path.join(TMP, "subject_on_key.png"))
+        # The slot_picture scaffold places a slot of an IMAGE SERIES: it needs the plan and the
+        # slot's generated image, named the way image_series.prompts names it (slide-NN-<id>.png).
+        import json as _sj
+        with open(os.path.join(TMP, "series.json"), "w", encoding="utf-8") as _f:
+            _sj.dump({"art_direction": "warm documentary photography, soft window light, film grain",
+                      "palette": ["F3EBDD", "C98A3D", "2F6F6A"], "render": "photo",
+                      "slots": [{"id": "hero", "slide": 1, "frame": {"shape": "arch", "w": 3.2, "h": 4.2},
+                                 "subject": "hands repairing a table lamp on a workbench", "kind": "scene",
+                                 "cutout": False, "alt": "hands repairing a lamp",
+                                 "referent": "generic-concrete",
+                                 "meaning": "the deck's promise in one picture: broken things get fixed here"}]},
+                     _f)
+        _hero = _SmkIm.new("RGB", (480, 630))
+        _hp = _hero.load()
+        for _y in range(630):
+            for _x in range(480):
+                _hp[_x, _y] = (150 + (_x * 60) // 480, 110 + (_y * 50) // 630, 70 + ((_x + _y) % 23))
+        _hero.save(os.path.join(TMP, "slide-01-hero.png"))
         # The qr_panel scaffold needs a code to place: this library does not implement QR encoding
         # and refuses to draw a placeholder, so the scaffold passes `image=`. Deterministic pattern
         # rather than a flat plate, for the reason above — and with the three finder squares, so it
@@ -579,7 +607,11 @@ def _every_scaffold_runs():
                  'title={Sparse MRI}, journal={MRM}, year={2007}, doi={10.1002/mrm.21391}}\n'
                  '@inproceedings{schlemper2018, author={Schlemper, J. and Rueckert, D.}, '
                  'title={A deep cascade}, booktitle={IPMI}, year={2018}}\n')
+    # an example may set the deck's palette/fonts/ground (visual_languages.use, presets.apply): restore
+    # deckkit's module state after each one, or every later example and check runs in its look
+    _dk_state = dk._state_snapshot()          # globals AND the function defaults set_palette rewrites
     for name, code in sorted(_sigs.EXAMPLES.items()):
+        dk._state_restore(_dk_state)
         p = dk.blank_deck(10, 5.625)
         sl = p.slides.add_slide(p.slide_layouts[6])
         try:
@@ -656,6 +688,59 @@ ok("sigs resolves a deckkit helper", _sigs_resolves_deckkit)
 ok("sigs resolves a designed_charts helper", _sigs_resolves_designed_charts)
 ok("sigs prints the call-shape contracts every time", _sigs_always_prints_contracts)
 ok("sigs REFUSES an unknown name and suggests the near miss", _sigs_refuses_a_typo)
+
+
+# A non-Claude agent finds a capability by SEARCHING, not by name — measured 2026-10-03 with an
+# agent restricted to SKILL.md + the Codex runbook + this tool: `--search "a\|b"` silently matched
+# nothing (it was one literal substring), and the editorial helpers had to be findable by the word
+# a builder would type (mask, cutout, ornament), not only by their own names.
+def _sigs_search_alternation():
+    for q in ("frosted|scallop", "frosted\\|scallop"):
+        out = _sigs("--search", q).stdout
+        assert "deckkit.frosted_panel(" in out and "ornaments.scallop(" in out, \
+            "--search {!r} did not match either term".format(q)
+
+
+def _sigs_finds_editorial_helpers_by_task_words():
+    want = {"mask": ["deckkit.picture("], "cutout": ["image_fx.sticker_outline("],
+            "ornament": ["ornaments.squiggle(", "ornaments.scribble(", "ornaments.brush_stroke(",
+                         "ornaments.tape(", "ornaments.scallop(", "deckkit.decorative("]}
+    for q, names in want.items():
+        out = _sigs("--search", q).stdout
+        miss = [n for n in names if n not in out]
+        assert not miss, "--search {} misses {}".format(q, miss)
+
+
+def _sigs_examples_cover_editorial_helpers():
+    import sigs as _s
+    miss = [n for n in ("picture", "mark", "frosted_panel", "squiggle", "scribble", "brush_stroke",
+                        "tape", "scallop", "sticker_outline", "decorative") if n not in _s.EXAMPLES]
+    assert not miss, "editorial helpers with no runnable --example: {}".format(miss)
+
+
+ok("sigs --search a|b matches either term", _sigs_search_alternation)
+ok("sigs finds the editorial helpers by the words a builder types", _sigs_finds_editorial_helpers_by_task_words)
+ok("every editorial helper has a runnable --example", _sigs_examples_cover_editorial_helpers)
+
+
+def _sigs_example_covers_slot_picture():
+    import sigs as _s
+    assert "slot_picture" in _s.EXAMPLES, "slot_picture has no runnable --example"
+    assert "image_series.slot_picture(" in _sigs("--search", "series").stdout, "--search series misses slot_picture"
+
+
+ok("the image-series placement has a runnable --example", _sigs_example_covers_slot_picture)
+
+
+def _sigs_examples_cover_visual_languages():
+    import sigs as _s
+    miss = [n for n in ("feather", "grain_background", "stacked", "two_tone", "outlined", "collage", "vl_cover")
+            if n not in _s.EXAMPLES]
+    assert not miss, "P2 helpers with no runnable --example: {}".format(miss)
+    assert "visual_languages.use(" in _sigs("--search", "language").stdout, "--search language misses visual_languages.use"
+
+
+ok("the visual-language helpers have runnable --examples", _sigs_examples_cover_visual_languages)
 
 # TOFU GATE: matplotlib draws a hollow box for a glyph the font lacks and only WARNS, so a caption
 # or a caller-supplied label can ship as ▯▯▯ with every gate green — radar's own range note did

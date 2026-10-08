@@ -33,7 +33,8 @@ sys.path.insert(0, HERE)
 # finds out what already exists, and SKILL.md tells it that a name matching NO helper means "you
 # supply the geometry". Leaving the surface kits out of it therefore did worse than hide them — it
 # told anyone asking for `halftone` or `starburst` to hand-roll the thing that had just been built.
-MODULES = ("deckkit", "designed_charts", "register_surface", "citations")
+MODULES = ("deckkit", "designed_charts", "register_surface", "citations", "ornaments", "image_fx",
+           "image_series", "surfaces", "display_type", "collage", "visual_languages", "native_art")
 
 # The three call-shape errors that actually cost round-trips on a real build. They are properties of
 # the API that no single signature line states, so they are printed with every lookup rather than
@@ -297,6 +298,102 @@ EXAMPLES = {
                  'dc.roc_curve("roc.png",\n'
                  '             [("Model", [0, 0, 1, 1, 0, 1], [0.1, 0.4, 0.35, 0.8, 0.2, 0.7])])\n'
                  'dk.picture(s, "roc.png", 2.6, 1.0, 4.8, 4.3, fit="contain")   # keep it square',
+    # The editorial forms. frosted_panel RETURNS the content rect and the ink measured on the
+    # glass; mark() is a run, used INSIDE a text() paragraph; the ornaments are motif-tagged.
+    "frosted_panel": 'bd = dk.picture(s, "skyline.png", 0, 0, 10, 5.625, fit="cover",\n'
+                     '                alt="a city skyline under an open sky")\n'
+                     'x, y, w, h, ink = dk.frosted_panel(s, bd, 5.4, 0.8, 4.0, 2.2)\n'
+                     'dk.text(s, x, y, w, h, [[("The claim", 24, ink, True, False)]],\n'
+                     '        anchor=dk.MSO_ANCHOR.MIDDLE)',
+    "mark": 'dk.text(s, 0.6, 0.6, 8.8, 1.6, [[\n'
+            '    ("BUILD THE SMALLEST ", 36, dk.DEEP, True, False),\n'
+            '    dk.mark(("OBJECT", 36, dk.DEEP, True, False), "D4FF3A"),\n'
+            '    (" THAT ASKS A QUESTION", 36, dk.DEEP, True, False)]])',
+    # picture(shape=) clips a photo to an editorial form; focus aims the cover crop.
+    "picture": 'dk.picture(s, "skyline.png", 0.6, 0.8, 2.6, 2.6, fit="cover", shape="ellipse",\n'
+               '           focus=(0.5, 0.0), alt="a city skyline under an open sky")\n'
+               '# shape="arch"|"snip"|"notch"|"blob"; rotation=-4 tilts a pinned print',
+    "scribble": 'import ornaments as orn\n'
+                'orn.scribble(s, 0.6, 3.6, 3.6, 1.0, "1A1A1A", loops=3, seed=2)   # a pen coil',
+    "brush_stroke": 'import ornaments as orn\n'
+                    'orn.brush_stroke(s, 0.6, 1.2, 4.2, 0.8, "F2C230", seed=4)    # the swash first\n'
+                    'n = dk.text(s, 0.9, 1.3, 3.8, 0.6, [[("ONE NUMBER", 28, dk.DEEP, True, False)]])\n'
+                    'dk.overlap_intent(n, "the number sits on its brush swash")',
+    "scallop": 'import ornaments as orn\n'
+               'orn.scallop(s, 7.4, 1.0, 1.5, "2F5BEA")\n'
+               'n = dk.text(s, 7.4, 1.0, 1.5, 1.5, [[("12", 36, dk.WHITE, True, False)]],\n'
+               '            align=dk.PP_ALIGN.CENTER, anchor=dk.MSO_ANCHOR.MIDDLE)\n'
+               'dk.overlap_intent(n, "the count sits on its badge")   # declared on the TEXT',
+    "use": 'import visual_languages as vl\n'
+           'k = vl.use("drafting", prs, ground="auto")       # ink · poster · cutpaper · drafting: no pictures needed\n'
+           'k.cover(k.new_slide(), kicker="Schematic 01", title="A modular bike shelter", project="Bike shelter, phase 1")\n'
+           'k.section(k.new_slide(), number="01", title="The frame")\n'
+           'k.points(k.new_slide(), title="Three parts", items=[("Base", "One cast plate."), ("Posts", "Bolted, not welded."), ("Roof", "A single sheet.")])\n'
+           'k.quote(k.new_slide(), quote="Build the quiet part first.", attribution="Design note")\n'
+           'k.data(k.new_slide(), number="12", label="bikes under one roof")\n'
+           'k.closing(k.new_slide(), title="Questions", line="Thank you.")\n'
+           's = k.new_slide()                                 # an ORDINARY page in the same look\n'
+           'import register_surface as rs\n'
+           'x, y, w, h = rs.ground(s, k.name, role="content", index=7)   # k.name, never another language\'s\n'
+           'rows = ["1.  Why a shelter", "2.  How it is built"]\n'
+           'size = 24 * min(prs.slide_width.inches, prs.slide_height.inches) / 7.5   # scaled with the canvas\n'
+           'rows_h = sum(dk.measure_text([(r, False)], w - 0.8, size, font=k.face("body")) + 0.18 for r in rows)\n'
+           'body, hdr = rs.card(s, k.name, x, y + max(0.0, (h - rows_h - 1.1) / 2), w, rows_h + 1.1, label="Agenda")\n'
+           'top = hdr.top.inches + hdr.height.inches + 0.2 if hdr else body.top.inches + 0.45   # below the label\n'
+           'dk.text(s, body.left.inches + 0.4, top, body.width.inches - 0.8, rows_h, [k.runs(r, size) for r in rows],\n'
+           '        space_after=8)                            # k.runs: the language\'s own face and ink',
+    "points": 'import visual_languages as vl\n'
+              'k = vl.use("ink", prs)                         # or "poster" / "cutpaper" / "drafting" — no pictures needed\n'
+              'k.points(k.new_slide(), title="三道工序",\n'
+              '         items=[("洗盏", "器净，心先静"), ("候汤", "水沸，如蟹眼"), ("分茶", "浅斟，留七分")], seal="序")',
+    "ink_ridges": 'import native_art as na\n'
+                  'na.ink_ridges(s, color="1D1C1A", layers=na.INK_LAYERS["land"], keep_clear=[(7.0, 0.5, 1.0, 3.0)])',
+    "clipped_block": 'import native_art as na\n'
+                     'na.clipped_block(s, 7.0, 3.0, 4.0, 4.0, -9, fill="D7FF3B")   # a rotated block, cut to the page',
+    "slot_picture": 'import image_series as ims\n'
+                    'plan = ims.load("series.json")                 # validated by: image_series.py check\n'
+                    'ims.slot_picture(s, plan, "hero", 0.6, 0.6, 3.2, 4.2, image_dir=".")   # arch + alt + +gen tag',
+    "chroma_cutout": 'import image_fx\n'
+                     'cut = image_fx.chroma_cutout("subject_on_key.png", key="00FF00")   # a generated subject on a flat key\n'
+                     'dk.picture(s, cut, 1.0, 0.6, 3.0, 3.0, fit="contain", alt="the subject, cut out")',
+    "feather": 'import image_fx\n'
+               'f = image_fx.feather("skyline.png", radius=0.1)       # edges fade into the ground\n'
+               'dk.picture(s, f, 1.0, 0.6, 8.0, 4.4, fit="contain", alt="a city skyline")',
+    "grain_background": 'import surfaces\n'
+                        'surfaces.grain_background(s, "F3EBDD", strength=5)   # a paper ground; text stays crisp\n'
+                        'dk.text(s, 0.8, 0.8, 8, 1, [[("On paper", 28, dk.DEEP, True, False)]])',
+    "stacked": 'import display_type as dt\n'
+               'dt.stacked(s, 0.6, 0.6, 5.0, ["BRING IT", "BROKEN"], color=dk.DEEP, face="Impact")',
+    "two_tone": 'import display_type as dt\n'
+                'dt.two_tone(s, 0.6, 0.6, 8.0, 1.2, "Bring it broken.", ["broken."], size=40,\n'
+                '            color=dk.DEEP, accent=dk.RGBColor(0xB2, 0x3A, 0x28), face="Georgia")',
+    "outlined": 'import display_type as dt\n'
+                'if dt.covers("Arial Black", "07"):   # installed here AND draws every character (else: boxes)\n'
+                '    dt.outlined(s, 0.6, 0.6, 3.0, 2.0, "07", color="B23A28", face="Arial Black")   # a hollow number\n'
+                'else:                                # no such face here (Linux): set the number as text\n'
+                '    dk.text(s, 0.6, 0.6, 3.0, 2.0, [[("07", 96, dk.DEEP, True, False, "Arial Black")]])',
+    "collage": 'import collage\n'
+               'collage.collage(s, (5.0, 0.4, 4.6, 4.8), ["skyline.png", "gt_c1.png", "ours_c1.png"],\n'
+               '                seed=3, keep_clear=(0.4, 0.6, 4.2, 2.4))   # tilted prints + tape',
+    "vl_cover": 'import visual_languages as vl\n'
+                'k = vl.use("editorial", prs)               # fonts="both": faces on macOS AND Windows\n'
+                'pg = k.new_slide()\n'
+                'k.cover(pg, title="Bring it broken, take it home working", kicker="A repair café", image="skyline.png")',
+    "sticker_outline": 'import image_fx\n'
+                       'st = image_fx.sticker_outline("cutout.png")      # needs a transparent cut-out\n'
+                       'dk.picture(s, st, 6.6, 0.6, 2.6, 3.4, fit="contain", alt="a cut-out subject")',
+    "a11y_title": 'dk.text(s, 0.6, 3.6, 8.8, 1.0, [[("Bring it broken, take it home working", 34, dk.DEEP, True, False)]])\n'
+                  'dk.a11y_title(s, "Bring it broken, take it home working")   # the title screen readers navigate by',
+    "decorative": 'import ornaments as orn\n'
+                  't = orn.tape(s, 6.0, 4.4, 1.6, 0.42, "F2D16B")     # pale tape on the page ground\n'
+                  'dk.decorative(t, "washi tape is ornament; no meaning rides on seeing it")',
+    "squiggle": 'import ornaments as orn\n'
+                'dk.text(s, 0.6, 0.6, 6.0, 0.8, [[("The claim", 30, dk.DEEP, True, False)]])\n'
+                'orn.squiggle(s, 0.7, 1.45, 3.4, 0.3, "E5483B")   # under the claim',
+    "tape": 'import ornaments as orn\n'
+            'pic = dk.picture(s, "skyline.png", 3.0, 1.2, 3.6, 2.7, fit="cover", rotation=-3,\n'
+            '                 alt="a city skyline under an open sky")   # a pinned print\n'
+            'orn.tape(s, 4.1, 0.98, 1.4, 0.4, "F2D16B", holds=pic)   # holding it to the page',
 }
 
 
@@ -314,6 +411,16 @@ def load():
             if getattr(fn, "__module__", None) != m:  # skip re-exports, keep each helper's real home
                 continue
             out.setdefault(name, (m, fn))
+    # The visual-language page functions are METHODS of the kit `visual_languages.use()` returns. They were
+    # invisible here, so `sigs.py cover` answered with deckkit.cover — a different call — and `section`,
+    # `quote`, `data` resolved to nothing (a docs-only run, 2026-10-04). Listed as Kit.<name>.
+    try:
+        import visual_languages as _vl
+        for name, fn in vars(_vl.Kit).items():
+            if not name.startswith("_") and inspect.isfunction(fn):
+                out.setdefault("Kit." + name, ("visual_languages", fn))
+    except Exception as e:
+        print(f"sigs: cannot list the visual-language kit ({type(e).__name__}: {e})", file=sys.stderr)
     return out
 
 
@@ -322,6 +429,16 @@ def load():
 # suppresses — a separate concern from what --example prints). Without these, --example printed the
 # filler "a form component" while SKILL.md promises "plus the guarantee it makes".
 _EXTRA_GUARANTEES = {
+    "points": "2 to 4 points, measured; a roomier layout is tried before anything is refused, never truncated; "
+              "vertical only for CJK text (ink), one iso layer per point (drafting), one icon per point when icons= "
+              "is given (cutpaper)",
+    "ink_ridges": "ridges fade into mist and never pass the page; over every keep_clear rect the crest stays "
+                  "below the text, falling away on a shoulder rather than a cliff",
+    "clipped_block": "drawn as its polygon cut to the page, so PowerPoint's editing view shows nothing past "
+                     "the slide edge",
+    "slot_picture": "the slot's own frame shape, focus and alt text from series.json (the keyed PNG for a "
+                    "cut-out), tagged +gen.<slot> — the tag the image-series delivery gate reads from "
+                    "the saved file",
     "gantt": "every bar keyed to ONE shared axis_scale, so durations are comparable across lanes",
     "dumbbell_board": "a per-row scale, and direction-aware value labels placed OUTWARD so they "
                       "cannot collide with the dumbbell",
@@ -357,6 +474,11 @@ _EXTRA_GUARANTEES = {
                       "than printed with `n.d.`; each DOI is clickable in the deck's own ink",
     "set_link_color": "the DECK's hyperlink colour, because a renderer paints a linked run in the "
                       "theme's hlink colour whatever fill the run itself carries",
+    "frosted_panel": "the blur is the picture region really under the panel, and the ink clears "
+                     "4.5:1 against the glass's dark and light ends at the lightest wash that "
+                     "allows it — or it refuses",
+    "mark": "the highlight is a run property, so it follows the glyphs through every wrap, and an "
+            "ink under WCAG on it is refused",
     "link": "a slide jump or a URL, with the scheme checked — a link target can come from the "
             "material the deck was built from, and javascript:/file:/data: in a delivered deck is "
             "somebody else's machine",
@@ -379,7 +501,11 @@ def show(name, mod, fn, full=False):
         sig = str(inspect.signature(fn))
     except (TypeError, ValueError):
         sig = "(signature unavailable)"
-    print(f"\n{'─' * 78}\n{mod}.{name}{sig}")
+    if name.startswith("Kit."):                  # a method of the kit: k = visual_languages.use("<name>", prs)
+        sig = sig.replace("(self, ", "(", 1).replace("(self)", "()", 1)
+        print(f"\n{'─' * 78}\n{name}{sig}    # k = visual_languages.use(\"<language>\", prs); k.{name[4:]}(...)")
+    else:
+        print(f"\n{'─' * 78}\n{mod}.{name}{sig}")
     doc = inspect.getdoc(fn) or "(no docstring)"
     if full:
         print("\n" + doc)
@@ -395,7 +521,9 @@ def show(name, mod, fn, full=False):
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Print exact call contracts for slide-maker helpers.")
     ap.add_argument("names", nargs="*", help="helper names, e.g. text box native_chart")
-    ap.add_argument("--search", metavar="TERM", help="find helpers whose name or docstring matches")
+    ap.add_argument("--search", metavar="TERM",
+                    help="find helpers whose name or docstring contains TERM (plain text, any case); "
+                         "'a|b' matches either word")
     ap.add_argument("--full", action="store_true", help="print whole docstrings")
     ap.add_argument("--list", action="store_true", help="list every helper name")
     ap.add_argument("--example", action="store_true",
@@ -415,9 +543,12 @@ def main(argv=None):
         return 0
 
     if a.search:
-        q = a.search.lower()
+        # 'a|b' (or grep-style 'a\\|b') is EITHER word. It was one literal substring, so an agent
+        # that searched the way it greps found nothing and was told so (measured 2026-10-03).
+        import re as _re
+        terms = [t_.strip() for t_ in _re.split(r"\\?\|", a.search.lower()) if t_.strip()] or [""]
         hits = [(n, m, f) for n, (m, f) in reg.items()
-                if q in n.lower() or q in (inspect.getdoc(f) or "").lower()]
+                if any(q in n.lower() or q in (inspect.getdoc(f) or "").lower() for q in terms)]
         if not hits:
             print(f"sigs: nothing matches {a.search!r}")
             return 1
@@ -431,6 +562,8 @@ def main(argv=None):
         return 2
 
     if a.example:
+        # a page name (`section`) is the kit's page function, as on the plain lookup path
+        a.names = [n if (n in EXAMPLES or n in reg or "Kit." + n not in reg) else "Kit." + n for n in a.names]
         miss = [n for n in a.names if n not in EXAMPLES]
         for n in a.names:
             if n in EXAMPLES:
@@ -444,7 +577,9 @@ def main(argv=None):
                 m, f = reg[n]
                 print(f"sigs: no copy-paste scaffold for {n!r} yet — its signature and docstring "
                       f"are below. Build the COMPONENT from them; do NOT hand-roll a substitute "
-                      f"out of box/text (SKILL.md Step 4, 🔴 component rule).", file=sys.stderr)
+                      f"out of box/text (SKILL.md Step 4, 🔴 component rule)."
+                      + (" A whole deck in a visual language, every page called: --example use."
+                         if n.startswith("Kit.") else ""), file=sys.stderr)
                 show(n, m, f, a.full)
             else:
                 near = difflib.get_close_matches(n, reg, n=3, cutoff=0.6)
@@ -461,13 +596,21 @@ def main(argv=None):
         # the contracts are what stop the call being wrong in a way no lint can see.
         print("\n" + "─" * 78)
         print(CONTRACTS)
-        return 1 if miss else 0
+        # 1 only for a name that resolves to NO helper: a helper whose signature printed is an answer, and a
+        # non-zero exit after printing it read as total failure (non-Claude run, 2026-10-05)
+        return 1 if any(n not in reg for n in miss) else 0
 
     missing = []
     for n in a.names:
+        kit = "Kit." + n if not n.startswith("Kit.") else None
         if n in reg:
             m, f = reg[n]
             show(n, m, f, a.full)
+            if kit and kit in reg:               # two helpers share the name — say which is which
+                print(f"\n(also: {kit}, the visual-language page function — a different call)")
+                show(kit, *reg[kit], a.full)
+        elif kit and kit in reg:
+            show(kit, *reg[kit], a.full)
         else:
             missing.append(n)
     print("\n" + "─" * 78)

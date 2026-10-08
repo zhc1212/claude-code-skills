@@ -7,6 +7,8 @@ allowed-tools: Bash(*), Read, Write, Edit
 
 # FigureSpec: Deterministic JSON → SVG Figure Generation
 
+> Codex calls (`codex exec`, `codex exec resume`) follow `../shared-references/codex-cli.md`.
+
 Generate publication-quality **architecture diagrams**, **workflow pipelines**, **audit cascades**, and **system topology** figures as editable SVG vector graphics using a deterministic JSON → SVG renderer.
 
 ## When to Use This Skill
@@ -167,7 +169,7 @@ If issues found, edit the JSON spec (never the generated SVG) and re-render.
 For paper architecture figures, invoke cross-model review:
 
 ```
-mcp__codex__codex:
+codex exec:
   model: gpt-6-astra
   config: {"model_reasoning_effort": "xhigh"}
   prompt: |
@@ -256,4 +258,4 @@ Three-stage horizontal cascade with inputs feeding in from top, outputs exiting 
 
 ## Review Tracing
 
-After each `mcp__codex__codex` or `mcp__codex__codex-reply` reviewer call, save the trace following `shared-references/review-tracing.md` (Policy C — forensic; never silently skip). Use `save_trace.sh` (resolved per the chain in `shared-references/integration-contract.md` §2) or write files directly to `.aris/traces/<skill>/<date>_run<NN>/`. Respect the `--- trace:` parameter (default: `full`).
+After each `codex exec` or `codex exec resume` reviewer call, save the trace following `shared-references/review-tracing.md` (Policy C — forensic; never silently skip). Use `save_trace.sh` (resolved per the chain in `shared-references/integration-contract.md` §2) or write files directly to `.aris/traces/<skill>/<date>_run<NN>/`. Respect the `--- trace:` parameter (default: `full`).
