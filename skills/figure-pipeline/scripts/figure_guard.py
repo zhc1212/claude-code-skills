@@ -96,13 +96,14 @@ def inventory(fig):
             inv[data][f"{key}.xy"] = rounded(line.get_xydata())
             inv["STYLE"][f"{key}.style"] = [colour(line.get_color()), line.get_linewidth(), line.get_linestyle(),
                                             str(line.get_marker()), line.get_markersize(),
-                                            colour(line.get_markerfacecolor()), line.get_markeredgewidth()]
+                                            colour(line.get_markerfacecolor()), colour(line.get_markeredgecolor()),
+                                            line.get_markeredgewidth()]
         for k, container in enumerate(c for c in ax.containers if isinstance(c, BarContainer)):
             value = ("get_x", "get_width") if container.orientation == "horizontal" else ("get_y", "get_height")
             inv[data][f"{p}.bars{k}"] = [rounded([getattr(r, g)() for g in value]) for r in container.patches]
         for key, patch in keyed(ax.patches, f"{p}.patch"):
-            inv["STYLE"][key] = [type(patch).__name__, colour(patch.get_facecolor()),
-                                 rounded(patch.get_extents().bounds)]
+            inv["STYLE"][key] = [type(patch).__name__, colour(patch.get_facecolor()), colour(patch.get_edgecolor()),
+                                 patch.get_linewidth(), rounded(patch.get_extents().bounds)]
         for key, coll in keyed(ax.collections, f"{p}.coll"):
             inv[data][f"{key}.offsets"] = rounded(coll.get_offsets())
             if isinstance(coll, PolyCollection) or type(coll).__name__ in ("LineCollection", "FillBetweenPolyCollection"):
@@ -119,6 +120,9 @@ def inventory(fig):
             key = f"{p}.text[{t.get_text()}]" + (f"#{seen[t.get_text()]}" if seen[t.get_text()] > 1 else "")
             inv["TEXT"][key] = t.get_text()
             inv["STYLE"][f"{key}.place"] = rounded(t.get_position()) + [t.get_fontsize(), t.get_fontweight()]
+            if getattr(t, "arrow_patch", None):  # an annotation's arrow
+                a = t.arrow_patch
+                inv["STYLE"][f"{key}.arrow"] = [colour(a.get_edgecolor()), a.get_linewidth(), str(a.get_linestyle())]
         legend = ax.get_legend()
         if legend:
             inv["TEXT"][f"{p}.legend"] = [t.get_text() for t in legend.get_texts()]

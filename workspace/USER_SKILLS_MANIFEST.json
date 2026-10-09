@@ -261,7 +261,7 @@
     },
     {
       "name": "figure-pipeline",
-      "installed_skill_sha256": "546e1cfd037af2c44c0f0892467748abfa9e2d70193e445ca7884f2c204e4d1c",
+      "installed_skill_sha256": "a5b8389b829d09a113e551a53e8e885f3cf6f8b36029a37600c3d707d08b385e",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },

@@ -68,9 +68,9 @@ and the report records the authorisation.
 | A1 | Salience off the claim | Emphasise the claimed series (weight, colour, label) and mute the rest to grey | None if values stay; check no other series loses its label |
 | A2 | Key comparison hard to read | Direct labels at line ends; annotate the difference the caption claims | NUMERIC for an added difference: it must match the text or table |
 | A3 | Heavy non-data ink | Lighten grids and spines; drop frames and backgrounds | STYLE only |
-| A4 | Touching or misaligned elements | Move the label or connector; align panels on one grid; for near-tied markers, smaller markers, a distinct line pattern per series, and the smaller shape drawn on top | Open markers can collide with a fill convention elsewhere in the set (16); jitter changes data positions and needs approval |
+| A4 | Touching or misaligned elements | Move the label or connector; align panels on one grid; for near-tied markers, smaller markers, a distinct line pattern per series, the smaller shape drawn on top, and a thin white edge on filled marks in every plot of the set | Open markers can collide with a fill convention elsewhere in the set (16); jitter changes data positions and needs approval |
 | A5 | Flat or broken type hierarchy | One size per role (ticks < labels < panel titles), one weight for emphasis | STYLE only |
-| A6 | Palette noise or misleading colour | Fewer hues; one highlight; neutrals for context | Entity mapping across figures (16) |
+| A6 | Palette noise or misleading colour | Fewer hues; one highlight; neutrals for context, and no entity in a neutral grey | Entity mapping across figures (16); simulate deuteranopia and protanopia on the most crowded region before adopting a new entity colour |
 | A7 | Legend far from data, missing key | Direct labels, or a legend in reading order next to the data | TEXT order changes are attributable |
 | 16 | Font differs across the set | One `font.family` in a shared style imported by every generator | Every consumer changes: all are in the expected-change set |
 | 16 | Same entity, different colour or marker | One `COLORS` / `MARKERS` mapping in the shared style | Same; check no two entities now share a channel |

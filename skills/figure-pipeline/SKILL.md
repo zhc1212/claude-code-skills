@@ -148,7 +148,8 @@ Done when every difference in the comparison is attributed to a selected ID.
      BLOCKED, with the trade-off stated.
    - Still open after round 2: BUDGET_EXHAUSTED. Revert the open fixes in the tree, regenerate
      and compile once more, confirm the kept figures match their verified state, and promote
-     those whose edits are independent of the reverted ones.
+     those whose edits are independent of the reverted ones. An edit that also resolves another
+     selected ID stays, and the report says so.
 
 A round is one edit-regenerate-compile-Recheck cycle, including cycles run through another skill.
 The Recheck is protocol-bound verification by the session that made the fix, anchored on the
@@ -157,7 +158,9 @@ script and the guard; independence comes only from Codex in 精益求精.
 ## 5. Promote
 
 1. Right before writing, check `baseline.sha256` against the repository. A mismatch means someone
-   changed the file since staging: BLOCKED, reconcile with the user. A `text.sha256` mismatch means
+   changed the file since staging: BLOCKED. When the other change leaves your edits' meaning intact
+   (a renamed label), re-stage on the new state and re-apply them (`references/staging.md`);
+   otherwise reconcile with the user. A `text.sha256` mismatch means
    the captions or citing sentences may have moved under the Recheck: compare them for every
    changed figure, and compile a copy of the live paper with the promoted files, whose rows must
    equal the staged PDF's.
@@ -194,6 +197,9 @@ verdict, with its own coverage.
 
 ## Gotchas
 
+- **A white marker edge shrinks the mark.** matplotlib draws filled markers with a 1 pt edge in
+  their own colour, so a white edge of width w eats into the fill: grow the marker size (scatter:
+  √s) by 1 + w to keep the coloured area, and check the crop, which the guard cannot judge.
 - **Legend safe zones differ by chart type.** Line and trajectory plots have data everywhere, so
   only outside-axes placement is safe; bar charts often have room above the bars; heatmaps have
   no safe interior.

@@ -27,6 +27,16 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
+## figure-pipeline — v1.0.20
+
+From further acceptance runs on a paper whose authors were editing the same figure sources concurrently:
+`scripts/figure_guard.py` now records marker edge colour, box border colour and width, and annotation arrow style,
+which it previously missed (each such change read as UNEXPLAINED; the regression test covers all three), and a line
+drawn over points its colour already draws counts as a STYLE overplot, removed as well as added. The promote step
+also hashes the TeX the Recheck reads and, when a concurrent edit blocks it, re-stages on the new commit and
+re-applies the repair from a script. New recipes: white marker edges sized to keep the coloured area, no entity in a
+neutral grey, and a colour-vision simulation before adopting a new entity colour.
+
 ## figure-audit and figure-pipeline — v1.0.19
 
 `figure-audit` adds an aesthetics layer (`references/aesthetics.md`: principles A1–A7 with evidence tags and

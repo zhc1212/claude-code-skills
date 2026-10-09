@@ -78,6 +78,11 @@ for f in <edited sources and regenerated outputs>; do cp $TREE/$f $REPO/$f; done
 Run the check immediately before copying. It detects a concurrent change; it is not a lock, so
 keep the gap between check and copy to one command. Files outside the list stay untouched.
 
+Keep the edits as a script that re-applies them (exact replacements; a pattern for any line another
+author is still changing, such as a model name), so a BLOCKED promote costs one re-stage: stage the new
+commit, run the script, check that the source diff equals the verified one apart from the other change,
+capture, compare with the new `cap0`, compile, and Recheck what the other change touched.
+
 A moved text does not block: the promoted figures are the verified bytes, but the Recheck judged
 them against the old captions and citing sentences. Compare those of every changed figure with the
 live TeX, then compile a copy of the live paper with the promoted files, outside the live directory

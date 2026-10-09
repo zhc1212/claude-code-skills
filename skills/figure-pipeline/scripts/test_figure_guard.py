@@ -3,7 +3,8 @@
 
 Needs matplotlib. Run: python3 test_figure_guard.py
 A data edit (divisor, swapped series, interval bound) is DATA; a rounded value label is NUMERIC;
-a legend move, a font change, open markers, a moved or resized diagram is STYLE only; a changed axis range is AXES; an inserted label is one TEXT change, not a re-keying of every later label; a filled
+a legend move, a font change, open markers, a marker edge colour, a moved or resized diagram, a box
+border colour or an arrow's line style is STYLE only; a changed axis range is AXES; an inserted label is one TEXT change, not a re-keying of every later label; a filled
 marker appended over a point its series already draws, or removed again, is STYLE, but one at a new point, or two unlabelled series
 trading data, is DATA; a figure the edit does not touch stays byte-identical; an output the generator stops saving fails; the
 generator's data file and source appear in reads.json, also when they sit above the working
@@ -26,14 +27,14 @@ import matplotlib.pyplot as plt
 import json
 import helper  # a local module: its source must appear in reads.json even when loaded from .pyc
 
-DIVISOR, SWAP, CI, LOC, LABEL, BOX_X, YLIM, SIZE, CONTROL, FONT, NOTE, MFC, USWAP, OVERLAY = {params}
+DIVISOR, SWAP, CI, LOC, LABEL, BOX_X, YLIM, SIZE, CONTROL, FONT, NOTE, MFC, USWAP, OVERLAY, MEC, BOX_EC, ARROW_LS = {params}
 plt.rcParams["font.family"] = FONT
 raw = json.load(open("data.json"))
 names = ["Base", "Ours"] if SWAP else ["Ours", "Base"]
 fig, (ax, bx) = plt.subplots(1, 2, figsize=(4, 2))
 for name, key in zip(names, raw):
     ys = [v / DIVISOR for v in raw[key]]
-    ax.plot(range(4), ys, label=name, marker="o", mfc=MFC)
+    ax.plot(range(4), ys, label=name, marker="o", mfc=MFC, mec=MEC)
 pair = [[0.1, 0.2], [0.4, 0.3]]
 for colour, ys in zip(["C2", "C3"], pair[::-1] if USWAP else pair):  # unlabelled series, keyed by index
     ax.plot([0, 3], ys, color=colour)
@@ -52,7 +53,8 @@ fig.savefig("plot.pdf", metadata={{"CreationDate": None}})
 fig2, dx = plt.subplots(figsize=SIZE)
 dx.axis("off")
 dx.text(BOX_X, 0.5, "Model", bbox=dict(boxstyle="round"))
-dx.annotate("", xy=(0.9, 0.5), xytext=(BOX_X + 0.2, 0.5), arrowprops=dict(arrowstyle="->"))
+dx.add_patch(plt.Rectangle((0.6, 0.2), 0.2, 0.2, fc="white", ec=BOX_EC))
+dx.annotate("", xy=(0.9, 0.5), xytext=(BOX_X + 0.2, 0.5), arrowprops=dict(arrowstyle="->", linestyle=ARROW_LS))
 fig2.savefig("diagram.pdf", metadata={{"CreationDate": None}})
 if CONTROL:
     fig3, ex = plt.subplots(figsize=(2, 1))
@@ -61,7 +63,8 @@ if CONTROL:
 '''
 
 BASE = dict(divisor=100, swap=False, ci=0.6, loc="upper left", label="{:.3f}", box_x=0.2, ylim=None, size=(2, 1),
-            control=True, font="sans-serif", note=None, mfc=None, uswap=False, overlay=None)
+            control=True, font="sans-serif", note=None, mfc=None, uswap=False, overlay=None, mec=None,
+            box_ec="black", arrow_ls="-")
 
 
 def capture(root, name, **changes):
@@ -70,7 +73,7 @@ def capture(root, name, **changes):
     if not (root / "helper.py").exists():  # written once, so later runs load it from __pycache__
         (root / "helper.py").write_text("SCALE = 1\n")
     order = ["divisor", "swap", "ci", "loc", "label", "box_x", "ylim", "size", "control", "font", "note", "mfc",
-             "uswap", "overlay"]
+             "uswap", "overlay", "mec", "box_ec", "arrow_ls"]
     (root / "make.py").write_text(GENERATOR.format(params=", ".join(repr(params[k]) for k in order)))
     out = root / name
     subprocess.run([sys.executable, str(GUARD), "capture", str(out), "--", "make.py"], cwd=root, check=True,
@@ -119,6 +122,8 @@ def main():
         assert categories(rep, "plot.pdf") == {"STYLE"} and code == 0, rep["plot.pdf"]
         code, rep = compare(over, base)  # the same overlay removed
         assert categories(rep, "plot.pdf") == {"STYLE"} and code == 0, rep["plot.pdf"]
+        code, rep = compare(base, capture(root, "edges", mec="white"))
+        assert categories(rep, "plot.pdf") == {"STYLE"} and code == 0, rep["plot.pdf"]
         code, rep = compare(base, capture(root, "font", font="serif"))
         assert categories(rep, "plot.pdf") == {"STYLE"} and code == 0, rep["plot.pdf"]
         for name, (change, present, absent, exit_code) in cases.items():
@@ -127,7 +132,8 @@ def main():
             assert present <= found and not absent & found, (name, found)
             assert code == exit_code, (name, code)
             assert rep["control.pdf"]["bytes_identical"] and rep["diagram.pdf"]["bytes_identical"], name
-        for name, change in {"box": dict(box_x=0.3), "resize": dict(size=(2.5, 1))}.items():
+        for name, change in {"box": dict(box_x=0.3), "resize": dict(size=(2.5, 1)), "border": dict(box_ec="green"),
+                             "arrow": dict(arrow_ls="--")}.items():
             code, rep = compare(base, capture(root, name, **change))
             assert categories(rep, "diagram.pdf") == {"STYLE"} and code == 0, (name, rep["diagram.pdf"])
             assert rep["plot.pdf"]["bytes_identical"], name
