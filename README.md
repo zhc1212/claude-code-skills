@@ -27,6 +27,20 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
+## figure-audit and figure-pipeline — v1.0.19
+
+`figure-audit` adds an aesthetics layer (`references/aesthetics.md`: principles A1–A7 with evidence tags and
+severity caps), a figure-set coherence check (Check 16), a script that measures rendered text size, scale and fonts
+from the compiled PDF (`scripts/figure_text_audit.py`, with a regression test), and a Recheck mode that verifies a
+repair. Reports now record the PDF's SHA-256, a rubric hash and permanent finding IDs. `fixes-and-antipatterns.md`
+becomes `pitfalls.md`; the fix recipes move to figure-pipeline.
+
+`figure-pipeline` is rewritten around that report: it repairs a staged copy of the paper, regenerates under
+`scripts/figure_guard.py`, which sorts every change into DATA, NUMERIC, TEXT, AXES or STYLE and fails on changed plotted
+values, verifies each fix with a figure-audit Recheck in at most two rounds, and checks the repository hashes before
+writing back. Both skills were tested on fixtures and accepted on a real paper with a Codex cross-review.
+`workspace/USER_CLAUDE.md` adds the note that Codex loads its own skill copies.
+
 ## writing-for-agents — v1.0.18
 
 `writing-great-skills` is replaced by its upstream successor `writing-for-agents` (mattpocock/skills renamed

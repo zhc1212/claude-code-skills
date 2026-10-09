@@ -1,275 +1,214 @@
 ---
 name: figure-pipeline
-description: "Use when figures have overlapping legends, clipped labels, Type 3 font warnings, text too small after LaTeX scaling, cross-panel label spillover, or any visual quality issue before paper submission. Also use when user says '修图流程', 'figure pipeline', '图审计修复', 'fix all figures', '把图都修好', 'audit and fix figures', '图有问题帮我修'. Not for generating figures from scratch (use nature-figure or paper-figure), or report-only audit without fixing (use figure-audit)."
-argument-hint: "[paper-dir or main.tex path]"
+description: "Fixes the figures of a compiled paper against figure-audit's findings: edits the figure sources in a staging copy, regenerates, recompiles, proves the plotted data unchanged, and verifies every fix with a figure-audit Recheck before writing back. Use after figure-audit reports Blocking or Major findings, for a visible defect (legend over data, clipped labels, text too small after scaling, Type 3 fonts), or when the user says 'fix the figures', 'fix the audit findings', 'figure pipeline', '修图', '修图流程', '按审计修图', '把图都修好', '统一图风格', '修复审美问题'. Not for report-only audits (figure-audit), new figures (paper-figure, nature-figure), or AI illustrations (paper-illustration)."
+argument-hint: "[paper-dir or main.tex path] [finding IDs]"
 ---
 
-# Figure Pipeline: Audit → Fix → Verify Loop
+# Figure Pipeline: Repair → Regenerate → Verify
 
-Closed-loop figure quality pipeline for conference papers. Finds issues, fixes plot scripts, regenerates figures, and re-verifies — iterating until clean or max rounds reached.
+figure-audit judges; figure-pipeline repairs. Every judgement here (what is wrong, whether a fix
+worked) comes from figure-audit's checks and its Recheck mode. This skill owns the rest: which
+findings to fix, where their sources are, the smallest edit, regeneration, compilation, the
+data-preservation guard, and the loop. A fix counts as done when a measurement and the audit
+protocol say so: models that check their own edits without an external signal tend to make
+things worse (Huang et al., ICLR 2024; Kamoi et al., TACL 2024), and edits that touch data fail
+most often (ChartEditBench 2026).
 
-## When to Use
-
-- All figures are generated and placed in the paper
-- Before submission, after content is finalized
-- When the user says "把图修好", "fix the figures", "figure pipeline"
-- After receiving reviewer feedback about figure quality
-
-## Pipeline Architecture
-
-```
-Stage 1: Programmatic Pre-checks (one-shot)
-         │
-    ┌──> Stage 2: Visual Audit (find issues)
-    │         │
-    │    Stage 3: Auto-Fix (edit scripts, regenerate)
-    │         │
-    │    Stage 4: VLM Verify (Read fixed figure PDFs)
-    │         │
-    │    Still issues? ──yes──┘
-    │         │
-    │        no
-    │         │
-    └── Final Report
-```
-
-**Exit states** (the loop terminates with one of these):
-- **PASS**: Stage 4 returns all issues RESOLVED, no NEW issues, AND final compiled PDF re-verified
-- **BLOCKED**: issue requires user judgment (venue rule ambiguity, missing raw data, design choice) — escalate with description
-- **FAIL_AFTER_BUDGET**: max 2 iterations reached with unresolved issues — list remaining by severity
-
-**Anti-oscillation**: track each issue by ID (e.g., `fig2-check3b-label-spillover`). If fixing issue A creates issue B, and fixing B recreates A, exit with BLOCKED after detecting the cycle. Don't silently loop.
-
-**Stale asset guard**: after Stage 3 regeneration, verify the compiled PDF actually includes the new figure (check file modification timestamp vs compile timestamp).
-
-## Stage 1: Programmatic Pre-checks
-
-Run these commands once before visual inspection. They catch issues faster and more reliably than eyeballing.
-
-1. **Font embedding**: `pdffonts main.pdf` — flag any Type 3 fonts (desk rejection risk)
-2. **Figure format scan**: `find figs/ -name "*.jpg" -o -name "*.jpeg"` — JPEG data plots should be PDF vector
-3. **PDF file size**: `ls -lh main.pdf` — flag if >50MB
-4. **Raster DPI**: for PNG/TIFF figures, `identify -verbose <file> | grep Resolution` — must be >=300 DPI
-5. **pdf.fonttype check**: grep plot scripts for `pdf.fonttype` — must be 42 for all matplotlib scripts
-
-If Stage 1 finds blocking issues (Type 3 fonts, missing fonttype=42), fix them before entering the loop.
-
-## Stage 2: Visual Audit
-
-For each figure in the paper:
-
-### 2a. Read the figure
-
-Use the Read tool on the individual figure PDF file (not the compiled paper page). This gives full resolution for spotting overlap.
-
-### 2b. Multi-panel decomposition
-
-For multi-panel figures, evaluate EACH panel independently. Don't glance at the whole figure — trace every element in every panel.
-
-### 2c. Run the 11-point checklist
-
-| # | Check | What to verify |
-|---|-------|---------------|
-| 1 | Font embedding | Zero Type 3, all embedded, TrueType 42 |
-| 2 | Text size | All text >= 7pt after LaTeX scaling. Formula: `rendered_pt = source_pt × (latex_width / source_width)` |
-| 3a | Legend-data overlap | Trace every curve/bar through the legend bbox — if ANY data passes through, flag MAJOR |
-| 3b | Cross-panel spillover | Labels near panel edges intruding into adjacent panel's axis area |
-| 3c | Label-axis clipping | Labels anchored near axis min/max getting cut off |
-| 3d | In-element annotations | Text inside bars/slices — sufficient contrast? Fits without touching edges? |
-| 4 | Color + print robustness | Grayscale distinguishable? Line style/marker varies? No pure red-green? No rainbow/jet? |
-| 5 | Layout & sizing | Width matches float type, panel labels present and consistent, no excessive whitespace |
-| 6 | Data integrity | Axis labels with units, legend complete, spot-check 2-3 values against tables |
-| 7 | Caption quality | Self-contained, ends with takeaway, numbers match, panels described |
-| 8 | Table headers | Direction arrows (↑/↓), units, bold consistency, decimal precision |
-| 9 | Cross-references | Every figure/table referenced in text, no orphan floats |
-| 10 | Venue compliance | No in-figure title, DPI >= 300, file format appropriate |
-| 11 | Anti-patterns | Dynamite plots, 3D charts, pie >5 slices, dual-axis without color separation, truncated y-axis without notation |
-| 12 | Panel design coherence | Do panels belong together? See criteria below |
-| 13 | Uncertainty representation | Error bars/bands present where data supports them? See criteria below |
-| 14 | Claim-data consistency | Do textual claims ("best", "outperforms") match the visual/table data? |
-
-**Check 12 — Panel Design Coherence** (multi-panel figures only):
-
-Panels in the same figure should pass at least 2 of these 4 coherence tests:
-
-1. **Shared axis**: panels share an independent variable (x-axis) or dependent variable (y-axis), enabling direct visual comparison
-2. **Causal/temporal link**: one panel explains WHY the other looks the way it does (e.g., temperature schedule → rank movement)
-3. **Zoom relationship**: one panel is a detail/aggregate of the other (e.g., representative trajectories → spaghetti overview)
-4. **Synthesis requirement**: the reader MUST see both panels to reach the figure's conclusion — neither stands alone
-
-Flag as MAJOR if:
-- Panels share no axis, no causal link, and each is self-contained — they should be separate figures
-- Panel (b) is essentially a different experiment that happens to use the same data source
-- The caption has to make a stretch to connect the two panels ("additionally", "separately")
-
-Flag as MINOR if:
-- Panels are related but loosely — reader could understand each without the other, though co-location adds convenience
-
-Acceptable patterns:
-- Same metric, different conditions (ρ=0.4 vs ρ=0.6) ✅
-- Individual vs aggregate view of same data ✅
-- Main result + mechanism/explanation ✅
-- Heatmap + marginal summary ✅
-- Small multiples (same metric across categories) ✅
-
-**Check 13 — Uncertainty Representation** (data-driven, not prescriptive):
-
-Don't blindly require error bars — check whether the data supports them:
-- If the paper reports multi-seed results (check tables for ±, std, n=), the corresponding figure should show uncertainty (error bars, bands, or individual seed lines)
-- If only single-seed results exist, don't flag missing error bars — flag the paper's experimental design instead (outside this skill's scope)
-- Error bars/bands must have their meaning stated: SD, SE, 95% CI, or min-max range
-- Spot-check: do the error bar extents visually match the reported ± values in tables?
-
-**Check 14 — Claim-Data Consistency**:
-
-Cross-check textual claims against visual evidence:
-- If text says "method A outperforms B", verify A is visually better than B in the figure AND bolded in the table
-- If text says "best result", verify bolding is correct — check ALL entries in the comparison group
-- If caption quotes a number, verify it matches the plotted value
-- Check method naming consistency: same method should have the same name across all figures, tables, and text (e.g., don't mix "DynRank" and "Dynamic Rank")
-
-### 2d. Produce audit report
-
-For each figure, output:
-```
-Figure N (figs/filename.pdf): [1-line description]
-  PASS: [list of passing checks]
-  ISSUES:
-    - [MAJOR/MINOR] Check 3a: legend at upper-right overlaps L15.up_proj curve at y=1800
-    - [MAJOR] Check 2: tick labels ~5pt, below 7pt minimum
-```
-
-## Stage 3: Auto-Fix
-
-For each MAJOR issue found in Stage 2:
-
-### 3a. Locate the plot script
-
-Find the Python/R script that generates the figure. Common patterns:
-- `paper/*/scripts/plot_*.py`
-- `scripts/plot_*.py`
-- Check `\includegraphics` paths to trace back to source
-
-### 3b. Apply targeted fix
-
-Based on issue type, apply the minimal edit:
-
-| Issue | Fix strategy |
-|-------|-------------|
-| Legend overlaps data | Move to `bbox_to_anchor` outside axes, empty panel, or below x-axis |
-| Label clips at axis edge | Conditional placement: boundary points get opposite-side labels |
-| Cross-panel spillover | Anchor labels at data midpoint, not endpoint; increase `wspace` |
-| In-element text overlap | Remove redundant annotations, or move outside with arrow |
-| Text too small | Increase font size in rcParams; verify with scaling formula |
-| Type 3 fonts | Add `plt.rcParams['pdf.fonttype'] = 42` |
-| Anti-pattern detected | Replace chart type (e.g., dynamite → dot plot) |
-| Missing uncertainty | Add error bars/bands IF multi-seed data exists; state meaning in caption |
-| Claim-data mismatch | Fix bold/text to match actual best values; align method names |
-| Grayscale indistinguishable | Add linestyle variation (solid/dashed/dotted) or marker shape |
-
-### 3c. Regenerate
-
-Run the plot script to produce new PDF. Only regenerate figures with issues — don't touch passing figures.
-
-### 3d. Recompile paper
-
-Run `pdflatex` to incorporate the new figures. Verify page count unchanged and no new warnings.
-
-## Stage 4: VLM Verify
-
-This is the critical step that prevents false "PASS" claims.
-
-### 4a. Re-read every modified figure PDF
-
-Use Read tool on each figure PDF that was regenerated in Stage 3. Not just the ones you changed — fixes can introduce new issues.
-
-### 4b. Trace-verify each previous finding
-
-For each issue from Stage 2:
-- **Fixed**: mark RESOLVED with evidence ("legend now at bbox_to_anchor=(0.5, -0.2), below all data")
-- **Not fixed**: mark PERSISTS
-- **New issue introduced**: mark NEW
-
-### 4c. Check for fix-induced regressions
-
-Specifically verify:
-- Moving a legend didn't overlap something else
-- Font size increase didn't cause text to clip
-- Layout change didn't shift other elements
-
-### 4d. Verify final compiled PDF
-
-After verifying individual figures, recompile the paper and Read 2-3 pages of the compiled PDF where modified figures appear. LaTeX scaling, float placement, and stale cache can introduce issues invisible in individual figure PDFs.
-
-### 4e. Decision gate
+## Protocol
 
 ```
-All issues RESOLVED + no NEW + compiled PDF verified?
-  → EXIT: PASS
-
-Oscillation detected (A→B→A cycle)?
-  → EXIT: BLOCKED — describe the tradeoff, let user decide
-
-Requires user judgment (design choice, venue ambiguity)?
-  → EXIT: BLOCKED — describe the decision needed
-
-iteration_count < 2 AND fixable issues remain?
-  → CONTINUE: return to Stage 2 with updated issue list (carry issue IDs forward)
-
-iteration_count >= 2?
-  → EXIT: FAIL_AFTER_BUDGET — list unresolved issues by severity
+0. Intake:   a current figure-audit report and the findings to fix
+1. Stage:    a frozen copy of the paper, its generators and inputs; the baseline capture
+2. Plan:     per finding, the source, the recipe and the expected change
+3. Repair:   edit, regenerate under the guard, attribute every change
+4. Verify:   compile the staged paper, figure-audit Recheck; at most 2 rounds
+5. Promote:  write back what changed, after checking nothing moved underneath
+6. Report
 ```
 
-## Final Report
+Paths: `<skill-dir>` is this skill's directory; figure-audit is its sibling `<skill-dir>/../figure-audit`.
 
-Use this template:
+## 0. Intake
+
+1. **Report**: work from a figure-audit report whose `Input` sha256 matches the PDF in hand.
+   - No report: run figure-audit Full first (精益求精 when the user asks for the highest bar).
+   - Hash mismatch: the PDF changed after the audit; run figure-audit again.
+   - A report in an older format (no IDs or header): normalize it. Confirm its recorded hash
+     matches the PDF, assign IDs by figure-audit's Finding IDs rule, add the header, and mark the
+     report "normalized". If the hash cannot be confirmed, re-run figure-audit instead.
+2. **Select** findings by ID:
+   - Blocking and Major: selected by default.
+   - Minor: when the user picks them or asks to fix all findings.
+   - `[taste]`: only when the user asks for that aesthetic change.
+   - REVIEW NEEDED: settle it with the user first, else leave it unselected.
+   - A finding that needs a scientific decision (a denominator, an interval definition, a claim
+     in the text) goes to the user as a question; it is not a figure repair.
+
+Done when every selected ID is listed with its severity and who selected it.
+
+## 1. Stage
+
+Repair a frozen copy, since other sessions may rebuild the paper or edit its inputs meanwhile.
+Commands are in `references/staging.md`.
+
+1. Copy the paper directory and the generator sources into `<run>/tree`, keeping
+   repository-relative paths.
+2. Baseline capture in the tree: `figure_guard.py capture <run>/cap0 --root <run>/tree -- <generator>`
+   with the project's interpreter. A missing input stops the generator: copy that file in at
+   the same relative path and re-run. `reads.json` is then the input set; confirm the repository
+   holds the same bytes.
+3. Every output must be reproduced; the capture marks one that is not, so capture the baseline
+   once, in the fresh tree. An unreproduced figure means the paper shows something the generator
+   no longer makes: stop and ask, because the audit judged the committed figure.
+4. Compile the tree with the project's own build command. `paper-compile` starts with
+   `latexmk -C`, which wipes build state, so use the project command directly. The staged PDF's
+   `figure_text_audit.py` rows must equal the report's Measurements.
+5. Record the repository hashes of every file the run may write back (`baseline.sha256`) and of
+   the TeX sources the Recheck reads (`text.sha256`).
+
+Done when the staged paper compiles, every output is reproduced, the rows match, and both hash
+files exist.
+
+## 2. Plan
+
+For each selected finding, fill one row:
+
+| ID | Source (file:function) | Recipe | Expected outputs | Expected categories |
+|----|------------------------|--------|------------------|---------------------|
+
+- **Source**: trace `\includegraphics` to the asset, then route by source type:
+
+  | Source | Repair route |
+  |---|---|
+  | Python or R generator (one script or many) | Edit the generator, regenerate under the guard |
+  | FigureSpec JSON (`figure-spec`) | Edit the JSON, validate, re-render |
+  | Inline TikZ/pgfplots | Edit the TeX; verify on the compiled page |
+  | Hand-drawn vector (Inkscape, draw.io) | Edit the native file, keeping entities and connections |
+  | AI illustration, or no source | BLOCKED: write a repair brief for the user or `paper-illustration` |
+
+- **Recipe**: from `references/repair-recipes.md`, by check. The audit's fix text is the target;
+  the recipe is the method.
+- **Expected outputs**: the figures the edit should change. An edit to a shared style block or
+  helper puts every consumer in the set, so prefer the local edit unless the finding is a
+  figure-set (Check 16) one.
+- **Expected categories**: what the guard should report, e.g. a renamed label is TEXT, a marker
+  change is STYLE, an added axis note is TEXT.
+
+Done when every selected ID has a full row.
+
+## 3. Repair
+
+Make the smallest edit per finding in the tree, regenerate under the guard, and compare with the
+baseline:
+
+```bash
+python <skill-dir>/scripts/figure_guard.py capture <run>/capN --root <run>/tree -- <generator>
+python <skill-dir>/scripts/figure_guard.py compare <run>/cap0 <run>/capN
+```
+
+Read every line of the comparison:
+
+- **DATA**: plotted values changed. Revert the edit. Only a selected Check 6, 13 or 14 finding
+  that the user authorised as a change of representation may change data, and the report says so.
+- **NUMERIC**: a number in figure text was gained or lost. Each one must appear in the finding's
+  fix and match its source (a table, the text, a data file) before you continue. Exit status 1
+  means "needs attribution", not "revert".
+- **TEXT, AXES**: attribute each change to a selected ID. Tick labels that follow a deliberate
+  range change belong to that finding.
+- **STYLE**: expected inside the expected-change set. A `.overplot` entry is a line added or
+  removed over points its colour already draws; confirm it is the intended overlay.
+- **Outside the expected-change set**: an output that is not byte-identical gets an explanation
+  or the edit is reverted.
+- **Saved on one side only, or UNEXPLAINED** (bytes differ, inventory equal): investigate before
+  continuing.
+
+The guard reads matplotlib figures. For any other source, inspect the full source diff for
+changed values, filtering, normalisation, intervals and numeric labels, and record the guard's
+absence under Coverage.
+
+Done when every difference in the comparison is attributed to a selected ID.
+
+## 4. Verify
+
+1. Compile the staged paper with the project command.
+2. Run figure-audit **Recheck** with the baseline report, the staged PDF, and the affected assets:
+   the expected-change set, every output the comparison shows changed, and any figure whose page
+   or neighbours moved. Recheck in 精益求精 when the user asked for it, so Codex reviews the
+   affected figures blind.
+3. For each selected ID, crop its figure from the baseline and staged PDFs at 300 dpi, each at
+   its own page and rectangle since a repair can move it (figure-audit's viewing protocol), and
+   keep the pair as evidence.
+4. Decide:
+   - Every selected ID RESOLVED and no new finding caused by the repair: go to Promote. A new
+     finding the repair did not cause (it was in the baseline PDF too) goes into the report for
+     the user and does not hold back promotion.
+   - A selected ID PERSISTS, or the repair caused a new finding, and this was round 1: back to
+     Plan, carrying the IDs.
+   - A fix for A recreates B and the fix for B recreates A, or a fix needs the user's judgement:
+     BLOCKED, with the trade-off stated.
+   - Still open after round 2: BUDGET_EXHAUSTED. Revert the open fixes in the tree, regenerate
+     and compile once more, confirm the kept figures match their verified state, and promote
+     those whose edits are independent of the reverted ones.
+
+A round is one edit-regenerate-compile-Recheck cycle, including cycles run through another skill.
+The Recheck is protocol-bound verification by the session that made the fix, anchored on the
+script and the guard; independence comes only from Codex in 精益求精.
+
+## 5. Promote
+
+1. Right before writing, check `baseline.sha256` against the repository. A mismatch means someone
+   changed the file since staging: BLOCKED, reconcile with the user. A `text.sha256` mismatch means
+   the captions or citing sentences may have moved under the Recheck: compare them for every
+   changed figure, and compile a copy of the live paper with the promoted files, whose rows must
+   equal the staged PDF's.
+2. Copy back only the edited sources and the regenerated outputs. Data files never change; TeX
+   changes only for a selected caption or table finding.
+3. Leave commits and pushes to the user. The verified artifact is the staged PDF; the project's
+   normal build makes the repository's PDF from the promoted files.
+
+## 6. Report
 
 ```
 # Figure Pipeline Report
 
-## Summary
-- Figures audited: N
-- Issues found: N (M major, K minor)
-- Issues fixed: N
-- Iterations: N
-- Status: PASS / BLOCKED / FAIL_AFTER_BUDGET
+Status: COMPLETE / BLOCKED / BUDGET_EXHAUSTED | Rounds: N
+Baseline: [audit report, original or normalized] | PDF sha256 [baseline] → staged [hash]
+Final audit: Recheck [/ 精益求精] report [path]; its own Blocking/Major/Minor counts
 
-## Per-Figure Results
-### Figure N (filename.pdf)
-- Iteration 1: [MAJOR/MINOR] Check Xa: [specific issue description]
-  → Fix: [what was changed]
-  → Iteration 2: RESOLVED / PERSISTS / NEW
-- Final: PASS / NEEDS_REVIEW
+## Repairs
+| ID | Source edit | Guard | Before/after | Disposition |
+| hero-6-log-axis | make_figures.py:scaling, xlabel | TEXT only | crops a/b | RESOLVED |
 
-## Remaining Issues (if NEEDS_REVIEW)
-- Figure N, Check X: [description] — could not auto-fix because [reason]
+## Not repaired
+- [ID]: BLOCKED / not selected / question for the user, and why
+
+## Coverage
+- Guard: [figures covered | sources outside its reach and how they were checked]
+- Recheck: newly observed [figures] | inherited [figures]
+- Independent review: Codex on [figures] / none
+- Promoted: [files] | Left to the user: commit, repository build
 ```
 
-## Common Mistakes
-
-| Mistake | Why it happens | Fix |
-|---------|---------------|-----|
-| Claiming PASS after fixing N-1 issues | Forgot to re-read the Nth figure | Stage 4 mandates re-reading ALL modified figures |
-| Moving legend to `upper right` | Looks clean in isolation | Trace curves through the legend bbox first — trajectory plots have data everywhere |
-| Shrinking font to fix overlap | Quick fix, creates new problem | Text below 7pt rendered = new MAJOR issue. Relocate instead of shrink. |
-| Only checking the compiled PDF | Lower resolution, scaling artifacts | Read individual figure PDFs for full-resolution inspection |
-| Fixing one panel, breaking another | Increased wspace shifted labels | Check adjacent panels after any layout change |
-| Regenerating all figures | "Just to be safe" | Only regenerate figures with MAJOR issues — touching passing figures risks regressions |
-
-## Integration with Other Skills
-
-**RELATED SKILL:** `figure-audit` — report-only version (no auto-fix loop). Use when you want an audit report without modifications.
-
-| Skill | Relationship |
-|-------|-------------|
-| `figure-audit` | Stage 2 is a superset of figure-audit's checks. Use figure-audit for report-only; use figure-pipeline when you also want auto-fix. |
-| `nature-figure` / `paper-figure` | Upstream — these generate figures. figure-pipeline quality-checks them after generation. |
-| `paper-presubmit-audit` | Parallel — presubmit covers 14 whole-paper checks including anonymization, page count, etc. figure-pipeline goes deeper on figures specifically. |
-| `paper-compile` | Called within Stage 3d to recompile after figure regeneration. |
+The status describes the repair. Whether the paper's figures are clean is the final audit's
+verdict, with its own coverage.
 
 ## Gotchas
 
-- **Don't touch figures that PASS.** Only regenerate figures with MAJOR issues. Regenerating a passing figure risks introducing new problems.
-- **Verify rendered size, not source size.** A 12pt label in a 10-inch figure scaled to `\columnwidth` (3.3in) becomes ~4pt. Always compute: `rendered_pt = source_pt × (latex_width / source_width)`.
-- **Legend placement safe zones differ by chart type.** Line/trajectory plots have data everywhere — only outside-axes placement is safe. Bar charts often have empty vertical space above bars. Heatmaps have no safe interior zone.
-- **Two-pass is not optional.** The most common audit failure (from real experience) is claiming PASS after fixing N-1 issues without re-checking the Nth figure. The fix-induced regression is real.
+- **Legend safe zones differ by chart type.** Line and trajectory plots have data everywhere, so
+  only outside-axes placement is safe; bar charts often have room above the bars; heatmaps have
+  no safe interior.
+- **Relocate before you shrink.** Shrinking text to clear an overlap trades one finding for a
+  floor violation.
+- **Deterministic output.** `savefig(..., metadata={"CreationDate": None})` (matplotlib) makes
+  regeneration byte-identical, which is what lets an unchanged figure prove it is unchanged.
+- **One generator, many outputs.** A shared script regenerates every figure it draws; the guard's
+  byte check, not the intent to touch one figure, shows which ones changed.
+
+## Reference Files
+
+- `references/staging.md`: commands for staging, capture, input freezing, compile, promote
+- `references/repair-recipes.md`: recipes by check, each with its semantic risk and verification
+- `scripts/figure_guard.py`: capture plotted content and classify changes (DATA, NUMERIC, TEXT, AXES, STYLE)
+- `scripts/test_figure_guard.py`: regression test; run it after editing the guard
+- figure-audit: `SKILL.md` (modes, Recheck, finding IDs), `references/checks.md`,
+  `references/aesthetics.md`, `references/venues.md`, `scripts/figure_text_audit.py`

@@ -1,25 +1,34 @@
-# Figure & Table Audit — 14 Checks (Detail)
+# Figure & Table Audit — Checks 1–14 (Detail)
+
+Checks 15–16 (aesthetics and figure-set coherence) live in `aesthetics.md`. Report each check as
+PASS, ISSUE (with severity), REVIEW NEEDED (a candidate the evidence cannot settle), NOT AUDITABLE
+(the evidence is missing, e.g. text outlined so it cannot be measured), or N/A.
 
 ## 1. Font Embedding and Type
 
-Run `pdffonts main.pdf` and verify:
-- **Zero Type 3 bitmap fonts** — blurry in print, desk rejection at some venues
-- **All fonts embedded** — no "not embedded" in the output
-- **Font family**: sans-serif (Arial/Helvetica) for data figures. Serif (Times) acceptable for text-heavy diagrams if it matches the paper body
-- **TrueType 42 only**: Nature requires TrueType 2 or 42; most CS venues accept any embedded font
+Run `pdffonts main.pdf` and on each figure PDF, then verify:
+Attribute each font to a figure or to the body before reporting it (`pdffonts` on the figure
+file, or the script's per-figure font list).
+- **All fonts embedded**: BLOCKING where the venue requires embedding (`venues.md`), otherwise
+  MAJOR, since printers substitute missing fonts.
+- **Type 3 fonts**: BLOCKING only for a verified breach of an applicable requirement (Nature's
+  TrueType 2/42 rule, a venue checker that rejects them); REVIEW NEEDED when the venue's rule is
+  unknown; otherwise report the actual consequence. Matplotlib's Type 3 glyphs are vector and
+  print sharply; bitmap Type 3 fonts (old `dvips` PK fonts) blur and are MAJOR anywhere.
+- **Font family**: one convention for the whole paper (A5 in `aesthetics.md`); Nature requires
+  Arial/Helvetica.
 
 ## 2. Text Size Verification
 
-Concrete, measurable — not a subjective impression.
+Measure, then read. `scripts/figure_text_audit.py main.pdf --floor F` reports every figure's
+rendered sizes, including tick labels (the most common failure) and math sub/superscripts.
 
-Formula: `rendered_pt = source_pt × (latex_width / source_width)`
-
-Check these elements in every figure:
-- Axis labels, tick labels (most common failure), legend text
-- Annotation text, panel labels (a), (b), (c)
-
-Flag as **MAJOR** if any text is below venue minimum (see venues.md).
-Flag as **MINOR** if legible but noticeably smaller than caption text.
+- Below the venue floor (`venues.md`): **MAJOR**, naming the glyphs and their sizes.
+- Legible but far smaller than the caption: A5 in `aesthetics.md`.
+- Figures the script cannot measure (outlined text, rasters, inline TikZ/pgfplots, "captions
+  without an included graphic"): estimate from the 300 dpi crop against a known size such as the
+  caption, and report REVIEW NEEDED with the estimate.
+- Diagnose a failure with `rendered_pt = source_pt × scale`; the script prints the scale.
 
 ## 3. Text Overlap and Clipping
 
@@ -47,8 +56,9 @@ The most commonly mis-judged check. Do NOT eyeball — systematically verify.
 
 - **Grayscale test**: if two series become indistinguishable in B&W, add line style or marker variation
 - **Colorblind-safe palette**: avoid pure red-green. Use Okabe-Ito, Paul Tol, or tableau
-- **No rainbow/jet colormaps** for sequential data — use viridis, plasma, single-hue
-- **No background gridlines, drop shadows, or patterns** — Nature prohibits these
+- **Perceptually uniform colormaps** for ordered data (viridis, cividis, batlow); rainbow/jet
+  distort magnitude (A6)
+- **Gridlines, shadows, patterns**: Nature asks for none; at other venues A3 governs
 
 ### 4b. Color Semantic Consistency (multi-element figures)
 
@@ -65,31 +75,42 @@ Check:
 
 - Width matches float type: `\columnwidth` → `figure`, `\textwidth` → `figure*`
 - Panel labels: (a), (b), (c) matching caption. Bold, consistent position (top-left standard)
-- Aspect ratio: 4:3 or 16:9 unless data demands otherwise
+- **Aspect ratio follows the data**, not a fixed 4:3 or 16:9. Trend plots keep the slopes of
+  interest mid-range (banking and arc-length heuristics guide it; 45° is a starting point, not a
+  target); parity plots (predicted versus true, method A versus B) are square with equal ranges
+  and a diagonal; small multiples share one aspect. Sources: Cleveland 1988; Heer & Agrawala
+  2006; Talbot, Gerth & Hanrahan 2011. Minor.
 - White space: no excess margins (`tight_layout()` or `bbox_inches='tight'`)
 - Spine cleanup: remove top/right spines (community best practice)
 
 ## 6. Data Integrity
 
 - Every axis has a label with units in parentheses where applicable
-- Axis ranges reasonable — no misleading truncation unless noted
+- **Ranges are deliberate**. Bars and filled areas start at zero, since length is the encoding;
+  lines, points, intervals and confidence bands may use a narrower range chosen for the effect
+  size the claim warrants. Compared panels share a range. Log axes say so. A broken-axis mark does
+  not remove the exaggeration a truncated range creates (Wilke ch. 17; Correll, Bertini &
+  Franconeri, CHI 2020). MAJOR when the range magnifies an effect beyond the text's claim.
 - Legend complete — every data series appears
 - Spot-check 2-3 data points against table values. Flag as BLOCKING if mismatch
 
 ## 7. Caption Quality
 
 - **Self-contained**: readable without main text
-- **Ends with takeaway**: last sentence states what to conclude
+- **States the takeaway** when the figure supports a claim; setup and example figures may
+  describe instead
 - **Numbers match**: any numbers in caption match the visual data
 - **Panel descriptions match panels**: (a)/(b) exist and are labeled
 - **Abbreviations defined**
 
 ## 8. Table Header Quality
 
-- **Direction arrows**: ↑ or ↓ in headers for metrics
+- **Direction arrows**: ↑ or ↓ where a metric's better direction is not obvious to the venue's
+  readers (loss, truncation rate, latency); none on counts, configuration values or correlations
 - **Units in headers**: every numerical column has units
-- **Arrow consistency**: all tables or none — don't mix
-- **Bold consistency**: best value per metric per group is bolded; verify correctness
+- **Arrow consistency**: one convention across sibling tables
+- **Bold consistency**: where a table ranks methods, the best value per metric per group is
+  bolded and correct; ties and unranked tables are exempt
 - **Task set documentation**: if "Avg." covers different task sets, each caption states which
 - **Decimal precision**: consistent within each column
 
@@ -103,31 +124,35 @@ Check:
 ## 10. Venue Compliance
 
 - No title inside figure (caption serves as title)
-- Resolution: raster ≥300 DPI (≥450 for Nature); vector preferred for data plots
+- Resolution at placed size (script's effective DPI): ≥300 for photographs and colour, ≥600 for
+  IEEE line art; vector for data plots (`venues.md`)
 - Format: PDF/EPS for vector; TIFF/PNG for raster. Avoid JPEG for data plots
-- File size under venue limit (typically 50MB)
+- File size under the venue's current limit (`venues.md`; ICML 2026 camera-ready is 20 MB)
 - Color mode: RGB for submission
 - No outline text (Nature requirement)
 
 ## 11. Visualization Anti-patterns
 
-- **Dynamite plots** (bar + error bar for continuous data): use dot/violin/box plots
-- **Rainbow/jet** for sequential data: use viridis, plasma, cividis
-- **Overplotted scatterplots** (>1000 points): use density/hex/alpha
-- **Dual-axis without visual separation**: maximize color distinction
-- **3D for 2D data**: use flat versions
-- **Pie charts >5 slices**: use horizontal bars
-- **Truncated y-axis without notation**: flag unless broken-axis notation used
+Each item is an inspection trigger: confirm the harm at print size before reporting it.
+- **Dynamite plots** (bar + error bar for continuous data): dots, violins or boxes show the
+  distribution
+- **Rainbow/jet** for ordered data: viridis, cividis, batlow (A6)
+- **Overplotting**: when marks hide one another at print size, use density, hexbin or alpha
+- **Dual axes**: two scales invite false correspondences that colour cannot fix; prefer aligned
+  panels, or justify the shared axis in the caption
+- **3D for 2D data**: flat versions
+- **Pie charts**: when the slices must be compared, use bars
+- **Truncated bars**: bars start at zero (Check 6)
 
 ## 12. Panel Design Coherence (multi-panel only)
 
-Panels should pass ≥2 of 4 tests:
-1. Shared axis for direct comparison
-2. Causal/temporal link
-3. Zoom relationship
-4. Synthesis requirement — reader MUST see both
+State the joint reading task: what the reader learns from the panels together that no panel
+gives alone. Typical reasons are a shared axis for direct comparison, a causal or temporal link,
+a zoom or aggregate relationship, or a synthesis the conclusion needs. One strong reason
+suffices.
 
-Flag MAJOR if 0 tests pass. Flag MINOR if 1 test passes.
+Flag MAJOR when no joint task exists (the panels are separate figures sharing a float); MINOR
+when the task exists but the caption leaves it implicit.
 
 ## 13. Uncertainty Representation
 

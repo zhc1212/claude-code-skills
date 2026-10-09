@@ -76,4 +76,5 @@ Not installed on this machine: `diagnosing-bugs`, `run-baseline`, `i-have-adhd`,
 - Conda env `compactifai` was relocated, so its entry-point shebangs point at the old path. Use `python3 -m pip` (not `pip`) and `python3 -m <tool>`.
 - Plugins need `claude plugin marketplace add` + `claude plugin install`; editing settings.json by hand is not enough.
 - The skills are a copy of https://github.com/zhc1212/claude-code-skills. Pulling that repo does not update `~/.claude/skills/`.
+- Codex (`CODEX_HOME=~/huicheng/.codex`) loads its own skill copies from `~/huicheng/.codex/skills/`; editing `~/.claude/skills/` does not update them, and a Codex review may read the stale copy.
 - Bash calls starting with `sleep N` need `timeout: (N + 30) * 1000`; for anything past ~560 s use `run_in_background` instead of polling.

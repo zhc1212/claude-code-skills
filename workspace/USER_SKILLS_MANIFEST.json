@@ -247,7 +247,7 @@
     },
     {
       "name": "figure-audit",
-      "installed_skill_sha256": "636f338ad96a0c787544012dca070d71c240ca9f55cb050980371aadabfcb085",
+      "installed_skill_sha256": "180f12432247ce2989d8765cc2683b97e87663252730cb7dbacc7e727ecdf17b",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },
@@ -261,7 +261,7 @@
     },
     {
       "name": "figure-pipeline",
-      "installed_skill_sha256": "6b0c1226fb747b97d360950c7531cc1f3c5030600637a14be899b5db0e4f27e9",
+      "installed_skill_sha256": "546e1cfd037af2c44c0f0892467748abfa9e2d70193e445ca7884f2c204e4d1c",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },
