@@ -1,26 +1,35 @@
 {
-  "snapshot_date": "2026-10-08",
+  "snapshot_date": "2026-10-10",
   "source": "~/.claude/skills",
-  "active_skill_count": 158,
+  "active_skill_count": 160,
   "retained_repository_only_skills": [
     "run-pipeline"
   ],
   "excluded": [
     "humanizer/.git/",
     "oral-paragraph-audit/evals/results/",
-    "oral-paragraph-audit/evals/08-cross-section-terms.yaml",
-    "oral-paragraph-audit/evals/09-claim-calibration.yaml",
-    "oral-paragraph-audit/evals/10-topic-stress.yaml",
-    "oral-paragraph-audit/evals/11-rw-delta-logic.yaml",
-    "oral-paragraph-audit/evals/12-coordinated-subject-gap.yaml",
-    "oral-paragraph-audit/evals/13-cited-work-known-topic.yaml",
-    "run-baseline (broken symlink)"
+    "run-baseline (broken symlink)",
+    "oral-paragraph-audit/evals/08-defensive-boundary.yaml",
+    "oral-paragraph-audit/evals/09-defensive-boundary-rewrite.yaml",
+    "oral-paragraph-audit/evals/10-apply-recheck.yaml",
+    "oral-paragraph-audit/evals/triggers/triggers.yaml",
+    "oral-paragraph-audit/evals/results-opus/",
+    "notation-audit/evals/results/",
+    "notation-audit/evals/results-opus/",
+    "notation-audit/evals/01-seeded-draft.yaml",
+    "notation-audit/evals/02-clean-control.yaml",
+    "notation-audit/evals/triggers/triggers.yaml",
+    "defensive-writing-sweep/evals/results/",
+    "defensive-writing-sweep/evals/results-opus/",
+    "defensive-writing-sweep/evals/01-mixed-draft.yaml",
+    "defensive-writing-sweep/evals/02-clean-control.yaml"
   ],
   "packaging_normalizations": [
     "citation-verification/references/api-usage.md",
     "citation-verification/references/common-errors.md",
     "citation-verification/references/verification-rules.md",
-    "deai-latex/SKILL.md: YAML-only folded description; text unchanged"
+    "deai-latex/SKILL.md: YAML-only folded description; text unchanged",
+    "notation-audit/SKILL.md: two coined-name examples taken from an unpublished paper read Oracle; text otherwise unchanged"
   ],
   "skills": [
     {
@@ -196,6 +205,12 @@
       "observed_clone_head": "207bc6f7a1aa107e544099c2c7cc86816fba9628",
       "source_path": "skills/deep-research/SKILL.md",
       "skill_md_matches_clone": true
+    },
+    {
+      "name": "defensive-writing-sweep",
+      "installed_skill_sha256": "ebf5c466ca70900ca261fcef0902666ff47a8f5c75ae8913ca678156e2e304f9",
+      "source": "https://github.com/zhc1212/claude-code-skills",
+      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },
     {
       "name": "design-an-interface",
@@ -729,6 +744,12 @@
       "skill_md_matches_clone": true
     },
     {
+      "name": "notation-audit",
+      "installed_skill_sha256": "4a1d5500b71c8d93c570020a8938cfbe36fbecadd36bb30e75f16842744ad7aa",
+      "source": "https://github.com/zhc1212/claude-code-skills",
+      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+    },
+    {
       "name": "novelty-check",
       "installed_skill_sha256": "aa9ed796202a60e4da5426d4e23111a52a7fc4c6bbcba0767d67c86617947e62",
       "source": "https://github.com/zhc1212/claude-code-skills",
@@ -743,7 +764,7 @@
     },
     {
       "name": "oral-paragraph-audit",
-      "installed_skill_sha256": "df1b28d2ccaf2ae32b1c71423cd60ddbb2499fe580d3ad400d57e124bacef01c",
+      "installed_skill_sha256": "2d703effdf0e124a2c66c03e8b2e4b8a2cef71dde140143a48e5d091cce1946a",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },
@@ -787,7 +808,7 @@
     },
     {
       "name": "paper-presubmit-audit",
-      "installed_skill_sha256": "9c3ca7b74461280591a5bf5b30bace0c69d920385acee8fe5f3eba3a5871905c",
+      "installed_skill_sha256": "29460f7c23013d9a4849afc4a73baef89eb59f7d6fd66c68efbc0c3ad9ca1f82",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },

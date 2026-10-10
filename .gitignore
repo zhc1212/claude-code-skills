@@ -44,3 +44,8 @@ skills/*/evals/results/
 **/.venv/
 skills/oral-paragraph-audit/evals/0[89]-*.yaml
 skills/oral-paragraph-audit/evals/1[0-3]-*.yaml
+skills/oral-paragraph-audit/evals/triggers/triggers.yaml
+skills/notation-audit/evals/0[1-9]-*.yaml
+skills/notation-audit/evals/triggers/triggers.yaml
+skills/defensive-writing-sweep/evals/0[1-9]-*.yaml
+skills/*/evals/results-*/

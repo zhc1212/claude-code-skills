@@ -72,7 +72,7 @@ Numbers should be rare — point to sections/tables instead of re-listing data.
 
 **Unmarked speculation**: if a sentence explains *why* a result occurs, it must be
 (a) supported by evidence, (b) cited, or (c) explicitly framed as hypothesis.
-Unmarked speculation after a results table is a major source of reviewer distrust.
+Unmarked speculation after a results table is a major source of reader distrust.
 
 ## Conclusion
 

@@ -50,9 +50,11 @@ About 160 skills from several suites are installed and many overlap. When a task
 | Task | Use |
 |---|---|
 | Full ML conference paper (NeurIPS/ICML/ACL, LaTeX) | `research-pipeline` orchestrates → `idea-discovery`, `paper-writing`, `paper-write`, `paper-presubmit-audit`. Drafting from my own materials outside the pipeline (incl. non-STEM): `paper-writer` |
+| Defensive / boundary writing across a paper, section, or appendix (防御性写作) | `defensive-writing-sweep` (candidate list, edits nothing); one paragraph: `oral-paragraph-audit` Check 8 |
+| Symbols, acronyms, equation numbers across a paper (符号检查, 统一处理符号) | `notation-audit` (candidate list, edits nothing); `paper-presubmit-audit` Check 5 runs it; one paragraph's formulas: `oral-paragraph-audit` Check 9 |
 | Lift ML/CV/NLP paper quality (claims vs. evidence, reviewer-friendliness) | `research-paper-writing` (not line-level polish) |
 | Research ideas | `idea-discovery` (pipeline), `idea-creator`, `idea-evaluator`; `propose` if the output is a GitHub issue. |
-| Pre-submission review | `pre-submission-reviewer`, `paper-presubmit-audit`; one harsh reviewer: `reviewer-view-paper` |
+| Pre-submission review | ML/NLP papers: `paper-presubmit-audit` (submission gate + reviewer lens); other fields: `pre-submission-reviewer`; one harsh reviewer: `reviewer-view-paper` |
 | Nature-family journals | `nature-writing`, `nature-reviewer`, `nature-figure`, `nature-literature-pipeline` |
 | SE venues (FSE/ICSE/ASE/ISSTA/MSR/TSE/TOSEM) | Content, RQs, threats to validity: `se-research-paper-writing`. FSE mechanics: `fse-*` (`fse-writing-style`, `fse-experiments`, `fse-submission`, `fse-author-response`, `fse-artifact-evaluation`, …); re-check page limits against the live call. FSE/PACMSE uses acmart `acmsmall`, so `paper-write venue: ACM` (sigconf) is the wrong template |
 | Figures | Generate: `paper-figure`. Fix visual issues: `figure-pipeline`. AI illustrations: `paper-illustration` |

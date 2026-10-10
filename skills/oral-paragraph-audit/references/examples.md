@@ -1,5 +1,10 @@
 # Audit Examples
 
+## Contents
+- Good Audit — Experiments Paragraph
+- Good Audit — Method Paragraph with Formula
+- Bad Audit
+
 ## Good Audit — Experiments Paragraph (thorough, zero-skip compliant)
 
 Input:
@@ -13,14 +18,18 @@ Input:
 Section role: Experiments, claim→evidence — this ¶ serves as the opening claim. OK.
 Strengths: concrete numbers, clear progression across levels
 
- 1. Sentence level: largest subject→verb gap S1 ("42.1" … "drops", 0 words); stress position
-               S3 ends on "our approach" (old information). S3 uses "This" as a pronoun.
-               MAJOR (F2).
- 2. Transitions: S1→S2: Extension (adds scope). S2→S3: Consequence, but vacuous —
-               "This demonstrates" adds no information. MAJOR (F2).
-3a. Structure:  S1 message: "42.1 drops to 19.1..." — raw data, no claim. BLOCKING (F1).
-               S2: Extension (adds scope). S3: restates S1-S2 vacuously. MAJOR (F2).
-3b. Density:    S1: +new. S2: +new (adds architecture scope). S3: ~filler. MAJOR (F2).
+Sentence ledger:
+| S | Job in the ¶ (relation to S1) | Info | → next: relation; linking words | Wording |
+|---|---|---|---|---|
+| S1 | reports the result chain, but names no metric or claim | +new | Extension; "The gains" | gap 0; the metric behind 42.1 is unnamed (F1) |
+| S2 | Extension: widens the scope to five architectures | +new | Consequence, vacuous; "This" | "robust" unscoped (F3) |
+| S3 | none: restates S1–S2 as praise | ~filler | — | "This" as a pronoun; ends on old information (F2) |
+
+ 1. Sentence level: largest subject→verb gap S1 ("42.1" … "drops", 0 words); MAJOR (F2) at S3 — rows in ledger
+ 2. Transitions: MAJOR (F2) at S2→S3 — pairs in ledger
+3a. Structure:  organization: claim→support intended; S1 message: "42.1 drops to 19.1..." — raw
+               data, no claim. BLOCKING (F1).
+3b. Density:    MAJOR (F2): S3 filler — tags in ledger
  4. ¶ bridge:   skipped (no adjacent ¶)
 5a. Consistency: skipped (single ¶, no other section)
 5b. First use:  skipped (no other part of the paper)
@@ -32,8 +41,6 @@ Strengths: concrete numbers, clear progression across levels
  8. Claims:     "robust" — no table ref, no scope qualifier. MAJOR (F3).
                "effectiveness" — vague, not refutable. MAJOR (F2).
  9. Formulas:   skipped (no formula)
-
-Finding summary: 1 Blocking / 2 Major / 0 Minor
 
 F1 BLOCKING (Checks 3a, 7): S1 opens on data, not a claim.
    - **Original**: "42.1 drops to 19.1 after block optimization and 11.4 after full-model optimization."
@@ -47,6 +54,8 @@ F3 MAJOR (Check 8): "robust" is unsupported and unscoped.
    - **Original**: "The gains are robust across five architectures."
    - **Revised**: "The gains hold across five architectures ([fill: table ref])."
    - **Why**: "hold" states what was measured; the table ref supports it.
+
+Finding summary: 1 Blocking / 2 Major / 0 Minor
 
 Added facts: none
 ```
@@ -65,13 +74,17 @@ Input:
 Section role: Method, setup→derivation — formulation paragraph. OK.
 Strengths: clear objective, notation defined.
 
- 1. Sentence level: largest subject→verb gap S1 ("factors" … "are", 1 word); stress position
-               S2 ends on "as the trainable variables", which S1 already said. MINOR (F2).
- 2. Transitions: S1→S2: Refinement (S1 says what's optimized, S2 formalizes). OK.
-3a. Structure:  S1: "factors are warm-started and updated end-to-end"
-               S2: Evidence (formal objective). OK.
-3b. Density:    S1: +new. S2: +new but tail =echo ("computed with all weights W_j
-               replaced by A_j B_j" restates what the formula shows). MINOR (F2).
+Sentence ledger:
+| S | Job in the ¶ (relation to S1) | Info | → next: relation; linking words | Wording |
+|---|---|---|---|---|
+| S1 | says what is trained and what stays frozen | +new | Refinement; "The objective" | gap 1; "warm-started from L2" is Setup detail (F1) |
+| S2 | Refinement: formalizes the objective | +new; tail =echo | — | ends on "as the trainable variables", which S1 said (F2) |
+
+ 1. Sentence level: largest subject→verb gap S1 ("factors" … "are", 1 word); MINOR (F2) at S2 — rows in ledger
+ 2. Transitions: OK — pairs in ledger
+3a. Structure:  organization: setup→derivation; S1 message: "factors are warm-started and
+               updated end-to-end"; OK.
+3b. Density:    MINOR (F2): S2 tail echo — tags in ledger
  4. ¶ bridge:   skipped (no adjacent ¶)
 5a. Consistency: skipped (single ¶, no other section)
 5b. First use:  skipped (no other part of the paper)
@@ -82,14 +95,14 @@ Strengths: clear objective, notation defined.
  8. Claims:     No empirical claims. OK.
  9. Formulas:   Loss lacks 1/N normalization (sum vs average ambiguous). MINOR (F3).
 
-Finding summary: 0 Blocking / 1 Major / 2 Minor
-
 F1 MAJOR (Check 5c): "warm-started from L2" is Experiments Setup, not Method definition.
    - **Original**: "are warm-started from L2 and updated end-to-end"
    - **Revised**: "are the trainable parameters, updated end-to-end"
    - **Why**: the initialization is a training choice; Method defines what is optimized.
 F2 MINOR (Checks 1, 3b): cut the S2 tail "computed with all weights W_j replaced by A_j B_j as the trainable variables"; the formula and S1 already say it.
 F3 MINOR (Check 9): state whether the loss is a sum or a mean over tokens.
+
+Finding summary: 0 Blocking / 1 Major / 2 Minor
 
 Added facts: none
 ```

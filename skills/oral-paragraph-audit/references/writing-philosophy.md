@@ -1,5 +1,11 @@
 # Writing Philosophy — Extended Rationale
 
+## Contents
+- The Reviewer's Situation
+- Oral vs. Poster vs. Workshop
+- The Eleven Principles (with sources)
+- Key References
+
 ## The Reviewer's Situation
 
 A reviewer handles 3–6 papers per cycle, each in 2–3 hours, alongside their own
@@ -18,7 +24,7 @@ The difference is not vocabulary or polish. It is information architecture:
 | Poster | Ideas are clear; reader occasionally re-reads or looks back |
 | **Oral** | Ideas land on first read — zero re-reading, zero backtracking, zero guessing |
 
-## The Ten Principles (with sources)
+## The Eleven Principles (with sources)
 
 1. **Every sentence earns its place.** Page limits are hard. A sentence that restates
    what the reader already knows wastes attention budget. Three things a sentence can
@@ -72,17 +78,30 @@ The difference is not vocabulary or polish. It is information architecture:
     is a list pretending to be an argument. The reader should feel the argument move forward
     with each paragraph, not sideways. *(Drives Check 4)*
 
+11. **A boundary belongs to the claim, written for the reader.** A claim is as
+    wide as its evidence, and the scope words that make it true sit inside it,
+    once. Revision aimed at an anticipated reviewer drifts the other way: it adds
+    sentences on what a result does not show, generic "in the evaluated settings"
+    scopes, and doubts the evidence never raised. [Liao (2026)](https://arxiv.org/abs/2610.11355)
+    finds that recent GPT models add these when asked to revise with review in
+    mind and barely at all when asked only to polish, and that AI reviewers
+    score such rewrites higher while human readers find them harder to read and
+    judge the authors less certain. A boundary the
+    claim does not need spends the reader's attention to lower their confidence
+    in a supported result. *(Drives Check 8)*
+
 These principles interact: good structure with low density wastes a well-framed argument
 on filler. Dense paragraphs with decoupled claims are informative but unconvincing.
 Well-structured paragraphs with buried findings force re-scanning. Good structure,
 density, and evidence that fail to address a reader-relevant question are strategically
-useless. Oral quality requires all ten simultaneously.
+useless. Oral quality requires all eleven simultaneously.
 
 ## Key References
 
 - [Gopen & Swan, 1990](https://cseweb.ucsd.edu/~swanson/papers/science-of-writing.pdf) — topic and stress positions
 - [McEnerney](https://henryleach.com/2016/05/the-craft-of-writing-effectively/) — reader-value framework
 - [SPJ](https://simon.peytonjones.org/great-research-paper/) — refutable claims
+- [Liao, 2026](https://arxiv.org/abs/2610.11355) — defensive writing in model revision
 - [Lipton](https://www.approximatelycorrect.com/2018/01/29/heuristics-technical-scientific-writing-machine-learning-perspective/) — ML writing heuristics
 - [Farquhar](https://sebastianfarquhar.com/on-research/2024/11/04/how_to_write_ml_papers/) — boilerplate formalisms
 - [Perez](https://ethanperez.net/easy-paper-writing-tips/) — pronoun clarity, verb-early

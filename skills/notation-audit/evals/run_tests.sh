@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Eval runner for oral-paragraph-audit.
+# Eval runner for notation-audit (copied from defensive-writing-sweep).
 #
-# Invokes the skill the real way: `claude -p "/oral-paragraph-audit ..."` in
-# headless mode — the personal skill at ~/.claude/skills/oral-paragraph-audit
+# Invokes the skill the real way: `claude -p "/notation-audit ..."` in
+# headless mode — the personal skill at ~/.claude/skills/notation-audit
 # is loaded exactly as in an interactive session. No system-prompt injection.
 # Every `claude -p` call takes `</dev/null`: headless claude reads stdin, and
 # inside a `while read` loop it would swallow the remaining lines.
@@ -22,8 +22,7 @@ set -euo pipefail
 
 SKILL_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 SKILL_FILE="$SKILL_DIR/SKILL.md"
-DEAI_DIR="$SKILL_DIR/../deai-latex"
-DEPS=("$SKILL_FILE" "$SKILL_DIR"/references/*.md "$DEAI_DIR"/SKILL.md "$DEAI_DIR"/references/*.md "$DEAI_DIR"/scripts/audit_style.py)
+DEPS=("$SKILL_FILE" "$SKILL_DIR"/scripts/symbol_inventory.py)
 GEN_MODEL="${GEN_MODEL:-sonnet}"
 GEN_TIMEOUT="${GEN_TIMEOUT:-300}"
 JUDGE_MODEL="${JUDGE_MODEL:-opus}"
@@ -90,16 +89,14 @@ for pat in d.get('forbidden_markers') or []:
         fails += 1
     else:
         print(f"PASS forbidden-absent {pat}")
-m = re.search(r'Finding summary\W{0,3}:\s*\**(\d+) Blocking\s*/\s*(\d+) Major\s*/\s*(\d+) Minor', out)
-if m:
-    sev = [x.upper() for x in re.findall(r'^\W{0,4}F\d+\W{0,3}\[?(BLOCKING|MAJOR|MINOR)\b', out, re.M | re.I)]
-    got = (sev.count('BLOCKING'), sev.count('MAJOR'), sev.count('MINOR'))
-    want = tuple(int(g) for g in m.groups())
-    if got == want:
-        print(f"PASS summary-count {want}")
-    else:
-        print(f"FAIL summary-count: summary {want}, F-lines {got}")
-        fails += 1
+# the stated candidate count must equal the number of candidate rows
+m = re.search(r"Candidates\W{0,3}:\W{0,4}(\d+)", out)
+rows = len(re.findall(r"^\|\s*\d+\s*\|", out, re.MULTILINE))
+if m and int(m.group(1)) != rows:
+    print(f"FAIL count Candidates: {m.group(1)} but {rows} candidate rows")
+    fails += 1
+elif m:
+    print(f"PASS count {rows} rows")
 sys.exit(0 if fails == 0 else 1)
 PYEOF
 }
@@ -196,10 +193,21 @@ ${output:0:30000}" 2>/dev/null </dev/null | extract_claude_response || echo "SKI
 }
 
 echo "╔══════════════════════════════════════════╗"
-echo "║  oral-paragraph-audit Skill Eval Suite   ║"
+echo "║    notation-audit Skill Eval Suite      ║"
 echo "╚══════════════════════════════════════════╝"
 [ "$FRESH" -eq 1 ] && echo "  Mode: forced regeneration"
 [ "$JUDGE" -eq 1 ] && echo "  Advisory LLM judge: enabled"
+
+echo ""
+echo "  Inventory script regressions (deterministic, no model calls)"
+if inv_report=$(python3 "$EVALS_DIR/test_inventory.py" 2>&1); then
+    n=$(echo "$inv_report" | grep -c '^PASS'); det_pass=$((det_pass + n))
+    echo -e "  ${GREEN}✓ inventory: ${n}/${n} pass${NC}"
+else
+    echo "$inv_report" | grep '^FAIL' | while IFS= read -r l; do echo -e "  ${RED}✗ ${l}${NC}"; done
+    det_pass=$((det_pass + $(echo "$inv_report" | grep -c '^PASS')))
+    det_fail=$((det_fail + $(echo "$inv_report" | grep -c '^FAIL')))
+fi
 
 if [ -n "$TEST_ID" ]; then
     test_file=$(ls "$EVALS_DIR"/${TEST_ID}*.yaml 2>/dev/null | head -1)

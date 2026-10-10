@@ -27,6 +27,24 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
+## notation-audit, defensive-writing-sweep, oral-paragraph-audit, paper-presubmit-audit — v1.0.21
+
+Two new candidate-list skills from revising a paper; both edit nothing until the author picks candidates.
+`notation-audit` checks a whole LaTeX paper's symbols, acronyms, coined names and equation numbers against four rules
+(defined before use, defined once, one meaning per symbol, none the paper does not need) plus variants, typography,
+figures, displays and prose. `scripts/symbol_inventory.py` follows `\input`, expands simple macros and lists every
+symbol, acronym, coined name and numbered display; `evals/test_inventory.py` holds eleven deterministic regressions.
+`defensive-writing-sweep` lists defensive (boundary) writing across a paper, section or appendix.
+
+`oral-paragraph-audit` step 5, the recheck after revisions are applied, now runs whenever they are applied, including
+after the author approves them in a later turn, covers text moved into another paragraph, and ends the report with a
+`Recheck:` line that names each changed sentence, so a skipped recheck shows. On one paper it found 8 regressions in
+211 applied hunks, each of which had passed its own edit check. `notation-audit` and `defensive-writing-sweep` apply
+picked candidates through that step. `paper-presubmit-audit` Check 5 runs `notation-audit`; Checks 19–20 adapt
+`pre-submission-reviewer`'s review dimensions (see its `PROVENANCE.md`), and it adds an anonymity sweep for
+supplementary packages and a hidden-text scan script. `workspace/USER_CLAUDE.md` adds the routing rows.
+Evaluation fixtures that quote a paper under review are excluded, as are generated results.
+
 ## figure-pipeline — v1.0.20
 
 From further acceptance runs on a paper whose authors were editing the same figure sources concurrently:

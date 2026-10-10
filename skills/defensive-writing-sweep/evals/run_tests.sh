@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Eval runner for oral-paragraph-audit.
+# Eval runner for defensive-writing-sweep (copied from oral-paragraph-audit).
 #
-# Invokes the skill the real way: `claude -p "/oral-paragraph-audit ..."` in
-# headless mode — the personal skill at ~/.claude/skills/oral-paragraph-audit
+# Invokes the skill the real way: `claude -p "/defensive-writing-sweep ..."` in
+# headless mode — the personal skill at ~/.claude/skills/defensive-writing-sweep
 # is loaded exactly as in an interactive session. No system-prompt injection.
 # Every `claude -p` call takes `</dev/null`: headless claude reads stdin, and
 # inside a `while read` loop it would swallow the remaining lines.
@@ -22,8 +22,7 @@ set -euo pipefail
 
 SKILL_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 SKILL_FILE="$SKILL_DIR/SKILL.md"
-DEAI_DIR="$SKILL_DIR/../deai-latex"
-DEPS=("$SKILL_FILE" "$SKILL_DIR"/references/*.md "$DEAI_DIR"/SKILL.md "$DEAI_DIR"/references/*.md "$DEAI_DIR"/scripts/audit_style.py)
+DEPS=("$SKILL_FILE" "$SKILL_DIR"/../oral-paragraph-audit/SKILL.md)
 GEN_MODEL="${GEN_MODEL:-sonnet}"
 GEN_TIMEOUT="${GEN_TIMEOUT:-300}"
 JUDGE_MODEL="${JUDGE_MODEL:-opus}"
@@ -90,16 +89,6 @@ for pat in d.get('forbidden_markers') or []:
         fails += 1
     else:
         print(f"PASS forbidden-absent {pat}")
-m = re.search(r'Finding summary\W{0,3}:\s*\**(\d+) Blocking\s*/\s*(\d+) Major\s*/\s*(\d+) Minor', out)
-if m:
-    sev = [x.upper() for x in re.findall(r'^\W{0,4}F\d+\W{0,3}\[?(BLOCKING|MAJOR|MINOR)\b', out, re.M | re.I)]
-    got = (sev.count('BLOCKING'), sev.count('MAJOR'), sev.count('MINOR'))
-    want = tuple(int(g) for g in m.groups())
-    if got == want:
-        print(f"PASS summary-count {want}")
-    else:
-        print(f"FAIL summary-count: summary {want}, F-lines {got}")
-        fails += 1
 sys.exit(0 if fails == 0 else 1)
 PYEOF
 }
@@ -196,7 +185,7 @@ ${output:0:30000}" 2>/dev/null </dev/null | extract_claude_response || echo "SKI
 }
 
 echo "╔══════════════════════════════════════════╗"
-echo "║  oral-paragraph-audit Skill Eval Suite   ║"
+echo "║ defensive-writing-sweep Skill Eval Suite ║"
 echo "╚══════════════════════════════════════════╝"
 [ "$FRESH" -eq 1 ] && echo "  Mode: forced regeneration"
 [ "$JUDGE" -eq 1 ] && echo "  Advisory LLM judge: enabled"

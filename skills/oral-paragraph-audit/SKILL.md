@@ -1,11 +1,11 @@
 ---
 name: oral-paragraph-audit
-description: "Paragraph-level prose-quality audit for ML/NLP papers targeting top venues ('oral' = top-venue prose bar, not spoken language). Use when user says '检查一下这段', 'audit this paragraph', 'oral quality check', '帮我看看这段写的怎么样', '检查写作质量', '帮我改段落', '写作审查', 'paragraph quality', 'review this paragraph', or pastes one to several paragraphs of a paper draft and asks whether they read well. Not for grammar-only proofreading, translation, whole-paper outlining, full-section drafting, or abstract/intro structure (use abstract-intro-audit)."
+description: "Audits or rewrites one to several paragraphs of an ML/NLP paper draft against the top-venue ('oral') prose bar: sentence clarity, transitions, paragraph structure, consistency with the rest of the paper, and claim–evidence boundaries. Use when the user asks to check a paper paragraph or whether it reads well or flows (检查一下这段, 帮我看看这段写的怎么样, 衔接顺不顺, audit or review this paragraph), or to rewrite one (帮我改段落, 改一下这段). Not for grammar-only proofreading, translation, whole-paper outlining, full-section drafting, abstract/intro structure (abstract-intro-audit), or a whole-paper defensive-writing sweep (defensive-writing-sweep)."
 ---
 
 # Oral-Level Paragraph Audit
 
-Audit a paper paragraph against the oral bar: a reviewer understands every
+Audit a paper paragraph against the oral bar: a reader understands every
 sentence on first read, with no re-reading, looking back, or guessing. Checks
 1–5 zoom out one reading scale at a time: sentence, sentence pair, paragraph,
 adjacent paragraphs, whole paper. Checks 6–9 apply at every scale: register,
@@ -29,6 +29,59 @@ shows its work. A pass names what was assessed ("Claims: no strong claim
 detected; assessed S1–S3. OK"); a bare "OK" is a failed audit. A check that
 does not apply says "skipped" and why. Skipped is valid, silence is not.
 
+## Procedure
+
+1. Write the Section role line, then run Checks 1–9 in order.
+2. Classify every finding by the Severity section below.
+3. Provide replacement text with reasoning for Blocking and Major issues. For
+   a Minor issue a one-line note suffices when the fix is obvious. Flag every
+   Minor even when you don't rewrite it: at oral level they accumulate into
+   reader friction. Build every Revised text only from facts in the supplied
+   text and in sources you read; a fact the fix needs but the text lacks goes
+   in as `[fill: what is needed]`. Keep what the text supplies: a `[fill]`
+   stands only for a missing fact, never for content the text already has.
+4. Check every Revised text against its Original before output: no claim,
+   mechanism, cause, or scope that neither the paragraph nor a source you read
+   gives; no boundary the claim does not need (Check 8, Boundaries); the same
+   negations, except those in a deleted boundary; each number, citation, and
+   macro still attached to its noun. When a Revised text replaces a whole sentence or more, write
+   the Original and the final Revised to temp files, run `python3 <this skill's
+   directory>/../deai-latex/scripts/audit_style.py compare ORIGINAL REVISED`,
+   and resolve each difference and review signal; rerun it after any change.
+   A statement that fails the check becomes `[fill: …]`.
+5. Whenever you apply Revised texts to a file, in this turn or after the
+   author approves them later, recheck before reporting. The
+   `compare` report covers protected spans and new content words only; it
+   cannot see a lost blank line, a subject–verb gap that grew, or an anaphor
+   that now binds to the wrong sentence. Done when: every changed sentence and
+   the sentence on each side of it re-pass Checks 1–4; every sentence a clause
+   was moved or deleted *out of* still holds for each item it describes; text
+   moved *into* another paragraph keeps its numbers, scope, and conditions and
+   relates to that paragraph's S1; and the blank lines around the edited span
+   match the original. A regression gets its own F-line. The report on the
+   applied edits ends with `Recheck: <each changed sentence by location> and
+   its neighbours re-passed Checks 1–4; moved into: …; deletion sites: …;
+   blank lines match; regressions: F… or none`; a report without this line
+   has skipped the step.
+
+## Severity
+
+Give each distinct defect one F-number and one severity, however many checks
+it surfaces in. A check line that finds a defect cites its F-number with the
+severity ("MAJOR (F2)"); a defect that already has an F-number is cited again,
+not re-rated. The Finding summary, written after the F-lines, counts them by
+severity.
+
+- **Blocking**: harms the reader's understanding, the paper's credibility, or
+  its perceived contribution.
+- **Major**: weakens clarity, evidence, or flow but does not invalidate.
+- **Minor**: style or polish with low effect on how the paper is judged.
+
+**Severity test**: rate what leaving the text unchanged costs the reader, not
+the size of the fix. A Major must name what the reader would misread or fail
+to find; a one-word fix is Major when the word changes the claim or the
+computation.
+
 **Calibration**: do not invent defects to satisfy a check — an evidence-backed
 PASS is a successful audit result. A clean paragraph ends with `0 Blocking /
 0 Major` plus the evidence lines. A missing citation for a background technique
@@ -37,50 +90,33 @@ technical description that could be read as an implicit claim ("we whiten
 before truncation, reducing the error from A to B") is audited for
 well-formedness under Check 9, not as an unsupported claim under Check 8.
 
-## Procedure
+**Defaults by check.** Rate each finding from its check's row. A case the
+table does not list, and a number-first opening the reader can map to a claim,
+are rated by the severity test.
 
-1. Write the Section role line, then run Checks 1–9 in order.
-2. Classify findings. Give each distinct defect one F-number and one severity,
-   however many checks it surfaces in:
-   - **Blocking**: harms reviewer understanding, credibility, or perceived contribution.
-   - **Major**: weakens clarity, evidence, or flow but does not invalidate.
-   - **Minor**: style or polish with low effect on reviewer judgment.
+| Check | Blocking | Major | Minor |
+|---|---|---|---|
+| Section role | a ¶ that does another section's job; a `\paragraph{}` heading naming a job the body does not do | | |
+| 1 Sentence | | a misreading that changes the claim or the computation; a hidden premise the paper later contradicts or a later ¶ relies on | other reorder, wording, referent, and hidden-premise findings |
+| 2 Transitions | | a connector masking a genuine gap | |
+| 3a Structure | | a sentence with no relation to S1; two messages in one ¶; an empty final sentence | a progressive chain whose S1 states only the first link; an S1 that under-scopes consecutive steps |
+| 3b Density | | a sentence that is echo or filler | a filler phrase inside a sentence that earns its place |
+| 4 ¶ bridge | | consecutive ¶s that read as a list; a gap or claim resting on a premise no earlier ¶ states | |
+| 5a Consistency | | a word whose two senses change a number's object | a word with two senses in the reader's view |
+| 5c Placement | | an argument of several sentences that another section already states | a repeated sentence |
+| 6 De-AI | | hits that cluster in one sentence | isolated hits |
+| 7 Section | an Experiments or Discussion ¶ that opens on numbers whose metric or claim the reader cannot tell | | |
+| 8 Claims | a strong claim the supplied text neither supports nor scopes ("outperforms all", "significantly", "the primary cause") | a class that includes the paper's own method; a citation assigned to the wrong category; a standalone defensive boundary, or one that retreats from a supported claim | one citation list shared by several adjectives; a redundant qualifier inside a correct sentence |
+| 9 Formulas | a symbol undefined at first use or carrying two meanings | an ambiguity that changes what is computed (a dimension that does not match its use, an unstated domain or constraint that alters the result) | a convention or wording the reader can resolve from context (factor orientation, sum vs. mean normalization) |
 
-   **Severity test**: rate what leaving the text unchanged costs the reader,
-   not the size of the fix. A Major must name what the reviewer would misread
-   or fail to find; a one-word fix is Major when the word changes the claim or
-   the computation.
-
-   **Blocking defaults** — everything else starts at Major or Minor:
-   - Section role: a ¶ that does another section's job, or whose `\paragraph{}`
-     heading names a job the body does not do.
-   - Check 7: an Experiments or Discussion ¶ that opens on numbers whose metric
-     or claim the reader cannot tell. A number-first opening the reader can map
-     to a claim is rated by the severity test.
-   - Check 8: a strong claim the supplied text neither supports nor scopes
-     ("outperforms all", "significantly", "the primary cause").
-   - Check 9: a symbol undefined at first use or carrying two meanings.
-
-   **Anchors**:
-   | Case | Severity |
-   |---|---|
-   | A dropped "not", a wrong dimension, a number attached to the wrong model | Major or Blocking, though the fix is one word |
-   | "reducing the error from A to B" where A and B are different objectives | Minor (Check 9) |
-   | A claim unscoped in S1 that later sentences of the ¶ narrow | Minor |
-   | A detail the ¶ lacks that another part of the paper may give (seed, split, harness) | Needs verification (Edge Cases), not a finding |
-   | A clear, correct paragraph | 0 Blocking / 0 Major, with the evidence lines |
-3. Provide replacement text with reasoning for Blocking and Major issues. For
-   a Minor issue a one-line note suffices when the fix is obvious. Flag every
-   Minor even when you don't rewrite it: at oral level they accumulate into
-   reviewer friction.
-4. Check every Revised text against its Original before output: no claim,
-   mechanism, cause, or scope that neither the paragraph nor a source you read
-   gives; the same negations; each number, citation, and macro still attached
-   to its noun. When a Revised text replaces a whole sentence or more, write
-   the Original and the final Revised to temp files, run `python3 <this skill's
-   directory>/../deai-latex/scripts/audit_style.py compare ORIGINAL REVISED`,
-   and resolve each difference and review signal; rerun it after any change.
-   A statement that fails the check becomes `[fill: …]`.
+**Anchors**:
+| Case | Severity |
+|---|---|
+| A dropped "not", a wrong dimension, a number attached to the wrong model, setting, or aggregation (a range across settings readable as a range across seeds) | Major or Blocking, though the fix is one word |
+| "reducing the error from A to B" where A and B are different objectives | Minor (Check 9) |
+| A claim unscoped in S1 that later sentences of the ¶ narrow | Minor |
+| A detail the ¶ lacks that another part of the paper may give (seed, split, harness) | Needs verification (Edge Cases), not a finding |
+| A clear, correct paragraph | 0 Blocking / 0 Major, with the evidence lines |
 
 ## Edge Cases
 
@@ -99,8 +135,6 @@ well-formedness under Check 9, not as an unsupported claim under Check 8.
 - **LaTeX-heavy input**: preserve all macros, `\cite{}`, `\ref{}`, `\label{}`,
   custom commands, and math environments in revised text. Rewrite only the
   prose within them.
-- **Non-English draft** (e.g., Chinese): run the checks on the content logic
-  but skip Check 6, which is English-specific. Note this in the output.
 
 ## The Checks
 
@@ -125,8 +159,18 @@ Within each sentence:
   end that holds old information, a bare citation tail, or a modifier attached
   to the wrong noun.
 - **"this"**: use it only as an adjective ("this bound").
-
-A reorder is MINOR unless the misreading changes the claim.
+- **Wording**: the verb fits its object ("score weights *with* proxies" is a
+  stretch; "rank by a proxy computed on weights" is not); no content word
+  appears twice in one sentence ("differentiable gates make the loss
+  differentiable"); a quantity named in prose carries the right unit ("rank
+  shares that sum to the parameter budget" adds ranks to parameters — a wrong
+  dimension, rated by the Anchors).
+- **Referents**: every anaphor ("it", "there", "the same setting", "the
+  methods above") binds to the candidate a first-time reader would pick, which
+  is usually the nearest. When the nearest candidate is the wrong one, flag it.
+- **Hidden premise**: the sentence reads correctly only if the reader already
+  holds an unstated fact ("Even per-matrix optimal truncation…" presumes
+  Eckart–Young).
 
 ### 2. Transitions (sentence pair)
 
@@ -143,7 +187,7 @@ S(n) arrives later, flag it and move the linking phrase to the front.
 **Gap-masking connectors**: Furthermore, Additionally, Moreover, In addition
 assert a relation without naming it. Remove the connector and read the pair:
 if the relation is real, replace the connector with it; if not, the sentences
-need restructuring. Flag MAJOR when the connector masks a genuine gap.
+need restructuring. Flag the connector when it masks a genuine gap.
 
 This check flags a missing or masked relation, not narration order. A sentence
 that states its own temporal or logical position ("Before truncation, we…",
@@ -152,24 +196,31 @@ that states its own temporal or logical position ("Before truncation, we…",
 ### 3. Paragraph
 
 **3a Structure.** S1 states the paragraph's message; every later sentence
-supports it.
+supports it. First name the paragraph's organization: claim→support (总分),
+progressive chain (each sentence starts from the previous one's end; 递进),
+parallel list, or setup→derivation. A progressive chain is valid. When its S1
+states only the first link and the chain ends on a claim S1 does not
+anticipate (a gap, a challenge), flag it and offer a topic S1 that states
+where the chain ends.
 - **Step A** — S1 states a claim or setup, not raw data, and does not recap
   the previous paragraph's conclusion: that spends the reader's strongest
   attention position on information they already have.
 - **Step B** — Label each S(i>1) by its relation to S1, using Check 2's nine
-  labels. Flag MAJOR if a sentence has no relation to S1.
-- **Step C** — Two claims that cannot be unified under S1: flag MAJOR, mixed
-  messages — split. Claims are distinct when they need different evidence or
+  labels. Flag a sentence that has no relation to S1.
+- **Step C** — Two claims that cannot be unified under S1 are mixed messages:
+  split. Claims are distinct when they need different evidence or
   lead to different conclusions. Consecutive steps of one procedure, or a
   definition followed by the mechanism that refines it, are one message even
-  when S1 names only the first step; if S1 under-scopes them, flag MINOR and
+  when S1 names only the first step; if S1 under-scopes them, flag it and
   widen S1 rather than splitting the paragraph.
 - **Step D** — The final sentence interprets, concludes, or advances. An empty
   conclusion ("this contributes to our understanding of X" without saying
-  what) is MAJOR.
+  what) is a finding.
 
 Dataset/Setup and Limitations paragraphs are factual or enumerative by design:
-S1 need not state a claim, and Step D is relaxed.
+S1 need not state a claim, and Step D is relaxed. A contribution list is audited
+item by item instead: the bold title is that item's S1, Step C applies to the
+item, and the title covers every sentence under it.
 
 **3b Density.** Tag every sentence `+new` (adds information), `=echo`
 (restates an earlier sentence), or `~filler` (adds nothing). A sentence earns
@@ -190,24 +241,35 @@ mechanism; one that does none is deletable. Red flags:
 
 Compare S1 with the last sentence of the previous paragraph. Name the relation
 (contrast, specification, deepening, mechanism) and check that the argument
-moves forward rather than resetting or circling. Flag MAJOR when consecutive
-paragraphs read as a list ("one paragraph on A, one on B, Together these…")
+moves forward rather than resetting or circling. Flag consecutive
+paragraphs that read as a list ("one paragraph on A, one on B, Together these…")
 with no relation between them. A `\paragraph{}` heading marks a topic switch;
 no bridge needed. Skip when no adjacent paragraph is available.
 
+When the next ¶ is available, also look forward: the sentence that states the
+next ¶'s gap or main claim must not rest on a premise that neither this ¶ nor
+an earlier one states (a gap "chosen during recovery" when no ¶ has said that a
+recovery stage exists). A term the next ¶ uses before defining
+it stays with 5b.
+
 ### 5. Paper (across paragraphs and sections)
 
-**5a Consistency.** One name per concept across paragraphs and sections, no
+**5a Consistency.** One name per concept across paragraphs and sections,
+modifiers included ("soft prefix gates" here, "differentiable prefix gates" in
+the abstract), and one concept per word within the reader's view: adjacent
+sentences and the items of one list ("frozen" profile in one item, "frozen"
+factors in the next); flag a word with two senses there. Also: no
 contradiction between paragraphs, and each acronym used only within the scope
 where it is defined. Match every name this ¶ gives the paper's own system or
 one of its parts (checker, evaluator, agent, loop) to the name the other
-sections use, and report each mismatch. Skip when there is a single ¶ and no
-other section.
+sections use, and report each mismatch. With a single ¶ and no other section,
+run only the within-view part and mark the cross-section part skipped.
 
 **5b First use** (runs when other sections are supplied, or when the paragraph
 came from a file, in which case grep the source): for each acronym, say where
-the paper first spells it out, and for each coined name, where the paper first
-defines it. A sentence that uses the acronym without its expansion does not
+the paper first spells it out, for each coined name, where the paper first
+defines it, and for each symbol or clipped term in a non-technical section ("ρ"
+or "pre-clip" in an Introduction), where it is defined. A sentence that uses the acronym without its expansion does not
 spell it out. Flag a term never spelled out or defined, or one defined only
 after this paragraph uses it.
 
@@ -219,9 +281,8 @@ When other sections are supplied or the paragraph came from a file, also flag
 a sentence or argument that another section already states: name both
 locations and keep the copy where the claim does its work. An Introduction
 preview, a contribution or findings list, a Limitations item, or a Conclusion
-that restates the argument in a sentence is not a repeat. A repeated sentence
-is MINOR; a repeated argument of several sentences is MAJOR, because in a
-page-capped paper it takes space the argument needs.
+that restates the argument in a sentence is not a repeat. A repeated argument
+takes page space the argument needs.
 
 ### 6. De-AI Pass (delegated)
 
@@ -230,16 +291,16 @@ rule, punctuation and connectives against the author's baseline, edit residue,
 chat leftovers) and the list of what is not a tell, which keeps the pass from
 gutting good prose. Do not restate it here.
 
-**Procedure.** Load `/deai-latex` in embedded mode and apply its catalogue to
-this paragraph yourself — invoking a skill loads its instructions into your own
+**Procedure.** Load `/deai-latex` in embedded mode once per conversation; on
+later paragraphs apply the catalogue already in this window. Apply it to this
+paragraph yourself — invoking a skill loads its instructions into your own
 context, so this is you doing the work, not a call that hands back a result.
 Record each finding with its family and the phrase that triggered it, and each
 dismissed candidate with its reason.
 The zero-skip principle needs those phrases as evidence; a tally is not evidence.
 
-**Severity.** MINOR when hits are isolated. MAJOR when they **cluster** — a
-single em dash is nothing, but em dashes plus a forced triple plus an unsupported
-booster inside one sentence is a confession. Judge whether the hits pile into the
+**Clustering.** A single em dash is nothing, but em dashes plus a forced triple
+plus an unsupported booster inside one sentence is a confession. Judge whether the hits pile into the
 same sentence or scatter across the paragraph, not how many there are.
 
 **Guardrail.** `/deai-latex`'s adjudication step decides which candidates are
@@ -264,37 +325,59 @@ Every strong claim needs support within or near the paragraph. Check:
 - "X outperforms Y" → table/figure ref or inline number
 - "significantly improves" → quantified, not just the word
 - "X is the first/novel" → citation gap or novelty argument
-- "all / every / never / none" → test it against the paragraph's own examples
-  first; one example that breaks it is a contradiction the reader sees on first
-  read
+- "all / every / never / none / each / existing methods" → test it against the
+  paragraph's own examples first, then against each cited work, using the
+  paper's own comparison table or Related Work when the cited source is
+  unavailable; one example that breaks it is a contradiction the reader sees on
+  first read. A class the sentence describes ("differentiable allocators") must
+  exclude the method the paper proposes; when it includes it, the sentence is
+  false as written
 - "increasingly / growing / more and more" → evidence of change over time; a
   list of instances shows only that the thing exists
 
-**Scope qualifiers**: strong claims need explicit boundaries. "optimal" →
-"optimal for this surrogate". "outperforms all" → add "at every tested ratio".
+**Boundaries**: a claim is as wide as its evidence. Its boundary is the scope
+words that make the sentence true ("optimal for this surrogate", "on WT2 in
+every seed"), stated once, inside the claim. A sentence the evidence supports
+for one model, setting, or metric but states generally is unscoped: add the
+scope words. A number whose model, setting, metric, or aggregation the reader
+cannot tell from its sentence and ¶ is a finding; when it is attached to the
+wrong one, the Anchors rate it.
+
+Everything beyond that writes for an anticipated reviewer instead of the
+reader: a sentence on what the result does not show ("does not establish", "we
+do not claim"), a doubt the evidence does not raise, a generic scope ("in the
+evaluated settings"), "should be read as X rather than Y", a qualifier that
+repeats a scope the ¶ already states, an unfavourable side result the claim's scope already excludes,
+or an untested explanation attached to one. Such a boundary leaves the reader's
+understanding unchanged and lowers their confidence in a result the evidence
+supports. Test each boundary by deleting it. If the claim it qualifies stays
+true on the paper's evidence, the boundary is defensive: delete it. If that
+claim becomes false, the boundary is part of the claim: fold it into the
+claim's scope words, once in the reader's view. Dropping a reported result is the author's call:
+the F-line names the result. A Limitations ¶ states grounded limits by design
+and is exempt.
 
 **Refutable claims** ([SPJ](https://simon.peytonjones.org/great-research-paper/)):
 a claim must be specific enough that a reader can tell whether it is true.
 
 **Narrative arc**: if S1 frames a question, the paragraph must answer it by
-the final sentence.
+the final sentence. A question posed for later (an Introduction's research
+questions) instead names, or is answered by, the contribution item or section
+that answers it.
 
 **Baseline accuracy**: verify descriptions of other methods against the cited
 paper when it is available; otherwise report "Needs verification — cited source
-unavailable" (do not flag as unsupported).
+unavailable" (do not flag as unsupported). Each citation sits on the category
+or adjective it supports: one citation list shared by several adjectives leaves
+the reader unable to map them; once split, each assignment must match the
+paper's own description of that work.
 
 ### 9. Formula Rigor (Method/Appendix only)
 
 Symbol hygiene (defined near first use, no dual meanings, consistent
-subscripts), dimensional consistency, completeness (explicit min/sum/domain),
+subscripts), dimensional consistency of the formulas (units named in prose are
+Check 1's Wording), completeness (explicit min/sum/domain),
 notation consistency with rest of paper.
-
-Severity: BLOCKING for an undefined or double-used symbol; MAJOR when an
-ambiguity changes what is computed (a dimension that does not match its use, an
-unstated domain or constraint that alters the result); MINOR for a convention or
-wording the reader can resolve from context (Cholesky factor orientation, sum
-vs. mean normalization of a loss, "reducing the error from A to B" where A and B
-are different objectives).
 
 Skip for non-technical sections.
 
@@ -303,62 +386,27 @@ Skip for non-technical sections.
 Pick the shape from the request's verb:
 - **Rewrite**: the user asks to change the text (改, 帮我改, 改一下, rewrite,
   fix, polish) and not to check it (检查, 看看, audit, review). Run every check,
-  then output only the revised paragraph, the `Finding summary:` line, the
-  F-lines as one line each, and `Added facts:`; no check lines and no
-  verification notes.
-- **Audit**: every other request. Output the template below.
+  then output exactly four parts, in this order, and end there: the revised
+  paragraph, the F-lines one line each, the `Finding summary:` line, and
+  `Added facts:`. The checks speak through the F-lines; the Section role,
+  check lines, and ledger belong to the Audit shape. This shape overrides the
+  zero-skip principle and the Handoff notes: a check with no finding writes
+  nothing, and a Needs-verification item or a reflow note becomes one line
+  under `Added facts:`.
+- **Audit**: every other request. Read `references/audit-format.md` and emit
+  its template, every labelled line verbatim.
+
+Both shapes write the F-lines in this form, then the summary line, which
+counts the F-lines above it:
 
 ```
-¶ [section / heading]
-
-Section role: [section type, structure] — this ¶ serves as [role]. [OK / BLOCKING: role mismatch]
-Strengths: [what works well]
-
- 1. Sentence level: largest subject→verb gap S_ ("[head]" … "[verb]", N words); stress position [OK / S_ ends on "[tail]"]
- 2. Transitions: S1→S2: [relation]. S2→S3: [...]. ... [OK / MAJOR at S_→S_]
-3a. Structure:  S1 message: "[quote]". S2: [relation]. S3: [...]. ... [OK / MAJOR: S_ off-topic]
-3b. Density:    S1: [+new]. S2: [...]. ... [OK / MAJOR: S_ echo/filler]
- 4. ¶ bridge:   [relation to previous ¶ / skipped (no adjacent ¶)] [OK / MAJOR]
-5a. Consistency: [OK / skipped (single ¶, no other section) / MAJOR: terminology drift]
-5b. First use:  [TERM → spelled out / defined in §_ / never / skipped (no other part of the paper)]
-5c. Placement:  [OK / S_ belongs in {Experiments/Setup/...} / S_ repeats §_]
- 6. De-AI:      [PASS / MINOR: isolated hits / MAJOR: hits cluster in one sentence]; baseline: [type and file / none]; findings: ["phrase" (family), …]; dismissed: ["phrase" — reason, …]
- 7. Section:    [OK / MAJOR: ...]
- 8. Claims:     [OK / MAJOR: "X" unsupported / scope missing]
- 9. Formulas:   [OK / skipped / BLOCKING: symbol X undefined]
-
-Finding summary: N Blocking / N Major / N Minor
-
 F1 [BLOCKING / MAJOR / MINOR] (Checks _, _): [the defect, one line]
-   [Original / Revised / Why, for Blocking and Major]
-F2 ...
-
-Added facts: [none / each statement a Revised text adds]
+Finding summary: N Blocking / N Major / N Minor
 ```
 
-In the Audit shape, emit every labelled line of the template verbatim,
-including 3a–3b, 5a–5c, and `Added facts:`, each on its own line, with the
-colon immediately after the label. A skipped line still appears, with its
-reason. Put commentary after the colon, never between label and colon; the
-labels are parsed by downstream tooling.
-
-Severity labels BLOCKING/MAJOR/MINOR are valid in any check — the bracketed
-options above are examples, not exhaustive. A check line that finds a defect
-cites its F-number with the severity ("MAJOR (F2)"); a defect that already has
-an F-number is cited again, not re-rated. The Finding summary counts the
-F-lines by severity.
-
-Under each Blocking or Major F-line, provide:
-- **Original**: the problematic text
-- **Revised**: the replacement, built only from facts in the supplied text and
-  in sources you read; a fact the fix needs but the text lacks goes in as
-  `[fill: what is needed]`. Keep what the text supplies: a `[fill]` stands
-  only for a missing fact, never for content the text already has
-- **Why**: one-sentence reasoning
-
-After the last F-line, emit `Added facts:` followed by `none`, or by each
-statement about a cited work, a number, or a mechanism that a Revised text makes
-and the supplied text does not, so the author can verify it.
+Both end with `Added facts:` followed by `none`, or by each statement about a
+cited work, a number, or a mechanism that a Revised text makes and the
+supplied text does not, so the author can verify it.
 
 See `references/examples.md` for good vs bad audit examples.
 
@@ -378,6 +426,7 @@ Do not auto-invoke other skills. Present findings, let the user decide.
 
 ## Reference Files
 
-- `references/writing-philosophy.md` — the ten principles behind the checks, with academic sources
+- `references/audit-format.md` — the Audit template, ledger, and label rules
+- `references/writing-philosophy.md` — the eleven principles behind the checks, with academic sources
 - `references/section-rules.md` — detailed per-section conventions (Abstract, Intro, Method, etc.)
 - `references/examples.md` — good vs bad audit examples with severity labels
