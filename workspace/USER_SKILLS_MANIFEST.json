@@ -1,10 +1,8 @@
 {
   "snapshot_date": "2026-10-12",
   "source": "~/.claude/skills",
-  "active_skill_count": 162,
-  "retained_repository_only_skills": [
-    "run-pipeline"
-  ],
+  "active_skill_count": 158,
+  "retained_repository_only_skills": [],
   "excluded": [
     "humanizer/.git/",
     "oral-paragraph-audit/evals/results/",
@@ -843,7 +841,7 @@
     },
     {
       "name": "polish-english-paper",
-      "installed_skill_sha256": "aa615e30ac82d56dd69a050b9733660f8ae5c70423be7bfe834fa8cf4bfedb9c",
+      "installed_skill_sha256": "4f937b30185de3d9e6a9ba9d1b042033c549b28cab92025a04165ec137dbb40a",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },
@@ -861,12 +859,6 @@
       "observed_clone_head": "207bc6f7a1aa107e544099c2c7cc86816fba9628",
       "source_path": "skills/pre-submission-reviewer/SKILL.md",
       "skill_md_matches_clone": true
-    },
-    {
-      "name": "propose",
-      "installed_skill_sha256": "43278d846a33c0eb0ee087f35cddb97bc39613b8df715701cfd75edc78a34a18",
-      "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },
     {
       "name": "prototype",
@@ -941,12 +933,6 @@
     {
       "name": "run-experiment",
       "installed_skill_sha256": "2cd28f14ec231c437266f5a59d2e7f1e0f70d8b69f16bbd3f76e19b71aaa0138",
-      "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
-    },
-    {
-      "name": "run-gpu-experiment",
-      "installed_skill_sha256": "d3c0f1cf71b1483aae82f82a1e11b2510aaab4afb3f1c77ffd708c59789cf3cc",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },
@@ -1104,12 +1090,6 @@
       "skill_md_matches_clone": true
     },
     {
-      "name": "tutorial",
-      "installed_skill_sha256": "1cdb7bf2ee6dbdb462726a00dd28163c802a2ee92453fd01defeca9c27c59099",
-      "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
-    },
-    {
       "name": "typst-drawing",
       "installed_skill_sha256": "2af766be493b227ca4f27f4e5f44f5b0e1e53c2981e645cb919bc3fea8d398b2",
       "source": "https://github.com/zhc1212/claude-code-skills",
@@ -1165,12 +1145,6 @@
       "skill_md_matches_clone": true
     },
     {
-      "name": "write-paper-section",
-      "installed_skill_sha256": "c6ced925c22e601118108e230764ea1321d916f682c2e7ed055cc9ca0ab92412",
-      "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
-    },
-    {
       "name": "write-slides",
       "installed_skill_sha256": "3891ecf1c3948e0a482dc74fdfc8b02f87708cc408e7caf1011acd8320d32d63",
       "source": "https://github.com/QuantumBFS/sci-brain",
@@ -1210,5 +1184,16 @@
       "source_path": "skills/in-progress/writing-shape/SKILL.md",
       "skill_md_matches_clone": true
     }
-  ]
+  ],
+  "project_scoped_skills": {
+    "svd-llm": [
+      "propose",
+      "run-gpu-experiment",
+      "tutorial",
+      "write-paper-section"
+    ],
+    "lean-qit-agent": [
+      "run-pipeline"
+    ]
+  }
 }

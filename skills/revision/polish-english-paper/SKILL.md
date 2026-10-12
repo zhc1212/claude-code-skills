@@ -13,7 +13,7 @@ description: Use when user pastes an English LaTeX paragraph and wants paragraph
 ## When NOT to Use
 - Writing whole paper from scratch → use `ml-paper-writing`
 - Full-paper iterative improvement loop → use `auto-paper-improvement-loop`
-- Section-level drafting from outline → use `write-paper-section` / `paper-write`
+- Section-level drafting from outline → use `paper-write`
 - Fixing AI-generated style → use `deai-latex` (more specific)
 
 ## Instructions

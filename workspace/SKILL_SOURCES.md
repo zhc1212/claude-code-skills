@@ -37,8 +37,8 @@ inventory of the current user-level installation. One confirmed source override:
 |---|---|---|---|
 | `citation-verification` | [Galaxy-Dawn/claude-scholar](https://github.com/Galaxy-Dawn/claude-scholar) | `skills/review/citation-verification/` | Vendored in v1.0.12 by explicit user request. All nine source files match upstream commit `6ed46dac03191c7a734f49ed48b41195012098ff`; the MIT license and [provenance](../skills/review/citation-verification/PROVENANCE.md) accompany the copy and document three EOF whitespace normalizations. This replaces the older adapted version retained in v1.0.11. |
 
-`run-pipeline` is absent from the active user-level skills directory. Its
-repository copy is retained; absence from one installation does not retire it.
+`run-pipeline` is project-scoped: Lean-QIT-Agent tracks the current copy in its own
+`.claude/skills/`, and this repository keeps an older one in `project-skills/lean-qit-agent/`.
 Other third-party installations remain external to this repository.
 
 ## User-level synchronization (2026-09-29)

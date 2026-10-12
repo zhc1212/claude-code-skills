@@ -1,5 +1,9 @@
 # User-level snapshot — 2026-10-01
 
+Update 2026-10-12 (v1.0.23): `propose`, `run-gpu-experiment`, `tutorial`, `write-paper-section` and `run-pipeline`
+are project-scoped and live in `../project-skills/<project>/`; copy them into that project's `.claude/skills/`,
+not `~/.claude/skills/`.
+
 Update 2026-10-08 (v1.0.17): unlike the snapshot below, this sync follows an upgrade of 23 installed
 third-party skills to their current upstream; the README lists them. The installed files remain the source of truth.
 

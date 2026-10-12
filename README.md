@@ -4,9 +4,9 @@ Dr. Zhang's user-level Claude Code configuration and research workflow skills. T
 
 ## Skills by scenario
 
-163 skills in 15 scenario folders, `skills/<scenario>/<skill>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
+158 skills in 15 scenario folders, `skills/<scenario>/<skill>/`, plus 5 [project-scoped skills](#project-scoped-skills) in `project-skills/<project>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
 
-[Ideas and literature](#ideas-and-literature) · [Experiments](#experiments) · [Drafting a paper](#drafting-a-paper) · [Figures and tables](#figures-and-tables) · [Revising a draft](#revising-a-draft) · [Review before submission](#review-before-submission) · [Second model as adversary](#second-model-as-adversary) · [Nature-family journals](#nature-family-journals) · [Software-engineering venues](#software-engineering-venues) · [Slides and reports](#slides-and-reports) · [General writing](#general-writing) · [Software engineering](#software-engineering) · [Planning and decisions](#planning-and-decisions) · [Agent setup, memory and knowledge](#agent-setup-memory-and-knowledge) · [Utilities](#utilities)
+[Ideas and literature](#ideas-and-literature) · [Experiments](#experiments) · [Drafting a paper](#drafting-a-paper) · [Figures and tables](#figures-and-tables) · [Revising a draft](#revising-a-draft) · [Review before submission](#review-before-submission) · [Second model as adversary](#second-model-as-adversary) · [Nature-family journals](#nature-family-journals) · [Software-engineering venues](#software-engineering-venues) · [Slides and reports](#slides-and-reports) · [General writing](#general-writing) · [Software engineering](#software-engineering) · [Planning and decisions](#planning-and-decisions) · [Agent setup, memory and knowledge](#agent-setup-memory-and-knowledge) · [Utilities](#utilities) · [Project-scoped skills](#project-scoped-skills)
 
 ### Ideas and literature
 
@@ -26,7 +26,6 @@ Dr. Zhang's user-level Claude Code configuration and research workflow skills. T
 | `survey-writer` | Survey or SOTA report from a populated knowledge base |
 | `how-to-download-ref` | Add arXiv IDs or DOIs to a knowledge base (metadata, PDFs, BibTeX) |
 | `hv-analysis` | Horizontal–vertical (synchronic/diachronic) analysis of a topic |
-| `propose` | Brainstorm a method or direction and file it as a GitHub issue |
 | `vibe-research-workflow` | Rules for AI-assisted coding, figures and writing that keep you in charge |
 | `research-pipeline` | End to end: idea discovery → experiments → auto review → paper |
 | `auto-review-loop` | Multi-round external review of a project, fixing until it passes |
@@ -38,8 +37,6 @@ Dr. Zhang's user-level Claude Code configuration and research workflow skills. T
 | Skill | Use it for |
 |---|---|
 | `run-experiment` | Deploy experiments to local, remote, Vast.ai or Modal GPUs |
-| `run-gpu-experiment` | Launch a compress → finetune → eval run |
-| `run-pipeline` | Lean theorem-proving pipeline (Putnam, IMO, QIT) |
 | `monitor-experiment` | Check progress and output of running experiments |
 | `collect-results` | Aggregate results into comparison tables |
 | `analyze-results` | Statistics, comparisons and insights from results |
@@ -56,7 +53,6 @@ Dr. Zhang's user-level Claude Code configuration and research workflow skills. T
 | `paper-write` | Draft LaTeX section by section from an outline |
 | `paper-writing` | Pipeline: outline → figures → sections → compile |
 | `paper-writer` | Draft prose from the author's own materials, any field |
-| `write-paper-section` | Write or improve one section |
 | `intro-drafter` | Introduction along a six-paragraph flow |
 | `tech-paper-template` | Logical skeleton of a technical paper |
 | `benchmark-paper-template` | Structure of a benchmark or evaluation paper |
@@ -267,14 +263,25 @@ Nature 系列. Writing, review, figures, statistics and literature for Nature-fa
 
 ### Utilities
 
-工具. News, notifications, disk usage, project tutorial. `skills/utilities/`
+工具. News, notifications, disk usage. `skills/utilities/`
 
 | Skill | Use it for |
 |---|---|
 | `aihot` | Chinese AI news from aihot.news |
 | `feishu-notify` | Feishu/Lark notifications |
 | `storage-analyzer` | Read-only disk usage analysis (macOS, Windows) |
-| `tutorial` | Walkthrough of SVD_LLM compression, evaluation and fine-tuning |
+
+### Project-scoped skills
+
+These serve one project, so they install into that project's `.claude/skills/`, not `~/.claude/skills/`, and stay out of `plugin.json`. `project-skills/<project>/`
+
+| Skill | Project | Use it for |
+|---|---|---|
+| `propose` | SVD_LLM | Brainstorm a compression method or direction and file it as a GitHub issue |
+| `run-gpu-experiment` | SVD_LLM | Launch a compress → finetune → eval run |
+| `tutorial` | SVD_LLM | Walkthrough of SVD_LLM compression, evaluation and fine-tuning |
+| `write-paper-section` | SVD_LLM | Write or improve one section of the SVD_LLM paper |
+| `run-pipeline` | Lean-QIT-Agent | Lean theorem-proving pipeline (Putnam, IMO, QIT); the project tracks a newer copy, which takes precedence |
 
 ## Provenance and licenses
 
@@ -291,6 +298,16 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 - [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md) — current source policy and the historical third-party workspace inventory.
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
+
+## Skill routing by scenario and project-scoped skills — v1.0.23
+
+`workspace/USER_CLAUDE.md` rewrites the skill-routing tables: one row per scenario names a default skill and the
+condition for each alternative, figures get their own table by figure type, and ARS (`academic-paper`,
+`deep-research`, `sr-screener`, `academic-paper-reviewer`) has rows for planning, abstracts, citation checks, review
+responses, format conversion and disclosure. The table was cross-checked against every installed skill and reviewed by
+Codex. `propose`, `run-gpu-experiment`, `tutorial` and `write-paper-section` (SVD_LLM) and `run-pipeline`
+(Lean-QIT-Agent) move to `project-skills/<project>/` and leave the user-level installation; `polish-english-paper`
+drops its pointer to `write-paper-section`.
 
 ## figure-audit, figure-pipeline and new figure skills — v1.0.22
 
