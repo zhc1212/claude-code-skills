@@ -14,9 +14,13 @@ active installation.
 - `USER_CLAUDE.md` is an exact copy of the user-level `CLAUDE.md`, including its
   routing table and machine-specific paths. Review those paths before use on
   another machine. References to local memory describe files outside this snapshot.
-- `../skills/` contains skill instructions, references, scripts, tests, templates,
-  and assets. Copy the desired directories into `~/.claude/skills/`, or install
-  the repository as a plugin. Avoid exposing both copies under the same names.
+- `../skills/<scenario>/<skill>/` contains skill instructions, references, scripts,
+  tests, templates, and assets, grouped by scenario (README, Skills by scenario).
+  Copy the desired skill directories flat into `~/.claude/skills/`
+  (`cp -r skills/*/<skill> ~/.claude/skills/`), or install the repository as a
+  plugin. Avoid exposing both copies under the same names. The identical
+  `shared-references/` copies in several scenario folders restore to one
+  `~/.claude/skills/shared-references/`.
 - To restore the user configuration, review `USER_CLAUDE.md` against the existing
   `~/.claude/CLAUDE.md`, back up that file, then copy the snapshot into its place.
   The older `CLAUDE.md` in this directory is the preserved project-level example.
@@ -28,7 +32,7 @@ active installation.
 ## Deliberate exceptions
 
 - `slide-maker` was a link into `~/.claude/skills/.agents/skills/slide-maker`.
-  Its contents are materialized in `../skills/slide-maker/`; the hidden installer
+  Its contents are materialized in `../skills/slides/slide-maker/`; the hidden installer
   layout and redundant `.claude/skills/slide-maker` link are not duplicated.
 - `run-baseline` is a broken link into a QIprover worktree. No readable content
   exists at its target, so it cannot be included. No replacement is invented.

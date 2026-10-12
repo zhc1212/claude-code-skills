@@ -35,7 +35,7 @@ inventory of the current user-level installation. One confirmed source override:
 
 | Active skill | Upstream | Source path | Repository treatment |
 |---|---|---|---|
-| `citation-verification` | [Galaxy-Dawn/claude-scholar](https://github.com/Galaxy-Dawn/claude-scholar) | `skills/citation-verification/` | Vendored in v1.0.12 by explicit user request. All nine source files match upstream commit `6ed46dac03191c7a734f49ed48b41195012098ff`; the MIT license and [provenance](../skills/citation-verification/PROVENANCE.md) accompany the copy and document three EOF whitespace normalizations. This replaces the older adapted version retained in v1.0.11. |
+| `citation-verification` | [Galaxy-Dawn/claude-scholar](https://github.com/Galaxy-Dawn/claude-scholar) | `skills/review/citation-verification/` | Vendored in v1.0.12 by explicit user request. All nine source files match upstream commit `6ed46dac03191c7a734f49ed48b41195012098ff`; the MIT license and [provenance](../skills/review/citation-verification/PROVENANCE.md) accompany the copy and document three EOF whitespace normalizations. This replaces the older adapted version retained in v1.0.11. |
 
 `run-pipeline` is absent from the active user-level skills directory. Its
 repository copy is retained; absence from one installation does not retire it.

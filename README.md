@@ -1,17 +1,282 @@
 # zhc-skills
 
-Dr. Zhang's user-level Claude Code configuration and research workflow skills. This repository snapshots the active user-level skills, including third-party copies and their supporting resources. See the [snapshot notes](workspace/USER_LEVEL_SYNC.md), [source inventory](workspace/USER_SKILLS_MANIFEST.json), and [third-party licenses](workspace/third-party-licenses/).
+Dr. Zhang's user-level Claude Code configuration and research workflow skills. This repository snapshots the active user-level skills, grouped by scenario, including third-party copies and their supporting resources. See the [snapshot notes](workspace/USER_LEVEL_SYNC.md), [source inventory](workspace/USER_SKILLS_MANIFEST.json), and [third-party licenses](workspace/third-party-licenses/).
 
-## What This Plugin Does
+## Skills by scenario
 
-159 bundled skills (v1.0.15): 158 active user-level skills plus the retained `run-pipeline` skill. The original research bundle covers:
+163 skills in 15 scenario folders, `skills/<scenario>/<skill>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
 
-- **Cross-model debate** — structured Claude+Codex deliberation (codex-debate, codex-debug-pair, codex-experiment-critic, codex-paper-adversary, codex-skill-optimizer)
-- **Experiment management** — GPU job orchestration on A800 (run-experiment, run-gpu-experiment, run-pipeline, monitor-experiment, collect-results, analyze-results, experiment-bridge, experiment-plot-advisor, upload-hf)
-- **Paper writing (legacy)** — plan-to-submission pipeline (paper-plan, paper-write, paper-compile, write-paper-section, shorten-latex, audits, templates). Legacy: maintained third-party stacks (claude-scientific-writer, /ars-*, ai-research, nature-skills) are the primary paper stack; these remain for workflow-specific use.
-- **Figure pipeline** — generation, audit, captioning (figure-pipeline, figure-designer, figure-spec, figure-audit, gen-figure-caption, gen-table-caption, typst-drawing)
-- **Idea & research** — ideation, literature, novelty check (idea-creator/discovery/evaluator, novelty-check, research-lit, research-pipeline, research-review, vibe-research-workflow)
-- **Utilities** — weekly-report, translate-zh-en, feishu-notify, tutorial, decision-mapping, meta-optimize
+[Ideas and literature](#ideas-and-literature) · [Experiments](#experiments) · [Drafting a paper](#drafting-a-paper) · [Figures and tables](#figures-and-tables) · [Revising a draft](#revising-a-draft) · [Review before submission](#review-before-submission) · [Second model as adversary](#second-model-as-adversary) · [Nature-family journals](#nature-family-journals) · [Software-engineering venues](#software-engineering-venues) · [Slides and reports](#slides-and-reports) · [General writing](#general-writing) · [Software engineering](#software-engineering) · [Planning and decisions](#planning-and-decisions) · [Agent setup, memory and knowledge](#agent-setup-memory-and-knowledge) · [Utilities](#utilities)
+
+### Ideas and literature
+
+选题与文献. Find and test research ideas, read the literature, run the end-to-end research pipeline. `skills/ideas-literature/`
+
+| Skill | Use it for |
+|---|---|
+| `idea-creator` | Generate and rank research ideas for a direction |
+| `idea-discovery` | From a broad direction to validated, pilot-tested ideas |
+| `idea-evaluator` | Score an idea on five dimensions and fit to the student |
+| `idea-writer` | Ideas report or proposal-style research plan |
+| `novelty-check` | Check an idea against recent literature |
+| `research-lit` | Quick related work: find, read and summarise papers |
+| `research` | Answer a question from primary sources into a Markdown note |
+| `deep-research` | Survey-grade investigation with verified citations |
+| `survey` | Survey a topic into a knowledge base |
+| `survey-writer` | Survey or SOTA report from a populated knowledge base |
+| `how-to-download-ref` | Add arXiv IDs or DOIs to a knowledge base (metadata, PDFs, BibTeX) |
+| `hv-analysis` | Horizontal–vertical (synchronic/diachronic) analysis of a topic |
+| `propose` | Brainstorm a method or direction and file it as a GitHub issue |
+| `vibe-research-workflow` | Rules for AI-assisted coding, figures and writing that keep you in charge |
+| `research-pipeline` | End to end: idea discovery → experiments → auto review → paper |
+| `auto-review-loop` | Multi-round external review of a project, fixing until it passes |
+
+### Experiments
+
+实验. Run, monitor and analyse GPU experiments; publish models. `skills/experiments/`
+
+| Skill | Use it for |
+|---|---|
+| `run-experiment` | Deploy experiments to local, remote, Vast.ai or Modal GPUs |
+| `run-gpu-experiment` | Launch a compress → finetune → eval run |
+| `run-pipeline` | Lean theorem-proving pipeline (Putnam, IMO, QIT) |
+| `monitor-experiment` | Check progress and output of running experiments |
+| `collect-results` | Aggregate results into comparison tables |
+| `analyze-results` | Statistics, comparisons and insights from results |
+| `experiment-bridge` | Implement an experiment plan, deploy it, collect first results |
+| `upload-hf` | Upload and verify model artifacts on the Hugging Face Hub |
+
+### Drafting a paper
+
+写论文. Outline and draft a paper, translate a Chinese draft, compile LaTeX. `skills/drafting/`
+
+| Skill | Use it for |
+|---|---|
+| `paper-plan` | Outline from review conclusions and results |
+| `paper-write` | Draft LaTeX section by section from an outline |
+| `paper-writing` | Pipeline: outline → figures → sections → compile |
+| `paper-writer` | Draft prose from the author's own materials, any field |
+| `write-paper-section` | Write or improve one section |
+| `intro-drafter` | Introduction along a six-paragraph flow |
+| `tech-paper-template` | Logical skeleton of a technical paper |
+| `benchmark-paper-template` | Structure of a benchmark or evaluation paper |
+| `translate-zh-en` | Chinese draft → publication-quality English LaTeX |
+| `paper-compile` | Compile LaTeX, fix errors, verify the PDF |
+
+### Figures and tables
+
+图表. Make plots and diagrams, then audit and fix them against venue rules and the top-venue bar. `skills/figures/`
+
+| Skill | Use it for |
+|---|---|
+| `figure-audit` | Audit a compiled paper's figures: readability, venue rules, top-venue bar |
+| `figure-pipeline` | Fix audited figures in a staged copy, prove the data unchanged, recheck |
+| `figure-designer` | Design the core figures: motivating example, overview, results |
+| `figure-spec` | Architecture and workflow diagrams from JSON to editable SVG |
+| `paper-figure` | Plots and tables from experiment results |
+| `paper-illustration` | AI-generated method illustrations (Gemini) |
+| `paper-arch-diagram` | Image-model prompts for architecture figures |
+| `experiment-plot-advisor` | Choose a chart type for experiment data |
+| `gen-figure-caption` | English figure captions from Chinese descriptions |
+| `gen-table-caption` | English table captions from Chinese descriptions |
+| `scientific-visualization` | Truthful, accessible data figures; palette and export checks |
+| `drawio-skill` | Editable draw.io diagrams with native export *(user-invoked)* |
+| `drawio-reconstruction` | Rebuild a reference image as an editable draw.io file |
+| `archify` | Architecture and flow diagrams as interactive HTML/SVG |
+| `typst-drawing` | Typst + CeTZ figures, diagrams and plots |
+| `how-to-review-figure` | Judge a figure's design against a rubric |
+
+### Revising a draft
+
+修改与润色. Paragraph- and paper-level revision: prose bar, defensive writing, notation, de-AI, polish. `skills/revision/`
+
+| Skill | Use it for |
+|---|---|
+| `oral-paragraph-audit` | Audit or rewrite paragraphs against the top-venue prose bar |
+| `defensive-writing-sweep` | List defensive (boundary) writing across a draft |
+| `notation-audit` | Symbols, acronyms and equation numbers across a paper |
+| `abstract-intro-audit` | Abstract and introduction structure against CVPR Highlight papers |
+| `deai-latex` | Remove AI writing style from paper prose |
+| `paper-polish` | Grammar, flow and tone, meaning preserved |
+| `polish-english-paper` | Paragraph-level English polishing |
+| `academic-humanizer` | Clarity and voice for papers and grant proposals |
+| `shorten-latex` | Trim a paragraph to fit the page limit |
+| `research-paper-writing` | Structure, flow and reviewer-facing presentation |
+
+### Review before submission
+
+投稿前审查. Whole-paper review, simulated reviewers, citation checks. `skills/review/`
+
+| Skill | Use it for |
+|---|---|
+| `paper-presubmit-audit` | Submission gate and reviewer lens for ML/NLP papers |
+| `pre-submission-reviewer` | Five-dimension pre-submission review, any field |
+| `reviewer-view-paper` | One harsh top-venue reviewer |
+| `citation-verification` | Verify references and catch fabricated ones |
+| `auto-paper-improvement-loop` | Two rounds of external review, fixes and recompile |
+
+### Second model as adversary
+
+跨模型对抗. Claude and Codex (GPT) debate, critique and review independently. `skills/cross-model/`
+
+| Skill | Use it for |
+|---|---|
+| `codex-debate` | Structured Claude–Codex debate on a decision |
+| `codex-debug-pair` | Independent bug hypotheses from both models |
+| `codex-experiment-critic` | Codex critiques an experiment plan before GPU hours |
+| `codex-paper-adversary` | Codex reviews to reject, venue-calibrated |
+| `codex-review` | Cross-model code review; Codex reads the repo |
+| `codex-skill-optimizer` | Cross-model audit and improvement of a skill |
+| `research-review` | Deep critical review of research by Codex |
+
+### Nature-family journals
+
+Nature 系列. Writing, review, figures, statistics and literature for Nature-family submissions. `skills/nature/`
+
+| Skill | Use it for |
+|---|---|
+| `nature-academic-search` | Multi-source search and citation management |
+| `nature-citation` | Find and verify supporting CNS-family literature |
+| `nature-data` | Data and code availability statements |
+| `nature-downloader` | Lawful full-text retrieval |
+| `nature-experiment-log` | Structured lab-notebook entries |
+| `nature-figure` | Figures in Python or R, and vector schematics |
+| `nature-literature-pipeline` | Search → score → read → deliver → archive |
+| `nature-paper-card` | Deep-reading card for one paper |
+| `nature-paper-to-patent` | Chinese invention patent drafts from papers |
+| `nature-paper2ppt` | Chinese PPTX from a paper |
+| `nature-polishing` | Polish or translate prose in Nature register |
+| `nature-proposal-writer` | Research proposals and opening reports |
+| `nature-reader` | Aligned bilingual reader for a paper |
+| `nature-ref-verifier` | Cross-check references field by field |
+| `nature-response` | Responses to reviewers and revision packages |
+| `nature-reviewer` | Mock peer review |
+| `nature-shared` | Shared references read by the other nature skills |
+| `nature-statistics` | Statistical reporting audit |
+| `nature-writing` | Manuscript arguments and sections from evidence |
+
+### Software-engineering venues
+
+软件工程会议. ICSE/FSE/ASE papers; the FSE submission cycle end to end. `skills/se-venues/`
+
+| Skill | Use it for |
+|---|---|
+| `fse-artifact-evaluation` | ACM artifact badges |
+| `fse-author-response` | Rebuttals and Major Revision letters |
+| `fse-camera-ready` | PACMSE camera-ready |
+| `fse-experiments` | Subjects, baselines, statistics and effect sizes |
+| `fse-related-work` | Position against the SE literature |
+| `fse-reproducibility` | Data availability and runnable anonymised artifacts |
+| `fse-review-process` | How FSE reviews work |
+| `fse-submission` | HotCRP readiness, page budget, anonymity |
+| `fse-supplementary` | Paper body versus artifact and appendix |
+| `fse-topic-selection` | FSE or another SE venue? |
+| `fse-workflow` | Timeline from venue fit to camera-ready |
+| `fse-writing-style` | First-page contribution, RQ contracts, threats to validity |
+| `se-research-paper-writing` | Papers for ICSE, FSE, ASE, ISSTA, TSE, TOSEM |
+
+### Slides and reports
+
+幻灯片与报告. Talk decks, deck audits, weekly reports. `skills/slides/`
+
+| Skill | Use it for |
+|---|---|
+| `slide-maker` | Presentation-grade .pptx decks |
+| `ppt-master` | Editable PPTX with brand, style and layout workspaces |
+| `write-slides` | Typst + Touying decks for talks |
+| `visual-audit-slides` | Layout audit of Quarto or Beamer decks |
+| `weekly-report` | Weekly progress report in the QuAIR LaTeX template |
+
+### General writing
+
+通用写作. Articles and non-paper prose. `skills/writing/`
+
+| Skill | Use it for |
+|---|---|
+| `humanizer` | Remove AI tells from non-paper prose |
+| `khazix-writer` | Long-form WeChat articles in Khazix's style |
+| `edit-article` | Restructure and tighten an article *(user-invoked)* |
+| `writing-beats` | Assemble material into beats *(user-invoked)* |
+| `writing-fragments` | Mine raw fragments *(user-invoked)* |
+| `writing-shape` | Shape material into an article *(user-invoked)* |
+
+### Software engineering
+
+工程开发. TDD, code review, design, refactoring, repository setup. `skills/engineering/`
+
+| Skill | Use it for |
+|---|---|
+| `code-review` | Review a diff against repo standards and the spec |
+| `codebase-design` | Vocabulary for deep modules and seams |
+| `design-an-interface` | Several radically different interface designs |
+| `domain-modeling` | Glossary and ADRs for the domain |
+| `tdd` | Test-first features and fixes |
+| `prototype` | Throwaway prototype for a design question |
+| `implement` | Build from a spec or tickets *(user-invoked)* |
+| `qa` | Conversational bug reports filed as issues |
+| `triage` | Move issues and PRs through triage *(user-invoked)* |
+| `request-refactor-plan` | Refactor plan in tiny commits, filed as an issue |
+| `improve-codebase-architecture` | Find deepening opportunities *(user-invoked)* |
+| `resolving-merge-conflicts` | Resolve a merge or rebase conflict |
+| `git-guardrails-claude-code` | Hooks that block dangerous git commands |
+| `setup-pre-commit` | Husky, lint-staged, type checks and tests |
+| `setup-matt-pocock-skills` | Configure a repo for these engineering skills *(user-invoked)* |
+| `setup-ts-deep-modules` | dependency-cruiser for deep TypeScript modules *(user-invoked)* |
+| `migrate-to-shoehorn` | Replace `as` in tests with shoehorn |
+| `scaffold-exercises` | Course exercise directories |
+| `ubiquitous-language` | DDD glossary from the conversation *(user-invoked)* |
+| `wizard` | Bash wizard for steps only a human can do |
+| `ask-matt` | Which engineering skill fits? *(user-invoked)* |
+
+### Planning and decisions
+
+规划与决策. Interrogate a plan, turn it into specs and tickets. `skills/planning/`
+
+| Skill | Use it for |
+|---|---|
+| `grill-me` | Relentless interview to sharpen a plan *(user-invoked)* |
+| `grill-with-docs` | The same interview, writing ADRs and a glossary *(user-invoked)* |
+| `grilling` | Stress-test a plan or idea |
+| `batch-grill-me` | Every open question at once, round by round *(user-invoked)* |
+| `loop-me` | Interview for workflow specs *(user-invoked)* |
+| `decision-mapping` | Loose idea → sequenced investigation tickets *(user-invoked)* |
+| `wayfinder` | Work bigger than one session, as decision tickets *(user-invoked)* |
+| `to-spec` | Conversation → spec on the issue tracker *(user-invoked)* |
+| `to-tickets` | Plan → tracer-bullet tickets with dependencies *(user-invoked)* |
+| `to-questionnaire` | An open decision → a questionnaire for someone else *(user-invoked)* |
+| `how-to-flow` | Autonomous search toward one hard, testable goal |
+| `teach` | Learn a new skill or concept *(user-invoked)* |
+
+### Agent setup, memory and knowledge
+
+智能体与知识管理. Write agent docs, hand off sessions, build research profiles and notes. `skills/agent-tools/`
+
+| Skill | Use it for |
+|---|---|
+| `writing-for-agents` | Write skills, CLAUDE.md and AGENTS.md |
+| `meta-optimize` | Propose skill and workflow changes from usage logs |
+| `neat-freak` | Reconcile docs, rules and memory with the code at closeout |
+| `handoff` | Handoff document for another agent *(user-invoked)* |
+| `claude-handoff` | Hand the conversation to a background agent *(user-invoked)* |
+| `create-advisor` | Advisor profile from conversation history |
+| `import-dialog` | Import dialog files into advisor profiles |
+| `how-to-dump-dialog` | Extract and classify research dialog from session logs |
+| `soul-extraction` | Cluster trigger → reaction patterns in dialog reports |
+| `know-me-better` | Learn your research style from your papers |
+| `obsidian-vault` | Search and organise Obsidian notes |
+
+### Utilities
+
+工具. News, notifications, disk usage, project tutorial. `skills/utilities/`
+
+| Skill | Use it for |
+|---|---|
+| `aihot` | Chinese AI news from aihot.news |
+| `feishu-notify` | Feishu/Lark notifications |
+| `storage-analyzer` | Read-only disk usage analysis (macOS, Windows) |
+| `tutorial` | Walkthrough of SVD_LLM compression, evaluation and fine-tuning |
+
+## Provenance and licenses
 
 Provenance: 3 adapted hybrids (paper-write, paper-plan, paper-figure) carry PROVENANCE headers naming their upstream sources. `citation-verification` is an MIT-licensed copy from Galaxy-Dawn/claude-scholar, with source provenance and three EOF whitespace normalizations recorded separately. 20 third-party imports were removed 2026-07-19.
 
@@ -49,6 +314,10 @@ regression suites pass.
 citation section is removed, see `PROVENANCE.md`); licenses are in `workspace/third-party-licenses/`.
 `abstract-intro-audit` adds check 9, contribution order and coverage. `workspace/USER_CLAUDE.md` routes figures
 across these skills.
+
+Skills now sit in 15 scenario folders (`skills/<scenario>/<skill>/`), listed in Skills by scenario and in
+`plugin.json`; a clean plugin install loads all 163. Restore a skill by copying its folder flat into
+`~/.claude/skills/`.
 
 ## notation-audit, defensive-writing-sweep, oral-paragraph-audit, paper-presubmit-audit — v1.0.21
 
@@ -163,7 +432,7 @@ version: `SKILL.md`, four reference documents, and the scripts README plus three
 Python reference implementations. All nine source files match the pinned upstream
 commit; packaging only removes extra EOF blank lines from three reference documents.
 The accompanying MIT license, attribution, and hashes are in
-[`skills/citation-verification/PROVENANCE.md`](skills/citation-verification/PROVENANCE.md).
+[`skills/review/citation-verification/PROVENANCE.md`](skills/review/citation-verification/PROVENANCE.md).
 
 ## User-Level Sync — v1.0.11
 
@@ -188,3 +457,5 @@ Skill-sources clones: mattpocock-skills, nature-skills, sci-brain-repo, khazix-s
 ## Update Ritual
 
 Any content change here → bump `version` in BOTH `plugin.json` and `marketplace.json` (and their `.claude-plugin/` copies), commit, push — else the installed plugin cache silently stays stale. Cache rebuilds on next Claude Code session.
+
+A synced skill goes back to its own folder, `skills/*/<skill>/`. A new skill gets one scenario folder and a row in Skills by scenario; a new scenario folder also goes into `plugin.json`'s `skills` list (both copies). `shared-references/` is copied into every scenario folder whose skills read `../shared-references/`; change all copies together. Skills that read each other by relative path stay in one folder: the `nature-*` skills with `nature-shared`, `oral-paragraph-audit` with `deai-latex` and `defensive-writing-sweep`, `import-dialog` with `how-to-dump-dialog`.

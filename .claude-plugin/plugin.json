@@ -17,6 +17,20 @@
     "experiment-management"
   ],
   "skills": [
-    "./skills/"
+    "./skills/ideas-literature/",
+    "./skills/experiments/",
+    "./skills/drafting/",
+    "./skills/figures/",
+    "./skills/revision/",
+    "./skills/review/",
+    "./skills/cross-model/",
+    "./skills/nature/",
+    "./skills/se-venues/",
+    "./skills/slides/",
+    "./skills/writing/",
+    "./skills/engineering/",
+    "./skills/planning/",
+    "./skills/agent-tools/",
+    "./skills/utilities/"
   ]
 }
