@@ -1,7 +1,7 @@
 {
-  "snapshot_date": "2026-10-10",
+  "snapshot_date": "2026-10-12",
   "source": "~/.claude/skills",
-  "active_skill_count": 160,
+  "active_skill_count": 162,
   "retained_repository_only_skills": [
     "run-pipeline"
   ],
@@ -34,7 +34,7 @@
   "skills": [
     {
       "name": "abstract-intro-audit",
-      "installed_skill_sha256": "dd4cacc44270abad12547579b79083b74f86f44b460b23b2f8d3eff0f9cc4ebc",
+      "installed_skill_sha256": "0e469ba109155c0133b65db6aa858325b49c59f49b68afbad9d745e5ed269158",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },
@@ -236,6 +236,15 @@
       "skill_md_matches_clone": true
     },
     {
+      "name": "drawio-skill",
+      "installed_skill_sha256": "922d7863a09e6521236bffb6989ebe4e9bce045ebd0f82866c94375fccfd1c6b",
+      "source": "https://github.com/Agents365-ai/drawio-skill",
+      "observed_clone_head": "57270820d3cd71cbdf4fb6b2f7091d4fb37bb019",
+      "source_path": "skills/drawio-skill/SKILL.md",
+      "skill_md_matches_clone": true,
+      "note": "MIT; PROVENANCE.md and LICENSE added."
+    },
+    {
       "name": "edit-article",
       "installed_skill_sha256": "e10fba546f45357fe0aaa7494b9e186910d4525818d19f9b2ad6f28cc506aa5e",
       "source": "https://github.com/mattpocock/skills",
@@ -262,7 +271,7 @@
     },
     {
       "name": "figure-audit",
-      "installed_skill_sha256": "180f12432247ce2989d8765cc2683b97e87663252730cb7dbacc7e727ecdf17b",
+      "installed_skill_sha256": "f83d43c1c829dae94a9359b03930e838a1c2d95ff1580e61fb367a7410b4397f",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },
@@ -276,7 +285,7 @@
     },
     {
       "name": "figure-pipeline",
-      "installed_skill_sha256": "a5b8389b829d09a113e551a53e8e885f3cf6f8b36029a37600c3d707d08b385e",
+      "installed_skill_sha256": "3da4118a5a6e7f6ccf49de6a237499f2dbad8b3267f31c0a77ce7e774724d037",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },
@@ -625,9 +634,9 @@
     },
     {
       "name": "nature-figure",
-      "installed_skill_sha256": "46f2cf74d473604ff9ad884893bbe2360b3431fec631009fce5c487945acf652",
+      "installed_skill_sha256": "5aefe708a2531c5ddaa8ee74d5155d747e96c0f21a33143d38316b7c5c88ffc4",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "d5c8baa15d6b1bd44bff07865da83961449da01a",
+      "observed_clone_head": "e605b35611ab2849af46d0cf7831aefdcf85be07",
       "source_path": "skills/nature-figure/SKILL.md",
       "skill_md_matches_clone": true
     },
@@ -948,6 +957,15 @@
       "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
       "source_path": "skills/misc/scaffold-exercises/SKILL.md",
       "skill_md_matches_clone": true
+    },
+    {
+      "name": "scientific-visualization",
+      "installed_skill_sha256": "59ab5f6e4454366d0bd539833acee3696bf22208bd1f921f4a8149d218552d21",
+      "source": "https://github.com/K-Dense-AI/scientific-agent-skills",
+      "observed_clone_head": "92ace75ac21efe19a620434e0ca4e356081fe807",
+      "source_path": "skills/scientific-visualization/SKILL.md",
+      "skill_md_matches_clone": false,
+      "note": "MIT; the closing citation section of SKILL.md is removed (see PROVENANCE.md)."
     },
     {
       "name": "se-research-paper-writing",

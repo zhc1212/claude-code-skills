@@ -16,3 +16,5 @@ deliberately. Fix recipes live in `figure-pipeline/references/repair-recipes.md`
 | Claiming "100% confidence" after single pass | Overconfidence after fixing N-1 issues | Recheck every affected figure after all fixes |
 | Fixing overlap by shrinking font | Quick fix | Re-run the script after the fix: still above the venue floor? |
 | Resizing one figure causes reflow | Smaller figure → text moves → different float placement | Recheck pages whose floats moved, and the venue page limit |
+| Generated look filed as taste | Each signal (per-seed marker shapes, ordinal legend, a caption listing encodings) was a Minor `[taste]` finding, so the repair skipped them; the author then called the figures "AI味" | Exemplar comparison in Phase 2: G signals carry `[exemplar]` and the generated-look severity basis |
+| Slide-drawn method figure at scale 0.47 | Reads well on screen; the measured sizes sit in one row of the script's table | Scale column below about 0.6 plus a 16:9 page and Office fonts: G5 in `top-venue.md` |

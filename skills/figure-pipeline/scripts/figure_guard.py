@@ -18,12 +18,24 @@ into categories:
 Usage (with the project's interpreter, from the directory the generator expects):
   figure_guard.py capture OUT_DIR [--root DIR] -- script.py [args]   (or: -- -m package.module [args])
   figure_guard.py compare BEFORE_DIR AFTER_DIR [--json]
+  figure_guard.py points BEFORE_DIR AFTER_DIR [--axis x|y] [--rows]
 
 capture also writes reads.json: every file under --root (default: the current directory) that
 the generator and its local imports opened for reading, with its sha256: the inputs to freeze and
 to re-check before writing back. Several generators captured into one directory share one
 reads.json. Exit status of compare: 1 when any DATA or NUMERIC difference exists, an output was
 saved on one side only, or bytes changed with no inventoried difference; else 0.
+
+points checks the invariant of a redesign that moves marks without changing values (points taken
+off a shared row, a dodge, open markers filled): per output, axes and series colour, the multiset
+of one coordinate over the plotted points (lines drawn with a marker, scatter offsets). A point's
+series colour is its fill, or its edge when the fill is white or empty, so filling an open marker
+keeps its series. Segments, reference lines, bands and meshes are not points. --rows also keys
+each point by its row, the other coordinate rounded to an integer (where categorical rows sit), so
+a value that moves between rows reads as a difference; use it when a dodge stays under half a row.
+Colour is the series identity: entities that share a colour on the same rows are pooled. Exit
+status 1 when any multiset differs, a capture directory is missing, or no points were found; values
+that trade series, or a series recoloured on purpose, read as a difference.
 """
 
 import argparse
@@ -110,8 +122,11 @@ def inventory(fig):
                 inv[data][f"{key}.paths"] = [rounded(path.vertices) for path in coll.get_paths()]
             if coll.get_array() is not None:
                 inv[data][f"{key}.array"] = rounded(coll.get_array())
+            if hasattr(coll, "get_coordinates"):  # QuadMesh (pcolormesh): its cell grid, which has no sizes
+                inv[data][f"{key}.coords"] = rounded(coll.get_coordinates())
             inv["STYLE"][f"{key}.style"] = [colour(coll.get_facecolor()), colour(coll.get_edgecolor()),
-                                            rounded(coll.get_linewidths()), rounded(coll.get_sizes())]
+                                            rounded(coll.get_linewidths()),
+                                            rounded(coll.get_sizes()) if hasattr(coll, "get_sizes") else None]
         for i, image in enumerate(ax.images):
             inv[data][f"{p}.image{i}"] = hashlib.sha256(image.get_array().tobytes()).hexdigest()
         seen = Counter()
@@ -229,6 +244,57 @@ def compare(before_dir, after_dir):
     return report
 
 
+def at(colours, i, n):
+    """Point i's colour from a per-point list, or the one colour all n points share."""
+    if isinstance(colours, list):
+        return colours[i] if len(colours) == n else (colours[0] if colours else "")
+    return colours or ""
+
+
+def points(capture_dir, column, rows=False):
+    blank = ("#ffffff", "#00000000")
+    seen = lambda c: next((x for x in c if x and not x.startswith(blank)), "")  # noqa: E731
+    result = {}
+    for path in Path(capture_dir).glob("*.json"):
+        if path.name == "reads.json":
+            continue
+        record = json.loads(path.read_text())
+        data, style = record["inventory"]["DATA"], record["inventory"]["STYLE"]
+        found = result.setdefault(record["file"], {})
+        for key, values in data.items():
+            base, kind = key.rsplit(".", 1)
+            if kind == "xy" and style.get(base + ".style", [None] * 4)[3] not in ("None", "", " "):
+                series = [seen(style[base + ".style"][5:7])] * len(values)
+            elif kind == "offsets" and base + ".paths" not in data and base + ".coords" not in data:
+                face, edge = style[base + ".style"][:2]
+                series = [seen([at(face, i, len(values)), at(edge, i, len(values))]) for i in range(len(values))]
+            else:
+                continue
+            for p, colour_ in zip(values, series):
+                group = f"{key.split('.')[0]} {colour_}" + (f" row {round(p[1 - column])}" if rows else "")
+                found.setdefault(group, Counter())[p[column]] += 1
+    return result
+
+
+def compare_points(before_dir, after_dir, column, rows=False):
+    for d in (before_dir, after_dir):
+        if not any(p.name != "reads.json" for p in Path(d).glob("*.json")):
+            return [f"{d}: no capture found"], True
+    before, after = points(before_dir, column, rows), points(after_dir, column, rows)
+    if not any(before.values()):
+        return ["no plotted points in the baseline capture"], True
+    lines, differs = [], False
+    for name in sorted(set(before) | set(after)):
+        b, a = before.get(name, {}), after.get(name, {})
+        for ax in sorted(set(b) | set(a)):
+            old, new = b.get(ax, Counter()), a.get(ax, Counter())
+            lost, gained = old - new, new - old
+            differs |= bool(lost or gained)
+            lines.append(f"{name} {ax}: " + (f"equal ({sum(old.values())} points)" if not (lost or gained) else
+                                              f"differs: -{sorted(lost.elements())[:8]} +{sorted(gained.elements())[:8]}"))
+    return lines, differs
+
+
 def render(report):
     lines = []
     for f in report:
@@ -256,6 +322,11 @@ def main():
     cmp.add_argument("before")
     cmp.add_argument("after")
     cmp.add_argument("--json", action="store_true")
+    pts = sub.add_parser("points")
+    pts.add_argument("before")
+    pts.add_argument("after")
+    pts.add_argument("--axis", choices=("x", "y"), default="x")
+    pts.add_argument("--rows", action="store_true", help="also key points by row (other coordinate, rounded)")
     argv, command = sys.argv[1:], []
     if "--" in argv:
         argv, command = argv[:argv.index("--")], argv[argv.index("--") + 1:]
@@ -265,6 +336,10 @@ def main():
             parser.error("capture needs the generator after --")
         capture(args.out, command, args.root)
         return 0
+    if args.cmd == "points":
+        lines, differs = compare_points(args.before, args.after, "xy".index(args.axis), args.rows)
+        print("\n".join(lines))
+        return int(differs)
     report = compare(args.before, args.after)
     print(json.dumps(report, indent=1) if args.json else render(report))
     return int(any(f["DATA"] or f["NUMERIC"] or f["only_in"] or f["unexplained"] for f in report))

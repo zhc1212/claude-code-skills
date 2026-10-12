@@ -27,6 +27,29 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
+## figure-audit, figure-pipeline and new figure skills — v1.0.22
+
+`figure-audit` now judges figures against the top-venue bar as well as the floor. Each figure gets a contract
+(claim, task type, panel roles); `references/top-venue.md` holds bar conventions B1–B8 and generated-look signals
+G1–G8 measured on the body figures of 16 award papers (NeurIPS 2025, ICLR 2026, ICML 2025–2026, ACL 2025–2026),
+each citing the figures that show it, an exemplar-comparison step, and diagram readings of A1–A7. Venue rules add
+ICML's alternative text and PDF tags and NeurIPS and ACL font embedding; Check 13 asks for the sampling unit,
+pairing, estimator and interval method; Check 14 checks what a diagram claims. Exemplar crops are other authors'
+figures and stay out of the repository.
+
+`figure-pipeline` adds representation changes: a plot redesign names its invariant before the edit, and
+`figure_guard.py points` checks it per series colour (`--rows` also per category row); a diagram redraw goes
+through FigGenie, `nature-figure`'s vector route or `drawio-skill` against a content inventory. Each finding is
+routed by source at intake, R generators go through the source-diff check, and the promote block exits nonzero
+on a moved text, a concurrent change, an existing path or a failed copy. Four Codex review rounds; both
+regression suites pass.
+
+`nature-figure` follows upstream `e605b35` (vector-schematic workflow and SVG audit). New third-party skills:
+`drawio-skill` (Agents365-ai, MIT, user-invoked) and `scientific-visualization` (K-Dense, MIT; its closing
+citation section is removed, see `PROVENANCE.md`); licenses are in `workspace/third-party-licenses/`.
+`abstract-intro-audit` adds check 9, contribution order and coverage. `workspace/USER_CLAUDE.md` routes figures
+across these skills.
+
 ## notation-audit, defensive-writing-sweep, oral-paragraph-audit, paper-presubmit-audit — v1.0.21
 
 Two new candidate-list skills from revising a paper; both edit nothing until the author picks candidates.

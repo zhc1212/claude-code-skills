@@ -209,6 +209,11 @@ Run these targeted checks:
    whiteboard model): Here is a problem → It's interesting → It's unsolved
    → Here is my idea → My idea works → Comparison. Check whether the
    components form this progressive arc rather than a disconnected list.
+9. **Contribution order and coverage**: an item whose wording presupposes
+   another ("still beats", "the same profile") comes after it, and each
+   research question the intro poses maps to one item. Per-item checks (one
+   claim per item, a title that covers its item) belong to
+   `/oral-paragraph-audit` Check 3a.
 
 **Cross-section checks** (when both abstract and intro are available):
 1. **Story alignment**: Same problem framing, same contribution emphasis?

@@ -7,15 +7,16 @@ other.
 
 ## Evidence tags and severity caps
 
-Tag every Check 15–16 finding with its basis. Severity follows consequence: **Major** when a
-reader at print size misreads the claim or must work noticeably harder to find it; **Minor** for
-polish. The tag caps how far a finding may go.
+Tag every Check 15–16 finding with its basis. Severity follows the consequence bases in SKILL.md
+(Major: the reader misreads or works noticeably harder, or the figure reads as generated beside
+designed top-venue figures; Minor: polish). The tag caps how far a finding may go.
 
 | Tag | Basis | Cap |
 |---|---|---|
 | `[measured]` | A number from `scripts/figure_text_audit.py`, `pdffonts`, or a geometry auditor; say which figure grouping it measured | Major |
 | `[evidence: source]` | An empirical perception study (Cleveland–McGill, Franconeri, Correll, Crameri) | Major |
 | `[guideline: source]` | Expert design guidance (Wong, Wilke, Rougier, Tufte) observed in the render | Major |
+| `[exemplar: paper:Fn]` | A bar convention (B) or generated-look signal (G) in `top-venue.md`, observed in the render and contrasted with a bar figure that shows the alternative (`paper:Fn`, a FigGenie exemplar id) or a corpus statistic | Major |
 | `[taste]` | A judgement a competent designer could reasonably decline | Minor |
 
 Venue requirements belong to Check 10, and suspected misrepresentation to Check 14 (substantiate
@@ -26,9 +27,11 @@ says what is uncertain and what evidence would settle it (a source file, the aut
 zoomed crop).
 
 Why the caps: multimodal models agree weakly with experts on aesthetics (VisJudge-Bench,
-ICLR 2026: correlation 0.18–0.41 on aesthetic dimensions) and misjudge fine geometry such as
-touching versus overlapping shapes (Rahmanzadehgervi et al., ACCV 2024). Measure what can be
-measured, judge the rest against a cited principle, and mark what remains as taste.
+ICLR 2026: correlation about 0.16–0.47 on aesthetic dimensions for GPT-5 and Claude-4-Sonnet) and
+misjudge fine geometry such as touching versus overlapping shapes (Rahmanzadehgervi et al., ACCV
+2024). In a study of design-principle violations, frontier models corrected violations more
+reliably than they detected them (Sinnona et al., 2026). Measure what can be measured, judge
+the rest against a cited principle or a named exemplar convention, and mark what remains as taste.
 
 ## Viewing protocol
 
@@ -46,9 +49,9 @@ Judge figures the way a reviewer meets them.
 ## Check 15 — per-figure principles
 
 ### A1. Message and salience
-Write the figure's claim in one sentence (caption plus citing paragraph). The marks that carry
-it (the *hero*: the key comparison, an effect, an uncertainty, a limitation) are the most
-salient; *context* (reference series, scaffolding, gridlines) is visibly quieter.
+Take the claim from the figure contract (`top-venue.md`). The marks that carry it (the *hero*:
+the key comparison, an effect, an uncertainty, a limitation) are the most salient; *context*
+(reference series, scaffolding, gridlines) is visibly quieter.
 - Exceptions: parity or benchmark figures where no method should dominate; a salient baseline
   when the baseline is the point; a highlighted non-winner the text discusses.
 - Source: Rougier et al. 2014 (rules 2, 9); Wong, "Salience to relevance", *Nat. Methods* 2011;
@@ -64,6 +67,7 @@ difference (gain, delta, paired change) spares the reader a subtraction. These a
 ranked by evidence, applied to the figure's task.
 - Source: Cleveland & McGill 1984; Heer & Bostock 2010; Franconeri et al. 2021 (comparisons
   run at two or three per second).
+- The strongest form draws the claim itself in data coordinates (B1 in `top-venue.md`).
 - Flag only when the key comparison is demonstrably hard: it depends on area, angle or colour
   intensity, on stacked segments off the baseline, or on panels without a shared axis, and the
   render shows the difference is hard to judge. `[evidence]`, up to Major.
@@ -95,18 +99,19 @@ required (Check 6).
 ### A5. Typographic hierarchy
 Text of one role (panel label, axis label, tick label, legend, annotation) shares one size,
 weight and family; roles keep a visible order (panel labels ≥ axis labels ≥ tick labels).
-Figure text sits close to the caption size so the figure reads as part of the page. The paper
+Figure text sits close to the caption size so the figure reads as part of the page (the bar:
+ratio ≥ 0.8, B7; a venue's own value, such as ICML's caption size, is checked under Check 10). The paper
 follows one family convention (sans throughout as Nature requires, or the body family); bold,
 italic and a math fallback (STIX, Computer Modern) belong to that family, and metric-compatible
 clones count as one (Liberation Serif, Nimbus Roman, TeX Gyre Termes and Times all read as Times). Casing and number
-formats stay consistent; units sit in parentheses; text is black or grey (Nature: no coloured
-text).
+formats stay consistent; units sit in parentheses; text is black or grey, except a direct label
+in its series colour (B6; Nature: no coloured text).
 - Source: Wong, "Typography", *Nat. Methods* 2011; Wilke ch. 24 (use larger axis labels); Nature
   figure specifications.
 - Measure with `scripts/figure_text_audit.py`: `families`, `math_fonts`, and the size list with
   samples identify roles (`[measured]`).
 - Flag one role at several sizes, tick labels larger than axis labels, a second text family, or
-  figure text far below the caption (median under about 0.7× caption). Minor; text below the
+  figure text below the bar (median under 0.8× caption). Minor; text below the
   venue floor is Check 2.
 
 ### A6. Colour discipline
@@ -117,8 +122,10 @@ distinguishable; grey can carry context and an accent the claim. Colour is paire
 line style, position or a direct label. An entity keeps one colour.
 - Source: Crameri, Shephard & Heron, *Nat. Commun.* 2020; Okabe & Ito palette; Wong, "Color
   coding", *Nat. Methods* 2010; Wilke ch. 19–20.
-- Verify contrast and grayscale separation with K-Dense `palette_audit.py` when hex values are
-  known, or compare a grayscale render (`pdftoppm -gray`).
+- Verify contrast and grayscale separation with `scientific-visualization/scripts/palette_audit.py`
+  (sibling skill) when hex values are known, or compare a grayscale render (`pdftoppm -gray`).
+- Bar conventions: B2 (one colour per entity), B3 (ramps for ordered variables), B4 (theory dashed,
+  data as markers) in `top-venue.md`.
 - Flag a diverging map without a meaningful centre, a non-uniform map on ordered data, colour as
   the only cue, or one colour with two meanings (`[evidence]`, Major); more hues than the
   categories need (`[taste]`, Minor).
@@ -128,7 +135,8 @@ Each label sits nearest its referent. With a few series, direct labels at line e
 groups spare legend lookups; when they would crowd or collide, one legend outside the data,
 ordered like the data and shared across panels that repeat it, reads better.
 - Source: Rougier et al. 2014 (rule 8); Wilke ch. 20; Franconeri et al. 2021 (lookups load
-  working memory).
+  working memory). Bar conventions B5 (one shared legend outside small multiples) and B6 (direct
+  labels) in `top-venue.md`.
 - Flag a label nearer the wrong referent, legend order that differs from visual order, or a
   repeated identical legend (`[guideline]`, Minor); "could be direct-labelled" (`[taste]`).
 
@@ -161,7 +169,13 @@ types (schematic versus plot) may differ in layout.
   2010; Borkin 2016; Few 2011). Flag only decoration that carries nothing.
 - **Gridlines**: light gridlines are acceptable at ML venues; Nature asks for none.
 - **Serif versus sans**: either passes when one convention holds for the whole paper and the
-  venue allows it.
+  venue allows it. Award-paper body figures: sans 30, mixed 28, serif 14 of 72 classifiable, under
+  Times body text.
 - **Rainbow maps**: no on ordered magnitude; for cyclic or categorical data, judge whether the
   palette is cyclic and its categories distinguishable, not whether it is a rainbow.
 - **Zero baselines for lines and intervals**: not required (Check 6).
+- **Series-coloured text**: the built-in `dataviz` skill forbids it; bar-tier ML figures use it for
+  direct labels (B6). Allow it for direct labels outside the Nature family.
+- **Colour count in diagrams**: systems-venue corpora favour more fills, nature-figure fewer; audit
+  that fills are keyed and consistent (`top-venue.md`, Diagrams).
+- **Default palettes**: tab10 alone is not a defect; bar-tier figures use it.

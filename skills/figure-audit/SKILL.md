@@ -1,6 +1,6 @@
 ---
 name: figure-audit
-description: "Audits the figures and tables of a compiled paper PDF for print readability, submission compliance, aesthetics, and consistency across the figure set, measuring rendered text from the PDF itself. Proactively trigger after any figure regeneration, figsize change, or plotting-script edit. Use when the user says 'audit figures', 'figure quality check', 'figure aesthetics', '检查图的质量', '图有没有问题', '图好不好看', '审美', '风格统一', 'table质量', '检查字体', '精益求精', '100% submission-ready'. Report-only. Not for generating figures (nature-figure, paper-figure), fixing them (figure-pipeline), the visual design of a standalone image (how-to-review-figure), or paragraph writing (oral-paragraph-audit)."
+description: "Audits the figures and tables of a compiled paper PDF for print readability, submission compliance, aesthetics, and consistency across the figure set, measuring rendered text from the PDF itself. Proactively trigger after any figure regeneration, figsize change, or plotting-script edit. Use when the user says 'audit figures', 'figure quality check', 'figure aesthetics', '检查图的质量', '图有没有问题', '图好不好看', '审美', '风格统一', 'table质量', '检查字体', '精益求精', '100% submission-ready', or asks whether figures reach the top-venue bar or look generated ('顶会风格', 'AI味'). Report-only. Not for generating figures (nature-figure, paper-figure), fixing them (figure-pipeline), the visual design of a standalone image (how-to-review-figure), or paragraph writing (oral-paragraph-audit)."
 ---
 
 # Figure & Table Audit for Papers
@@ -18,7 +18,8 @@ Phase 1 only: fonts, rendered text sizes, raster resolution, file size. A mid-ed
 check. It certifies nothing about overlap, encoding or aesthetics.
 
 ### Full (30–60 min)
-Phases 1–3: Checks 1–16 on every figure and table. For pre-submission.
+Phases 1–3: Checks 1–16 on every figure and table, judged against the top-venue bar (the figure
+contract and the exemplar comparison). For pre-submission.
 
 ### 精益求精 (Full + Codex)
 Full, then a blind Codex review of the rendered pages and an adjudication round (Phase 4). For
@@ -41,7 +42,7 @@ measurements; independence comes only from Phase 4.
 ```
 0. Freeze:   audit a snapshot of the PDF, never the live file
 1. Phase 1:  Measure (pdffonts, scripts/figure_text_audit.py, formats, size)
-2. Phase 2:  Per-figure inspection, Checks 3–15, under the viewing protocol
+2. Phase 2:  Per-figure contract, Checks 3–15 under the viewing protocol, exemplar comparison
 3. Phase 2b: Figure-set review, Check 16, once per paper
 4. Phase 3:  Verification pass: every finding re-seen, every check given a disposition
 5. Phase 4:  (精益求精) blind Codex review, then adjudication
@@ -79,10 +80,16 @@ measurements; independence comes only from Phase 4.
 
 ## Phase 2: Per-figure Inspection
 
-Follow the viewing protocol in `references/aesthetics.md`: the page render in context, 300 dpi
-crops for geometry, the squint test for salience. Judge each panel of a multi-panel figure
-separately. Run Checks 7–10 on each table. For papers with more than five figures, one subagent
-per page may run Phase 2 in parallel.
+1. **Contract**: per figure, write the claim, the task type and the panel roles
+   (`references/top-venue.md`). A1, Check 12 and the exemplar comparison read it.
+2. **Checks**: follow the viewing protocol in `references/aesthetics.md`: the page render in
+   context, 300 dpi crops for geometry, the squint test for salience. Judge each panel of a
+   multi-panel figure separately. Run Checks 7–10 on each table. Mechanism and architecture
+   figures take the diagram readings of A1–A7 in `references/top-venue.md`.
+3. **Exemplar comparison**: per figure, against two or three bar figures of its task type
+   (`references/top-venue.md`), until every applicable B row and every G row has a disposition.
+
+For papers with more than five figures, one subagent per page may run Phase 2 in parallel.
 
 | # | Check | Applies to | Key signal | Defined in |
 |---|-------|-----------|------------|------------|
@@ -143,7 +150,8 @@ Give Codex what a reviewer sees, before it sees any of Claude's findings.
    matters for a reader, and a fix. Mark judgements a competent designer could decline as taste.
    Say what you could not judge from the images.
    ```
-3. **Adjudicate**: `codex exec resume <threadId>` with Claude's findings. For every disagreement,
+3. **Adjudicate**: `codex exec resume <threadId>` with Claude's findings and the Phase 2 exemplar
+   crops, labelled as the bar for each figure's task type, not as findings. For every disagreement,
    reopen the crop. Agreed findings stand. A side may change its verdict only by naming something
    in the crop or the rubric the other missed; bare agreement does not count, since an informed,
    resumed thread drifts toward deference. Disputes still open become REVIEW NEEDED with both
@@ -166,15 +174,17 @@ Independent review: Codex blind under rubric [12 hex] / none
 - Blocking: N | Major: N | Minor: N | Review needed: N | Not auditable: N
 
 ## Assets
-| Key | Label | Files | Page |
+| Key | Label | Files | Source (generator, native file, none) | Page |
 
 ## Measurements (scripts/figure_text_audit.py)
 | Fig | Page | Files | Scale | Width | Text pt min/med/max | < floor | Fonts |
 
-## Figure 1 (page P): [one-sentence claim]
+## Figure 1 (page P, [task type]): [one-sentence claim]
 1–14: PASS except the IDs below / N/A: [checks]
 15: A1 … A7 dispositions, each with its tag
+Bar: exemplars [paper:Fn, … / none: reason] | B [row: disposition, …] | G [row: disposition, …]
 - `hero-6-log-axis` ISSUE (Minor) [guideline: source]: what, where, why → fix
+- `hero-A7-legend` ISSUE (Major) [exemplar: rlreason F8] G2: what, where, why → fix
 - `hero-A1-salience` REVIEW NEEDED: what would settle it
 ...
 
@@ -195,16 +205,19 @@ Independent review: Codex blind under rubric [12 hex] / none
 
 **Finding IDs**: `<asset>-<check>-<slug>`, where asset is the float's `\label` without its prefix
 (`fig:hero` → `hero`), else the graphic's file stem, else `figN`/`tabN`; `set` for a figure-set
-finding, which lists its figures. Check is 1–14, 3a–3d, A1–A7 or 16. One defect gets one ID even
+finding, which lists its figures. Check is 1–14, 3a–3d, 4b, A1–A7 or 16. One defect gets one ID even
 when it cites several checks, and keeps it for life: a Recheck reuses baseline IDs and mints new
-ones only for new findings. `figure-pipeline` selects and tracks findings by these IDs.
+ones only for new findings. `figure-pipeline` selects and tracks findings by these IDs. A finding
+that applies a top-venue row (`B1`–`B8`, `G1`–`G8`) names it after its tag, as in the format above.
 
 **Status**: PASS, ISSUE, REVIEW NEEDED, NOT AUDITABLE (evidence missing), N/A.
 
 **Severity** (for ISSUE):
 - **Blocking**: a verified breach of an applicable venue requirement, or a substantiated
   correctness failure (wrong data, misrepresentation, broken reference).
-- **Major**: at print size the reader misreads, cannot read, or must work noticeably harder.
+- **Major**: at print size the reader misreads, cannot read, or must work noticeably harder; or
+  the figure reads as generated or careless beside designed top-venue figures, shown by an
+  `[exemplar]` citation (`references/top-venue.md`).
 - **Minor**: polish. `[taste]` findings stay Minor.
 
 ## After the Audit: Handoff
@@ -231,6 +244,9 @@ Present findings and leave the plotting scripts untouched; the user decides.
 
 - `references/checks.md`: Checks 1–14 in detail, and the status vocabulary
 - `references/aesthetics.md`: Checks 15–16, evidence tags, viewing protocol, contested points
+- `references/top-venue.md`: the figure contract and task types, the bar conventions (B) and
+  generated-look signals (G) with their exemplar figures, diagram readings of A1–A7, the exemplar
+  comparison
 - `references/venues.md`: widths, floors, fonts, resolution and size limits, each with source and
   strength
 - `references/pitfalls.md`: defects that passed earlier audits, and how to catch them

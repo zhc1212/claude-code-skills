@@ -55,6 +55,7 @@ Record the write-back candidates, every generator output and source, in the repo
 ```bash
 cd $REPO && sha256sum $GEN <style helpers> <outputs from cap0> > $RUN/baseline.sha256
 cd $REPO && sha256sum <main.tex and every file it inputs> > $RUN/text.sha256   # read by the Recheck only
+cd $REPO && for f in <paths the run creates>; do [ ! -e "$f" ] || echo "EXISTS: $f is not new; hash it above"; done
 ```
 
 ## 3. Capture after each edit
@@ -70,31 +71,37 @@ and its tree copy shows the source edit for the report.
 ## 5. Promote
 
 ```bash
-cd $REPO && sha256sum -c --quiet $RUN/baseline.sha256 || echo "BLOCKED: changed since staging"
-cd $REPO && sha256sum -c --quiet $RUN/text.sha256 || echo "TEXT MOVED: re-verify captions and citing sentences"
-for f in <edited sources and regenerated outputs>; do cp $TREE/$f $REPO/$f; done
+(cd $REPO && sha256sum -c --quiet $RUN/text.sha256 || { echo "TEXT MOVED: verify on a live copy"; exit 1; }
+ sha256sum -c --quiet $RUN/baseline.sha256 || { echo "BLOCKED: changed since staging"; exit 1; }
+ for f in <paths the run creates>; do [ ! -e "$f" ] || { echo "BLOCKED: $f appeared"; exit 1; }; done
+ for f in <edited sources and regenerated outputs>; do cp "$TREE/$f" "$f" || { echo "BLOCKED: copy of $f failed"; exit 1; }; done)
 ```
 
-Run the check immediately before copying. It detects a concurrent change; it is not a lock, so
-keep the gap between check and copy to one command. Files outside the list stay untouched.
+The block writes only after every check passes and exits nonzero otherwise. It detects a
+concurrent change; it is not a lock, so run it as one command right after the checks it relies on.
+Files outside the list stay untouched.
 
 Keep the edits as a script that re-applies them (exact replacements; a pattern for any line another
 author is still changing, such as a model name), so a BLOCKED promote costs one re-stage: stage the new
 commit, run the script, check that the source diff equals the verified one apart from the other change,
 capture, compare with the new `cap0`, compile, and Recheck what the other change touched.
 
-A moved text does not block: the promoted figures are the verified bytes, but the Recheck judged
-them against the old captions and citing sentences. Compare those of every changed figure with the
-live TeX, then compile a copy of the live paper with the promoted files, outside the live directory
-since another session may be building there:
+TEXT MOVED: the Recheck judged the figures against old captions and citing sentences. Compare those
+of every changed figure with the live TeX, then compile a copy of the live paper with the staged
+files, outside the live directory since another session may be building there. The block stops at
+the first failure (gated with `&&`: `set -e` does not hold in every agent shell) and hashes the live
+text before overlaying the staged files:
 
 ```bash
-rsync -a --exclude 'main.pdf' $REPO/paper/ $RUN/live/paper/ && (cd $RUN/live/paper && latexmk -pdf main.tex)
-python3 <figure-audit>/scripts/figure_text_audit.py $RUN/live/paper/main.pdf
+(rm -rf $RUN/live && mkdir -p $RUN/live && rsync -a --exclude 'main.pdf' $REPO/paper/ $RUN/live/paper/ \
+ && cd $RUN/live && sha256sum $(awk '{print $2}' $RUN/text.sha256) > $RUN/text.new \
+ && for f in <edited sources and regenerated outputs>; do cp "$TREE/$f" "$RUN/live/$f" || exit 1; done \
+ && cd paper && latexmk -pdf main.tex && python3 <figure-audit>/scripts/figure_text_audit.py main.pdf)
 ```
 
-Each changed figure's row (width, scale, text sizes) must equal the staged PDF's; page and figure
-numbers may move.
+When it exits 0 and each changed figure's row (width, scale, text sizes) equals the staged PDF's
+(page and figure numbers may move), adopt the live hashes with `mv $RUN/text.new $RUN/text.sha256`
+and run the promote block again.
 
 ## Evidence crops
 

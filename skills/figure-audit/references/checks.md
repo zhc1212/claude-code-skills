@@ -23,8 +23,10 @@ file, or the script's per-figure font list).
 Measure, then read. `scripts/figure_text_audit.py main.pdf --floor F` reports every figure's
 rendered sizes, including tick labels (the most common failure) and math sub/superscripts.
 
-- Below the venue floor (`venues.md`): **MAJOR**, naming the glyphs and their sizes.
-- Legible but far smaller than the caption: A5 in `aesthetics.md`.
+- Below the venue floor (`venues.md`): **MAJOR**, naming the glyphs and their sizes. At ML venues
+  the floor is this skill's 7 pt heuristic: it marks reader cost, not acceptance (44 of 63 measurable
+  venue-template figures in award papers fall below it, `top-venue.md`).
+- Above the floor but below the bar (ratio to the caption under 0.8): A5 in `aesthetics.md`.
 - Figures the script cannot measure (outlined text, rasters, inline TikZ/pgfplots, "captions
   without an included graphic"): estimate from the 300 dpi crop against a known size such as the
   caption, and report REVIEW NEEDED with the estimate.
@@ -86,6 +88,8 @@ Check:
 ## 6. Data Integrity
 
 - Every axis has a label with units in parentheses where applicable
+- Transforms and normalisation are stated (axis label or caption); missing values show as gaps,
+  never bridged by a line (K-Dense `scientific-visualization`)
 - **Ranges are deliberate**. Bars and filled areas start at zero, since length is the encoding;
   lines, points, intervals and confidence bands may use a narrower range chosen for the effect
   size the claim warrants. Compared panels share a range. Log axes say so. A broken-axis mark does
@@ -97,8 +101,11 @@ Check:
 ## 7. Caption Quality
 
 - **Self-contained**: readable without main text
-- **States the takeaway** when the figure supports a claim; setup and example figures may
-  describe instead
+- **Opens with the takeaway** when the figure supports a claim (B8 in `top-venue.md`; the NeurIPS
+  2026 template's sample caption asks for "a key take-away message"); setup and example figures
+  may describe instead
+- **Names only the encodings the figure cannot show** (one or two, e.g. "shaded: 95% CI"); a
+  caption that lists every encoding is G3
 - **Numbers match**: any numbers in caption match the visual data
 - **Panel descriptions match panels**: (a)/(b) exist and are labeled
 - **Abbreviations defined**
@@ -123,7 +130,14 @@ Check:
 
 ## 10. Venue Compliance
 
-- No title inside figure (caption serves as title)
+- A figure-level title inside the figure: ISSUE where the venue advises against it (ICML: the
+  caption serves as title); elsewhere a floor habit (`top-venue.md`), Minor when it repeats the
+  caption. Panel headings naming a benchmark or a panel's content are fine. ICML also asks for lines ≥ 0.5 pt and no text on a grey
+  background (`venues.md`)
+- A venue's recommended value not met (ICML: figure text at least the caption size): ISSUE, severity
+  by consequence, never Blocking
+- Alternative text and PDF tags where the venue asks (ICML): REVIEW NEEDED when the PDF's structure
+  cannot be inspected
 - Resolution at placed size (script's effective DPI): ≥300 for photographs and colour, ≥600 for
   IEEE line art; vector for data plots (`venues.md`)
 - Format: PDF/EPS for vector; TIFF/PNG for raster. Avoid JPEG for data plots
@@ -147,7 +161,9 @@ Each item is an inspection trigger: confirm the harm at print size before report
 ## 12. Panel Design Coherence (multi-panel only)
 
 State the joint reading task: what the reader learns from the panels together that no panel
-gives alone. Typical reasons are a shared axis for direct comparison, a causal or temporal link,
+gives alone. Name each panel's role from the figure contract (`top-venue.md`): panels with
+different roles earn their place; a mirror layout that repeats one comparison per metric (G8) is
+MINOR. Typical reasons are a shared axis for direct comparison, a causal or temporal link,
 a zoom or aggregate relationship, or a synthesis the conclusion needs. One strong reason
 suffices.
 
@@ -159,7 +175,14 @@ when the task exists but the caption leaves it implicit.
 Data-driven — don't blindly require error bars:
 - Multi-seed results (± in tables, "n=", "seeds") → figure should show uncertainty
 - Single-seed → don't flag (experimental design issue, not figure issue)
-- When present: meaning stated (SD, SE, 95% CI, min-max)
+- `n` and the sampling unit (seed, dataset, subject) stated; units matched across conditions (the
+  same seed, the same dataset) shown as paired when the claim is about the paired change, and kept
+  identifiable when a claim rests on them (check this before removing a per-unit encoding, G1)
+- When present: meaning stated (SD, SE, 95% CI, min-max), the factor of variability named
+  (seeds, splits, initialisation), and the estimator and interval method given, with dependence
+  handled at the stated unit (paired seeds, repeated measures; REVIEW NEEDED when the methods do not
+  say); no symmetric bars that run out of range on an asymmetric quantity, such as a negative error
+  rate (NeurIPS 2026 checklist; scientific-visualization `references/publication_guidelines.md`)
 - Spot-check error bar extents against reported ± values
 
 ## 14. Claim-Data Consistency
@@ -168,3 +191,6 @@ Data-driven — don't blindly require error bars:
 - "best" → bolding correct across ALL entries in the group
 - Caption quotes a number → matches plotted value
 - Method naming consistent across all figures/tables/text
+- Diagrams: every edge's endpoints and direction match the method text; every branch ends, and
+  every transition names its condition; an object keeps its identity across states; a worked
+  example's numbers recompute from its inputs and operation (FigGenie mechanism anti-patterns)

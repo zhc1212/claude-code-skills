@@ -14,7 +14,7 @@ style files on 2026-10-09 (TeX points, 72.27 pt = 1 in).
 
 | Venue | `\textwidth` | `\columnwidth` | Source |
 |---|---|---|---|
-| NeurIPS 2025 | 5.50 in | single column | `neurips_2025.sty` |
+| NeurIPS 2025–2026 | 5.50 in | single column | `neurips_2025.sty`, `neurips_2026.sty` |
 | ICLR 2025–2027 | 5.50 in | single column | `iclr20xx_conference.sty` |
 | ICML 2026 | 6.75 in | 3.25 in | `icml2026.sty` |
 | ACL / EMNLP (`acl.sty`) | 6.30 in | 3.03 in | acl-org/acl-style-files |
@@ -32,11 +32,27 @@ script is the printed size. Rendered size = source size × scale.
 |---|---|---|---|
 | Nature family | Text 5–7 pt; panel labels 8 pt bold lowercase; sans-serif (Arial/Helvetica) | required | [Nature figure specifications](https://research-figure-guide.nature.com/figures/preparing-figures-our-specifications/), checked 2026-10-09 |
 | IEEE Transactions | Labels about 8–10 pt; subfigure labels 8 pt | recommended | IEEE Transactions template; some journals (e.g. TPEL) require ≥ 8 pt |
-| ML venues (NeurIPS, ICML, ICLR, ACL) | No stated minimum; use ≥ 7 pt rendered, 8–9 pt preferred | heuristic | this skill |
-| Any venue | Figure text near the caption size (A5 in `aesthetics.md`) | heuristic | Wong, "Typography", 2011 |
+| ICML 2026 | Figure text no smaller than the caption (9 pt) | recommended | [Accessible papers guidance](https://icml.cc/Conferences/2024/AccessiblePapersAndTalks), linked from the 2026 author instructions, checked 2026-10-12 |
+| CVPR | Figure fonts match the body text; readers cannot zoom | recommended | `sec/2_formatting.tex`, github.com/cvpr-org/author-kit, checked 2026-10-12 |
+| NeurIPS 2026, ICLR 2027, ACL | No stated minimum | — | style files and formatting guides, checked 2026-10-12 |
+| ML venues | Floor ≥ 7 pt rendered (below: Check 2, Major); bar ≥ 0.8× caption (A5, B7) | heuristic | this skill; award-paper measurements in `top-venue.md` |
+
+Caption sizes: ICML 2026 9 pt (`icml2026.sty`), ACL 10 pt (`acl.sty`), NeurIPS 2026 body size 10 pt
+(its sty sets no caption font; inferred).
 
 Sub- and superscripts count: mathtext sets scripts near 0.7× the parent, so a 7 pt label can
 carry a 4.9 pt script. The script measures them directly.
+
+## Lines, captions and colour
+
+| Venue | Rule | Strength | Source |
+|---|---|---|---|
+| NeurIPS 2026 | Artwork "neat, clean, and legible"; lines dark enough to reproduce; legible printed in black/white or colour; sample caption: "Explain what the figure shows and add a key take-away message" | recommended | `neurips_2026.tex` in the official formatting zip, checked 2026-10-12 |
+| ICLR 2027 | NeurIPS wording, plus "art work should not be hand-drawn" | recommended | `iclr2027_conference.tex`, github.com/ICLR/Master-Template, checked 2026-10-12 |
+| ICML 2026 | Lines dark and ≥ 0.5 pt; no text on a grey background; label every component, name each axis, a legend describing each curve; no title inside the figure | recommended | `example_paper.tex` §Figures in `icml2026.zip`, checked 2026-10-12 |
+| ICML 2026 | Do not rely on colour alone: combine shapes, positions, line types; add alternative text to all figures and tag the PDF | recommended | Accessible papers guidance, checked 2026-10-12 |
+| ACL / ARR | "grayscale readability is strongly encouraged"; no colour-only distinctions | recommended | `formatting.md`, github.com/acl-org/acl-style-files, checked 2026-10-12 |
+| CVPR | Line widths that render in print; not colour alone (red vs green): add a second discriminative feature | recommended | `sec/2_formatting.tex`, CVPR author kit, checked 2026-10-12 |
 
 ## Fonts
 
@@ -45,6 +61,8 @@ carry a 4.9 pt script. The script measures them directly.
 | Nature family | Embedded TrueType 2 or 42; no outlined text | required | Nature figure specifications |
 | ICML 2026 | "There is no Type 3 font check" | required (absence) | [ICML 2026 author instructions](https://icml.cc/Conferences/2026/AuthorInstructions), checked 2026-10-09 |
 | IEEE | All fonts embedded in EPS/PS/PDF figures | required | IEEE Author Center |
+| NeurIPS 2026 | Only Type 1 or embedded TrueType fonts; a file with Type 3 or non-embedded TrueType fonts is sent back for fixing | required | `neurips_2026.tex` §Preparing PDF files, checked 2026-10-12 |
+| ACL / ARR | Embed all necessary fonts | required | `formatting.md`, acl-style-files, checked 2026-10-12 |
 | Other venues | Check the current CFP or PDF checker (ACL `aclpubcheck`, ACM TAPS, IEEE PDF eXpress) | verify | — |
 
 Type 3 fonts from matplotlib are vector glyph programs, not bitmaps; they print sharply but

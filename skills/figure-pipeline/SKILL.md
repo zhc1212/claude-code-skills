@@ -1,6 +1,6 @@
 ---
 name: figure-pipeline
-description: "Fixes the figures of a compiled paper against figure-audit's findings: edits the figure sources in a staging copy, regenerates, recompiles, proves the plotted data unchanged, and verifies every fix with a figure-audit Recheck before writing back. Use after figure-audit reports Blocking or Major findings, for a visible defect (legend over data, clipped labels, text too small after scaling, Type 3 fonts), or when the user says 'fix the figures', 'fix the audit findings', 'figure pipeline', '修图', '修图流程', '按审计修图', '把图都修好', '统一图风格', '修复审美问题'. Not for report-only audits (figure-audit), new figures (paper-figure, nature-figure), or AI illustrations (paper-illustration)."
+description: "Fixes the figures of a compiled paper against figure-audit's findings: edits the figure sources in a staging copy, regenerates, recompiles, proves the plotted data unchanged, and verifies every fix with a figure-audit Recheck before writing back. Use after figure-audit reports Blocking or Major findings, for a visible defect (legend over data, clipped labels, text too small after scaling, Type 3 fonts), to redesign a plot or redraw a diagram that misses the top-venue bar or looks generated ('改成顶会风格', '去AI味', '重画方法图'), or when the user says 'fix the figures', 'fix the audit findings', 'figure pipeline', '修图', '修图流程', '按审计修图', '把图都修好', '统一图风格', '修复审美问题'. Not for report-only audits (figure-audit), new figures (paper-figure, nature-figure), or AI illustrations (paper-illustration)."
 argument-hint: "[paper-dir or main.tex path] [finding IDs]"
 ---
 
@@ -39,12 +39,19 @@ Paths: `<skill-dir>` is this skill's directory; figure-audit is its sibling `<sk
 2. **Select** findings by ID:
    - Blocking and Major: selected by default.
    - Minor: when the user picks them or asks to fix all findings.
-   - `[taste]`: only when the user asks for that aesthetic change.
+   - `[taste]`: only when the user asks for that aesthetic change; a top-venue request asks for
+     the ones that name a row.
+   - Findings naming a top-venue row (`B1`, `G2`; the audit writes the row id after the tag): all
+     of them when the user asks for top-venue quality or says the figures look generated;
+     otherwise by severity.
    - REVIEW NEEDED: settle it with the user first, else leave it unselected.
    - A finding that needs a scientific decision (a denominator, an interval definition, a claim
      in the text) goes to the user as a question; it is not a figure repair.
 
-Done when every selected ID is listed with its severity and who selected it.
+3. **Route** each selected ID by its source, from the audit's Assets table: generator, FigureSpec,
+   inline TikZ, native vector file, redraw, or none. Stage and Plan follow the route.
+
+Done when every selected ID is listed with its severity, who selected it and its route.
 
 ## 1. Stage
 
@@ -53,8 +60,9 @@ Commands are in `references/staging.md`.
 
 1. Copy the paper directory and the generator sources into `<run>/tree`, keeping
    repository-relative paths.
-2. Baseline capture in the tree: `figure_guard.py capture <run>/cap0 --root <run>/tree -- <generator>`
-   with the project's interpreter. A missing input stops the generator: copy that file in at
+2. Baseline capture in the tree for matplotlib generators: `figure_guard.py capture <run>/cap0 --root
+   <run>/tree -- <generator>` with the project's interpreter. Other routes, R included, take the
+   asset's sha256 and its 300 dpi crop as the baseline; a redraw adds the content inventory (Plan). A missing input stops the generator: copy that file in at
    the same relative path and re-run. `reads.json` is then the input set; confirm the repository
    holds the same bytes.
 3. Every output must be reproduced; the capture marks one that is not, so capture the baseline
@@ -63,7 +71,8 @@ Commands are in `references/staging.md`.
 4. Compile the tree with the project's own build command. `paper-compile` starts with
    `latexmk -C`, which wipes build state, so use the project command directly. The staged PDF's
    `figure_text_audit.py` rows must equal the report's Measurements.
-5. Record the repository hashes of every file the run may write back (`baseline.sha256`) and of
+5. Record the repository hashes of every file the run may write back (`baseline.sha256`), the
+   paths it will create (a redraw's native source), which must not exist yet, and the hashes of
    the TeX sources the Recheck reads (`text.sha256`).
 
 Done when the staged paper compiles, every output is reproduced, the rows match, and both hash
@@ -80,11 +89,13 @@ For each selected finding, fill one row:
 
   | Source | Repair route |
   |---|---|
-  | Python or R generator (one script or many) | Edit the generator, regenerate under the guard |
+  | Python generator, matplotlib (one script or many) | Edit the generator, regenerate under the guard |
+  | R or another plotting library | Edit the generator, regenerate; check the source diff (Repair, last paragraph) |
   | FigureSpec JSON (`figure-spec`) | Edit the JSON, validate, re-render |
   | Inline TikZ/pgfplots | Edit the TeX; verify on the compiled page |
   | Hand-drawn vector (Inkscape, draw.io) | Edit the native file, keeping entities and connections |
-  | AI illustration, or no source | BLOCKED: write a repair brief for the user or `paper-illustration` |
+  | Diagram whose drawing is the defect (slide canvas, G5–G7) | Redraw (below), once the user approves it |
+  | AI illustration, or no source | Redraw when the user approves one; otherwise BLOCKED: a repair brief for the user or `paper-illustration` |
 
 - **Recipe**: from `references/repair-recipes.md`, by check. The audit's fix text is the target;
   the recipe is the method.
@@ -93,6 +104,25 @@ For each selected finding, fill one row:
   figure-set (Check 16) one.
 - **Expected categories**: what the guard should report, e.g. a renamed label is TEXT, a marker
   change is STYLE, an added axis note is TEXT.
+
+- **Representation changes**: a fix that changes how values are shown (a G1 encoding removed,
+  points taken off a shared row, a fitted line added for B1) or redraws a diagram cannot pass the
+  DATA rule. An annotation stating the claim (B1 text, an arrow with its number) is TEXT and
+  NUMERIC and follows the normal rules. Record the user's approval in the row, then plan it as one of these:
+  - **Redesign of a data plot**: Expected categories names the invariant before the edit, as
+    inventory keys or a `points` call: "`figure_guard.py points cap0 capN --axis x --rows` equal" for
+    marks dodged in y within category rows, "`ax0.coll0.array` unchanged" for a restyled heatmap.
+    `points` identifies a series by colour (and with `--rows`, its row), so it holds only where each
+    colour is one entity: entities that share a colour on one row need their own check, as do a
+    deliberate recolour, a row moved on purpose (its whole multiset moves with its tick label) and
+    the pairing a claim rests on. Artists the edit removes (a min–max segment, a per-seed copy) are
+    listed by key as the authorised change.
+  - **Redraw of a diagram**: route to `figgenie:figgenie-paper-diagram` (ML and systems method
+    figures), `nature-figure`'s vector-schematic route (Nature family) or `/drawio-skill` (the user
+    wants draw.io); that skill's brief gate is the approval. The guard does not apply: Expected
+    categories holds the content inventory of the old figure, every component, edge, label and
+    formula. Formulas use the paper's macros, checked with `notation-audit`. For a LaTeX PDF from
+    FigGenie, run `export_pdf.py` on `fig.svg`: the font-embedded `fig.final.svg` exports Type 3.
 
 Done when every selected ID has a full row.
 
@@ -108,8 +138,9 @@ python <skill-dir>/scripts/figure_guard.py compare <run>/cap0 <run>/capN
 
 Read every line of the comparison:
 
-- **DATA**: plotted values changed. Revert the edit. Only a selected Check 6, 13 or 14 finding
-  that the user authorised as a change of representation may change data, and the report says so.
+- **DATA**: plotted values changed. Revert the edit, unless it belongs to a planned
+  representation change (Plan): then every DATA key is one of its listed removals or is covered by
+  its invariant, and the invariant check's output goes into the report's Guard column.
 - **NUMERIC**: a number in figure text was gained or lost. Each one must appear in the finding's
   fix and match its source (a table, the text, a data file) before you continue. Exit status 1
   means "needs attribution", not "revert".
@@ -157,15 +188,20 @@ script and the guard; independence comes only from Codex in 精益求精.
 
 ## 5. Promote
 
-1. Right before writing, check `baseline.sha256` against the repository. A mismatch means someone
-   changed the file since staging: BLOCKED. When the other change leaves your edits' meaning intact
-   (a renamed label), re-stage on the new state and re-apply them (`references/staging.md`);
-   otherwise reconcile with the user. A `text.sha256` mismatch means
-   the captions or citing sentences may have moved under the Recheck: compare them for every
-   changed figure, and compile a copy of the live paper with the promoted files, whose rows must
-   equal the staged PDF's.
+1. Right before writing, run the promote block (`references/staging.md`). It writes nothing and
+   exits nonzero when:
+   - `text.sha256` mismatches: the captions or citing sentences moved under the Recheck. Compare
+     them for every changed figure and compile a copy of the live paper with the staged files,
+     whose rows must equal the staged PDF's; then adopt the live text's hashes, taken before the
+     staged files were overlaid, and rerun.
+   - `baseline.sha256` mismatches, or a path the run creates now exists: someone changed it since
+     staging: BLOCKED. When the other change leaves your edits' meaning intact (a renamed label),
+     re-stage on the new state and re-apply them; otherwise reconcile with the user.
+   A copy that fails midway also exits nonzero, after the files before it were written: report
+   which.
 2. Copy back only the edited sources and the regenerated outputs. Data files never change; TeX
-   changes only for a selected caption or table finding.
+   changes only where a selected finding's route edits TeX (a caption, a table, inline TikZ, a
+   figure's width or layout). A redraw promotes its native source (SVG, `.drawio`) with the PDF.
 3. Leave commits and pushes to the user. The verified artifact is the staged PDF; the project's
    normal build makes the repository's PDF from the promoted files.
 
@@ -181,6 +217,8 @@ Final audit: Recheck [/ 精益求精] report [path]; its own Blocking/Major/Mino
 ## Repairs
 | ID | Source edit | Guard | Before/after | Disposition |
 | hero-6-log-axis | make_figures.py:scaling, xlabel | TEXT only | crops a/b | RESOLVED |
+| seeds-A1-identity | plot_seeds.py:main, one marker per arm | DATA: `points --axis x --rows` equal (N points); removed `<keys>` (min–max) | crops a/b | RESOLVED |
+| overview-A5-slide | redrawn with figgenie; fig1.pdf | content inventory: N/N present | crops a/b | RESOLVED |
 
 ## Not repaired
 - [ID]: BLOCKED / not selected / question for the user, and why
@@ -214,7 +252,9 @@ verdict, with its own coverage.
 
 - `references/staging.md`: commands for staging, capture, input freezing, compile, promote
 - `references/repair-recipes.md`: recipes by check, each with its semantic risk and verification
-- `scripts/figure_guard.py`: capture plotted content and classify changes (DATA, NUMERIC, TEXT, AXES, STYLE)
+- `scripts/figure_guard.py`: capture plotted content and classify changes (DATA, NUMERIC, TEXT, AXES, STYLE);
+  `points` checks the invariant of a redesign that moves marks
 - `scripts/test_figure_guard.py`: regression test; run it after editing the guard
 - figure-audit: `SKILL.md` (modes, Recheck, finding IDs), `references/checks.md`,
-  `references/aesthetics.md`, `references/venues.md`, `scripts/figure_text_audit.py`
+  `references/aesthetics.md`, `references/top-venue.md`, `references/venues.md`,
+  `scripts/figure_text_audit.py`

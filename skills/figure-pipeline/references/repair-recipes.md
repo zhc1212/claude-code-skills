@@ -65,14 +65,35 @@ and the report records the authorisation.
 
 | Principle | Problem | Smallest edit | Semantic risk |
 |---|---|---|---|
-| A1 | Salience off the claim | Emphasise the claimed series (weight, colour, label) and mute the rest to grey | None if values stay; check no other series loses its label |
+| A1 | Salience off the claim | Emphasise the claimed series (weight, colour, label) and mute context to grey, each grey labelled and used for one meaning | None if values stay; check no other series loses its label |
 | A2 | Key comparison hard to read | Direct labels at line ends; annotate the difference the caption claims | NUMERIC for an added difference: it must match the text or table |
 | A3 | Heavy non-data ink | Lighten grids and spines; drop frames and backgrounds | STYLE only |
 | A4 | Touching or misaligned elements | Move the label or connector; align panels on one grid; for near-tied markers, smaller markers, a distinct line pattern per series, the smaller shape drawn on top, and a thin white edge on filled marks in every plot of the set | Open markers can collide with a fill convention elsewhere in the set (16); jitter changes data positions and needs approval |
 | A5 | Flat or broken type hierarchy | One size per role (ticks < labels < panel titles), one weight for emphasis | STYLE only |
-| A6 | Palette noise or misleading colour | Fewer hues; one highlight; neutrals for context, and no entity in a neutral grey | Entity mapping across figures (16); simulate deuteranopia and protanopia on the most crowded region before adopting a new entity colour |
+| A6 | Palette noise or misleading colour | Fewer hues; one highlight; neutrals for context, a grey entity only when labelled and no other meaning shares its grey | Entity mapping across figures (16); simulate deuteranopia and protanopia on the most crowded region before adopting a new entity colour |
 | A7 | Legend far from data, missing key | Direct labels, or a legend in reading order next to the data | TEXT order changes are attributable |
 | 16 | Font differs across the set | One `font.family` in a shared style imported by every generator | Every consumer changes: all are in the expected-change set |
 | 16 | Same entity, different colour or marker | One `COLORS` / `MARKERS` mapping in the shared style | Same; check no two entities now share a channel |
 | 16 | Display name differs | One `LABEL` mapping used by every figure | TEXT only |
 | 16 | Same condition, different marker fill | Draw the series open, then append the filled points after every series; add a key in the set's wording | The guard reports appended points as STYLE `.overplot`; points interleaved between series re-key the later lines and read as DATA |
+
+## Top-venue bar (B) and generated-look signals (G)
+
+Entries are defined in figure-audit's `references/top-venue.md`; each finding carries its home
+check's ID. Rows marked *representation* follow the Plan's representation-change rule.
+
+| Entry | Problem | Smallest edit | Semantic risk |
+|---|---|---|---|
+| G1 | Identity encoding the claim does not use | One filled marker per series with a thin white edge; keep points on their row and split vertically only pairs closer than one marker diameter in data units | *Representation*: `figure_guard.py points --axis x --rows` equal; removed artists listed by key |
+| G2 | Ordinal or index legend | Remove the entries together with their encoding | TEXT |
+| G3 | Caption lists every encoding | Claim first, then the setup, then at most the encodings the figure cannot show | TeX; every number in the caption matches its source |
+| G4 | Unlabelled reference line; one grey, two meanings | Label the line directly or in the legend; give the second meaning its own neutral or line style | TEXT, STYLE |
+| G5–G7 | Slide-drawn diagram, boxed headers, clip-art | Redraw (SKILL.md, Plan) | Content inventory |
+| G8 | Mirror or equal panels | Merge, move a panel to the appendix, or give the primary evidence the width | *Representation*; the user decides |
+| B1 | Claim not drawn in the plot | Annotate the quantity the caption claims: a count ("24/24 below the baseline"), a delta with its number, a labelled better side | NUMERIC gained: matches the text or table |
+| B3 | Ordered or signed variable in categorical hues | Ordered magnitude: colour by rank from one sequential map. Signed or deviation: a diverging map centred on the meaningful midpoint (zero, a baseline). A colour bar for a continuous variable | STYLE; the centre is the data's midpoint, not the range's; the entity map elsewhere stays (16) |
+| B6 | Legend lookups for two to four series | Direct labels at line ends, in the series colour outside the Nature family | TEXT; check collisions on the crop |
+| B7 | Figure text below 0.8× the caption | Raise source sizes toward the caption size at the placed width; relocate before you shrink | AXES reflow; Recheck the page |
+
+B2, B4, B5 use the A6, A7 and 16 recipes above; a figure-level title, a value on every bar and dual
+axes (floor habits) use the Check 10, A3 and Check 11 recipes.

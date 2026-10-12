@@ -9,6 +9,8 @@ marker appended over a point its series already draws, or removed again, is STYL
 trading data, is DATA; a figure the edit does not touch stays byte-identical; an output the generator stops saving fails; the
 generator's data file and source appear in reads.json, also when they sit above the working
 directory and --root names the top, and across several generators captured into one directory.
+`points` keeps each series' x values when markers are filled, dodged in y and their min–max
+segments removed; it fails when values trade series, and when a capture directory is missing.
 """
 
 import json
@@ -87,6 +89,43 @@ def compare(before, after):
     return run.returncode, {f["file"]: f for f in json.loads(run.stdout)}
 
 
+DOTS = '''
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+
+SWAP, DODGE, SEG, FILLED, SAME = {params}
+vals = {{"A": [1.0, 2.0], "B": [8.0, 9.0]}}
+if SWAP:
+    vals = {{"A": vals["B"], "B": vals["A"]}}
+fig, ax = plt.subplots(figsize=(2, 1))
+for row, (arm, c) in enumerate([("A", "#0072b2"), ("B", "#0072b2" if SAME else "#d55e00")]):
+    xs = vals[arm]
+    ys = [row + (0.1 * k if DODGE else 0) for k in range(len(xs))]
+    if SEG:  # min-max segment: a LineCollection, whose offsets are not points
+        ax.hlines(row, min(xs), max(xs), color=c)
+    face, edge = (c, "white") if FILLED else ("white", c)
+    if arm == "A":
+        for x, y in zip(xs, ys):
+            ax.plot([x], [y], ls="", marker="o", mfc=face, mec=edge)
+    else:
+        ax.scatter(xs, ys, facecolors=face, edgecolors=edge, marker="s")
+fig.savefig("dots.pdf", metadata={{"CreationDate": None}})
+'''
+
+
+def capture_dots(root, name, swap=False, dodge=False, seg=True, filled=False, same=False):
+    (root / "dots.py").write_text(DOTS.format(params=repr((swap, dodge, seg, filled, same))))
+    subprocess.run([sys.executable, str(GUARD), "capture", str(root / name), "--", "dots.py"], cwd=root, check=True,
+                   stdout=subprocess.DEVNULL)
+    return root / name
+
+
+def points(before, after, axis, *extra):
+    return subprocess.run([sys.executable, str(GUARD), "points", str(before), str(after), "--axis", axis, *extra],
+                          capture_output=True, text=True).returncode
+
+
 def categories(report, file):
     return {c for c in ("DATA", "NUMERIC", "TEXT", "AXES", "STYLE") if report[file][c]}
 
@@ -137,6 +176,20 @@ def main():
             code, rep = compare(base, capture(root, name, **change))
             assert categories(rep, "diagram.pdf") == {"STYLE"} and code == 0, (name, rep["diagram.pdf"])
             assert rep["plot.pdf"]["bytes_identical"], name
+        moved = root / "divisor"  # every marker point's y changed, x kept
+        assert points(base, moved, "x") == 0 and points(base, moved, "y") == 1
+        assert points(base, root / "unlabelled swap", "y") == 0  # lines without markers are not points
+        dots = root / "dots"
+        dots.mkdir()
+        old = capture_dots(dots, "old")
+        redesigned = capture_dots(dots, "new", dodge=True, seg=False, filled=True)
+        assert points(old, redesigned, "x") == 0 and points(old, redesigned, "y") == 1
+        assert points(old, capture_dots(dots, "traded", swap=True, dodge=True, seg=False, filled=True), "x") == 1
+        assert points(old, dots / "missing", "x") != 0
+        assert points(old, redesigned, "x", "--rows") == 0  # a dodge under half a row keeps each row
+        same = capture_dots(dots, "same", same=True)  # one colour, two marker shapes, two rows
+        traded = capture_dots(dots, "same traded", swap=True, dodge=True, seg=False, filled=True, same=True)
+        assert points(same, traded, "x") == 0 and points(same, traded, "x", "--rows") == 1
         code, rep = compare(base, capture(root, "omitted", control=False))
         assert rep["control.pdf"]["only_in"] == "before" and code == 1, rep["control.pdf"]
 
