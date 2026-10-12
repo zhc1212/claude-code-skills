@@ -299,6 +299,14 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
+## figure-audit exemplar cards — v1.0.24
+
+figure-audit's exemplar comparison (`references/top-venue.md`) now picks its two or three bar exemplars from the
+task-type index of a local exemplar-card file when one is present (each card gives the exemplar's figure contract, its
+devices by B/G row and what not to copy), and diagram exemplars from the cards' diagram tier; without the file it falls
+back to the B table's plots and FigGenie as before. RL-Reasoning joins the bar tier it was already cited from. The
+manifest's `notation-audit` SKILL.md hash is corrected.
+
 ## Skill routing by scenario and project-scoped skills — v1.0.23
 
 `workspace/USER_CLAUDE.md` rewrites the skill-routing tables: one row per scenario names a default skill and the

@@ -752,7 +752,7 @@
     },
     {
       "name": "notation-audit",
-      "installed_skill_sha256": "4a1d5500b71c8d93c570020a8938cfbe36fbecadd36bb30e75f16842744ad7aa",
+      "installed_skill_sha256": "71ba26cc0610f8046f8a7836c0342c82996c6ceb903a9aae42949a30d0d9615b",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },

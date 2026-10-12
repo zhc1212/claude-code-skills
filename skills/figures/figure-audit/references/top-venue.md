@@ -13,8 +13,9 @@ its evidence `[exemplar: paper:Fn]` (`aesthetics.md`). Nothing here is a separat
   claim sentence; figure-level titles, a value on every bar and dual axes all occur.
   Those papers won on content, so the floor does not separate good figures from accepted ones.
 - **Bar**: what the designed subset does: Superposition, Diffusion-memorize, Flexibility Trap,
-  1000-layer, CollabLLM, and single figures of LLMs-Get-Lost and Hivemind. Tier membership is visual
-  judgement; each convention cites its figures so a finding can be checked or overridden.
+  1000-layer, CollabLLM, RL-Reasoning, and single figures of LLMs-Get-Lost and Hivemind. Tier
+  membership is visual judgement; each convention cites its figures so a finding can be checked or
+  overridden.
 - Measurements and crops, when present: `~/.claude/reference/figure-exemplars/` (private; the crops
   are other authors' figures and stay out of this skill).
 
@@ -46,8 +47,8 @@ boundary or failure case, mechanism (nature-figure `references/multipanel-eviden
 
 A missing convention is an ISSUE only when its home check's flag condition holds (A2: the key
 comparison is demonstrably hard; A7: a label by the wrong referent, legend order unlike the data, a
-repeated legend); the exemplar then substantiates it, at the home check's severity. Otherwise record a Minor `[taste]` suggestion naming the row, which the pipeline
-applies on a top-venue request.
+repeated legend); the exemplar then substantiates it, at the home check's severity. Otherwise record
+a Minor `[taste]` suggestion naming the row, which the pipeline applies on a top-venue request.
 
 | # | Convention | Home | Task types | Exemplars |
 |---|---|---|---|---|
@@ -140,11 +141,14 @@ Models agree weakly with experts on aesthetics and correct named violations more
 they detect them (`aesthetics.md`, Why the caps), so judge against named conventions and a
 reference figure.
 
-1. From the contract's task type, pick two or three bar exemplars of that task: plots from the B
+1. From the contract's task type, pick two or three bar exemplars of that task: from the task-type
+   index of `~/.claude/reference/figure-exemplars/cards.md` when present (each card gives the
+   exemplar's contract, its devices by B/G row and what not to copy), otherwise plots from the B
    table (a crop from `~/.claude/reference/figure-exemplars/crops/` when present, otherwise the
-   figure in the arXiv PDF); diagrams with FigGenie's `scripts/find_exemplars.py --domain …
-   --content … --semantics …` (its `print.png`). When none fits (off-domain matches only), record
-   that and the reason; the rows then carry their home checks' tags.
+   figure in the arXiv PDF); diagrams from the cards' diagram tier or with FigGenie's
+   `scripts/find_exemplars.py --domain … --content … --semantics …` (its `print.png`). When none
+   fits (off-domain matches only), record that and the reason; the rows then carry their home
+   checks' tags.
 2. View the figure's crop beside them at the same physical scale.
 3. Give every B row listed for the task type, and every G row, a disposition under its home check:
    PASS, ISSUE (`[exemplar: paper:Fn]`, or the home tag without a fitting exemplar), REVIEW NEEDED,
