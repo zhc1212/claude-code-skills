@@ -17,12 +17,14 @@ Defaults for every session. Project CLAUDE.md files add to these and win on conf
 - Keep diffs narrow: leave neighbouring code, comments, and formatting alone; follow the existing style unless tooling or correctness forces otherwise.
 - Clean up only what your change orphaned (imports, variables, functions). Point out other dead code instead of deleting it.
 - Every changed line should be traceable to the request.
+- A correction that applies to one project becomes a positive rule ("use X for Y") in the nearest `AGENTS.md`/`CLAUDE.md` that owns those files, so the next session in that repo reads it.
 
 ## Verifying and reporting
 
 - Match verification effort to risk. Test-first for behaviour changes and reproducible bugs; skip tests for small reversible edits that would just restate the implementation. Run the checks the change touches, and widen only when failures or open risk call for it.
 - If the repo has GitHub CI, run only the affected tests locally and treat CI's result as the one to report.
 - Mark conclusions you didn't directly verify, and say what evidence would change them.
+- When a change touches results-bearing code (metrics, evaluation, data splits, seeds, result aggregation), name the 1–3 `file:line` spots I should read myself.
 - When a check reproduced a bug, show its output before and after the fix, not just "tests pass". In long sessions, restate the goal in one line before reporting.
 - Multi-step work: one-line plan, then execute without waiting. Put progress in the same message as the next action. Pause only when you need me or hit an ask-first action. A "Next:" line lists only things I have to do myself.
 - Long tasks (many steps, or likely to survive a compaction): track them in `TASKS.md` in the working directory, one line per step, ticked off as done. Mirror the task tool if there is one. Re-read the file after a compaction. If another task's `TASKS.md` exists, use `TASKS-<topic>.md`. In git repos add `TASKS*.md` to `.git/info/exclude`. Delete the file when finished.

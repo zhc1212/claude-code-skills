@@ -299,6 +299,16 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
+## Agent-scale review and monitoring — v1.0.25
+
+Lessons from Anthropic's "Redesigning source control" post. codex-review's environment envelope gains a trust-boundary
+axis: naming a caller, internal service or input file as trusted makes findings that only re-validate it immaterial.
+monitor-experiment reads local `sandbox-job` jobs (`status`, `logs`, and the per-run training log found through the
+job's `request.json`) and adds a Watch mode that runs under `/loop`, reports only per-tick changes, and ends the loop
+once the job has a final result. `USER_CLAUDE.md` adds two rules: a project-specific correction becomes a "use X for Y"
+rule in that project's agent doc, and changes to results-bearing code name the 1–3 lines to read. The manifest hashes
+for both skills are updated.
+
 ## figure-audit exemplar cards — v1.0.24
 
 figure-audit's exemplar comparison (`references/top-venue.md`) now picks its two or three bar exemplars from the

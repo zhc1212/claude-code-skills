@@ -127,8 +127,9 @@ Record once; it stays fixed for the whole review:
   - *Supported paths*: OS, runtimes, test and lint commands.
   - *Environment and concurrency envelope*: name each axis in or out — umask and
     permissions, read-only or case-insensitive filesystems, concurrent
-    processes, two versions of this code meeting mid-upgrade. A finding on an
-    unnamed axis defaults to `borderline`.
+    processes, two versions of this code meeting mid-upgrade, malformed data
+    from each caller, internal service or input file (out = trusted, not
+    re-validated). A finding on an unnamed axis defaults to `borderline`.
   - *Exclusions* the user stated.
 
 Findings about code the diff does not touch are **deferred as pre-existing** by

@@ -159,7 +159,7 @@
     },
     {
       "name": "codex-review",
-      "installed_skill_sha256": "801b14e4e81a20ce54133dad019b96b32fde28e579bd3ba03453eb7cb1e93dd3",
+      "installed_skill_sha256": "2a02e42ff8e3b76f92b4923a129bdd68477c7288bfef4bdf8275099aac9bbff6",
       "source": "local user-level skill",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },
@@ -586,7 +586,7 @@
     },
     {
       "name": "monitor-experiment",
-      "installed_skill_sha256": "c1f4a720b1a7d6629c40c15b4f80bd7783179cf93c078b4c671142a96e741bc4",
+      "installed_skill_sha256": "10719897591c878f6fd362d818a1797c2ffe5380980f3decce5ee05e21f785dc",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },

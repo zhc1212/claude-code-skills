@@ -1,8 +1,8 @@
 ---
 name: monitor-experiment
 description: Monitor running experiments, check progress, collect results. Use when user says "check results", "is it done", "monitor", or wants experiment output.
-argument-hint: [server-alias or screen-name]
-allowed-tools: Bash(ssh *), Bash(echo *), Read, Write, Edit
+argument-hint: [server-alias, screen-name, or sandbox-job name]
+allowed-tools: Bash(ssh *), Bash(echo *), Bash(sandbox-job *), Read, Write, Edit
 ---
 
 # Monitor Experiment Results
@@ -12,6 +12,13 @@ Monitor: $ARGUMENTS
 ## Workflow
 
 ### Step 1: Check What's Running
+
+**sandbox-job** (local A800 jobs):
+```bash
+sandbox-job status <name>   # service state + final result; `result: null` means no final result yet, never success
+sandbox-job logs <name>     # last 80 lines of output.log
+```
+Training metrics usually live in a per-run log: follow `command` in `~/.local/state/sandbox-jobs/<name>/request.json` to the worker script and the log path it writes, and read that per-run log as Step 2's source.
 
 **SSH server:**
 ```bash
@@ -129,3 +136,7 @@ After results are collected, check `~/.claude/feishu.json`:
 - If results look wrong, check training logs for errors before concluding
 - **Vast.ai cost awareness**: When monitoring vast.ai instances, report the running cost (hours * $/hr from `vast-instances.json`). If all experiments on an instance are done, remind the user to run `/vast-gpu destroy <instance_id>` to stop billing
 - **Modal cost awareness**: Modal auto-scales to zero — no idle billing. When reporting results from Modal runs, note the actual execution time and estimated cost (time * $/hr from the GPU tier used). No cleanup action needed
+
+## Watch mode
+
+Under `/loop`, each tick watches one job obsessively, like an engineer with nothing better to do than refresh its logs. Run Steps 1–3.5, compare against the previous tick, and report only what changed: loss spikes or divergence, NaN/Inf, a falling step rate or throughput, GPU memory creeping up, or a log with no new lines since the last tick (a stall). Once the job has a final result, run Steps 4–6 once and end the loop.
