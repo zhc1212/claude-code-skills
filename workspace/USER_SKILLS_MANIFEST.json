@@ -206,7 +206,7 @@
     },
     {
       "name": "defensive-writing-sweep",
-      "installed_skill_sha256": "ebf5c466ca70900ca261fcef0902666ff47a8f5c75ae8913ca678156e2e304f9",
+      "installed_skill_sha256": "91b3d55c65065e17c4476280bf716f4f6e06cc33de18f28c9f842fc76882f685",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
     },

@@ -299,6 +299,16 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
+## Launch-style paper sweep — v1.0.26
+
+defensive-writing-sweep adds a Launch rule beside Boundaries: a paper is a launch, not a work report. New candidate
+kinds are self-weakening words, staged losses (including figure annotations on comparisons the paper's own test does
+not win), under-claims (stronger numeric results the paper already reports elsewhere), process narration, me-too
+likenesses, invited comparisons, one-sided caveats and closing doubts. A Keep-on-purpose class list marks where
+reframing stops: scope words, grounded limitations, prespecified analyses including unfavourable sensitivity checks,
+evaluation-set reuse and audit coverage, and run provenance. The report groups candidates into Delete, Rewrite, Add
+strength and Keep on purpose. The manifest hash is updated.
+
 ## Agent-scale review and monitoring — v1.0.25
 
 Lessons from Anthropic's "Redesigning source control" post. codex-review's environment envelope gains a trust-boundary
