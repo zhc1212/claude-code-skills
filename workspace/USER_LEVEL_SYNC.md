@@ -1,5 +1,13 @@
 # User-level snapshot — 2026-10-01
 
+Update 2026-10-15 (v1.0.27): run `python3 workspace/sync_user_level.py` to copy the installed skills, `CLAUDE.md`
+and status line here; `--verify` also checks every `origin: upstream` skill against its upstream (blobless clones
+in `~/.cache/zhc-skill-upstreams/`) and reports it as current, behind, modified, moved or removed. Manifest entries
+carry `origin` (`own` or `upstream`), `source`, `upstream_path`, `upstream_commit`, `derived_from` and
+`known_deviations`. Registered deviations: `scientific-visualization/SKILL.md` drops upstream's citation section,
+three `citation-verification` references keep their EOF normalizations, and `neat-freak` fixtures materialize
+upstream symlinks. Fourteen skills removed by their upstream are retired; see the README's v1.0.27 notes.
+
 Update 2026-10-15: `statusline/` snapshots the active status line. Restore `statusline.sh` and `statusline-fit.py`
 to `~/.claude/`, `ccstatusline-settings.json` to `~/.config/ccstatusline/settings.json`, and
 `claude-usage-statusline.py` (fallback text and quota snapshot) to `~/huicheng/config/`; merge

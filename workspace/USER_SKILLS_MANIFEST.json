@@ -1,7 +1,7 @@
 {
-  "snapshot_date": "2026-10-12",
+  "snapshot_date": "2026-10-15",
   "source": "~/.claude/skills",
-  "active_skill_count": 158,
+  "active_skill_count": 150,
   "retained_repository_only_skills": [],
   "excluded": [
     "humanizer/.git/",
@@ -32,1157 +32,1155 @@
   "skills": [
     {
       "name": "abstract-intro-audit",
-      "installed_skill_sha256": "0e469ba109155c0133b65db6aa858325b49c59f49b68afbad9d745e5ed269158",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "0e469ba109155c0133b65db6aa858325b49c59f49b68afbad9d745e5ed269158"
     },
     {
       "name": "academic-humanizer",
-      "installed_skill_sha256": "1f4501cb7331cffe9018960f8db045c719eea0658ce04e4af5e273ee59785a9c",
+      "origin": "upstream",
       "source": "https://github.com/AIScientists-Dev/academic-humanizer",
-      "observed_clone_head": "94b88b23703bed7df507acae7d6d5876209a0cdf",
-      "source_path": "SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "",
+      "installed_skill_sha256": "1f4501cb7331cffe9018960f8db045c719eea0658ce04e4af5e273ee59785a9c",
+      "upstream_commit": "94b88b23703bed7df507acae7d6d5876209a0cdf"
     },
     {
       "name": "aihot",
-      "installed_skill_sha256": "1fe3b86de1309617713c4b205b6dbaef0fe2cf28cb61cfb9f4c9b4accae521a1",
+      "origin": "upstream",
       "source": "https://github.com/kkkkhazix/khazix-skills",
-      "observed_clone_head": "322346ded8129436b3f64707789a73e732ae24d9",
-      "source_path": "aihot/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "aihot",
+      "installed_skill_sha256": "1fe3b86de1309617713c4b205b6dbaef0fe2cf28cb61cfb9f4c9b4accae521a1",
+      "upstream_commit": "1e6adab5ecfbc36156071295a0d3e7757d50c53e"
     },
     {
       "name": "analyze-results",
+      "origin": "upstream",
+      "source": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "upstream_path": "skills/analyze-results",
       "installed_skill_sha256": "634f9c70c5c6fccd9d771e6b0008c779a01734984082a0691c646f9b589d6533",
-      "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "upstream_commit": "c66f86d6ec50961ccba84ace13434d1d99a61bf4"
     },
     {
       "name": "archify",
-      "installed_skill_sha256": "cf348309c5350c285714151a409d7451669fe00f4537824c38038a6e18767b6d",
+      "origin": "upstream",
       "source": "https://github.com/tt-a1i/archify",
-      "observed_clone_head": "73aaa0696e8f72c232ea710e6fa94fd953f3e773",
-      "source_path": "archify/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "archify",
+      "installed_skill_sha256": "cf348309c5350c285714151a409d7451669fe00f4537824c38038a6e18767b6d",
+      "upstream_commit": "67c47c119ece23e3640692bbf10b333f49d14c71"
     },
     {
       "name": "ask-matt",
-      "installed_skill_sha256": "1371f5ce005de0992a44b137748bfb960a56948aa9871b405fe9d90b24332e3c",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
-      "source_path": "skills/engineering/ask-matt/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/engineering/ask-matt",
+      "installed_skill_sha256": "1371f5ce005de0992a44b137748bfb960a56948aa9871b405fe9d90b24332e3c",
+      "upstream_commit": "954ee7fd7f1911b79bfa82589b4d35ab6c4b13b8"
     },
     {
       "name": "auto-paper-improvement-loop",
-      "installed_skill_sha256": "1a758691883ad19730523b805f25084af12e87e94fc58a22deb405172083b5b9",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "installed_skill_sha256": "1a758691883ad19730523b805f25084af12e87e94fc58a22deb405172083b5b9"
     },
     {
       "name": "auto-review-loop",
-      "installed_skill_sha256": "df5f4a2fb8a483a405135b5a98df5c833d81175837ff1c705f672c492ddd9ae4",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
-    },
-    {
-      "name": "batch-grill-me",
-      "installed_skill_sha256": "7ca3ecc5c0214c5084475b453831d4cab81ddadf80180a10635f5d27c3ae3ca2",
-      "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "note": "Installed copy retained; original path absent in current clone. Commit is an observed clone HEAD, not an exact installed revision."
+      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "installed_skill_sha256": "df5f4a2fb8a483a405135b5a98df5c833d81175837ff1c705f672c492ddd9ae4"
     },
     {
       "name": "benchmark-paper-template",
-      "installed_skill_sha256": "daa63e695d0dccd317517b90b92d0f7e3f1f67f104ee5971ad6e9b5c120d3095",
+      "origin": "upstream",
       "source": "https://github.com/HKUSTDial/Supervisor-Skills",
-      "observed_clone_head": "207bc6f7a1aa107e544099c2c7cc86816fba9628",
-      "source_path": "skills/benchmark-paper-template/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/benchmark-paper-template",
+      "installed_skill_sha256": "daa63e695d0dccd317517b90b92d0f7e3f1f67f104ee5971ad6e9b5c120d3095",
+      "upstream_commit": "6800d4d758bd1579faa6e50abae2b7fa31d2a835"
+    },
+    {
+      "name": "chief-of-staff",
+      "origin": "upstream",
+      "source": "https://github.com/mattpocock/skills",
+      "upstream_path": "skills/in-progress/chief-of-staff",
+      "installed_skill_sha256": "6cc6e47ab5022f3e45e5be0fedbb0f6e645f4f0190d6b0c51c7cd60c2d7c1d98",
+      "upstream_commit": "6fd947921b935b7e1e69293a200400f0fdd5c15f"
     },
     {
       "name": "citation-verification",
-      "installed_skill_sha256": "c98a1be776ee4301425e01e4ed46488aba293487c8b572de8963cadf805f929a",
+      "origin": "upstream",
       "source": "https://github.com/Galaxy-Dawn/claude-scholar",
-      "observed_clone_head": "903787345d6aec134086afa2b97715a78fbde519",
-      "source_path": "skills/citation-verification/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/citation-verification",
+      "known_deviations": [
+        "references/api-usage.md",
+        "references/common-errors.md",
+        "references/verification-rules.md"
+      ],
+      "deviation_note": "Three EOF whitespace normalizations (see PROVENANCE.md).",
+      "installed_skill_sha256": "c98a1be776ee4301425e01e4ed46488aba293487c8b572de8963cadf805f929a",
+      "upstream_commit": "f84460e5aa000b932c7545efef2c0d6fb66398ec"
     },
     {
       "name": "claude-handoff",
-      "installed_skill_sha256": "79357a18425d66d4c24048bedf83dceb79d3bba356f38014950f764a7fab4026",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
-      "source_path": "skills/in-progress/claude-handoff/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/in-progress/claude-handoff",
+      "installed_skill_sha256": "79357a18425d66d4c24048bedf83dceb79d3bba356f38014950f764a7fab4026",
+      "upstream_commit": "4ec00d966d964d8dd8a67d4f4570e998791152db"
     },
     {
       "name": "code-review",
-      "installed_skill_sha256": "09eb147f793e4647949edd32dbad278f0554dfb56e0d46b699cd4c2c55bf0357",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
-      "source_path": "skills/engineering/code-review/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/engineering/code-review",
+      "installed_skill_sha256": "09eb147f793e4647949edd32dbad278f0554dfb56e0d46b699cd4c2c55bf0357",
+      "upstream_commit": "3da8c01116264675eeefbd6e9d59c734de9095cc"
     },
     {
       "name": "codebase-design",
-      "installed_skill_sha256": "2c20617f87ec8af6a434859f381b2f061a69b530444e74eb39e78bb016a6d1e2",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
-      "source_path": "skills/engineering/codebase-design/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/engineering/codebase-design",
+      "installed_skill_sha256": "2c20617f87ec8af6a434859f381b2f061a69b530444e74eb39e78bb016a6d1e2",
+      "upstream_commit": "321658273cb1d20b76026717d027d505790106d4"
     },
     {
       "name": "codex-debate",
-      "installed_skill_sha256": "99c38e2b62375a7e0603be091c908bdb71e8471251498c87dfe4dfe1dab0366c",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "99c38e2b62375a7e0603be091c908bdb71e8471251498c87dfe4dfe1dab0366c"
     },
     {
       "name": "codex-debug-pair",
-      "installed_skill_sha256": "eba8d58818d10f4798faede93f8425278bdbb0e0c8edecfbd0920483b58bf557",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "eba8d58818d10f4798faede93f8425278bdbb0e0c8edecfbd0920483b58bf557"
     },
     {
       "name": "codex-experiment-critic",
-      "installed_skill_sha256": "3672493e686fae64357e0cc34828ffddc27a29b6f1b69a3fbb8928c537221b9b",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "3672493e686fae64357e0cc34828ffddc27a29b6f1b69a3fbb8928c537221b9b"
     },
     {
       "name": "codex-paper-adversary",
-      "installed_skill_sha256": "1b13153e8164d956cb774a7b9d08b8ff12d8cd13b46aefc547d4a65c1ef318d1",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "1b13153e8164d956cb774a7b9d08b8ff12d8cd13b46aefc547d4a65c1ef318d1"
     },
     {
       "name": "codex-review",
-      "installed_skill_sha256": "2a02e42ff8e3b76f92b4923a129bdd68477c7288bfef4bdf8275099aac9bbff6",
-      "source": "local user-level skill",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "origin": "own",
+      "source": "https://github.com/zhc1212/claude-code-skills",
+      "installed_skill_sha256": "2a02e42ff8e3b76f92b4923a129bdd68477c7288bfef4bdf8275099aac9bbff6"
     },
     {
       "name": "codex-skill-optimizer",
-      "installed_skill_sha256": "4369b415aeecf489d8d5b83c6eab5dc04a2c5aac76e870b1d067dbb8119e2ccc",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "4369b415aeecf489d8d5b83c6eab5dc04a2c5aac76e870b1d067dbb8119e2ccc"
     },
     {
       "name": "collect-results",
-      "installed_skill_sha256": "08b96b433b6cefb253a74f10c2a5eb4cbf1e632abda9e2664123e356f683cddc",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "08b96b433b6cefb253a74f10c2a5eb4cbf1e632abda9e2664123e356f683cddc"
     },
     {
       "name": "create-advisor",
-      "installed_skill_sha256": "b06f436dbadea8b695fcf14d58b8950f79316e87a81e5c9a16b4f8fef58833ff",
+      "origin": "upstream",
       "source": "https://github.com/QuantumBFS/sci-brain",
-      "observed_clone_head": "855fd57439a34bd63d867ed8ef5b149a14c6b5c6",
-      "source_path": "skills/create-advisor/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/create-advisor",
+      "installed_skill_sha256": "b06f436dbadea8b695fcf14d58b8950f79316e87a81e5c9a16b4f8fef58833ff",
+      "upstream_commit": "b5cbffba247c1fac6c8d15f201c923133027df93"
     },
     {
       "name": "deai-latex",
-      "installed_skill_sha256": "0c88045056cd350d58ca8a6a0e4ae4f9d9c3389e2f7eb3b2219b59cf27ec98b0",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence.",
+      "installed_skill_sha256": "0c88045056cd350d58ca8a6a0e4ae4f9d9c3389e2f7eb3b2219b59cf27ec98b0",
       "packaging_note": "Description encoded as a YAML folded scalar; wording unchanged."
     },
     {
-      "name": "decision-mapping",
-      "installed_skill_sha256": "d71faf119fb64d66dd124b8010058d84c437bdb07787c8b772fbda37b7205879",
-      "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
-    },
-    {
       "name": "deep-research",
-      "installed_skill_sha256": "68078fb2307ec659930ad9d9b2e2cb0932a0ff0a4939875ca6f27bec59004c91",
+      "origin": "upstream",
       "source": "https://github.com/HKUSTDial/Supervisor-Skills",
-      "observed_clone_head": "207bc6f7a1aa107e544099c2c7cc86816fba9628",
-      "source_path": "skills/deep-research/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/deep-research",
+      "installed_skill_sha256": "68078fb2307ec659930ad9d9b2e2cb0932a0ff0a4939875ca6f27bec59004c91",
+      "upstream_commit": "6800d4d758bd1579faa6e50abae2b7fa31d2a835"
     },
     {
       "name": "defensive-writing-sweep",
-      "installed_skill_sha256": "91b3d55c65065e17c4476280bf716f4f6e06cc33de18f28c9f842fc76882f685",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "91b3d55c65065e17c4476280bf716f4f6e06cc33de18f28c9f842fc76882f685"
     },
     {
-      "name": "design-an-interface",
-      "installed_skill_sha256": "a2596e9fa2d50e23ba014f64a5b8f9df4eb56b846a52cad152899ef5eb97b085",
+      "name": "diagnosing-bugs",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "note": "Installed copy retained; original path absent in current clone. Commit is an observed clone HEAD, not an exact installed revision."
+      "upstream_path": "skills/engineering/diagnosing-bugs",
+      "installed_skill_sha256": "849198df88cdb65fd0d97236604c1fca7ff2f22d2f705f9724a800d0266b118d",
+      "upstream_commit": "f3fc5632f401156837ee3872f14fe33ccf1024ea"
     },
     {
       "name": "domain-modeling",
-      "installed_skill_sha256": "7b925d7b1e341a2eeae33ad68a8a8c0ab889a38ddd22a7598e4c240e5a7556a3",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
-      "source_path": "skills/engineering/domain-modeling/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/engineering/domain-modeling",
+      "installed_skill_sha256": "7b925d7b1e341a2eeae33ad68a8a8c0ab889a38ddd22a7598e4c240e5a7556a3",
+      "upstream_commit": "d80fa0f4ebe0c5714af0adf8670336065233ecc6"
     },
     {
       "name": "drawio-reconstruction",
-      "installed_skill_sha256": "ccc4e5fa5ccd4d7f8a33f88c241d8df2e951f015d2dadfbaa5506d323ea38441",
+      "origin": "upstream",
       "source": "https://github.com/HKUSTDial/Supervisor-Skills",
-      "observed_clone_head": "207bc6f7a1aa107e544099c2c7cc86816fba9628",
-      "source_path": "skills/drawio-reconstruction/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/drawio-reconstruction",
+      "installed_skill_sha256": "ccc4e5fa5ccd4d7f8a33f88c241d8df2e951f015d2dadfbaa5506d323ea38441",
+      "upstream_commit": "1bb65a34bc2b049d409af0da6f2fa8793c86e7ae"
     },
     {
       "name": "drawio-skill",
-      "installed_skill_sha256": "922d7863a09e6521236bffb6989ebe4e9bce045ebd0f82866c94375fccfd1c6b",
+      "origin": "upstream",
       "source": "https://github.com/Agents365-ai/drawio-skill",
-      "observed_clone_head": "57270820d3cd71cbdf4fb6b2f7091d4fb37bb019",
-      "source_path": "skills/drawio-skill/SKILL.md",
-      "skill_md_matches_clone": true,
-      "note": "MIT; PROVENANCE.md and LICENSE added."
-    },
-    {
-      "name": "edit-article",
-      "installed_skill_sha256": "e10fba546f45357fe0aaa7494b9e186910d4525818d19f9b2ad6f28cc506aa5e",
-      "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "note": "Installed copy retained; original path absent in current clone. Commit is an observed clone HEAD, not an exact installed revision."
+      "upstream_path": "skills/drawio-skill",
+      "installed_skill_sha256": "922d7863a09e6521236bffb6989ebe4e9bce045ebd0f82866c94375fccfd1c6b",
+      "note": "MIT; PROVENANCE.md and LICENSE added.",
+      "upstream_commit": "57270820d3cd71cbdf4fb6b2f7091d4fb37bb019"
     },
     {
       "name": "experiment-bridge",
-      "installed_skill_sha256": "9450b3d5e4f6a9a600fc0339a454e47541a9987cefea1be25705bf1aa68ac08c",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "installed_skill_sha256": "9450b3d5e4f6a9a600fc0339a454e47541a9987cefea1be25705bf1aa68ac08c"
     },
     {
       "name": "experiment-plot-advisor",
-      "installed_skill_sha256": "94fe58be3294df4d174148c05839815496236022f8861c6a890fe1df419d1676",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "94fe58be3294df4d174148c05839815496236022f8861c6a890fe1df419d1676"
     },
     {
       "name": "feishu-notify",
+      "origin": "upstream",
+      "source": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "upstream_path": "skills/feishu-notify",
       "installed_skill_sha256": "aa6c8854e5e59ab8d6c3f2729998bb736b55f65ecfd00911dd4ab4f67e575f38",
-      "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "upstream_commit": "1b53168fd1faad6877bc37d6f4cdd571d787f970"
     },
     {
       "name": "figure-audit",
-      "installed_skill_sha256": "f83d43c1c829dae94a9359b03930e838a1c2d95ff1580e61fb367a7410b4397f",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "f83d43c1c829dae94a9359b03930e838a1c2d95ff1580e61fb367a7410b4397f"
     },
     {
       "name": "figure-designer",
-      "installed_skill_sha256": "c9ba67c1c21972ac6e48f22397e45b9e0855f0feb407c3599308de2902880b57",
+      "origin": "upstream",
       "source": "https://github.com/HKUSTDial/Supervisor-Skills",
-      "observed_clone_head": "207bc6f7a1aa107e544099c2c7cc86816fba9628",
-      "source_path": "skills/figure-designer/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/figure-designer",
+      "installed_skill_sha256": "c9ba67c1c21972ac6e48f22397e45b9e0855f0feb407c3599308de2902880b57",
+      "upstream_commit": "6800d4d758bd1579faa6e50abae2b7fa31d2a835"
     },
     {
       "name": "figure-pipeline",
-      "installed_skill_sha256": "3da4118a5a6e7f6ccf49de6a237499f2dbad8b3267f31c0a77ce7e774724d037",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "3da4118a5a6e7f6ccf49de6a237499f2dbad8b3267f31c0a77ce7e774724d037"
     },
     {
       "name": "figure-spec",
-      "installed_skill_sha256": "30e4070062c23f6920e01338dd654dfefa4f3eff4ba7551d533fcd76a9ca54c8",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "installed_skill_sha256": "30e4070062c23f6920e01338dd654dfefa4f3eff4ba7551d533fcd76a9ca54c8"
     },
     {
       "name": "fse-artifact-evaluation",
-      "installed_skill_sha256": "cd97e9aa52dc7adb3842c4c3aea94c178dc689265d0a7fe93b3de51b0bb112c2",
+      "origin": "upstream",
       "source": "https://github.com/brycewang-stanford/Awesome-Journal-Skills",
-      "observed_clone_head": "932eb23331721b16e967c59f093781be1928b498",
-      "source_path": "FSE-Skills/skills/fse-artifact-evaluation/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "FSE-Skills/skills/fse-artifact-evaluation",
+      "installed_skill_sha256": "cd97e9aa52dc7adb3842c4c3aea94c178dc689265d0a7fe93b3de51b0bb112c2",
+      "upstream_commit": "3e33fd3e8b52fcd3b7693f999647c6026ce7e4c2"
     },
     {
       "name": "fse-author-response",
-      "installed_skill_sha256": "b0dec054f3ac23650581779b81455d272742306f44d342f3c42379e7ad203cb2",
+      "origin": "upstream",
       "source": "https://github.com/brycewang-stanford/Awesome-Journal-Skills",
-      "observed_clone_head": "932eb23331721b16e967c59f093781be1928b498",
-      "source_path": "FSE-Skills/skills/fse-author-response/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "FSE-Skills/skills/fse-author-response",
+      "installed_skill_sha256": "b0dec054f3ac23650581779b81455d272742306f44d342f3c42379e7ad203cb2",
+      "upstream_commit": "3e33fd3e8b52fcd3b7693f999647c6026ce7e4c2"
     },
     {
       "name": "fse-camera-ready",
-      "installed_skill_sha256": "9a177b34705bb8781abee4517e522972d24a652dbbef8f61dc35ec690c8c46cd",
+      "origin": "upstream",
       "source": "https://github.com/brycewang-stanford/Awesome-Journal-Skills",
-      "observed_clone_head": "932eb23331721b16e967c59f093781be1928b498",
-      "source_path": "FSE-Skills/skills/fse-camera-ready/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "FSE-Skills/skills/fse-camera-ready",
+      "installed_skill_sha256": "9a177b34705bb8781abee4517e522972d24a652dbbef8f61dc35ec690c8c46cd",
+      "upstream_commit": "3e33fd3e8b52fcd3b7693f999647c6026ce7e4c2"
     },
     {
       "name": "fse-experiments",
-      "installed_skill_sha256": "65d26d85c8162f5f6f944f176d49b32521e3768446a18aa47dd21896e948010c",
+      "origin": "upstream",
       "source": "https://github.com/brycewang-stanford/Awesome-Journal-Skills",
-      "observed_clone_head": "932eb23331721b16e967c59f093781be1928b498",
-      "source_path": "FSE-Skills/skills/fse-experiments/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "FSE-Skills/skills/fse-experiments",
+      "installed_skill_sha256": "65d26d85c8162f5f6f944f176d49b32521e3768446a18aa47dd21896e948010c",
+      "upstream_commit": "3e33fd3e8b52fcd3b7693f999647c6026ce7e4c2"
     },
     {
       "name": "fse-related-work",
-      "installed_skill_sha256": "a864943771f19cbd9c22db46684829c9284d7b6dc96fe7543e34ba5e973c9be7",
+      "origin": "upstream",
       "source": "https://github.com/brycewang-stanford/Awesome-Journal-Skills",
-      "observed_clone_head": "932eb23331721b16e967c59f093781be1928b498",
-      "source_path": "FSE-Skills/skills/fse-related-work/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "FSE-Skills/skills/fse-related-work",
+      "installed_skill_sha256": "a864943771f19cbd9c22db46684829c9284d7b6dc96fe7543e34ba5e973c9be7",
+      "upstream_commit": "3e33fd3e8b52fcd3b7693f999647c6026ce7e4c2"
     },
     {
       "name": "fse-reproducibility",
-      "installed_skill_sha256": "0dc2d9583028d11faab3ffc93a74257b1fbe3119270088f629c561ad69950ec9",
+      "origin": "upstream",
       "source": "https://github.com/brycewang-stanford/Awesome-Journal-Skills",
-      "observed_clone_head": "932eb23331721b16e967c59f093781be1928b498",
-      "source_path": "FSE-Skills/skills/fse-reproducibility/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "FSE-Skills/skills/fse-reproducibility",
+      "installed_skill_sha256": "0dc2d9583028d11faab3ffc93a74257b1fbe3119270088f629c561ad69950ec9",
+      "upstream_commit": "3e33fd3e8b52fcd3b7693f999647c6026ce7e4c2"
     },
     {
       "name": "fse-review-process",
-      "installed_skill_sha256": "98848046a73aea0e56ee5af25a0f297e54169338b88bc1b05a0f4da6fed68ec5",
+      "origin": "upstream",
       "source": "https://github.com/brycewang-stanford/Awesome-Journal-Skills",
-      "observed_clone_head": "932eb23331721b16e967c59f093781be1928b498",
-      "source_path": "FSE-Skills/skills/fse-review-process/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "FSE-Skills/skills/fse-review-process",
+      "installed_skill_sha256": "98848046a73aea0e56ee5af25a0f297e54169338b88bc1b05a0f4da6fed68ec5",
+      "upstream_commit": "3e33fd3e8b52fcd3b7693f999647c6026ce7e4c2"
     },
     {
       "name": "fse-submission",
-      "installed_skill_sha256": "ce2e59c54dcf3fa81bb279ccc39ddc70ec65cd1b6894f0608ca1e83ebaaa6485",
+      "origin": "upstream",
       "source": "https://github.com/brycewang-stanford/Awesome-Journal-Skills",
-      "observed_clone_head": "932eb23331721b16e967c59f093781be1928b498",
-      "source_path": "FSE-Skills/skills/fse-submission/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "FSE-Skills/skills/fse-submission",
+      "installed_skill_sha256": "ce2e59c54dcf3fa81bb279ccc39ddc70ec65cd1b6894f0608ca1e83ebaaa6485",
+      "upstream_commit": "3e33fd3e8b52fcd3b7693f999647c6026ce7e4c2"
     },
     {
       "name": "fse-supplementary",
-      "installed_skill_sha256": "7efca5f4cd47357bacfcae55138e0be7588c75fa6302ac26bde362243cd7b85d",
+      "origin": "upstream",
       "source": "https://github.com/brycewang-stanford/Awesome-Journal-Skills",
-      "observed_clone_head": "932eb23331721b16e967c59f093781be1928b498",
-      "source_path": "FSE-Skills/skills/fse-supplementary/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "FSE-Skills/skills/fse-supplementary",
+      "installed_skill_sha256": "7efca5f4cd47357bacfcae55138e0be7588c75fa6302ac26bde362243cd7b85d",
+      "upstream_commit": "3e33fd3e8b52fcd3b7693f999647c6026ce7e4c2"
     },
     {
       "name": "fse-topic-selection",
-      "installed_skill_sha256": "910a033f5a7ebac1bd8064f6a92ba1d35e2bdbdc6e5e396b96e1acb674bc47d5",
+      "origin": "upstream",
       "source": "https://github.com/brycewang-stanford/Awesome-Journal-Skills",
-      "observed_clone_head": "932eb23331721b16e967c59f093781be1928b498",
-      "source_path": "FSE-Skills/skills/fse-topic-selection/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "FSE-Skills/skills/fse-topic-selection",
+      "installed_skill_sha256": "910a033f5a7ebac1bd8064f6a92ba1d35e2bdbdc6e5e396b96e1acb674bc47d5",
+      "upstream_commit": "3e33fd3e8b52fcd3b7693f999647c6026ce7e4c2"
     },
     {
       "name": "fse-workflow",
-      "installed_skill_sha256": "5f18778965804ba22a32655f45aee47e818fea33d2da2f26958ef863179dedfe",
+      "origin": "upstream",
       "source": "https://github.com/brycewang-stanford/Awesome-Journal-Skills",
-      "observed_clone_head": "932eb23331721b16e967c59f093781be1928b498",
-      "source_path": "FSE-Skills/skills/fse-workflow/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "FSE-Skills/skills/fse-workflow",
+      "installed_skill_sha256": "5f18778965804ba22a32655f45aee47e818fea33d2da2f26958ef863179dedfe",
+      "upstream_commit": "3e33fd3e8b52fcd3b7693f999647c6026ce7e4c2"
     },
     {
       "name": "fse-writing-style",
-      "installed_skill_sha256": "92e81a48fa26c612199fd835a2998568e8f89fe402536f999036e4e4b65b633a",
+      "origin": "upstream",
       "source": "https://github.com/brycewang-stanford/Awesome-Journal-Skills",
-      "observed_clone_head": "932eb23331721b16e967c59f093781be1928b498",
-      "source_path": "FSE-Skills/skills/fse-writing-style/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "FSE-Skills/skills/fse-writing-style",
+      "installed_skill_sha256": "92e81a48fa26c612199fd835a2998568e8f89fe402536f999036e4e4b65b633a",
+      "upstream_commit": "3e33fd3e8b52fcd3b7693f999647c6026ce7e4c2"
     },
     {
       "name": "gen-figure-caption",
-      "installed_skill_sha256": "8eeec89947c8911d94b0607810759053e24e7eadca99441ef4dc36357679f2bb",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "8eeec89947c8911d94b0607810759053e24e7eadca99441ef4dc36357679f2bb"
     },
     {
       "name": "gen-table-caption",
-      "installed_skill_sha256": "f53012b97744a06adbc13348046bb1192cd94b3a2cc091217b3ef35bd259509d",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "f53012b97744a06adbc13348046bb1192cd94b3a2cc091217b3ef35bd259509d"
     },
     {
       "name": "git-guardrails-claude-code",
-      "installed_skill_sha256": "69b291d655626a01602b998a1836fcb93c058ede68dfafddfd71e87f17074764",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "source_path": "skills/misc/git-guardrails-claude-code/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/misc/git-guardrails-claude-code",
+      "installed_skill_sha256": "69b291d655626a01602b998a1836fcb93c058ede68dfafddfd71e87f17074764",
+      "upstream_commit": "321658273cb1d20b76026717d027d505790106d4"
     },
     {
       "name": "grill-me",
-      "installed_skill_sha256": "caaf8b8de1684f96e26b28f3c29189db5c89cce4b73e1c93d86164f66ef88637",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "source_path": "skills/productivity/grill-me/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/productivity/grill-me",
+      "installed_skill_sha256": "caaf8b8de1684f96e26b28f3c29189db5c89cce4b73e1c93d86164f66ef88637",
+      "upstream_commit": "fcf0071560d32913c9d4f820e0d7ca467c881619"
     },
     {
       "name": "grill-with-docs",
-      "installed_skill_sha256": "7de372c13488f1ee96cc11cd8907b56b6809cc93eef776eeddd37de6b6cbe3fe",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "source_path": "skills/engineering/grill-with-docs/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/engineering/grill-with-docs",
+      "installed_skill_sha256": "7de372c13488f1ee96cc11cd8907b56b6809cc93eef776eeddd37de6b6cbe3fe",
+      "upstream_commit": "447ca70872026d5b79d6073a546dac082117fed7"
     },
     {
       "name": "grilling",
-      "installed_skill_sha256": "befdff1e27a1dfe2a294d5871169ac1afe16d983911daa4f32627514a48c1e15",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
-      "source_path": "skills/productivity/grilling/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/productivity/grilling",
+      "installed_skill_sha256": "befdff1e27a1dfe2a294d5871169ac1afe16d983911daa4f32627514a48c1e15",
+      "upstream_commit": "95249b0b49782349740fd9b8c6ce32b4e59e497a"
     },
     {
       "name": "handoff",
-      "installed_skill_sha256": "4cbb043950dad2ffd3662ff1a5a0b51ae676004b5cae10e3787e8ee7a4ee69d3",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
-      "source_path": "skills/productivity/handoff/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/productivity/handoff",
+      "installed_skill_sha256": "4cbb043950dad2ffd3662ff1a5a0b51ae676004b5cae10e3787e8ee7a4ee69d3",
+      "upstream_commit": "0f5e033ebc47b142f5ffa56a582ede6d9d9bada3"
     },
     {
       "name": "how-to-download-ref",
+      "origin": "upstream",
+      "source": "https://github.com/QuantumBFS/sci-brain",
+      "upstream_path": "skills/how-to-download-ref",
       "installed_skill_sha256": "852bba04315a72659f55187ad396228c8c47c5d2117fd09b3960b84b796d3b73",
-      "source": "https://github.com/QuantumBFS/sci-brain",
-      "observed_clone_head": "855fd57439a34bd63d867ed8ef5b149a14c6b5c6",
-      "source_path": "skills/how-to-download-ref/SKILL.md",
-      "skill_md_matches_clone": true
-    },
-    {
-      "name": "how-to-dump-dialog",
-      "installed_skill_sha256": "a4a553a6887ebd365bce059375f01fd2d2d6c9d20783e33fd0584b0eb2b9c233",
-      "source": "https://github.com/QuantumBFS/sci-brain",
-      "observed_clone_head": "855fd57439a34bd63d867ed8ef5b149a14c6b5c6",
-      "note": "Installed copy retained; original path absent in current clone. Commit is an observed clone HEAD, not an exact installed revision."
+      "upstream_commit": "7161043f5ab96f5f323bbd485dc8827318ae445b"
     },
     {
       "name": "how-to-flow",
-      "installed_skill_sha256": "915980192db688c2e9376cd30f931f04add993ed502d043ee54dc103cac211d9",
+      "origin": "upstream",
       "source": "https://github.com/QuantumBFS/sci-brain",
-      "observed_clone_head": "855fd57439a34bd63d867ed8ef5b149a14c6b5c6",
-      "source_path": "skills/how-to-flow/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/how-to-flow",
+      "installed_skill_sha256": "915980192db688c2e9376cd30f931f04add993ed502d043ee54dc103cac211d9",
+      "upstream_commit": "032e29f090dfdc3fa727048ce6cbe7b4039057cf"
     },
     {
       "name": "how-to-review-figure",
-      "installed_skill_sha256": "939bb5d13feacbc9d96e1559189469ec5bc9a2af8cd612d1cc67bea4f2f692f3",
+      "origin": "upstream",
       "source": "https://github.com/QuantumBFS/sci-brain",
-      "observed_clone_head": "855fd57439a34bd63d867ed8ef5b149a14c6b5c6",
-      "source_path": "skills/how-to-review-figure/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/how-to-review-figure",
+      "installed_skill_sha256": "939bb5d13feacbc9d96e1559189469ec5bc9a2af8cd612d1cc67bea4f2f692f3",
+      "upstream_commit": "032e29f090dfdc3fa727048ce6cbe7b4039057cf"
     },
     {
       "name": "humanizer",
-      "installed_skill_sha256": "0612f1dfb1672b0ea9b97e139bf1f06cabe98d8b27424fe8ff01e1fb4cc99cad",
+      "origin": "upstream",
       "source": "https://github.com/blader/humanizer",
-      "observed_clone_head": "225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8",
-      "source_path": "SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "",
+      "installed_skill_sha256": "0612f1dfb1672b0ea9b97e139bf1f06cabe98d8b27424fe8ff01e1fb4cc99cad",
+      "upstream_commit": "d4b81278e6604e237bf32f0f7ce5c217aee94269"
     },
     {
       "name": "hv-analysis",
-      "installed_skill_sha256": "898f21b1f7b45456a54419b1b31765c896662a1e3f614d2c3413f809824de3a2",
+      "origin": "upstream",
       "source": "https://github.com/kkkkhazix/khazix-skills",
-      "observed_clone_head": "b81ad3b442e778bb7bf27047034c1d0d9f0637ff",
-      "source_path": "hv-analysis/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "hv-analysis",
+      "installed_skill_sha256": "898f21b1f7b45456a54419b1b31765c896662a1e3f614d2c3413f809824de3a2",
+      "upstream_commit": "c6d097b020bea94d93d60d05f204bca63c165840"
     },
     {
       "name": "idea-creator",
-      "installed_skill_sha256": "ec3244fea83c57b49227922f22722a896f70a9c68737288e93cf20152e0ff11b",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "installed_skill_sha256": "ec3244fea83c57b49227922f22722a896f70a9c68737288e93cf20152e0ff11b"
     },
     {
       "name": "idea-discovery",
-      "installed_skill_sha256": "4b95488b3ee0cff57efdd71d1a79d429c363dd83f1160a079440cf202dca2ba9",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "installed_skill_sha256": "4b95488b3ee0cff57efdd71d1a79d429c363dd83f1160a079440cf202dca2ba9"
     },
     {
       "name": "idea-evaluator",
-      "installed_skill_sha256": "630ce9528f472637830b216bf6de231e6dfdcdae4d3b16976324da5ce2d145fb",
+      "origin": "upstream",
       "source": "https://github.com/HKUSTDial/Supervisor-Skills",
-      "observed_clone_head": "207bc6f7a1aa107e544099c2c7cc86816fba9628",
-      "source_path": "skills/idea-evaluator/SKILL.md",
-      "skill_md_matches_clone": true
-    },
-    {
-      "name": "idea-writer",
-      "installed_skill_sha256": "7703159060e6fdbb700ba4a31b0899df226b47547889dadaf229680ef11950bf",
-      "source": "https://github.com/QuantumBFS/sci-brain",
-      "observed_clone_head": "855fd57439a34bd63d867ed8ef5b149a14c6b5c6",
-      "note": "Installed copy retained; original path absent in current clone. Commit is an observed clone HEAD, not an exact installed revision."
+      "upstream_path": "skills/idea-evaluator",
+      "installed_skill_sha256": "630ce9528f472637830b216bf6de231e6dfdcdae4d3b16976324da5ce2d145fb",
+      "upstream_commit": "6800d4d758bd1579faa6e50abae2b7fa31d2a835"
     },
     {
       "name": "implement",
-      "installed_skill_sha256": "483bdc4ccf4ac31d86ac7beeaa0d0db80313e71e120bb8c59b3196ae5decd53d",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
-      "source_path": "skills/engineering/implement/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/engineering/implement",
+      "installed_skill_sha256": "483bdc4ccf4ac31d86ac7beeaa0d0db80313e71e120bb8c59b3196ae5decd53d",
+      "upstream_commit": "6d6a5b9072f47ee7ba1d972d8ce0ee98b7ed4394"
     },
     {
-      "name": "import-dialog",
-      "installed_skill_sha256": "94ceae57eaca7cf2920ee489e8d6e7ab51723688930bb0a95ef3388fc3009d98",
-      "source": "https://github.com/QuantumBFS/sci-brain",
-      "observed_clone_head": "855fd57439a34bd63d867ed8ef5b149a14c6b5c6",
-      "note": "Installed copy retained; original path absent in current clone. Commit is an observed clone HEAD, not an exact installed revision."
+      "name": "implement-spec",
+      "origin": "upstream",
+      "source": "https://github.com/mattpocock/skills",
+      "upstream_path": "skills/engineering/implement-spec",
+      "installed_skill_sha256": "7a22dd2e60b8fcece478ced9d2533582adf3520d695acd3ab715341535c9e56d",
+      "upstream_commit": "c612defa9e5cf9372262d0279eb124993ba77b71"
     },
     {
       "name": "improve-codebase-architecture",
-      "installed_skill_sha256": "552240a5ab5cec6b67c15dd1ad6e9f6962b1bca6ce870059a8c2713760c20392",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
-      "source_path": "skills/engineering/improve-codebase-architecture/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/engineering/improve-codebase-architecture",
+      "installed_skill_sha256": "552240a5ab5cec6b67c15dd1ad6e9f6962b1bca6ce870059a8c2713760c20392",
+      "upstream_commit": "d80fa0f4ebe0c5714af0adf8670336065233ecc6"
     },
     {
       "name": "intro-drafter",
-      "installed_skill_sha256": "675e8a97a58a841b04dd9fa061fcc03075e75695aada5c7b23d1c1498435d5a7",
+      "origin": "upstream",
       "source": "https://github.com/HKUSTDial/Supervisor-Skills",
-      "observed_clone_head": "207bc6f7a1aa107e544099c2c7cc86816fba9628",
-      "source_path": "skills/intro-drafter/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/intro-drafter",
+      "installed_skill_sha256": "675e8a97a58a841b04dd9fa061fcc03075e75695aada5c7b23d1c1498435d5a7",
+      "upstream_commit": "6800d4d758bd1579faa6e50abae2b7fa31d2a835"
     },
     {
       "name": "khazix-writer",
-      "installed_skill_sha256": "081bfbf5bc0f0c9a2c5a6410eaaa9de18a0cc50f932a1195f45df04e30018602",
+      "origin": "upstream",
       "source": "https://github.com/kkkkhazix/khazix-skills",
-      "observed_clone_head": "b81ad3b442e778bb7bf27047034c1d0d9f0637ff",
-      "source_path": "khazix-writer/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "khazix-writer",
+      "installed_skill_sha256": "081bfbf5bc0f0c9a2c5a6410eaaa9de18a0cc50f932a1195f45df04e30018602",
+      "upstream_commit": "08996c956ea70b1529a9b1bff308296c4076c3ad"
     },
     {
       "name": "know-me-better",
-      "installed_skill_sha256": "1750c0bfba52c18fec218bfa4d5faf024a996a6bb84aa73af3f11bd701abb7da",
+      "origin": "upstream",
       "source": "https://github.com/QuantumBFS/sci-brain",
-      "observed_clone_head": "855fd57439a34bd63d867ed8ef5b149a14c6b5c6",
-      "source_path": "skills/know-me-better/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/know-me-better",
+      "installed_skill_sha256": "1750c0bfba52c18fec218bfa4d5faf024a996a6bb84aa73af3f11bd701abb7da",
+      "upstream_commit": "032e29f090dfdc3fa727048ce6cbe7b4039057cf"
     },
     {
       "name": "loop-me",
-      "installed_skill_sha256": "e44d1cc3e760fb86ac42964c2a5f1fcac511715db50fb375f3f7be814de1eaa7",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "source_path": "skills/in-progress/loop-me/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/in-progress/loop-me",
+      "installed_skill_sha256": "e44d1cc3e760fb86ac42964c2a5f1fcac511715db50fb375f3f7be814de1eaa7",
+      "upstream_commit": "321658273cb1d20b76026717d027d505790106d4"
     },
     {
       "name": "meta-optimize",
-      "installed_skill_sha256": "75d4cc0e84df71097dd00456a49b1fea377ca82ad247120ef24b8ce40afb4401",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "installed_skill_sha256": "75d4cc0e84df71097dd00456a49b1fea377ca82ad247120ef24b8ce40afb4401"
     },
     {
       "name": "migrate-to-shoehorn",
-      "installed_skill_sha256": "de4da4c11d924fac79c924b2ee3d2db4a5cb98386eb490a599119463d036ae72",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "source_path": "skills/misc/migrate-to-shoehorn/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/misc/migrate-to-shoehorn",
+      "installed_skill_sha256": "de4da4c11d924fac79c924b2ee3d2db4a5cb98386eb490a599119463d036ae72",
+      "upstream_commit": "62f43a18177be6ec82da242e59ffbc490a4c22ea"
     },
     {
       "name": "monitor-experiment",
-      "installed_skill_sha256": "10719897591c878f6fd362d818a1797c2ffe5380980f3decce5ee05e21f785dc",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "installed_skill_sha256": "10719897591c878f6fd362d818a1797c2ffe5380980f3decce5ee05e21f785dc"
     },
     {
       "name": "nature-academic-search",
-      "installed_skill_sha256": "3ed327e3e9c56cddfaa0e48ffb3503b1f9e27f917916013798ef57bf8131101a",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "d5c8baa15d6b1bd44bff07865da83961449da01a",
-      "source_path": "skills/nature-academic-search/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-academic-search",
+      "installed_skill_sha256": "3ed327e3e9c56cddfaa0e48ffb3503b1f9e27f917916013798ef57bf8131101a",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "nature-citation",
-      "installed_skill_sha256": "f0436639c2bcf966e8f8cdda6e06501b396bb32cc3b7cce57f67eb0cd7b5a44d",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "84880815fb37317b3766bff2c2abba395b8993c3",
-      "source_path": "skills/nature-citation/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-citation",
+      "installed_skill_sha256": "f0436639c2bcf966e8f8cdda6e06501b396bb32cc3b7cce57f67eb0cd7b5a44d",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "nature-data",
-      "installed_skill_sha256": "4ef9c383411b069265901e9f157cb4d73861f42f6ddd28611084005e67eafa43",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "84880815fb37317b3766bff2c2abba395b8993c3",
-      "source_path": "skills/nature-data/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-data",
+      "installed_skill_sha256": "4ef9c383411b069265901e9f157cb4d73861f42f6ddd28611084005e67eafa43",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "nature-downloader",
-      "installed_skill_sha256": "0351f9069e77a4b027893592d295f3c511301bc7d2ec7d299ab49ee2c106be54",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "84880815fb37317b3766bff2c2abba395b8993c3",
-      "source_path": "skills/nature-downloader/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-downloader",
+      "installed_skill_sha256": "0351f9069e77a4b027893592d295f3c511301bc7d2ec7d299ab49ee2c106be54",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "nature-experiment-log",
-      "installed_skill_sha256": "1f7fffcbc950d4f60fcb5ad9f2aabe82246ebbd83bf29621a0e90c9ff4ec4b8b",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "84880815fb37317b3766bff2c2abba395b8993c3",
-      "source_path": "skills/nature-experiment-log/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-experiment-log",
+      "installed_skill_sha256": "1f7fffcbc950d4f60fcb5ad9f2aabe82246ebbd83bf29621a0e90c9ff4ec4b8b",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "nature-figure",
-      "installed_skill_sha256": "5aefe708a2531c5ddaa8ee74d5155d747e96c0f21a33143d38316b7c5c88ffc4",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "e605b35611ab2849af46d0cf7831aefdcf85be07",
-      "source_path": "skills/nature-figure/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-figure",
+      "installed_skill_sha256": "5aefe708a2531c5ddaa8ee74d5155d747e96c0f21a33143d38316b7c5c88ffc4",
+      "upstream_commit": "05af1e218e634a8e687c188caee614591065e30c"
     },
     {
       "name": "nature-literature-pipeline",
-      "installed_skill_sha256": "1dcaa692457ec9c2be409cb7777f834a2db833788b2e9b680baf0e961126b01a",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "84880815fb37317b3766bff2c2abba395b8993c3",
-      "source_path": "skills/nature-literature-pipeline/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-literature-pipeline",
+      "installed_skill_sha256": "1dcaa692457ec9c2be409cb7777f834a2db833788b2e9b680baf0e961126b01a",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "nature-paper-card",
-      "installed_skill_sha256": "a71e3dbc446523e415ed4b896bed8ea60e0c598fb8655c587679d719648b68c9",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "84880815fb37317b3766bff2c2abba395b8993c3",
-      "source_path": "skills/nature-paper-card/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-paper-card",
+      "installed_skill_sha256": "a71e3dbc446523e415ed4b896bed8ea60e0c598fb8655c587679d719648b68c9",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "nature-paper-to-patent",
-      "installed_skill_sha256": "b65243157addf3e4e38de4cb35136d95478c2c997bdd5600e6ae21f91f4d06f0",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "84880815fb37317b3766bff2c2abba395b8993c3",
-      "source_path": "skills/nature-paper-to-patent/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-paper-to-patent",
+      "installed_skill_sha256": "b65243157addf3e4e38de4cb35136d95478c2c997bdd5600e6ae21f91f4d06f0",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "nature-paper2ppt",
-      "installed_skill_sha256": "a8d0fd14ca0863602cfc76305467d0f5a6ac2c104abedd7f7e86dfcf46bf04cf",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "84880815fb37317b3766bff2c2abba395b8993c3",
-      "source_path": "skills/nature-paper2ppt/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-paper2ppt",
+      "installed_skill_sha256": "a8d0fd14ca0863602cfc76305467d0f5a6ac2c104abedd7f7e86dfcf46bf04cf",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "nature-polishing",
-      "installed_skill_sha256": "9391b2a2487306cf2ed560377d4bc10c339fd2c220a79db278cb7f9d31e79023",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "84880815fb37317b3766bff2c2abba395b8993c3",
-      "source_path": "skills/nature-polishing/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-polishing",
+      "installed_skill_sha256": "9391b2a2487306cf2ed560377d4bc10c339fd2c220a79db278cb7f9d31e79023",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "nature-proposal-writer",
-      "installed_skill_sha256": "9be8ae52f909969592529414fb6f5bb54059c8cbe520e78b53d22b297cef5e4a",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "84880815fb37317b3766bff2c2abba395b8993c3",
-      "source_path": "skills/nature-proposal-writer/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-proposal-writer",
+      "installed_skill_sha256": "9be8ae52f909969592529414fb6f5bb54059c8cbe520e78b53d22b297cef5e4a",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "nature-reader",
-      "installed_skill_sha256": "999a5c1b116558133d0389ce6c1bbc3dc9cf5242d1be2870358789769d97a84e",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "84880815fb37317b3766bff2c2abba395b8993c3",
-      "source_path": "skills/nature-reader/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-reader",
+      "installed_skill_sha256": "999a5c1b116558133d0389ce6c1bbc3dc9cf5242d1be2870358789769d97a84e",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "nature-ref-verifier",
-      "installed_skill_sha256": "6a975074d7a1c62c00dd9e8c7367cd2af0ef9d573d6d6ce5ea12f70d9320a516",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "84880815fb37317b3766bff2c2abba395b8993c3",
-      "source_path": "skills/nature-ref-verifier/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-ref-verifier",
+      "installed_skill_sha256": "6a975074d7a1c62c00dd9e8c7367cd2af0ef9d573d6d6ce5ea12f70d9320a516",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "nature-response",
-      "installed_skill_sha256": "a8283db56e73879413311cbcde1db4c72dd4390bbe21ab2f62f1f968610b5de1",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "84880815fb37317b3766bff2c2abba395b8993c3",
-      "source_path": "skills/nature-response/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-response",
+      "installed_skill_sha256": "a8283db56e73879413311cbcde1db4c72dd4390bbe21ab2f62f1f968610b5de1",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "nature-reviewer",
-      "installed_skill_sha256": "8ca28cc8e8bda2b5254056940d2a696dc0d3cabcd5573cdec98ffc3cbd162610",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "d5c8baa15d6b1bd44bff07865da83961449da01a",
-      "source_path": "skills/nature-reviewer/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-reviewer",
+      "installed_skill_sha256": "8ca28cc8e8bda2b5254056940d2a696dc0d3cabcd5573cdec98ffc3cbd162610",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "nature-shared",
-      "installed_skill_sha256": "3d914e73f023cab4f247d82f906a948307de8a867fd6c33df999badf67c5d5f2",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "84880815fb37317b3766bff2c2abba395b8993c3",
-      "source_path": "skills/nature-shared/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-shared",
+      "installed_skill_sha256": "3d914e73f023cab4f247d82f906a948307de8a867fd6c33df999badf67c5d5f2",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "nature-statistics",
-      "installed_skill_sha256": "89d2a101fc45d7adf8ca327a6da4bda4a696d6364d7c36ead4f53413627a9b6f",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "84880815fb37317b3766bff2c2abba395b8993c3",
-      "source_path": "skills/nature-statistics/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-statistics",
+      "installed_skill_sha256": "89d2a101fc45d7adf8ca327a6da4bda4a696d6364d7c36ead4f53413627a9b6f",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "nature-writing",
-      "installed_skill_sha256": "ce7c4d20329b96b03b0f0c0bb744411b1b4deaa7a7b69b90757705a83c195b12",
+      "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
-      "observed_clone_head": "84880815fb37317b3766bff2c2abba395b8993c3",
-      "source_path": "skills/nature-writing/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/nature-writing",
+      "installed_skill_sha256": "ce7c4d20329b96b03b0f0c0bb744411b1b4deaa7a7b69b90757705a83c195b12",
+      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239"
     },
     {
       "name": "neat-freak",
-      "installed_skill_sha256": "6c0ca2236d3518ccaad710f6db8e9c4aa7af67b685dc699ad347ae42186951e1",
+      "origin": "upstream",
       "source": "https://github.com/kkkkhazix/khazix-skills",
-      "observed_clone_head": "b81ad3b442e778bb7bf27047034c1d0d9f0637ff",
-      "source_path": "neat-freak/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "neat-freak",
+      "known_deviations": [
+        "evals/fixtures/eval-1-routine-dev-sync/workspace/taskflow/AGENTS.md",
+        "evals/fixtures/eval-2-memory-conflict/workspace/notesapp/AGENTS.md",
+        "evals/fixtures/eval-4-cross-project/workspace/auth-center/AGENTS.md",
+        "evals/fixtures/eval-4-cross-project/workspace/skills-hub/AGENTS.md",
+        "evals/fixtures/eval-6-scope-boundary/workspace/current-app/AGENTS.md"
+      ],
+      "deviation_note": "Upstream symlinks to CLAUDE.md are materialized as files.",
+      "installed_skill_sha256": "6c0ca2236d3518ccaad710f6db8e9c4aa7af67b685dc699ad347ae42186951e1",
+      "upstream_commit": "2b4a645cfdc894156ae347d897723562f719ce95"
     },
     {
       "name": "notation-audit",
-      "installed_skill_sha256": "71ba26cc0610f8046f8a7836c0342c82996c6ceb903a9aae42949a30d0d9615b",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "71ba26cc0610f8046f8a7836c0342c82996c6ceb903a9aae42949a30d0d9615b"
     },
     {
       "name": "novelty-check",
-      "installed_skill_sha256": "aa9ed796202a60e4da5426d4e23111a52a7fc4c6bbcba0767d67c86617947e62",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
-    },
-    {
-      "name": "obsidian-vault",
-      "installed_skill_sha256": "7bed1d552aa5e9345e493cd62cb13e65c5d829d153c349afdb2cb91c809fa6c4",
-      "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "note": "Installed copy retained; original path absent in current clone. Commit is an observed clone HEAD, not an exact installed revision."
+      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "installed_skill_sha256": "aa9ed796202a60e4da5426d4e23111a52a7fc4c6bbcba0767d67c86617947e62"
     },
     {
       "name": "oral-paragraph-audit",
-      "installed_skill_sha256": "2d703effdf0e124a2c66c03e8b2e4b8a2cef71dde140143a48e5d091cce1946a",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "2d703effdf0e124a2c66c03e8b2e4b8a2cef71dde140143a48e5d091cce1946a"
     },
     {
       "name": "paper-arch-diagram",
-      "installed_skill_sha256": "4cdc81a1f7ab1688ab7e6da30329e281f03805f2d48fec3b8772c212889f5904",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "4cdc81a1f7ab1688ab7e6da30329e281f03805f2d48fec3b8772c212889f5904"
     },
     {
       "name": "paper-compile",
+      "origin": "upstream",
+      "source": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "upstream_path": "skills/paper-compile",
       "installed_skill_sha256": "00659b8b9605b06982a7007ca7a94e627bd7d8f7b40f3e3a2bf3c4c5dad461f2",
-      "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "upstream_commit": "c90097d04015bf901e6f91362b8a85ec07410d3b"
     },
     {
       "name": "paper-figure",
-      "installed_skill_sha256": "30cf2277c47290b22d32be5a05414ff4b280419bbbbce48f0ff8c53582ee84d5",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "installed_skill_sha256": "30cf2277c47290b22d32be5a05414ff4b280419bbbbce48f0ff8c53582ee84d5"
     },
     {
       "name": "paper-illustration",
-      "installed_skill_sha256": "6849b7ee0e9b1e61da2cff4beb425e18b766bbcfa7228e8cc5e446be4790fba9",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "installed_skill_sha256": "6849b7ee0e9b1e61da2cff4beb425e18b766bbcfa7228e8cc5e446be4790fba9"
     },
     {
       "name": "paper-plan",
-      "installed_skill_sha256": "eb26486359aa135fc2e2f3b9a48abff1b75f4b9d02f99426176df92e1490f581",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "installed_skill_sha256": "eb26486359aa135fc2e2f3b9a48abff1b75f4b9d02f99426176df92e1490f581"
     },
     {
       "name": "paper-polish",
-      "installed_skill_sha256": "fde7964acfea805a399d52da0355dac3139b51be9b2aa456348538c4713f75ce",
+      "origin": "upstream",
       "source": "https://github.com/HKUSTDial/Supervisor-Skills",
-      "observed_clone_head": "207bc6f7a1aa107e544099c2c7cc86816fba9628",
-      "source_path": "skills/paper-polish/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/paper-polish",
+      "installed_skill_sha256": "fde7964acfea805a399d52da0355dac3139b51be9b2aa456348538c4713f75ce",
+      "upstream_commit": "6800d4d758bd1579faa6e50abae2b7fa31d2a835"
     },
     {
       "name": "paper-presubmit-audit",
-      "installed_skill_sha256": "29460f7c23013d9a4849afc4a73baef89eb59f7d6fd66c68efbc0c3ad9ca1f82",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "29460f7c23013d9a4849afc4a73baef89eb59f7d6fd66c68efbc0c3ad9ca1f82"
     },
     {
       "name": "paper-write",
-      "installed_skill_sha256": "aa6a63e904dd64d31d2c3e23c31f7910cb9708d399fe733b6b0c103ec494b37b",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "installed_skill_sha256": "aa6a63e904dd64d31d2c3e23c31f7910cb9708d399fe733b6b0c103ec494b37b"
     },
     {
       "name": "paper-writer",
-      "installed_skill_sha256": "5ac3df38ca0f6a4a2b7600be100a8b1eb65bec7ce96e492682b765c10e158630",
+      "origin": "upstream",
       "source": "https://github.com/HKUSTDial/Supervisor-Skills",
-      "observed_clone_head": "207bc6f7a1aa107e544099c2c7cc86816fba9628",
-      "source_path": "skills/paper-writer/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/paper-writer",
+      "installed_skill_sha256": "5ac3df38ca0f6a4a2b7600be100a8b1eb65bec7ce96e492682b765c10e158630",
+      "upstream_commit": "6800d4d758bd1579faa6e50abae2b7fa31d2a835"
     },
     {
       "name": "paper-writing",
-      "installed_skill_sha256": "e5646803e0da7ec57210935db72e8e4d86d2a06aac494b36137ff086a00165ef",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "installed_skill_sha256": "e5646803e0da7ec57210935db72e8e4d86d2a06aac494b36137ff086a00165ef"
     },
     {
       "name": "polish-english-paper",
-      "installed_skill_sha256": "4f937b30185de3d9e6a9ba9d1b042033c549b28cab92025a04165ec137dbb40a",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "4f937b30185de3d9e6a9ba9d1b042033c549b28cab92025a04165ec137dbb40a"
     },
     {
       "name": "ppt-master",
-      "installed_skill_sha256": "4b0f576b482a447a35967df230398baf888550b3e3f2243ca0982c59cb8c61db",
+      "origin": "upstream",
       "source": "https://github.com/hugohe3/ppt-master",
+      "upstream_path": "skills/ppt-master",
+      "installed_skill_sha256": "4b0f576b482a447a35967df230398baf888550b3e3f2243ca0982c59cb8c61db",
       "installed_revision": "b4efe3dd",
-      "note": "See INSTALL_NOTE.txt for the pre-existing local removal; bundled LICENSE retained."
+      "note": "See INSTALL_NOTE.txt for the pre-existing local removal; bundled LICENSE retained.",
+      "upstream_commit": "b4efe3ddf237a97a42880164759162f8e2412f2f"
+    },
+    {
+      "name": "pr",
+      "origin": "upstream",
+      "source": "https://github.com/mattpocock/skills",
+      "upstream_path": "skills/engineering/pr",
+      "installed_skill_sha256": "ab63f1cf78647389edcd386c9427c5dfca27ed2836930c24773ffee834c19bcd",
+      "upstream_commit": "49dd158d1076134a641b33efb035946536778336"
     },
     {
       "name": "pre-submission-reviewer",
-      "installed_skill_sha256": "639a96684ad6ca50fb1141287c4d3f2af76653b95cb2dae3dd7897d212bd8c35",
+      "origin": "upstream",
       "source": "https://github.com/HKUSTDial/Supervisor-Skills",
-      "observed_clone_head": "207bc6f7a1aa107e544099c2c7cc86816fba9628",
-      "source_path": "skills/pre-submission-reviewer/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/pre-submission-reviewer",
+      "installed_skill_sha256": "639a96684ad6ca50fb1141287c4d3f2af76653b95cb2dae3dd7897d212bd8c35",
+      "upstream_commit": "6800d4d758bd1579faa6e50abae2b7fa31d2a835"
     },
     {
       "name": "prototype",
+      "origin": "upstream",
+      "source": "https://github.com/mattpocock/skills",
+      "upstream_path": "skills/engineering/prototype",
       "installed_skill_sha256": "714de632d116bb73f65cdb5a882db15b9369a6713b9a47c0fad827848f0bfbe3",
-      "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "source_path": "skills/engineering/prototype/SKILL.md",
-      "skill_md_matches_clone": true
-    },
-    {
-      "name": "qa",
-      "installed_skill_sha256": "d9727aac6503981bf69bdd8b37e0d85b32b8fbd353a57528c252dac1337ab761",
-      "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "note": "Installed copy retained; original path absent in current clone. Commit is an observed clone HEAD, not an exact installed revision."
-    },
-    {
-      "name": "request-refactor-plan",
-      "installed_skill_sha256": "d59de4ba6cc1fe2dd267e8b9b5a1fd88e3e739e2130bc9dd78061d2a072830b8",
-      "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "note": "Installed copy retained; original path absent in current clone. Commit is an observed clone HEAD, not an exact installed revision."
+      "upstream_commit": "321658273cb1d20b76026717d027d505790106d4"
     },
     {
       "name": "research",
-      "installed_skill_sha256": "985569f15739c713d6784887c3d186d4ef9ac85bec5ad9c068d25bf0739928e4",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "source_path": "skills/engineering/research/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/engineering/research",
+      "installed_skill_sha256": "985569f15739c713d6784887c3d186d4ef9ac85bec5ad9c068d25bf0739928e4",
+      "upstream_commit": "321658273cb1d20b76026717d027d505790106d4"
     },
     {
       "name": "research-lit",
-      "installed_skill_sha256": "1bacef2e294d893c3af674d68dd30634bffee901ef20032c9f460a6d56ae52fc",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "installed_skill_sha256": "1bacef2e294d893c3af674d68dd30634bffee901ef20032c9f460a6d56ae52fc"
     },
     {
       "name": "research-paper-writing",
-      "installed_skill_sha256": "62ef11c06f2796c74e55ab24908ed31bafebfa0f1b736499d1615ac374cf7f6d",
+      "origin": "upstream",
       "source": "https://github.com/Master-cai/Research-Paper-Writing-Skills",
-      "observed_clone_head": "77e7c2c1ba06f7d71844873147665437a03aac1b",
-      "source_path": "research-paper-writing/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "research-paper-writing",
+      "installed_skill_sha256": "62ef11c06f2796c74e55ab24908ed31bafebfa0f1b736499d1615ac374cf7f6d",
+      "upstream_commit": "c49a6c6a21a639d84094b2416f1523a7a224599d"
     },
     {
       "name": "research-pipeline",
-      "installed_skill_sha256": "ffcacca99651b599328a5287c58f8f697ecff4da6206b9b46dadc6a8c506bdaa",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "installed_skill_sha256": "ffcacca99651b599328a5287c58f8f697ecff4da6206b9b46dadc6a8c506bdaa"
     },
     {
       "name": "research-review",
-      "installed_skill_sha256": "0e53958e222c13ae880798502d59bcaa992f3764973ec070a86b80e1fe0fca5d",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "installed_skill_sha256": "0e53958e222c13ae880798502d59bcaa992f3764973ec070a86b80e1fe0fca5d"
     },
     {
-      "name": "resolving-merge-conflicts",
-      "installed_skill_sha256": "9d8114f8ef0b31f535a265fc05c364bd8cf2e2895a830040e06c22acb11f54b0",
+      "name": "retro",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "source_path": "skills/engineering/resolving-merge-conflicts/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/engineering/retro",
+      "installed_skill_sha256": "33fbc28568e3146f20fd908b12998bc0ab30aa4f4c87288199a40793efa94696",
+      "upstream_commit": "a7d038f6bf7f01b516408e95e2fb56e0b338fa6f"
     },
     {
       "name": "reviewer-view-paper",
-      "installed_skill_sha256": "446d413d37798b73f2e73d491f9edf64aea71f4d5d5926b1e1c607dcd6ec3786",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "446d413d37798b73f2e73d491f9edf64aea71f4d5d5926b1e1c607dcd6ec3786"
     },
     {
       "name": "run-experiment",
+      "origin": "upstream",
+      "source": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "upstream_path": "skills/run-experiment",
       "installed_skill_sha256": "2cd28f14ec231c437266f5a59d2e7f1e0f70d8b69f16bbd3f76e19b71aaa0138",
-      "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "upstream_commit": "8d9e38d4e6f9ee4e14bc1ef78f5bce8e01cd06b8"
     },
     {
       "name": "scaffold-exercises",
-      "installed_skill_sha256": "75f5c9d771606fb9762f16522efc954df11c324f87148d8ff069bce166257de9",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "source_path": "skills/misc/scaffold-exercises/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/misc/scaffold-exercises",
+      "installed_skill_sha256": "75f5c9d771606fb9762f16522efc954df11c324f87148d8ff069bce166257de9",
+      "upstream_commit": "62f43a18177be6ec82da242e59ffbc490a4c22ea"
     },
     {
       "name": "scientific-visualization",
-      "installed_skill_sha256": "59ab5f6e4454366d0bd539833acee3696bf22208bd1f921f4a8149d218552d21",
+      "origin": "upstream",
       "source": "https://github.com/K-Dense-AI/scientific-agent-skills",
-      "observed_clone_head": "92ace75ac21efe19a620434e0ca4e356081fe807",
-      "source_path": "skills/scientific-visualization/SKILL.md",
-      "skill_md_matches_clone": false,
+      "upstream_path": "skills/scientific-visualization",
+      "known_deviations": [
+        "SKILL.md"
+      ],
+      "deviation_note": "Local copy drops upstream's 'Citing Scientific Agent Skills' section.",
+      "installed_skill_sha256": "59ab5f6e4454366d0bd539833acee3696bf22208bd1f921f4a8149d218552d21",
       "note": "MIT; the closing citation section of SKILL.md is removed (see PROVENANCE.md)."
     },
     {
       "name": "se-research-paper-writing",
-      "installed_skill_sha256": "35cc5a9fd1a1bd4e4a6d3da465db57725f4f2537b8f232b65da190b0fe812041",
+      "origin": "upstream",
       "source": "https://github.com/Emmanuelwh/SE-Research-Paper-Writing-Skills",
-      "note": "Source and MIT attribution from installed PROVENANCE.txt; exact installed revision unknown. Upstream LICENSE retrieved on 2026-10-01."
+      "upstream_path": "se-research-paper-writing",
+      "installed_skill_sha256": "35cc5a9fd1a1bd4e4a6d3da465db57725f4f2537b8f232b65da190b0fe812041",
+      "note": "Source and MIT attribution from installed PROVENANCE.txt; exact installed revision unknown. Upstream LICENSE retrieved on 2026-10-01.",
+      "upstream_commit": "984028d2ca5bd2023f4d672388245147e38dce74"
     },
     {
       "name": "setup-matt-pocock-skills",
-      "installed_skill_sha256": "f148858ffb7f63c03c06fca06e6fdb1d91a35c6b293244b8fdfacd5f4cc028c4",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
-      "source_path": "skills/engineering/setup-matt-pocock-skills/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/engineering/setup-matt-pocock-skills",
+      "installed_skill_sha256": "f148858ffb7f63c03c06fca06e6fdb1d91a35c6b293244b8fdfacd5f4cc028c4",
+      "upstream_commit": "5b7cade4d68947f34dae71326a0ce89f09e22c9c"
     },
     {
       "name": "setup-pre-commit",
-      "installed_skill_sha256": "c9819d7f1e3b198064edc1faa3154224ed67395e9f07f5d3cea4b67cf0a11a98",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "source_path": "skills/misc/setup-pre-commit/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/misc/setup-pre-commit",
+      "installed_skill_sha256": "c9819d7f1e3b198064edc1faa3154224ed67395e9f07f5d3cea4b67cf0a11a98",
+      "upstream_commit": "321658273cb1d20b76026717d027d505790106d4"
     },
     {
       "name": "setup-ts-deep-modules",
-      "installed_skill_sha256": "29acca66ac99d4532e2a6f0370d8125d7cba1e87c9ac66573203c75189d3e6c7",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "source_path": "skills/in-progress/setup-ts-deep-modules/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/in-progress/setup-ts-deep-modules",
+      "installed_skill_sha256": "29acca66ac99d4532e2a6f0370d8125d7cba1e87c9ac66573203c75189d3e6c7",
+      "upstream_commit": "321658273cb1d20b76026717d027d505790106d4"
     },
     {
       "name": "shorten-latex",
-      "installed_skill_sha256": "c97391fd1d597ab406fd8daafbf4de6017b25416cf589c0fa9af6ee06d6ba8ff",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "c97391fd1d597ab406fd8daafbf4de6017b25416cf589c0fa9af6ee06d6ba8ff"
     },
     {
       "name": "slide-maker",
-      "installed_skill_sha256": "1ae5c88e0899e848f1c24b16a10824d07fea263c9c36565fff280f04f6c16294",
+      "origin": "upstream",
       "source": "https://github.com/addsumtech/slides_maker",
-      "observed_clone_head": "0f3a49e3042aa91de8e823f48fce4ef146e0c33b",
-      "source_path": "skills/slide-maker/SKILL.md",
-      "skill_md_matches_clone": true
-    },
-    {
-      "name": "soul-extraction",
-      "installed_skill_sha256": "901ff2966edd1dbc8f268b3ef3d227bfdd65a012d92a79f34feb8735781d03b9",
-      "source": "https://github.com/QuantumBFS/sci-brain",
-      "observed_clone_head": "855fd57439a34bd63d867ed8ef5b149a14c6b5c6",
-      "note": "Installed copy retained; original path absent in current clone. Commit is an observed clone HEAD, not an exact installed revision."
+      "upstream_path": "skills/slide-maker",
+      "installed_skill_sha256": "1ae5c88e0899e848f1c24b16a10824d07fea263c9c36565fff280f04f6c16294",
+      "upstream_commit": "a24e5e7f2b6717bc4807a83b65134527f2f47fe5"
     },
     {
       "name": "storage-analyzer",
-      "installed_skill_sha256": "4b41cc77494638ee0f010f5c50b8015e4dff82e522c9184d4bbeba14b776eae4",
+      "origin": "upstream",
       "source": "https://github.com/kkkkhazix/khazix-skills",
-      "observed_clone_head": "b81ad3b442e778bb7bf27047034c1d0d9f0637ff",
-      "source_path": "storage-analyzer/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "storage-analyzer",
+      "installed_skill_sha256": "4b41cc77494638ee0f010f5c50b8015e4dff82e522c9184d4bbeba14b776eae4",
+      "upstream_commit": "b429d4c769a5446971edc5b825aaf097fa143bb3"
     },
     {
       "name": "survey",
+      "origin": "upstream",
+      "source": "https://github.com/QuantumBFS/sci-brain",
+      "upstream_path": "skills/survey",
       "installed_skill_sha256": "f04961424a781fa1a3ff80b79c907f9c6f9c04868d6660c85162a54066a37206",
-      "source": "https://github.com/QuantumBFS/sci-brain",
-      "observed_clone_head": "855fd57439a34bd63d867ed8ef5b149a14c6b5c6",
-      "source_path": "skills/survey/SKILL.md",
-      "skill_md_matches_clone": true
-    },
-    {
-      "name": "survey-writer",
-      "installed_skill_sha256": "36372420cb5071bd053bce6a87fdc8c898006c25ac6dd7f4e7f248f565701269",
-      "source": "https://github.com/QuantumBFS/sci-brain",
-      "observed_clone_head": "855fd57439a34bd63d867ed8ef5b149a14c6b5c6",
-      "note": "Installed copy retained; original path absent in current clone. Commit is an observed clone HEAD, not an exact installed revision."
+      "upstream_commit": "18e4cddead85740ccf3ebab6d4693f23a0491b26"
     },
     {
       "name": "tdd",
-      "installed_skill_sha256": "5505d25bbaa8fc14a79e4d20163936958992a2995b7f1dd1d6197edc9ed722e0",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
-      "source_path": "skills/engineering/tdd/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/engineering/tdd",
+      "installed_skill_sha256": "5505d25bbaa8fc14a79e4d20163936958992a2995b7f1dd1d6197edc9ed722e0",
+      "upstream_commit": "3f599139104dfceabc7754eeb91319802f85e042"
     },
     {
       "name": "teach",
-      "installed_skill_sha256": "550482c2d674b085c9043b87bfdc14a8f2ec453c736119e7fcbb1e9332bffeba",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
-      "source_path": "skills/productivity/teach/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/productivity/teach",
+      "installed_skill_sha256": "550482c2d674b085c9043b87bfdc14a8f2ec453c736119e7fcbb1e9332bffeba",
+      "upstream_commit": "ad5400b930b297b0c0cb231ff1ffe42a7da666aa"
     },
     {
       "name": "tech-paper-template",
-      "installed_skill_sha256": "93625f319514cba10cb989cd670af6ee623b079f063ace8d1451af56c7c0c879",
+      "origin": "upstream",
       "source": "https://github.com/HKUSTDial/Supervisor-Skills",
-      "observed_clone_head": "207bc6f7a1aa107e544099c2c7cc86816fba9628",
-      "source_path": "skills/tech-paper-template/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/tech-paper-template",
+      "installed_skill_sha256": "93625f319514cba10cb989cd670af6ee623b079f063ace8d1451af56c7c0c879",
+      "upstream_commit": "6800d4d758bd1579faa6e50abae2b7fa31d2a835"
     },
     {
       "name": "to-questionnaire",
-      "installed_skill_sha256": "b5eb929842ee0e93d867c5e906d183d350f2f2d149eaeaa86967d94d8eda1d3b",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "source_path": "skills/productivity/to-questionnaire/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/productivity/to-questionnaire",
+      "installed_skill_sha256": "b5eb929842ee0e93d867c5e906d183d350f2f2d149eaeaa86967d94d8eda1d3b",
+      "upstream_commit": "321658273cb1d20b76026717d027d505790106d4"
     },
     {
       "name": "to-spec",
-      "installed_skill_sha256": "43ad9cf318e5e7d3d1fa360253a37021796dc87a0c2e595ad262661a10f85088",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "source_path": "skills/engineering/to-spec/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/engineering/to-spec",
+      "installed_skill_sha256": "43ad9cf318e5e7d3d1fa360253a37021796dc87a0c2e595ad262661a10f85088",
+      "upstream_commit": "5c89081d4bbeb3d039a42093653f90bb698d780e"
     },
     {
       "name": "to-tickets",
-      "installed_skill_sha256": "56ec23c5b2782785d4e65bff9e315b6d3aeb4ef977c174a219e99489fada1995",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
-      "source_path": "skills/engineering/to-tickets/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/engineering/to-tickets",
+      "installed_skill_sha256": "56ec23c5b2782785d4e65bff9e315b6d3aeb4ef977c174a219e99489fada1995",
+      "upstream_commit": "9e2abf8611a345efbf779aacb171cff015bcdeb6"
     },
     {
       "name": "translate-zh-en",
-      "installed_skill_sha256": "66d3e62655595fcbff263acbdd60fb21d6b70dfe23a0c5e1b1b1ad4407e69773",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "66d3e62655595fcbff263acbdd60fb21d6b70dfe23a0c5e1b1b1ad4407e69773"
     },
     {
       "name": "triage",
-      "installed_skill_sha256": "917b0baf74be583e74f110857ed45df2766617f75c00baf61fd136d7af515edf",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
-      "source_path": "skills/engineering/triage/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/engineering/triage",
+      "installed_skill_sha256": "917b0baf74be583e74f110857ed45df2766617f75c00baf61fd136d7af515edf",
+      "upstream_commit": "d80fa0f4ebe0c5714af0adf8670336065233ecc6"
     },
     {
       "name": "typst-drawing",
-      "installed_skill_sha256": "2af766be493b227ca4f27f4e5f44f5b0e1e53c2981e645cb919bc3fea8d398b2",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
-    },
-    {
-      "name": "ubiquitous-language",
-      "installed_skill_sha256": "2449e2345b96b9f1e861c697b5eab50d03ae1254481a4306b6f815684e523b3a",
-      "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "note": "Installed copy retained; original path absent in current clone. Commit is an observed clone HEAD, not an exact installed revision."
+      "installed_skill_sha256": "2af766be493b227ca4f27f4e5f44f5b0e1e53c2981e645cb919bc3fea8d398b2"
     },
     {
       "name": "upload-hf",
-      "installed_skill_sha256": "da0d7a41d94d81e9ecf2be2b1a5d23fb42bac67b18e08cc689438d27e96a6761",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "da0d7a41d94d81e9ecf2be2b1a5d23fb42bac67b18e08cc689438d27e96a6761"
     },
     {
       "name": "vibe-research-workflow",
-      "installed_skill_sha256": "c26a9f011cb8e88d6d5000c1b1844db7278334c07e84be4bae7ea8d08084a333",
+      "origin": "upstream",
       "source": "https://github.com/HKUSTDial/Supervisor-Skills",
-      "observed_clone_head": "207bc6f7a1aa107e544099c2c7cc86816fba9628",
-      "source_path": "skills/vibe-research-workflow/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/vibe-research-workflow",
+      "installed_skill_sha256": "c26a9f011cb8e88d6d5000c1b1844db7278334c07e84be4bae7ea8d08084a333",
+      "upstream_commit": "6800d4d758bd1579faa6e50abae2b7fa31d2a835"
     },
     {
       "name": "visual-audit-slides",
-      "installed_skill_sha256": "d31724a02b3cc9a85f6b3224ba434cb9cfb39edb2ef61cb9b912b93c45fba4e3",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "d31724a02b3cc9a85f6b3224ba434cb9cfb39edb2ef61cb9b912b93c45fba4e3"
+    },
+    {
+      "name": "wait-what",
+      "origin": "upstream",
+      "source": "https://github.com/mattpocock/skills",
+      "upstream_path": "skills/productivity/wait-what",
+      "installed_skill_sha256": "d961bb37defd975c539427edb8f450cdbccdcdd552e213c1ece46676a7970905",
+      "upstream_commit": "d80fa0f4ebe0c5714af0adf8670336065233ecc6"
     },
     {
       "name": "wayfinder",
-      "installed_skill_sha256": "9be7b478c389605a24517d27752f278933588da97a1b5921b165f455edf4c5b7",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
-      "source_path": "skills/engineering/wayfinder/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/engineering/wayfinder",
+      "installed_skill_sha256": "9be7b478c389605a24517d27752f278933588da97a1b5921b165f455edf4c5b7",
+      "upstream_commit": "8295b8e10d4cdb6cce772a56dda7b7c37075074d"
     },
     {
       "name": "weekly-report",
-      "installed_skill_sha256": "8a9d72a3b9e6362aec7ed9ddceed18b2a0624731aa595d7eca10e4c116fe39f5",
+      "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "note": "Installed content is authoritative; existing per-skill provenance takes precedence."
+      "installed_skill_sha256": "8a9d72a3b9e6362aec7ed9ddceed18b2a0624731aa595d7eca10e4c116fe39f5"
     },
     {
       "name": "wizard",
-      "installed_skill_sha256": "bdf31d48211ea559878f95a4f344aeabf8d85897488ba564382bab0b000daac1",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
-      "source_path": "skills/engineering/wizard/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/engineering/wizard",
+      "installed_skill_sha256": "bdf31d48211ea559878f95a4f344aeabf8d85897488ba564382bab0b000daac1",
+      "upstream_commit": "321658273cb1d20b76026717d027d505790106d4"
     },
     {
       "name": "write-slides",
-      "installed_skill_sha256": "3891ecf1c3948e0a482dc74fdfc8b02f87708cc408e7caf1011acd8320d32d63",
+      "origin": "upstream",
       "source": "https://github.com/QuantumBFS/sci-brain",
-      "observed_clone_head": "855fd57439a34bd63d867ed8ef5b149a14c6b5c6",
-      "source_path": "skills/write-slides/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/write-slides",
+      "installed_skill_sha256": "3891ecf1c3948e0a482dc74fdfc8b02f87708cc408e7caf1011acd8320d32d63",
+      "upstream_commit": "ea11c87285fcccee871b80cd40dbde89d121a021"
     },
     {
       "name": "writing-beats",
-      "installed_skill_sha256": "a96abafa2372eede8267d770138b322d6125da8adaa7ccf0a5e08e4ee13ee71e",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "source_path": "skills/in-progress/writing-beats/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/in-progress/writing-beats",
+      "installed_skill_sha256": "a96abafa2372eede8267d770138b322d6125da8adaa7ccf0a5e08e4ee13ee71e",
+      "upstream_commit": "321658273cb1d20b76026717d027d505790106d4"
     },
     {
       "name": "writing-for-agents",
-      "installed_skill_sha256": "551adca942227b44192edba88acd4e8db911f0121ce58ad16944ccf6a896a74a",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "f3fc5632f401156837ee3872f14fe33ccf1024ea",
-      "source_path": "skills/productivity/writing-for-agents/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/productivity/writing-for-agents",
+      "installed_skill_sha256": "551adca942227b44192edba88acd4e8db911f0121ce58ad16944ccf6a896a74a",
+      "upstream_commit": "321658273cb1d20b76026717d027d505790106d4"
     },
     {
       "name": "writing-fragments",
-      "installed_skill_sha256": "298b0edd23df229183630de592ed8aa4289233560f2040691f6eb77caeaad4ea",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "source_path": "skills/in-progress/writing-fragments/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/in-progress/writing-fragments",
+      "installed_skill_sha256": "298b0edd23df229183630de592ed8aa4289233560f2040691f6eb77caeaad4ea",
+      "upstream_commit": "5c89081d4bbeb3d039a42093653f90bb698d780e"
     },
     {
       "name": "writing-shape",
-      "installed_skill_sha256": "f5e6c57bdd85178ace4a260c92f46da6b64ddee18215b461d875739c68976f72",
+      "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
-      "observed_clone_head": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
-      "source_path": "skills/in-progress/writing-shape/SKILL.md",
-      "skill_md_matches_clone": true
+      "upstream_path": "skills/in-progress/writing-shape",
+      "installed_skill_sha256": "f5e6c57bdd85178ace4a260c92f46da6b64ddee18215b461d875739c68976f72",
+      "upstream_commit": "5c89081d4bbeb3d039a42093653f90bb698d780e"
     }
   ],
   "project_scoped_skills": {

@@ -1,7 +1,7 @@
 {
   "name": "zhc-skills",
   "owner": {
-    "name": "Dr. Zhang",
+    "name": "Dr.Z",
     "email": "delmer_culpabj@techie.com"
   },
   "metadata": {
@@ -12,9 +12,9 @@
       "name": "zhc-skills",
       "source": "./",
       "description": "Research workflow skills: cross-model debate, experiments, papers, figures",
-      "version": "1.0.26",
+      "version": "1.0.27",
       "author": {
-        "name": "Dr. Zhang"
+        "name": "Dr.Z"
       },
       "homepage": "https://github.com/zhc1212/claude-code-skills",
       "repository": "https://github.com/zhc1212/claude-code-skills",

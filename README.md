@@ -1,10 +1,10 @@
 # zhc-skills
 
-Dr. Zhang's user-level Claude Code configuration and research workflow skills. This repository snapshots the active user-level skills, grouped by scenario, including third-party copies and their supporting resources. See the [snapshot notes](workspace/USER_LEVEL_SYNC.md), [source inventory](workspace/USER_SKILLS_MANIFEST.json), and [third-party licenses](workspace/third-party-licenses/).
+Dr.Z's user-level Claude Code configuration and research workflow skills. This repository snapshots the active user-level skills, grouped by scenario, including third-party copies and their supporting resources. See the [snapshot notes](workspace/USER_LEVEL_SYNC.md), [source inventory](workspace/USER_SKILLS_MANIFEST.json), and [third-party licenses](workspace/third-party-licenses/).
 
 ## Skills by scenario
 
-158 skills in 15 scenario folders, `skills/<scenario>/<skill>/`, plus 5 [project-scoped skills](#project-scoped-skills) in `project-skills/<project>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
+150 skills in 15 scenario folders, `skills/<scenario>/<skill>/`, plus 5 [project-scoped skills](#project-scoped-skills) in `project-skills/<project>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
 
 [Ideas and literature](#ideas-and-literature) · [Experiments](#experiments) · [Drafting a paper](#drafting-a-paper) · [Figures and tables](#figures-and-tables) · [Revising a draft](#revising-a-draft) · [Review before submission](#review-before-submission) · [Second model as adversary](#second-model-as-adversary) · [Nature-family journals](#nature-family-journals) · [Software-engineering venues](#software-engineering-venues) · [Slides and reports](#slides-and-reports) · [General writing](#general-writing) · [Software engineering](#software-engineering) · [Planning and decisions](#planning-and-decisions) · [Agent setup, memory and knowledge](#agent-setup-memory-and-knowledge) · [Utilities](#utilities) · [Project-scoped skills](#project-scoped-skills)
 
@@ -17,13 +17,11 @@ Dr. Zhang's user-level Claude Code configuration and research workflow skills. T
 | `idea-creator` | Generate and rank research ideas for a direction |
 | `idea-discovery` | From a broad direction to validated, pilot-tested ideas |
 | `idea-evaluator` | Score an idea on five dimensions and fit to the student |
-| `idea-writer` | Ideas report or proposal-style research plan |
 | `novelty-check` | Check an idea against recent literature |
 | `research-lit` | Quick related work: find, read and summarise papers |
 | `research` | Answer a question from primary sources into a Markdown note |
 | `deep-research` | Survey-grade investigation with verified citations |
 | `survey` | Survey a topic into a knowledge base |
-| `survey-writer` | Survey or SOTA report from a populated knowledge base |
 | `how-to-download-ref` | Add arXiv IDs or DOIs to a knowledge base (metadata, PDFs, BibTeX) |
 | `hv-analysis` | Horizontal–vertical (synchronic/diachronic) analysis of a topic |
 | `vibe-research-workflow` | Rules for AI-assisted coding, figures and writing that keep you in charge |
@@ -191,7 +189,6 @@ Nature 系列. Writing, review, figures, statistics and literature for Nature-fa
 |---|---|
 | `humanizer` | Remove AI tells from non-paper prose |
 | `khazix-writer` | Long-form WeChat articles in Khazix's style |
-| `edit-article` | Restructure and tighten an article *(user-invoked)* |
 | `writing-beats` | Assemble material into beats *(user-invoked)* |
 | `writing-fragments` | Mine raw fragments *(user-invoked)* |
 | `writing-shape` | Shape material into an article *(user-invoked)* |
@@ -204,23 +201,22 @@ Nature 系列. Writing, review, figures, statistics and literature for Nature-fa
 |---|---|
 | `code-review` | Review a diff against repo standards and the spec |
 | `codebase-design` | Vocabulary for deep modules and seams |
-| `design-an-interface` | Several radically different interface designs |
 | `domain-modeling` | Glossary and ADRs for the domain |
 | `tdd` | Test-first features and fixes |
+| `diagnosing-bugs` | Diagnosis loop for hard bugs and performance regressions |
 | `prototype` | Throwaway prototype for a design question |
 | `implement` | Build from a spec or tickets *(user-invoked)* |
-| `qa` | Conversational bug reports filed as issues |
+| `implement-spec` | Implement the result of `/to-spec` and `/to-tickets` *(user-invoked)* |
+| `pr` | Write a PR body |
+| `retro` | Retrospective on a coding session *(user-invoked)* |
 | `triage` | Move issues and PRs through triage *(user-invoked)* |
-| `request-refactor-plan` | Refactor plan in tiny commits, filed as an issue |
 | `improve-codebase-architecture` | Find deepening opportunities *(user-invoked)* |
-| `resolving-merge-conflicts` | Resolve a merge or rebase conflict |
 | `git-guardrails-claude-code` | Hooks that block dangerous git commands |
 | `setup-pre-commit` | Husky, lint-staged, type checks and tests |
 | `setup-matt-pocock-skills` | Configure a repo for these engineering skills *(user-invoked)* |
 | `setup-ts-deep-modules` | dependency-cruiser for deep TypeScript modules *(user-invoked)* |
 | `migrate-to-shoehorn` | Replace `as` in tests with shoehorn |
 | `scaffold-exercises` | Course exercise directories |
-| `ubiquitous-language` | DDD glossary from the conversation *(user-invoked)* |
 | `wizard` | Bash wizard for steps only a human can do |
 | `ask-matt` | Which engineering skill fits? *(user-invoked)* |
 
@@ -233,9 +229,7 @@ Nature 系列. Writing, review, figures, statistics and literature for Nature-fa
 | `grill-me` | Relentless interview to sharpen a plan *(user-invoked)* |
 | `grill-with-docs` | The same interview, writing ADRs and a glossary *(user-invoked)* |
 | `grilling` | Stress-test a plan or idea |
-| `batch-grill-me` | Every open question at once, round by round *(user-invoked)* |
 | `loop-me` | Interview for workflow specs *(user-invoked)* |
-| `decision-mapping` | Loose idea → sequenced investigation tickets *(user-invoked)* |
 | `wayfinder` | Work bigger than one session, as decision tickets *(user-invoked)* |
 | `to-spec` | Conversation → spec on the issue tracker *(user-invoked)* |
 | `to-tickets` | Plan → tracer-bullet tickets with dependencies *(user-invoked)* |
@@ -254,12 +248,10 @@ Nature 系列. Writing, review, figures, statistics and literature for Nature-fa
 | `neat-freak` | Reconcile docs, rules and memory with the code at closeout |
 | `handoff` | Handoff document for another agent *(user-invoked)* |
 | `claude-handoff` | Hand the conversation to a background agent *(user-invoked)* |
+| `chief-of-staff` | Pursue a long-running goal by coordinating subagents *(user-invoked)* |
+| `wait-what` | Re-pitch a message that did not land *(user-invoked)* |
 | `create-advisor` | Advisor profile from conversation history |
-| `import-dialog` | Import dialog files into advisor profiles |
-| `how-to-dump-dialog` | Extract and classify research dialog from session logs |
-| `soul-extraction` | Cluster trigger → reaction patterns in dialog reports |
 | `know-me-better` | Learn your research style from your papers |
-| `obsidian-vault` | Search and organise Obsidian notes |
 
 ### Utilities
 
@@ -299,6 +291,17 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 - [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md) — current source policy and the historical third-party workspace inventory.
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
+
+## Skill origins and upstream sync — v1.0.27
+
+Each manifest entry now records `origin`: `own` skills may be edited here; `upstream` skills stay identical to
+their upstream (`source`, `upstream_path`, `upstream_commit`). Seventeen skills listed as originals derive from
+ARIS and are marked `derived_from`; four ARIS skills and `decision-mapping` turned out to be verbatim upstream
+copies. Fourteen skills whose upstream removed them are retired: `batch-grill-me`, `decision-mapping`,
+`design-an-interface`, `edit-article`, `obsidian-vault`, `qa`, `request-refactor-plan`, `resolving-merge-conflicts`,
+`ubiquitous-language`, `how-to-dump-dialog`, `idea-writer`, `import-dialog`, `soul-extraction`, `survey-writer`.
+The mattpocock skills follow upstream `49dd158`, adding `diagnosing-bugs`, `implement-spec`, `pr`, `retro`,
+`chief-of-staff` and `wait-what`. `workspace/sync_user_level.py` performs the sync and the upstream check.
 
 ## Launch-style paper sweep — v1.0.26
 
@@ -504,4 +507,6 @@ Skill-sources clones: mattpocock-skills, nature-skills, sci-brain-repo, khazix-s
 
 Any content change here → bump `version` in BOTH `plugin.json` and `marketplace.json` (and their `.claude-plugin/` copies), commit, push — else the installed plugin cache silently stays stale. Cache rebuilds on next Claude Code session.
 
-A synced skill goes back to its own folder, `skills/*/<skill>/`. A new skill gets one scenario folder and a row in Skills by scenario; a new scenario folder also goes into `plugin.json`'s `skills` list (both copies). `shared-references/` is copied into every scenario folder whose skills read `../shared-references/`; change all copies together. Skills that read each other by relative path stay in one folder: the `nature-*` skills with `nature-shared`, `oral-paragraph-audit` with `deai-latex` and `defensive-writing-sweep`, `import-dialog` with `how-to-dump-dialog`.
+A synced skill goes back to its own folder, `skills/*/<skill>/`. A new skill gets one scenario folder and a row in Skills by scenario; a new scenario folder also goes into `plugin.json`'s `skills` list (both copies). `shared-references/` is copied into every scenario folder whose skills read `../shared-references/`; change all copies together. Skills that read each other by relative path stay in one folder: the `nature-*` skills with `nature-shared` and `oral-paragraph-audit` with `deai-latex` and `defensive-writing-sweep`.
+
+`python3 workspace/sync_user_level.py` copies the installed `~/.claude` files into the repository and refreshes the manifest; `--verify` also compares each upstream skill with its upstream and exits non-zero for local edits or removed skills.

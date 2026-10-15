@@ -31,6 +31,8 @@ Defaults for every session. Project CLAUDE.md files add to these and win on conf
 
 ## How to answer
 
+Address me as Dr.Z (also in author fields of my repos).
+
 Optimise for a reader with ADHD:
 
 - Open with the deliverable (command, path, snippet). No warm-up phrases.
@@ -53,7 +55,7 @@ About 160 skills from several suites are installed and many overlap. When a task
 
 | Task | Use |
 |---|---|
-| Research ideas | `idea-discovery` (pipeline), `idea-creator`, `idea-evaluator`; ideas report or proposal-style plan after brainstorming: `idea-writer` |
+| Research ideas | `idea-discovery` (pipeline), `idea-creator`, `idea-evaluator` |
 | Full ML conference paper (NeurIPS/ICML/ACL, LaTeX) | From a research direction: `research-pipeline` (stops at a narrative report unless `auto_write: true`). From results or a narrative report: `paper-writing`. Then `paper-presubmit-audit`. Drafting from my own materials outside the pipeline (incl. non-STEM): `paper-writer` |
 | Guided paper workflow: journal or non-ML papers, Socratic planning, outline with evidence map, APA/Chicago/IEEE citation styles | ARS `academic-paper` (`full`, `plan`, `outline-only`); research through finished paper: ARS `academic-pipeline` |
 | Paper skeleton before drafting | Technical paper logic chain: `tech-paper-template`; benchmark/evaluation paper: `benchmark-paper-template`; outline inside `research-pipeline`: `paper-plan` |
@@ -70,12 +72,12 @@ About 160 skills from several suites are installed and many overlap. When a task
 | Reviewer comments, rebuttal, revision | Parse reviews into a revision roadmap + response skeleton: ARS `academic-paper` `revision-coach`; revise the manuscript itself: `revision`; audit my rebuttal draft against the reviews: `rebuttal-audit`. Nature-family journals: `nature-response`; FSE: `fse-author-response` |
 | Nature-family journals | `nature-writing`, `nature-reviewer`, `nature-figure` |
 | SE venues (FSE/ICSE/ASE/ISSTA/MSR/TSE/TOSEM) | Content, RQs, threats to validity: `se-research-paper-writing`. FSE mechanics: `fse-*` (`fse-writing-style`, `fse-experiments`, `fse-submission`, `fse-author-response`, `fse-artifact-evaluation`, …); re-check page limits against the live call. FSE/PACMSE uses acmart `acmsmall`, so `paper-write venue: ACM` (sigconf) is the wrong template |
-| Literature | Survey-grade report: `deep-research`. Systematic review/meta-analysis, fact-check, 3W (why/how/what) scan, Socratic research-question shaping: ARS `deep-research`; screening records against eligibility criteria: ARS `sr-screener`; annotated bibliography in paper format: ARS `academic-paper` `lit-review`. Knowledge-base survey: `survey` → `survey-writer`. Quick related work: `research-lit`. Multi-source search, MeSH, citation-impact audit: `nature-academic-search`. Automated daily literature feed: `nature-literature-pipeline`. Novelty: `novelty-check`. Non-paper facts into a repo Markdown file: `research`; product/company/technology deep dive as a PDF report: `hv-analysis` |
+| Literature | Survey-grade report: `deep-research`. Systematic review/meta-analysis, fact-check, 3W (why/how/what) scan, Socratic research-question shaping: ARS `deep-research`; screening records against eligibility criteria: ARS `sr-screener`; annotated bibliography in paper format: ARS `academic-paper` `lit-review`. Knowledge-base survey and its write-up: `survey`. Quick related work: `research-lit`. Multi-source search, MeSH, citation-impact audit: `nature-academic-search`. Automated daily literature feed: `nature-literature-pipeline`. Novelty: `novelty-check`. Non-paper facts into a repo Markdown file: `research`; product/company/technology deep dive as a PDF report: `hv-analysis` |
 | Reading one paper | Deep-reading card (methods, evidence chain, limits): `nature-paper-card`; bilingual full-text reader: `nature-reader`; quick summary or Q&A: `research-lit` |
 | Experiments | Plan → code: `experiment-bridge`; launch: `run-experiment` (long jobs follow `~/.claude/rules/sandbox-runtime.md`); monitor: `monitor-experiment`; aggregate into tables: `collect-results`; statistics and insights: `analyze-results`; statistical reporting in a manuscript: `nature-statistics` |
 | Second model as adversary | `codex-debate`, `codex-paper-adversary`, `codex-debug-pair`, `codex-experiment-critic`, `research-review` |
 | Code review | Cross-model, multi-round: `codex-review` (audit-only by default; prefer it when Codex should read the repo, and over `auto-review-loop`, which iterates on research and experiments). Standards + spec review of a diff: local `code-review` |
-| Debugging | `codex-debug-pair` for a second model's hypotheses |
+| Debugging | `diagnosing-bugs`; `codex-debug-pair` for a second model's hypotheses |
 | TDD | `tdd` |
 | Writing skills | Skills, CLAUDE.md and other agent-read docs: `writing-for-agents`; audit or optimise an existing skill with Codex: `codex-skill-optimizer`; from ARIS usage logs: `meta-optimize`. Inside a plugin: `plugin-dev:skill-development`. Reconcile docs, rules and memory with the code after a piece of work: `neat-freak` |
 | Slides | pptx: `slide-maker` (default) or `ppt-master` (brand/template workspaces). Typst: `write-slides`. Paper → Chinese deck: `nature-paper2ppt`. Quarto/Beamer layout audit: `visual-audit-slides` |
@@ -97,7 +99,7 @@ About 160 skills from several suites are installed and many overlap. When a task
 | Review | Every figure and table in a compiled paper PDF: `figure-audit` (report-only); one standalone figure's visual design: `how-to-review-figure` |
 | Fix | Figures in a compiled paper: `figure-pipeline` (works from a `figure-audit` report; also redesigns a plot or redraws a diagram there). A standalone figure: rerun the skill that made it |
 
-Not installed on this machine: `diagnosing-bugs`, `run-baseline`, `i-have-adhd`, `mermaid-diagram`, the `ecc`, `ai-research-skills` and `superpowers` plugins (superpowers uninstalled 2026-10-08). Broken: `figure-spec` (its `figure_renderer.py` is missing), so its architecture and workflow cases go to figgenie. Disabled: the `claude-scientific-writer` and `planning-with-files` plugins (`TASKS.md` covers task tracking). Add a row here in the same edit whenever a skill or plugin is added or removed.
+Not installed on this machine: `run-baseline`, `i-have-adhd`, `mermaid-diagram`, the `ecc`, `ai-research-skills` and `superpowers` plugins (superpowers uninstalled 2026-10-08). Broken: `figure-spec` (its `figure_renderer.py` is missing), so its architecture and workflow cases go to figgenie; `survey` names sci-brain's `how-to-build-kb`, `how-to-technical-writing` and `how-to-write-ideas-report`, which are not installed. Retired 2026-10-15 because their upstream removed them: `batch-grill-me`, `decision-mapping`, `design-an-interface`, `edit-article`, `obsidian-vault`, `qa`, `request-refactor-plan`, `resolving-merge-conflicts`, `ubiquitous-language`, `how-to-dump-dialog`, `idea-writer`, `import-dialog`, `soul-extraction`, `survey-writer`. Disabled: the `claude-scientific-writer` and `planning-with-files` plugins (`TASKS.md` covers task tracking). Add a row here in the same edit whenever a skill or plugin is added or removed.
 
 ## Environment (this machine)
 
@@ -106,6 +108,7 @@ Not installed on this machine: `diagnosing-bugs`, `run-baseline`, `i-have-adhd`,
 - The sandbox's privacy env vars switch off server feature flags, so a flag-gated feature (e.g. `/advisor`) can look missing. Check for a flag gate before concluding a feature doesn't exist.
 - Conda env `compactifai` was relocated, so its entry-point shebangs point at the old path. Use `python3 -m pip` (not `pip`) and `python3 -m <tool>`.
 - Plugins need `claude plugin marketplace add` + `claude plugin install`; editing settings.json by hand is not enough.
-- The skills are a copy of https://github.com/zhc1212/claude-code-skills. Pulling that repo does not update `~/.claude/skills/`.
-- Codex (`CODEX_HOME=~/huicheng/.codex`) loads its own skill copies from `~/huicheng/.codex/skills/`; editing `~/.claude/skills/` does not update them, and a Codex review may read the stale copy.
+- The skills are a copy of https://github.com/zhc1212/claude-code-skills (local clone `~/huicheng/claude-code-skills`). Pulling that repo does not update `~/.claude/skills/`; `python3 workspace/sync_user_level.py` in the clone copies the installed files into it, and `--verify` checks upstream skills against their upstream.
+- Optimize or edit only own skills (`origin: own` in the clone's `workspace/USER_SKILLS_MANIFEST.json`). Upstream skills stay identical to their upstream: change their behaviour through a routing row here or an own skill, and update them only by re-copying from upstream. When an upstream removes or renames a skill, retire the local copy too.
+- Codex (`CODEX_HOME=~/huicheng/.codex`) loads its own skill copies from `~/huicheng/.codex/skills/`; editing `~/.claude/skills/` does not update them, and a Codex review may read the stale copy. Leave those copies unsynced.
 - Bash calls starting with `sleep N` need `timeout: (N + 30) * 1000`; for anything past ~560 s use `run_in_background` instead of polling.

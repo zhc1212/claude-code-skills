@@ -4,6 +4,12 @@
 
 v1.0.15 includes all 158 readable active user-level skills by explicit user request, including third-party copies. This supersedes the external-only policy in the historical sections below. The [current inventory](USER_SKILLS_MANIFEST.json) records installed SKILL.md hashes, observed source clone revisions, and exact-match status; observed clone HEADs must not be mistaken for exact installed revisions. [Snapshot notes](USER_LEVEL_SYNC.md) explain exclusions and restoration. Upstream licenses are retained [alongside this inventory](third-party-licenses/) and inside skills where installed. Local revisions are preserved.
 
+Update 2026-10-15 (v1.0.27): per-skill origin lives in the manifest's `origin`, `source`, `upstream_path` and
+`upstream_commit` fields, checked by `sync_user_level.py --verify`. Seventeen skills previously attributed to this
+repository derive from [ARIS](https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep) (`derived_from`);
+`analyze-results`, `feishu-notify`, `paper-compile` and `run-experiment` are verbatim ARIS copies, and
+`decision-mapping` was a verbatim mattpocock copy (now retired with its upstream).
+
 ## Historical inventory
 
 This is the exposure manifest for the workspace that uses `zhc-skills` v1.0.10. It records the **66** third-party skill symlinks active as of 2026-07-20; upstream repositories remain their sole source of code.
