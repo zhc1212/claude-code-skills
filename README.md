@@ -295,6 +295,7 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 - [`workspace/USER_CLAUDE.md`](workspace/USER_CLAUDE.md) — the exact active `~/.claude/CLAUDE.md` snapshot, including user-specific routing and paths.
 - [`workspace/CLAUDE.md`](workspace/CLAUDE.md) — project-level operating rules, with machine- and user-specific values replaced by placeholders.
+- [`workspace/statusline/`](workspace/statusline/) — the active status line (ccstatusline config, wrapper and width-fitting scripts, `settings.json` entry).
 - [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md) — current source policy and the historical third-party workspace inventory.
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).

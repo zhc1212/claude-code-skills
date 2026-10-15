@@ -1,5 +1,11 @@
 # User-level snapshot — 2026-10-01
 
+Update 2026-10-15: `statusline/` snapshots the active status line. Restore `statusline.sh` and `statusline-fit.py`
+to `~/.claude/`, `ccstatusline-settings.json` to `~/.config/ccstatusline/settings.json`, and
+`claude-usage-statusline.py` (fallback text and quota snapshot) to `~/huicheng/config/`; merge
+`settings-statusLine.json` into `~/.claude/settings.json`. Requires `ccstatusline` on `PATH` (snapshot: 2.2.30,
+`npm i -g ccstatusline`).
+
 Update 2026-10-12 (v1.0.23): `propose`, `run-gpu-experiment`, `tutorial`, `write-paper-section` and `run-pipeline`
 are project-scoped and live in `../project-skills/<project>/`; copy them into that project's `.claude/skills/`,
 not `~/.claude/skills/`.
