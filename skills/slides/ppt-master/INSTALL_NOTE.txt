@@ -1,5 +1,5 @@
 source: https://github.com/hugohe3/ppt-master (skills/ppt-master)
-commit: b4efe3dd (v6.7.0)
-installed: 2026-10-08 (previous: ef8d8d83, 2026-08-11)
+commit: b6843645 (upstream HEAD)
+installed: 2026-10-15 (previous: b4efe3dd, 2026-10-08)
 local change: removed scripts/gemini_watermark_remover.py (strips Gemini provenance watermark)
 python deps NOT installed — see requirements.txt

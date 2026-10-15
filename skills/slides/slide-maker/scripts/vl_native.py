@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""vl_native — page compositions of the NATIVE visual languages (ink, poster, cutpaper, drafting).
+"""vl_native — page compositions of the NATIVE visual languages (ink, poster, cutpaper, drafting); the second set —
+starlit, broadsheet, journal, tally, chalkboard — is in vl_native2.py, imported at this module's foot.
 
 Imported by visual_languages only for those languages; the image-led four never load it. Each page PLANS its text
 first (measured: the kit's _flow for horizontal text, vcol for vertical CJK, display for poster-scale type —
@@ -62,12 +63,22 @@ def points_of(items):
         raise ValueError("points(): items= takes 2 to 4 points, got {!r}".format(items))
     out = []
     for it in items:
+        # a point is its head and its line: a third member or another key was dropped without a word, and a dict keyed
+        # title/text was refused as "an empty one" (robustness audit, 2026-10-09)
         if isinstance(it, dict):
+            other = sorted(set(it) - {"head", "line"})
+            if other:
+                raise ValueError("points(): a point is {{'head': ..., 'line': ...}} — {!r} also has {}".format(it, other))
             head, line = it.get("head"), it.get("line")
         elif isinstance(it, (list, tuple)):
+            if len(it) > 2:
+                raise ValueError("points(): a point is (head, line) — {!r} has {} parts".format(tuple(it), len(it)))
             head, line = (list(it) + [None, None])[:2]
         else:
             head, line = it, None
+        for v in (head, line):
+            if v is not None and not isinstance(v, (str, int)) or isinstance(v, bool):
+                raise ValueError("points(): a point's head and line are text — got {!r} in {!r}".format(v, it))
         head = str(head or "").strip()
         if not head:
             raise ValueError("points(): every point needs its words — an empty one in {!r}".format(items))
@@ -248,8 +259,16 @@ def display(k, slide, rect, text, field, *, highlight=None, caps=True, ink=None,
             if gw is not None and gw > w - dk.TEXT_INSET_LR:
                 return False
         return True
+    # measured in HEADROOM of the box and drawn at its full width, as every other field (vl.HEADROOM): on the CI's
+    # Linux faces a poster title measured to fit exactly took one more line than its box held (2026-10-09)
+    wm = w * vl.HEADROOM
+
+    def need_at(sz_):
+        # the lint's line model AND the glyph breaks the render follows — the larger: on Linux's stand-in faces the
+        # glyph breaks took a line more than the lint model, and the title left its box (CI, 2026-10-09)
+        return max(measure(None, sz_, wm), measure(vl._break_lines(k, field, t, sz_, wm), sz_, wm))
     while True:
-        need = measure(None, sz, w)
+        need = need_at(sz)
         if (need <= h and words_fit(sz)) or sz <= fl + 1e-6:
             break
         sz = max(fl, sz * 0.93)
@@ -263,21 +282,26 @@ def display(k, slide, rect, text, field, *, highlight=None, caps=True, ink=None,
         ls = vl._break_lines(k, field, t, sz_, w_)
         return dk._has_cjk(t) or len(ls) < 2 or len(ls[-2].split()) > 1
 
-    lines, bw = None, w
+    lines, bw = None, wm                           # bw: the MEASURE; the box is drawn (w - wm) wider
     if field in vl._NO_WIDOW:
         sz2, tries = sz, 0
-        while widowed(sz2, w) and sz2 * 0.95 >= fl and tries < 10:
+        while widowed(sz2, wm) and sz2 * 0.95 >= fl and tries < 10:
             sz2, tries = sz2 * 0.95, tries + 1
-        fit = vl._phrase_lines(k, field, t, sz, w, max(fl, min(0.7 * sz, sz2)))
+        fit = vl._phrase_lines(k, field, t, sz, wm, max(fl, min(0.7 * sz, sz2)))
         if fit is not None and (hi is None or any(hi.upper() in l_.upper() for l_ in fit[1])):
             sz2, lines = fit                       # a highlight is never split across a clause break
-        elif widowed(sz2, w):
+        elif widowed(sz2, wm):
             sz2 = sz
-            bw = vl._balanced_width(k, field, t, sz, w) or w
+            bw = vl._balanced_width(k, field, t, sz, wm) or wm
         if measure(lines, sz2, bw) <= h + 1e-6:
             sz, need = sz2, measure(lines, sz2, bw)
         else:                                      # a guard, not a path: the plain fit stands
-            lines, bw = None, w
+            lines, bw = None, wm
+    if lines is None:                              # a wrapping title is SET in its measured lines (vl._set_lines)
+        ls = vl._set_lines(k, field, t, sz, bw)
+        if ls and measure(ls, sz, bw) <= h + 1e-6:
+            lines, need = ls, measure(ls, sz, bw)
+    bw = min(w, bw + (w - wm))
     if align == "r":
         x = x + w - bw
     elif align == "c":
@@ -322,6 +346,7 @@ def compose(k, slide, page, fields, image):
         raise ValueError("{}.{}(): nothing to place — pass the words".format(k.name, page))
     n0 = len(slide.shapes)
     state = dict(k.__dict__)
+    mark = len(_REMOVED)
     last = None
     for a in range(ALTS.get((k.name, page), 1)):
         _ALT[0] = a
@@ -330,27 +355,58 @@ def compose(k, slide, page, fields, image):
             break
         except vl.VLTextOverflow as e:            # the copy does not fit THIS layout: undo it, try the next
             last = e
-            _unbuild(slide, n0)
+            undo(slide, n0, mark)
             k.__dict__.clear()
             k.__dict__.update(state)
+        except Exception:                         # any other refusal leaves the slide as it found it, too
+            undo(slide, n0, mark)
+            k.__dict__.clear()
+            k.__dict__.update(state)
+            raise
         finally:
             _ALT[0] = 0
     else:
         raise last
+    del _REMOVED[mark:]                           # the attempt stands: what it took off stays off
     for sh in list(slide.shapes)[n0:]:
         dk._compose_tag(sh, vl=k.name)
+    if getattr(k, "memo", None):
+        vl._MEMO[k.name] = dict(k.memo)        # ordinary pages (rs.ground) read the deck's remembered extras
     return {"rects": rects, "image": None, "free": None}
+
+
+_REMOVED = []        # (parent, index, element) an attempt took off the slide — put back if the attempt is undone
+
+
+def remove_tracked(el):
+    """Take `el` off the slide so that an undone attempt can put it back (drafting's old project block)."""
+    parent = el.getparent()
+    _REMOVED.append((parent, parent.index(el), el))
+    parent.remove(el)
+
+
+def undo(slide, n0, mark):
+    """Undo an attempt: put back what it took off (first, so the shape indices are the ones n0 was counted in), then
+    remove what it drew after the first n0 shapes. `mark` is len(_REMOVED) when the attempt began."""
+    while len(_REMOVED) > mark:
+        parent, idx, el = _REMOVED.pop()
+        parent.insert(idx, el)
+    _unbuild(slide, n0)
 
 
 def _unbuild(slide, n0):
     """Remove everything an attempt drew after the first n0 shapes (and the picture links it added), so the next
-    layout starts from the bare ground. Declarations live in shape names, so nothing else needs undoing."""
+    layout starts from the bare ground. Declarations live in shape names, so nothing else needs undoing. A picture
+    link is dropped only when nothing on the slide still uses it: the caller's own picture of the same file shares it
+    (dropping it left a dangling r:embed — the reopened deck failed, final review 2026-10-09)."""
     from pptx.oxml.ns import qn
     for sh in list(slide.shapes)[n0:]:
         el = sh._element
         rids = {b.get(qn("r:embed")) for b in el.iter(qn("a:blip")) if b.get(qn("r:embed"))}
         el.getparent().remove(el)
         for rid in rids:
+            if slide._element.xpath('.//*[@r:embed="{}"]'.format(rid)):
+                continue
             try:
                 slide.part.drop_rel(rid)
             except Exception:
@@ -395,7 +451,9 @@ def _ink_sun(k, slide, cx, cy, d, clear=()):
         on_page = r[0] >= 0.1 and r[1] >= 0.1 and r[0] + d <= W - 0.1 and r[1] + d <= H - 0.1
         if on_page and not any(r[0] < c[0] + c[2] + pad and c[0] < r[0] + d + pad and r[1] < c[1] + c[3] + pad
                                and c[1] < r[1] + d + pad for c in clear):
-            dk.decorative(na.disc(slide, x, y, d, k.P["sun"]), "the ink language's sun (a moon on the night ground)")
+            sun_ = dk.decorative(na.disc(slide, x, y, d, k.P["sun"]), "the ink language's sun (a moon on the night ground)")
+            dk.overlap_intent(sun_ if sun_ is not None else slide.shapes[-1],
+                              "the sun sets behind the ink ridges: the ridge in front of it is the picture")
             return
 
 
@@ -789,11 +847,14 @@ def _poster_section(k, slide, f, image):
     return rects
 
 
-@register("poster", "image_text")
+@register("poster", "image_text", alts=4)
 def _poster_image_text(k, slide, f, image):
+    """The picture beside (or over) the headline; for long copy (alt 1) the picture gives the words room — a 14-word
+    title with a body and a caption was refused on 4:3, square and A4 (the long-copy corpus, 2026-10-09)."""
     W, H, s, o = ctx(k)
-    img = (0.52 * W, 0.12 * H, 0.44 * W, 0.76 * H) if o == "land" else (0.06 * W, 0.08 * H, 0.88 * W, 0.42 * H)
-    col = (0.05 * W, 0.14 * H, 0.42 * W, 0.72 * H) if o == "land" else (0.06 * W, 0.54 * H, 0.88 * W, 0.38 * H)
+    g = (0.0, 0.10, 0.18, 0.26)[alt()]     # the picture gives the words room, a little then more
+    img = (0.52 * W + g * W, 0.12 * H, (0.44 - g) * W, 0.76 * H) if o == "land" else (0.06 * W, 0.08 * H, 0.88 * W, (0.42 - g) * H)
+    col = (0.05 * W, 0.14 * H, (0.42 + g) * W, 0.72 * H) if o == "land" else (0.06 * W, (0.54 - g) * H, 0.88 * W, (0.38 + g) * H)
     items = [(x_, text_of(f, x_)) for x_ in ("title", "body", "caption") if text_of(f, x_)]
     r, d = flow(k, slide, "image_text", col, items, anchor="middle" if o == "land" else "top")
     place_image(k, slide, image, img, "image_text")
@@ -812,13 +873,14 @@ def _poster_quote(k, slide, f, image):
     qrect = (0.20 * W, 0.20 * H, 0.74 * W, 0.56 * H) if o == "land" else (0.06 * W, 0.26 * H, 0.88 * W, 0.52 * H)
     r, _z, d = display(k, slide, mrect, "“", "mark", caps=False, ink=fld["accent"], floor=36)
     draws.append(d)
-    if q:
+    ya = qrect[1]                      # a secondary field is drawn whether or not its primary is given — the caller's
+    if q:                              # words are never dropped for a missing sibling (robustness audit, 2026-10-09)
         r1, _z, d1 = display(k, slide, qrect, q, "quote", highlight=hl, hl=fld["hl"], hl_ink=fld["hl_ink"])
         rects["quote"] = r1; draws.append(d1)
-        if attr:
-            ar, ad = flow(k, slide, "quote", (qrect[0], r1[1] + r1[3] + 0.25 * s, qrect[2], 0.6 * s),
-                          [("attribution", attr)], accent=fld["accent"])
-            rects.update(ar); draws.append(ad)
+        ya = r1[1] + r1[3] + 0.25 * s
+    if attr:
+        ar, ad = flow(k, slide, "quote", (qrect[0], ya, qrect[2], 0.6 * s), [("attribution", attr)], accent=fld["accent"])
+        rects.update(ar); draws.append(ad)
     _poster_meta(k, slide, None)
     _run_all(draws)
     return rects
@@ -834,12 +896,14 @@ def _poster_data(k, slide, f, image):
     if num:
         r, _z, d = display(k, slide, nrect, num, "number", caps=False, anchor="b", floor=48)   # 1,250,000 fits one line
         rects["number"] = r; draws.append(d)
+    yn = lrect[1]                      # the note stands without a label (see _poster_quote)
     if label:
         r1, _z, d1 = display(k, slide, lrect, label, "label")
         rects["label"] = r1; draws.append(d1)
-        if note:
-            nr, nd = flow(k, slide, "data", (lrect[0], r1[1] + r1[3] + 0.2 * s, lrect[2], 1.2 * s), [("note", note)])
-            rects.update(nr); draws.append(nd)
+        yn = r1[1] + r1[3] + 0.2 * s
+    if note:
+        nr, nd = flow(k, slide, "data", (lrect[0], yn, lrect[2], 1.2 * s), [("note", note)])
+        rects.update(nr); draws.append(nd)
     _poster_meta(k, slide, text_of(f, "kicker"))
     _run_all(draws)
     return rects
@@ -852,13 +916,15 @@ def _poster_closing(k, slide, f, image):
     title, line, hl = text_of(f, "title"), text_of(f, "line"), text_of(f, "highlight")
     trect = (0.05 * W, 0.14 * H, 0.70 * W, 0.58 * H) if o == "land" else (0.06 * W, 0.12 * H, 0.88 * W, 0.50 * H)
     rects, draws = {}, []
+    yl = trect[1]                      # the line stands without a title (see _poster_quote)
     if title:
         r, _z, d = display(k, slide, trect, title, "title", highlight=hl, hl=fld["hl"], hl_ink=fld["hl_ink"],
                            floor=vl.TYPE[k.name]["label"][5])
         rects["title"] = r; draws.append(d)
-        if line:
-            lr, ld = flow(k, slide, "closing", (trect[0], r[1] + r[3] + 0.3 * s, trect[2], 1.0 * s), [("line", line)])
-            rects.update(lr); draws.append(ld)
+        yl = r[1] + r[3] + 0.3 * s
+    if line:
+        lr, ld = flow(k, slide, "closing", (trect[0], yl, trect[2], 1.0 * s), [("line", line)])
+        rects.update(lr); draws.append(ld)
     blocks = ((0.80 * W, 0.62 * H, 0.30 * W, 0.30 * W, 12.0),) if o == "land" else ((0.62 * W, 0.80 * H, 0.50 * W, 0.24 * H, 12.0),)
     _blocks(k, slide, blocks)
     _poster_meta(k, slide, None)
@@ -953,6 +1019,12 @@ def _back_hills(k, slide, o, seed=1):
     na.paper_hill(slide, na.hill_points(W, base[1] * H, 0.15 * H if o == "land" else 0.07 * H, seed + 3, 1.7), H, fill=A["hills"][1])
 
 
+def _front_crest(k, o):
+    """The highest point (smallest y) the front hills can reach: base minus amplitude (native_art.hill_points)."""
+    W, H, s, _o = ctx(k)
+    return (0.82 if o == "land" else 0.86) * H - 0.08 * H
+
+
 def _front_hills(k, slide, o, seed=7, low=False):
     W, H, s, _o = ctx(k)
     A = CUT_ART[k.ground]
@@ -1024,6 +1096,10 @@ def _cut_section(k, slide, f, image):
     if alt():
         col = (0.46 * W, 0.12 * H, 0.48 * W, 0.70 * H) if o == "land" else (0.08 * W, cy + d0 / 2 + 0.3 * s, 0.84 * W,
                                                                              0.86 * H - (cy + d0 / 2 + 0.3 * s))
+    # the words end above the front hills' highest crest: on 3:4 a long title's last line sat on the green hill (the
+    # column ran to 0.86H, the crest rises to 0.78H — audit sweep, 2026-10-09)
+    crest = _front_crest(k, o) - 0.15 * s
+    col = (col[0], col[1], col[2], max(0.5 * s, min(col[3], crest - col[1])))
     items = [(x_, t) for x_, t in (("kicker", kicker), ("title", title)) if t]
     r, d = flow(k, slide, "section", col, items, anchor="middle" if o == "land" else "top")
     rects.update(r); draws.append(d)
@@ -1033,11 +1109,14 @@ def _cut_section(k, slide, f, image):
     return rects
 
 
-@register("cutpaper", "image_text")
+@register("cutpaper", "image_text", alts=3)
 def _cut_image_text(k, slide, f, image):
+    """The picture on its paper frame and the words on a card beside it; for long copy (alt 1) the frame gives the card
+    room (a 14-word title was refused on the 10in 16:9, the long-copy corpus, 2026-10-09)."""
     W, H, s, o = ctx(k)
-    frame = (0.06 * W, 0.10 * H, 0.46 * W, 0.76 * H) if o == "land" else (0.08 * W, 0.05 * H, 0.84 * W, 0.44 * H)
-    card = (0.57 * W, 0.18 * H, 0.37 * W, 0.62 * H) if o == "land" else (0.08 * W, 0.53 * H, 0.84 * W, 0.36 * H)
+    g = (0.0, 0.10, 0.18)[alt()]           # the picture gives the words room, a little then more
+    frame = (0.06 * W, 0.10 * H, (0.46 - g) * W, 0.76 * H) if o == "land" else (0.08 * W, 0.05 * H, 0.84 * W, (0.44 - g) * H)
+    card = ((0.57 - g) * W, 0.18 * H, (0.37 + g) * W, 0.62 * H) if o == "land" else (0.08 * W, (0.53 - g) * H, 0.84 * W, (0.36 + g) * H)
     pad = 0.35 * s
     items = [(x_, text_of(f, x_)) for x_ in ("kicker", "title", "body", "caption") if text_of(f, x_)]
     r, d = _card_flow(k, slide, "image_text", (card[0] + pad, card[1] + pad, card[2] - 2 * pad, card[3] - 2 * pad), items,
@@ -1213,8 +1292,8 @@ def _bp_project(k, slide, f, fallback=None):
                 old = sh
                 break
     if na.title_block_project(slide, block, words, ink=k.P["ink"], mute=k.P["mute"], face=k.face("mono")):
-        if old is not None:                   # …and remove them only once the new ones are in (validate, then mutate)
-            old._element.getparent().remove(old._element)
+        if old is not None:                   # …and remove them only once the new ones are in (validate, then mutate),
+            remove_tracked(old._element)      # put back if this page's attempt is undone
         k.project = words
         k._sheet = (content, block, words)
     elif explicit:
@@ -1257,13 +1336,17 @@ def _bp_section(k, slide, f, image):
     return rects
 
 
-@register("drafting", "image_text")
+@register("drafting", "image_text", alts=3)
 def _bp_image_text(k, slide, f, image):
+    """The dimensioned figure beside (or over) its words; for long copy the figure gives the words room (alt 1, 2) —
+    a 14-word title with a body and a caption was refused on the square sheet (the long-copy corpus, 2026-10-09)."""
     W, H, s, o = ctx(k)
     (cx, cy, cw, ch), _b = _bp_area(k)
     _bp_project(k, slide, f)
-    img = (cx, cy, cw * 0.56, ch) if o == "land" else (cx, cy, cw, ch * 0.50)
-    col = (cx + cw * 0.62, cy + 0.1 * ch, cw * 0.38, ch * 0.8) if o == "land" else (cx, cy + ch * 0.56, cw, ch * 0.44)
+    g = (0.0, 0.10, 0.18)[alt()]
+    img = (cx, cy, cw * (0.56 - g), ch) if o == "land" else (cx, cy, cw, ch * (0.50 - g))
+    col = ((cx + cw * (0.62 - g), cy + 0.1 * ch, cw * (0.38 + g), ch * 0.8) if o == "land"
+           else (cx, cy + ch * (0.56 - g), cw, ch * (0.44 + g)))
     items = [(x_, text_of(f, x_)) for x_ in ("kicker", "title", "body", "caption") if text_of(f, x_)]
     r, d = flow(k, slide, "image_text", col, items, anchor="middle" if o == "land" else "top")
     place_image(k, slide, image, img, "image_text")
@@ -1402,3 +1485,8 @@ def _bp_points(k, slide, f, image):
         draws.append(td_)
     _run_all(draws)
     return rects
+
+
+# ── the second set (P4) registers its compositions on import: every importer of vl_native gets them ──
+import vl_native2  # noqa: E402,F401
+import vl_native3  # noqa: E402,F401

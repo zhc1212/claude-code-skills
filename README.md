@@ -4,7 +4,7 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 
 ## Skills by scenario
 
-150 skills in 15 scenario folders, `skills/<scenario>/<skill>/`, plus 5 [project-scoped skills](#project-scoped-skills) in `project-skills/<project>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
+159 skills in 15 scenario folders, `skills/<scenario>/<skill>/`, plus 5 [project-scoped skills](#project-scoped-skills) in `project-skills/<project>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
 
 [Ideas and literature](#ideas-and-literature) · [Experiments](#experiments) · [Drafting a paper](#drafting-a-paper) · [Figures and tables](#figures-and-tables) · [Revising a draft](#revising-a-draft) · [Review before submission](#review-before-submission) · [Second model as adversary](#second-model-as-adversary) · [Nature-family journals](#nature-family-journals) · [Software-engineering venues](#software-engineering-venues) · [Slides and reports](#slides-and-reports) · [General writing](#general-writing) · [Software engineering](#software-engineering) · [Planning and decisions](#planning-and-decisions) · [Agent setup, memory and knowledge](#agent-setup-memory-and-knowledge) · [Utilities](#utilities) · [Project-scoped skills](#project-scoped-skills)
 
@@ -22,6 +22,9 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 | `research` | Answer a question from primary sources into a Markdown note |
 | `deep-research` | Survey-grade investigation with verified citations |
 | `survey` | Survey a topic into a knowledge base |
+| `how-to-build-kb` | Picked papers → verified knowledge-base entries |
+| `brainstorm-ideas` | Socratic idea brainstorm that learns your background *(run when named)* |
+| `how-to-write-ideas-report` | Proposal-style ideas report after a brainstorm |
 | `how-to-download-ref` | Add arXiv IDs or DOIs to a knowledge base (metadata, PDFs, BibTeX) |
 | `hv-analysis` | Horizontal–vertical (synchronic/diachronic) analysis of a topic |
 | `vibe-research-workflow` | Rules for AI-assisted coding, figures and writing that keep you in charge |
@@ -35,6 +38,7 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 | Skill | Use it for |
 |---|---|
 | `run-experiment` | Deploy experiments to local, remote, Vast.ai or Modal GPUs |
+| `autoresearch` | Validator-scored autoresearch campaign *(run when named)* |
 | `monitor-experiment` | Check progress and output of running experiments |
 | `collect-results` | Aggregate results into comparison tables |
 | `analyze-results` | Statistics, comparisons and insights from results |
@@ -51,6 +55,7 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 | `paper-write` | Draft LaTeX section by section from an outline |
 | `paper-writing` | Pipeline: outline → figures → sections → compile |
 | `paper-writer` | Draft prose from the author's own materials, any field |
+| `write-paper` | sci-brain manuscript drafting with real results *(run when named)* |
 | `intro-drafter` | Introduction along a six-paragraph flow |
 | `tech-paper-template` | Logical skeleton of a technical paper |
 | `benchmark-paper-template` | Structure of a benchmark or evaluation paper |
@@ -92,6 +97,7 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 | `abstract-intro-audit` | Abstract and introduction structure against CVPR Highlight papers |
 | `deai-latex` | Remove AI writing style from paper prose |
 | `paper-polish` | Grammar, flow and tone, meaning preserved |
+| `how-to-technical-writing` | Sentence- and paragraph-level scientific prose (sci-brain stage) |
 | `polish-english-paper` | Paragraph-level English polishing |
 | `academic-humanizer` | Clarity and voice for papers and grant proposals |
 | `shorten-latex` | Trim a paragraph to fit the page limit |
@@ -106,6 +112,7 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 | `paper-presubmit-audit` | Submission gate and reviewer lens for ML/NLP papers |
 | `pre-submission-reviewer` | Five-dimension pre-submission review, any field |
 | `reviewer-view-paper` | One harsh top-venue reviewer |
+| `review-paper` | sci-brain review and fact-check of a manuscript *(run when named)* |
 | `citation-verification` | Verify references and catch fabricated ones |
 | `auto-paper-improvement-loop` | Two rounds of external review, fixes and recompile |
 
@@ -251,6 +258,8 @@ Nature 系列. Writing, review, figures, statistics and literature for Nature-fa
 | `chief-of-staff` | Pursue a long-running goal by coordinating subagents *(user-invoked)* |
 | `wait-what` | Re-pitch a message that did not land *(user-invoked)* |
 | `create-advisor` | Advisor profile from conversation history |
+| `dump-chat-history` | Export conversations as transcripts or Typst/PDF field notes *(run when named)* |
+| `how-to-analyze-dialog` | Classify research conversations and their prompting patterns |
 | `know-me-better` | Learn your research style from your papers |
 
 ### Utilities
@@ -291,6 +300,16 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 - [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md) — current source policy and the historical third-party workspace inventory.
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
+
+## Upstream refresh and sci-brain dependencies — v1.0.28
+
+Thirteen upstream skills are re-copied from their upstream heads: `analyze-results`, `feishu-notify`, `paper-compile`
+and `run-experiment` (ARIS, plus the ARIS `shared-references/compute-env-contract.md` that `run-experiment` reads), `archify`, `ppt-master`, `slide-maker`, and six `nature-*` skills. `ppt-master` still
+leaves out `scripts/gemini_watermark_remover.py`, which strips the Gemini provenance watermark.
+`scientific-visualization` is restored verbatim; the user-level `CLAUDE.md` tells Claude to skip its citation
+section. The installed sci-brain skills call nine sci-brain skills that were missing, now installed:
+`brainstorm-ideas`, `how-to-write-ideas-report`, `how-to-build-kb`, `how-to-technical-writing`,
+`how-to-analyze-dialog`, `dump-chat-history`, `write-paper`, `review-paper` and `autoresearch`.
 
 ## Skill origins and upstream sync — v1.0.27
 

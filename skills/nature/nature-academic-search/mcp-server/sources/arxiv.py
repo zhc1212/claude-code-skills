@@ -1,5 +1,7 @@
 """arXiv data source via REST API (Atom XML feed)."""
 
+from __future__ import annotations
+
 import re
 import time
 import urllib.parse
@@ -245,6 +247,9 @@ class ArxivSource:
         """Extract a single paper record from an Atom <entry>."""
         arxiv_id_raw = _text(entry, "atom:id", ARXIV_NS)
         if not arxiv_id_raw:
+            return None
+        # arXiv reports a bad request as an <entry> whose id is http://arxiv.org/api/errors#...
+        if "/api/errors" in arxiv_id_raw:
             return None
 
         title = _text(entry, "atom:title", ARXIV_NS) or ""

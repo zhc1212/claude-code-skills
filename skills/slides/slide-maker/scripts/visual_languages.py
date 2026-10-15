@@ -93,6 +93,66 @@ LANGS = {
                   "mac": {"display": "Georgia", "body": "Georgia", "numeral": "Times New Roman", "mono": "Courier New"}},
         "ea": {"display": "serif", "body": "sans"}, "grain": 0, "frames": ["rect"],
         "forbids": ("confetti",), "cover": "low-left", "skeleton": "split"},
+    # ── NATIVE, second set (P4): compositions in vl_native2.py ──
+    "starlit": {
+        "palette": {"ground": "0B1430", "ink": "F3EBD8", "mute": "AEB6CC", "panel": "16204A",
+                    "accents": ["D9B36C"], "text_accents": ["D9B36C"], "glow": "F1D9A6"},
+        "fonts": {"both": {"display": "Georgia", "body": "Georgia", "numeral": "Times New Roman"},
+                  "mac": {"display": "Georgia", "body": "Georgia", "numeral": "Times New Roman"}},
+        "ea": {"display": "serif", "body": "serif"}, "grain": 0, "frames": ["ellipse"],
+        "forbids": ("confetti",), "cover": "centred", "skeleton": "statement"},
+    "broadsheet": {
+        "palette": {"ground": "F2EEE5", "ink": "141414", "mute": "4A4744", "panel": "E6E0D3",
+                    "accents": ["A32018"], "text_accents": ["A32018"]},
+        "fonts": {"both": {"display": "Times New Roman", "body": "Georgia", "numeral": "Times New Roman", "meta": "Arial"},
+                  "mac": {"display": "Times New Roman", "body": "Georgia", "numeral": "Times New Roman", "meta": "Arial"}},
+        "ea": {"display": "serif", "body": "serif"}, "grain": 4, "frames": ["rect"],
+        "forbids": ("confetti",), "cover": "full-bleed-type", "skeleton": "split"},
+    "journal": {
+        "palette": {"ground": "FBFAF6", "ink": "1B1B1B", "mute": "5A5A55", "panel": "F1EFE7",
+                    "accents": ["1F5C46"], "text_accents": ["1F5C46"]},
+        "fonts": {"both": {"display": "Georgia", "body": "Georgia", "numeral": "Times New Roman", "meta": "Arial"},
+                  "mac": {"display": "Georgia", "body": "Georgia", "numeral": "Times New Roman", "meta": "Arial"}},
+        "ea": {"display": "serif", "body": "serif"}, "grain": 0, "frames": ["rect"],
+        "forbids": ("confetti",), "cover": "low-left", "skeleton": "rail"},
+    "tally": {
+        "palette": {"ground": "FFFFFF", "ink": "0E0E10", "mute": "5A5F6B", "panel": "F4F6FA",
+                    "accents": ["2438F0", "C6F432"], "text_accents": ["2438F0"],
+                    "lime": "C6F432", "chip_ink": "0E0E10", "grid_ink": "1E2A60", "track": "E7EAF1"},
+        "fonts": {"both": {"display": "Arial Black", "body": "Arial", "numeral": "Arial Black"},
+                  "mac": {"display": "Arial Black", "body": "Helvetica Neue", "numeral": "Arial Black"}},
+        "ea": {"display": "sans", "body": "sans"}, "ea_heavy": True, "grain": 0, "frames": ["rect"],
+        "forbids": (), "cover": "low-left", "skeleton": "split"},
+    "chalkboard": {
+        "palette": {"ground": "22392B", "ink": "F3F1EA", "mute": "C9D3C9", "panel": "2B4436",
+                    "accents": ["F2D16B", "F2A9B8", "A4CDE6"], "text_accents": ["F2D16B", "F2A9B8"],
+                    "wood": "7A4F2A", "chalk": "E8E2D2"},
+        "fonts": {"both": {"display": "Trebuchet MS", "body": "Trebuchet MS", "numeral": "Trebuchet MS"},
+                  "mac": {"display": "Chalkboard SE", "body": "Chalkboard SE", "numeral": "Chalkboard SE"}},
+        "ea": {"display": "sans", "body": "sans"}, "grain": 7, "frames": ["rect"],
+        "forbids": (), "cover": "low-left", "skeleton": "island"},
+    "interface": {
+        "palette": {"ground": "F3F4F7", "ink": "0F1115", "mute": "5B6170", "panel": "FFFFFF",
+                    "accents": ["2563EB", "16A34A", "D97706", "DC2626"], "text_accents": ["1F55E0"],
+                    "line": "E2E5EB", "soft": "F6F7FA", "drop": "DDE1E8", "primary_fill": "2563EB",
+                    "off_line": "8A91A0",
+                    "states": {"primary": "2563EB", "on": "16A34A", "pending": "D97706", "error": "DC2626"}},
+        "fonts": {"both": {"display": "Arial", "body": "Arial", "numeral": "Arial"},
+                  "mac": {"display": "Helvetica Neue", "body": "Helvetica Neue", "numeral": "Helvetica Neue"}},
+        "ea": {"display": "sans", "body": "sans"}, "grain": 0, "frames": ["rect"],
+        "forbids": ("confetti",), "cover": "low-left", "skeleton": "island"},
+    "wayfinding": {
+        "palette": {"ground": "F6F5F1", "ink": "16191E", "mute": "5A6070", "panel": "ECEAE3",
+                    "accents": ["D7262E", "0071BC", "00954C", "F2B705", "8E4FA1"], "text_accents": ["1B2A41"],
+                    "lines": ["D7262E", "0071BC", "00954C", "F2B705", "8E4FA1"],
+                    "sign": "1B2A41", "sign_ink": "FFFFFF", "sign_mute": "B9C3D4", "edge": "F2B705",
+                    "board": "0B0D10", "led": "FFB020", "board_mute": "9AA0AA",
+                    "exit": "007A3D", "exit_ink": "FFFFFF", "casing": "16191E"},
+        "fonts": {"both": {"display": "Arial", "body": "Arial", "numeral": "Arial", "board": "Courier New"},
+                  "mac": {"display": "Helvetica Neue", "body": "Helvetica Neue", "numeral": "Helvetica Neue",
+                          "board": "Menlo"}},
+        "ea": {"display": "sans", "body": "sans"}, "ea_heavy": True, "grain": 0, "frames": ["rect"],
+        "forbids": ("confetti",), "cover": "split-vertical", "skeleton": "band"},
 }
 
 # Each language's GROUNDS: its own light paper, and ONE contrast ground (user's decision, 2026-10-04). All four
@@ -141,15 +201,63 @@ VARIANTS = {
         "cyanotype": {"label": "cyanotype", "label_zh": "晒图蓝版", "grain": 0,
                       "palette": {"ground": "123254", "ink": "E4ECF5", "mute": "B7C5D6", "panel": "123254",
                                   "accents": ["F27D4E"], "text_accents": ["F59A72"]}}},
+    "starlit": {
+        "light": {"label": "midnight", "label_zh": "午夜版", "grain": 0, "palette": LANGS["starlit"]["palette"]},
+        "dawn": {"label": "dawn", "label_zh": "黎明版", "grain": 0,
+                 "palette": {"ground": "22163A", "ink": "F6E9E4", "mute": "C9B7C9", "panel": "2D1F4A",
+                             "accents": ["EDB3A0"], "text_accents": ["EDB3A0"], "glow": "F7D2C2"}}},
+    "broadsheet": {
+        "light": {"label": "newsprint", "label_zh": "报纸版", "grain": 4, "palette": LANGS["broadsheet"]["palette"]},
+        "salmon": {"label": "pink paper", "label_zh": "粉报版", "grain": 4,
+                   "palette": {"ground": "FBE8D8", "ink": "1A1714", "mute": "54493F", "panel": "F3DAC6",
+                               "accents": ["0F4C81"], "text_accents": ["0F4C81"]}}},
+    "journal": {
+        "light": {"label": "paper", "label_zh": "论文白版", "grain": 0, "palette": LANGS["journal"]["palette"]},
+        "green": {"label": "title green", "label_zh": "期刊绿版", "grain": 0,
+                  "palette": {"ground": "163A2E", "ink": "F1EEE4", "mute": "BFC8BF", "panel": "1E4A3B",
+                              "accents": ["D9C27A"], "text_accents": ["D9C27A"]}}},
+    "tally": {
+        "light": {"label": "white grid", "label_zh": "白网格版", "grain": 0, "palette": LANGS["tally"]["palette"]},
+        "night": {"label": "night ledger", "label_zh": "夜间账本版", "grain": 0,
+                  "palette": {"ground": "0F1222", "ink": "F2F4FA", "mute": "A5ACC4", "panel": "1A1F38",
+                              "accents": ["7C89FF", "C6F432"], "text_accents": ["7C89FF"],
+                              "lime": "C6F432", "chip_ink": "0E0E10", "grid_ink": "8090D0", "track": "2A3150"}}},
+    "chalkboard": {
+        "light": {"label": "green board", "label_zh": "绿黑板版", "grain": 7, "palette": LANGS["chalkboard"]["palette"]},
+        "slate": {"label": "slate", "label_zh": "石板版", "grain": 7,
+                  "palette": {"ground": "25282C", "ink": "F2F1EC", "mute": "C7C9CC", "panel": "30343A",
+                              "accents": ["F2D16B", "F2A9B8", "A4CDE6"], "text_accents": ["F2D16B", "F2A9B8"],
+                              "wood": "5B4632", "chalk": "E8E2D2"}}},
+    "interface": {
+        "light": {"label": "app light", "label_zh": "浅色界面版", "grain": 0, "palette": LANGS["interface"]["palette"]},
+        "dark": {"label": "dark mode", "label_zh": "深色模式版", "grain": 0,
+                 "palette": {"ground": "0E1014", "ink": "F2F4F8", "mute": "A3AAB8", "panel": "171A21",
+                             "accents": ["5B8CFF", "2DBE6C", "F5B83D", "FF6B70"], "text_accents": ["8FB0FF"],
+                             "line": "2A2F3A", "soft": "1E222B", "drop": "07080B", "primary_fill": "2563EB",
+                             "off_line": "7A8294",
+                             "states": {"primary": "5B8CFF", "on": "2DBE6C", "pending": "F5B83D", "error": "FF6B70"}}}},
+    "wayfinding": {
+        "light": {"label": "enamel", "label_zh": "珐琅白版", "grain": 0, "palette": LANGS["wayfinding"]["palette"]},
+        "night": {"label": "navy", "label_zh": "藏青夜间版", "grain": 0,
+                  "palette": {"ground": "1B2A41", "ink": "F2F4F8", "mute": "B9C3D4", "panel": "22344F",
+                              "accents": ["E8454C", "3D9BE0", "1DB66A", "F2B705", "B07CC6"], "text_accents": ["F2B705"],
+                              "lines": ["E8454C", "3D9BE0", "1DB66A", "F2B705", "B07CC6"],
+                              "sign": "0F1A2C", "sign_ink": "FFFFFF", "sign_mute": "B9C3D4", "edge": "F2B705",
+                              "board": "0B0D10", "led": "FFB020", "board_mute": "9AA0AA",
+                              "exit": "007A3D", "exit_ink": "FFFFFF", "casing": "0F1A2C"}}},
 }
-NATIVE = ("ink", "poster", "cutpaper", "drafting")          # drawn, no pictures needed (vl_native.py)
+NATIVE = ("ink", "poster", "cutpaper", "drafting", "starlit", "broadsheet", "journal", "tally", "chalkboard", "interface", "wayfinding")          # drawn, no pictures needed (vl_native.py)
+# the pages on which a drawn language draws the caller's picture; image= anywhere else is refused, naming these — it
+# was dropped without a word, even a path to no file (robustness + docs audits, 2026-10-09)
+NATIVE_IMAGE_PAGES = {n: ("image_text", "quote") if n == "drafting" else ("image_text",) for n in NATIVE}
 IMAGE_LED = ("editorial", "soft", "collage", "storybook")    # built around the caller's pictures
 # words only the CALLER can give — never invented by the kit; absent means nothing is drawn
-NATIVE_EXTRAS = {"ink": ("seal",), "poster": ("highlight",), "cutpaper": ("icons",), "drafting": ("project",)}
+NATIVE_EXTRAS = {"ink": ("seal",), "poster": ("highlight",), "cutpaper": ("icons",), "drafting": ("project",), "broadsheet": ('masthead', 'edition', 'inside', 'tags'), "journal": ('running', 'authors', 'abstract', 'margin'), "tally": ('tags', 'total'), "chalkboard": ('doodle', 'ordered'), "interface": ("crumb", "status", "actions", "toggles", "tags", "total"), "wayfinding": ("line", "ordered", "interchange", "board")}
 # the pages that DRAW each extra; on any other page it is refused, never silently dropped (non-Claude run, 2026-10-05)
-EXTRA_PAGES = {"highlight": ("cover", "section", "quote", "closing"), "icons": ("points",)}
+EXTRA_PAGES = {"highlight": ("cover", "section", "quote", "closing"), "icons": ("points",), "inside": ('cover',), "tags": ('points',), "authors": ('cover',), "abstract": ('cover',), "margin": ('points',), "total": ('data',), "doodle": ('cover', 'closing'), "ordered": ('points',), "actions": ("cover", "closing"), "toggles": ("cover",), "interchange": ("points",), "board": ("data",)}
 _ACTIVE = {}    # language -> the ground key use() set; rs.ground()/rs.card() (no kit) follow it
 _PAL_OVERRIDE = {}   # language -> the palette of the CURRENT page, for a language whose palette changes per page (poster)
+_MEMO = {}   # language -> the last composed page's remembered extras, for ordinary pages (rs.ground has no kit)
 
 
 def _pal(name):
@@ -171,7 +279,13 @@ def _auto_ground(name, prs, taste=None):
     except Exception:
         fmt = None
     if fmt is not None and getattr(fmt, "chrome", "") == "print":
-        return "light", "a printed board ({}) takes a light ground".format(fmt.label)
+        # the LIGHTEST ground, whichever key it has: poster's default is a saturated blue and its paper ground is light
+        # (it was reported as having none, 2026-10-09)
+        best = max(VARIANTS[name], key=lambda k_: _lum(VARIANTS[name][k_]["palette"]["ground"]))
+        if _lum(VARIANTS[name][best]["palette"]["ground"]) < 0.2:      # dark on both: keep the designed default
+            return "light", ("a printed board ({}) takes a light ground, and {} has none — both its grounds are dark "
+                             "and print as a dark page; for print, pick a language with a light ground".format(fmt.label, name))
+        return best, "a printed board ({}) takes {}'s lightest ground".format(fmt.label, name)
     if taste is None:
         try:
             import registry
@@ -225,6 +339,7 @@ class Kit:
         self.L, self.platform = LANGS[name], _platform(platform)
         self.ground = ground
         self.project, self.field = None, None            # drafting's title-block words; poster's current field
+        self.memo = {}        # P4: the deck's remembered extras (masthead, edition, running) — REASSIGN, never mutate
         self.P = dict(VARIANTS[name][ground]["palette"])  # a COPY of the ground's palette (poster swaps it per page)
         self.grain = VARIANTS[name][ground]["grain"]
         self._fonts = dict(self.L["fonts"]["both"])
@@ -282,9 +397,11 @@ class Kit:
 
 
 def use(name, prs, *, fonts="both", plan=None, image_dir=None, platform=None, ground="light"):
-    """Start a deck in a curated VISUAL LANGUAGE ("editorial", "soft", "collage", "storybook"): sets the
-    palette, fonts and ground, and returns a Kit whose page functions — cover, section, image_text, quote,
-    data, closing — lay out your own words and images in that language. fonts="both" uses only faces on
+    """Start a deck in a curated VISUAL LANGUAGE — image-led "editorial", "soft", "collage", "storybook"; drawn (no
+    pictures needed) "ink", "poster", "cutpaper", "drafting", "starlit", "broadsheet", "journal", "tally",
+    "chalkboard": sets the palette, fonts and ground, and returns a Kit whose page functions — cover, section,
+    image_text, points, quote, data and closing — lay out your own words and images in that
+    language. fonts="both" uses only faces on
     macOS AND Windows; fonts="mac" unlocks Mac-only faces. plan/image_dir let image= take P1 series slot
     ids. ground="light" (default), the language's contrast ground (VARIANTS[name]), or "auto": the light ground
     unless your last decks already sit on it (the look history) — then the contrast one; printed boards stay
@@ -296,8 +413,10 @@ def use(name, prs, *, fonts="both", plan=None, image_dir=None, platform=None, gr
     if ground == "auto":
         ground, why = _auto_ground(name, prs)
         import shlex as _shq
-        print("[visual_languages] {}: ground {!r} ({}) — {}. Record it (DECK_DIR = the folder the deck is saved in, "
-              "TOPIC = what it is for): python3 {} --gates {} --ground {} --deck DECK_DIR --for TOPIC".format(
+        # a TEMPLATE, not a command: `--deck DECK_DIR` ran verbatim and recorded into ./DECK_DIR (audit 2026-10-09);
+        # an unquoted <…> cannot run as-is (the shell reads `<` as a redirect), so it must be filled in first
+        print("[visual_languages] {}: ground {!r} ({}) — {}. Record it — replace both <…> first: python3 {} --gates "
+              "{} --ground {} --deck <the deck folder> --for <what the deck is for, in quotes>".format(
                   name, ground, VARIANTS[name][ground]["label_zh"], why, _shq.quote(str(Path(__file__).resolve())),
                   name, ground))
     if ground not in VARIANTS[name]:
@@ -306,6 +425,7 @@ def use(name, prs, *, fonts="both", plan=None, image_dir=None, platform=None, gr
     k = Kit(name, prs, fonts, plan, image_dir, platform, ground)
     _ACTIVE[name] = ground
     _PAL_OVERRIDE.clear()      # a new deck starts clean: no language keeps the last deck's per-page palette
+    _MEMO.clear()              # ...nor the last deck's remembered masthead / running head
     if fonts == "mac":
         missing = [f for f in set(k._fonts.values()) if dk._font_substituted(f)]
         if missing:
@@ -373,6 +493,59 @@ def _ground_drafting(slide, role, index):
     return (0.9 * s, 0.78 * s, W - 1.8 * s, H - 2.6 * s)      # above the title block
 
 
+def _ground_starlit(slide, role, index):
+    """An ordinary starlit page: the sky, kept clear of the content rect it returns (painted in REAL inches —
+    register_surface scales the reference canvas by _K)."""
+    import native_art as na
+    W, H = rs._canvas(slide)
+    K = rs._K[0]
+    rect = (0.6, 0.55, W - 1.2, H - 1.1)
+    p = _pal("starlit")
+    na.starfield_png(slide, base=p["ground"], ink=p["ink"], glow=p["glow"], seed=int(index),
+                     keep_clear=[tuple(v * K for v in rect)])
+    return rect
+
+
+def _ground_broadsheet(slide, role, index):
+    """An ordinary broadsheet page: the masthead strip (the deck's remembered masthead and edition, this page's
+    number), and the content rect under it — in REFERENCE inches."""
+    import vl_native2 as v2
+    K = rs._K[0]
+    W, H = rs._canvas(slide)
+    y = v2.bs_strip(v2.kit_for("broadsheet", slide), slide, {}) / K
+    return (0.05 * W, y + 0.15, 0.90 * W, H - y - 0.75)
+
+
+def _ground_journal(slide, role, index):
+    """An ordinary journal page: the running head (the deck's remembered words, this page's number) and the
+    content rect under it — in REFERENCE inches."""
+    import vl_native2 as v2
+    K = rs._K[0]
+    W, H = rs._canvas(slide)
+    y = v2.jn_running(v2.kit_for("journal", slide), slide, {}) / K
+    return (0.07 * W, y + 0.1, 0.86 * W, H - y - 0.7)
+
+
+def _ground_tally(slide, role, index):
+    W, H = rs._canvas(slide)
+    return (0.55, 0.55, W - 1.1, H - 1.1)          # the grid is the page's background (new_slide paints it)
+
+
+def _ground_chalkboard(slide, role, index):
+    W, H = rs._canvas(slide)
+    return (0.7, 0.6, W - 1.4, H - 1.3)             # inside the wooden frame new_slide drew
+
+
+def _ground_interface(slide, role, index):
+    """An ordinary page in the interface language is a window: the content rect is inside it, below its bar."""
+    import vl_native3
+    return vl_native3.ordinary_window(slide)
+
+def _ground_wayfinding(slide, role, index):
+    """An ordinary page carries the sign strip; the content rect starts below it."""
+    import vl_native3
+    return vl_native3.ordinary_sign(slide)
+
 def _card_for(name):
     """The language's card: its panel colour; soft is rounded, the others square."""
     def card(slide, x, y, w, h, label=None):
@@ -393,6 +566,13 @@ def _card_for(name):
 
 _card_editorial, _card_soft, _card_collage, _card_storybook = (_card_for(n) for n in ("editorial", "soft", "collage", "storybook"))
 _card_ink, _card_poster, _card_cutpaper, _card_drafting = (_card_for(n) for n in ("ink", "poster", "cutpaper", "drafting"))
+_card_starlit = _card_for("starlit")
+_card_broadsheet = _card_for("broadsheet")
+_card_journal = _card_for("journal")
+_card_tally = _card_for("tally")
+_card_chalkboard = _card_for("chalkboard")
+_card_interface = _card_for("interface")
+_card_wayfinding = _card_for("wayfinding")
 
 
 for _n in LANGS:
@@ -412,6 +592,10 @@ for _n in LANGS:
 
 class VLTextOverflow(ValueError):
     """A page's text cannot fit its column even at the language's floor sizes."""
+
+
+class VLImageError(ValueError):
+    """A picture the page was given cannot be used (unreadable, truncated, not an image); the page names itself."""
 
 
 # field: (size_pt at a 7.5in short side, role, bold, colour key, italic, floor_pt)
@@ -468,6 +652,71 @@ TYPE = {
                   "label": (46, "display", False, "ink", False, 20), "note": (16, "display", False, "mute", True, 10),
                   "caption": (10, "mono", True, "mute", False, 8), "line": (20, "display", False, "ink", True, 12),
                   "item_head": (11, "mono", True, "ink", False, 9), "item_line": (15, "display", False, "mute", False, 10)},
+    "starlit": {"kicker": (13, "body", False, "accent", False, 10), "title": (54, "display", False, "ink", False, 26),
+                "subtitle": (18, "body", False, "mute", True, 11), "body": (17, "body", False, "ink", False, 11),
+                "mark": (60, "display", False, "accent", False, 36), "quote": (34, "display", False, "ink", True, 18),
+                "attribution": (13, "body", False, "accent", False, 10), "number": (170, "numeral", False, "accent", False, 44),
+                "label": (26, "display", False, "ink", False, 14), "note": (15, "body", False, "mute", True, 10),
+                "caption": (12, "body", False, "mute", True, 9), "line": (20, "body", False, "mute", True, 12),
+                "item_head": (24, "display", False, "ink", False, 13), "item_line": (16, "body", False, "mute", True, 10)},
+    "broadsheet": {"kicker": (12, "meta", True, "accent", False, 9), "title": (80, "display", True, "ink", False, 30),
+                   "subtitle": (24, "body", False, "ink", True, 13), "body": (18, "body", False, "ink", False, 11),
+                   "mark": (100, "display", True, "accent", False, 40), "quote": (38, "body", False, "ink", True, 18),
+                   "attribution": (11, "meta", True, "mute", False, 9), "number": (150, "numeral", True, "ink", False, 44),
+                   "label": (22, "body", True, "ink", False, 12), "note": (14, "body", False, "mute", True, 9),
+                   "caption": (12, "body", False, "mute", True, 9), "line": (20, "body", False, "ink", True, 12),
+                   "item_head": (28, "display", True, "ink", False, 14), "item_line": (18, "body", False, "ink", False, 11),
+                   "masthead": (40, "display", True, "ink", False, 12), "edition": (10, "meta", True, "mute", False, 8),
+                   "inside": (16, "body", False, "ink", False, 10), "inside_h": (11, "meta", True, "accent", False, 9),
+                   "tag": (10, "meta", True, "accent", False, 8)},
+    "journal": {"kicker": (12, "meta", True, "accent", False, 9), "title": (46, "display", False, "ink", False, 24),
+                "subtitle": (20, "body", False, "mute", True, 12), "body": (16, "body", False, "ink", False, 10),
+                "mark": (80, "display", False, "accent", False, 32), "quote": (30, "body", False, "ink", True, 16),
+                "attribution": (13, "meta", True, "mute", False, 9), "number": (140, "numeral", False, "accent", False, 40),
+                "label": (24, "body", False, "ink", False, 13), "note": (15, "body", False, "mute", False, 10),
+                "caption": (11, "body", False, "mute", True, 8), "line": (20, "body", False, "mute", True, 12),
+                "item_head": (21, "body", True, "ink", False, 12), "item_line": (15, "body", False, "mute", False, 10),
+                "item_no": (30, "numeral", True, "accent", False, 14), "authors": (17, "body", False, "ink", False, 11),
+                "abstract": (16, "body", False, "ink", False, 10), "abstract_h": (11, "meta", True, "accent", False, 8),
+                "margin": (12, "body", False, "mute", True, 9), "margin_h": (10, "meta", True, "accent", False, 8),
+                "running": (10, "body", False, "mute", True, 8), "fig_label": (13, "meta", True, "accent", False, 9),
+                "sec_no": (40, "numeral", True, "accent", False, 20)},
+    "tally": {"kicker": (12, "body", True, "ink", False, 9), "title": (60, "display", False, "ink", False, 28),
+              "subtitle": (20, "body", False, "mute", False, 12), "body": (17, "body", False, "ink", False, 11),
+              "mark": (90, "display", False, "accent", False, 36), "quote": (38, "display", False, "ink", False, 18),
+              "attribution": (12, "body", True, "ink", False, 9), "number": (200, "numeral", False, "accent", False, 60),
+              "label": (26, "body", True, "ink", False, 14), "note": (15, "body", False, "mute", False, 10),
+              "caption": (12, "body", False, "mute", False, 9), "line": (20, "body", False, "mute", False, 12),
+              "item_head": (26, "body", True, "ink", False, 13), "item_line": (17, "body", False, "mute", False, 10),
+              "item_no": (50, "display", False, "accent", False, 24), "tag": (12, "body", True, "ink", False, 9)},
+    "chalkboard": {"kicker": (16, "body", True, "accent", False, 10), "title": (58, "display", True, "ink", False, 22),
+                   "subtitle": (22, "body", False, "mute", False, 12), "body": (19, "body", False, "ink", False, 12),
+                   "mark": (130, "display", True, "accent", False, 48), "quote": (44, "display", True, "ink", False, 20),
+                   "attribution": (20, "body", False, "accent", False, 11), "number": (150, "numeral", True, "accent", False, 48),
+                   "label": (28, "display", True, "ink", False, 14), "note": (18, "body", False, "mute", False, 11),
+                   "caption": (14, "body", False, "mute", False, 10), "line": (22, "body", False, "mute", False, 12),
+                   "item_head": (24, "display", True, "ink", False, 14), "item_line": (19, "body", False, "mute", False, 11),
+                   "item_no": (24, "display", True, "accent", False, 14)},
+    "interface": {"kicker": (13, "body", True, "mute", False, 9), "title": (54, "display", True, "ink", False, 26),
+                  "subtitle": (20, "body", False, "mute", False, 12), "body": (17, "body", False, "ink", False, 11),
+                  "quote": (34, "display", True, "ink", False, 18), "attribution": (14, "body", False, "mute", False, 10),
+                  "number": (150, "numeral", True, "ink", False, 54), "label": (22, "body", True, "mute", False, 13),
+                  "note": (15, "body", False, "ink", False, 10), "caption": (12, "body", False, "mute", False, 9),
+                  "line": (20, "body", False, "mute", False, 12), "item_head": (22, "body", True, "ink", False, 13),
+                  "item_line": (16, "body", False, "mute", False, 10), "item_no": (20, "display", True, "accent", False, 13),
+                  "tag": (13, "body", True, "ink", False, 9), "crumb": (13, "body", False, "mute", False, 9),
+                  "status": (12, "body", True, "ink", False, 9), "action": (16, "body", True, "ink", False, 11),
+                  "toggle": (16, "body", True, "ink", False, 11), "initials": (24, "display", True, "ink", False, 14),
+                  "mark": (60, "display", True, "accent", False, 30)},
+    "wayfinding": {"kicker": (14, "body", True, "mute", False, 10), "title": (52, "display", True, "ink", False, 26),
+                   "subtitle": (20, "body", True, "ink", False, 12), "body": (17, "body", False, "ink", False, 11),
+                   "quote": (34, "display", True, "ink", False, 18), "attribution": (14, "body", True, "mute", False, 10),
+                   "number": (96, "board", True, "ink", False, 40), "label": (24, "board", False, "ink", False, 13),
+                   "note": (15, "body", False, "mute", False, 10), "caption": (12, "body", False, "mute", False, 9),
+                   "line": (20, "body", False, "ink", False, 12), "item_head": (22, "body", True, "ink", False, 13),
+                   "item_line": (15, "body", False, "mute", False, 10), "item_no": (18, "display", True, "ink", False, 12),
+                   "roundel": (18, "display", True, "ink", False, 11), "exit": (14, "body", True, "ink", False, 10),
+                   "row": (20, "board", False, "ink", False, 11), "mark": (60, "display", True, "accent", False, 30)},
 }
 
 # page -> its fields in column order (the caller's keyword names)
@@ -563,17 +812,72 @@ def _canvas(k):
     return k.prs.slide_width / 914400.0, k.prs.slide_height / 914400.0
 
 
+HEADROOM = 0.97      # every language MEASURES its words in 97% of a column and draws the box at the full width: a line
+# measured to fit exactly was set one line longer by LibreOffice — collage on 9:16 measured "fix what it already owns"
+# at 4.894in in a 4.894in box and rendered "owns" on a fourth line, over the subtitle (audit sweep, 2026-10-09)
+_LATIN_RUN = re.compile(r"[^\s]+")
+
+
+def _tokens(text):
+    """(separator, unit) pairs a line may break between. A Latin word — letters, digits and their own punctuation, a
+    run of non-CJK characters — is ONE unit, even inside Chinese ("…进展report v2" never breaks "re / port", the
+    robustness audit 2026-10-09); a Chinese or Japanese character is one unit; a space is a separator. Korean breaks
+    at spaces only, like Latin."""
+    if any(dk._is_hangul(ord(c)) for c in text) or not dk._has_cjk(text):
+        return [(" " if i_ else "", u) for i_, u in enumerate(text.split(" "))]
+    out, cur, sep = [], "", ""
+    for ch in text:
+        if ch == " ":
+            if cur:
+                out.append((sep, cur)); cur = ""
+            sep = " "
+        elif dk._has_cjk(ch):
+            if cur:
+                out.append((sep, cur)); cur, sep = "", ""
+            out.append((sep, ch)); sep = ""
+        else:
+            cur += ch
+    if cur:
+        out.append((sep, cur))
+    return out
+
+
+def _line_width(k, field, text, size):
+    """The width (in) one line of `text` takes: CJK characters in the script's East-Asian face, every other character
+    in the field's Latin face — as it RENDERS (a run's <a:latin> and <a:ea> faces) — or, when wider, as the lint
+    measures it (the whole run in the East-Asian face). A line has to fit both: a chalkboard title split by the render
+    width alone was read by lint as one line more, under its own chalk underline (2026-10-09)."""
+    import display_type as dt
+    role, bold, italic = TYPE[k.name][field][1], _weight(k, field, text), TYPE[k.name][field][4]
+    if not dk._has_cjk(text):
+        return dt._glyph_width(text, size, k.face(role), bold, italic) or 0
+    ea = k.ea_face(role, text) or k.face(role)
+    lat = k.face(role)
+    total, seg, seg_cjk = 0.0, "", None
+    for ch in text + "\0":
+        c = dk._has_cjk(ch) if ch != "\0" else None
+        if seg and (ch == "\0" or c != seg_cjk):
+            gw = dt._glyph_width(seg, size, ea if seg_cjk else lat, bold) or 0
+            # a CJK character is at least an em, as the lint counts it: on a machine without the East-Asian face its
+            # stand-in has no CJK glyphs and measured ~0.6em, under the render (the Linux font simulation, 2026-10-09)
+            total += max(gw, len(seg) * size / 72.0) if seg_cjk else gw
+            seg = ""
+        if ch != "\0":
+            seg, seg_cjk = seg + ch, c
+    return max(total, dk._natural_width_in([(text, bool(bold))], size, ea))
+
+
 def _unbreakable_overwide(k, field, text, size, w):
     """The first word the renderer cannot keep whole AND will not break sensibly: a Latin token (identifier,
     URL, compound) wider than the column. A Korean word that is too wide breaks between syllables and is
     measured that way; Chinese/Japanese break between characters. None when every such word fits."""
     import display_type as dt
+    role, bold = TYPE[k.name][field][1], _weight(k, field, text)
     if dk._has_cjk(text) and not any(dk._is_hangul(ord(c)) for c in text):
-        return None
-    role, bold = TYPE[k.name][field][1], TYPE[k.name][field][2]
-    for word in text.split():
-        if dk._has_cjk(word):
-            continue
+        words = [u for _sep, u in _tokens(text) if not dk._has_cjk(u)]   # the Latin words inside Chinese/Japanese
+    else:
+        words = [w_ for w_ in text.split() if not dk._has_cjk(w_)]
+    for word in words:
         if (dt._glyph_width(word, size, k.face(role), bold) or 0) > w - _INSET:
             return word
     return None
@@ -587,8 +891,16 @@ def _outlinable(k, text):
     return k.name == "collage" and len(text) <= 6 and dt.covers(k.face("numeral"), text)
 
 
+def _weight(k, field, text):
+    """The weight a field's run RENDERS in, which every measure must use: Kit.run sets CJK display type bold where
+    the Latin face has no CJK (ea_heavy: collage, poster, tally), and bold is wider — measured at the table's
+    light weight, "用 GPT-5 做 3 件事" planned one line and the lint (and the render) set two (2026-10-09)."""
+    role, bold = TYPE[k.name][field][1], TYPE[k.name][field][2]
+    return bool(bold) or (dk._has_cjk(text) and role in ("display", "numeral") and bool(k.L.get("ea_heavy")))
+
+
 def _field_height(k, field, text, size, w):
-    _sz, role, bold = size, TYPE[k.name][field][1], TYPE[k.name][field][2]
+    _sz, role, bold = size, TYPE[k.name][field][1], _weight(k, field, text)
     if field == "number" and _outlinable(k, text):
         return size / 72.0 * 1.0                                   # an outlined picture, one line
     runs = [(text, bold)]
@@ -604,10 +916,11 @@ def _field_height(k, field, text, size, w):
 
 def _widest_word_fits(k, field, text, size, w):
     import display_type as dt
-    role, bold = TYPE[k.name][field][1], TYPE[k.name][field][2]
+    role, bold = TYPE[k.name][field][1], _weight(k, field, text)
     korean = any(dk._is_hangul(ord(c)) for c in text)
     if dk._has_cjk(text) and not korean:
-        return True                       # Chinese/Japanese break between characters; Korean words do not
+        return all((dt._glyph_width(u, size, k.face(role), bold) or 0) <= (w - _INSET)     # …but not inside a
+                   for _sep, u in _tokens(text) if not dk._has_cjk(u))                          # Latin word among them
     face = k.ea_face(role, text) if korean else k.face(role)
     return all((dt._glyph_width(word, size, face, bold) or 0) <= (w - _INSET) for word in text.split())
 
@@ -619,24 +932,23 @@ def _break_lines(k, field, text, size, w):
     the measure — in pure CJK text only, as measure_text; a closing bracket, or a second mark, takes the hung
     mark and the ideograph before it down; an opening bracket never ends a line."""
     import display_type as dt
-    role, bold, italic = TYPE[k.name][field][1], TYPE[k.name][field][2], TYPE[k.name][field][4]
+    role, bold, italic = TYPE[k.name][field][1], _weight(k, field, text), TYPE[k.name][field][4]
     cjk = dk._has_cjk(text)
     face = k.ea_face(role, text) if cjk else k.face(role)
     italic = italic and not cjk
     korean = any(dk._is_hangul(ord(c)) for c in text)     # wraps at spaces, like Latin (LibreOffice probe)
-    units, joiner = (list(text), "") if cjk and not korean else (text.split(" "), " ")
+    pairs = _tokens(text)                                  # CJK characters and whole Latin words (see _tokens)
     limit = w - _INSET
     may_hang = (dk.HANG_PUNCT and cjk and not korean and not any(c.isascii() and c.isalnum() for c in text)
                 and limit >= 2 * size / 72.0)
     cjk = cjk and not korean                               # below: per-character CJK rules only
 
     def width(s_):
-        return dt._glyph_width(s_, size, face, bold, italic) or 0
+        return (_line_width(k, field, s_, size) if cjk else dt._glyph_width(s_, size, face, bold, italic)) or 0
     # (separator, unit) pairs; a Korean word wider than the whole line goes in as syllables — the renderer
     # breaks it between them ("인공지능기반의 / 료영상재구성", final review 2026-10-04)
     toks = []
-    for i_, u in enumerate(units):
-        sep = joiner if i_ else ""
+    for sep, u in pairs:
         if korean and len(u) > 1 and width(u) > limit:
             toks += [(sep if j_ == 0 else "", c_) for j_, c_ in enumerate(u)]
         else:
@@ -663,6 +975,20 @@ def _break_lines(k, field, text, size, w):
             lines.append(cur)
             cur = u
     return lines + [cur]
+
+
+def _set_lines(k, field, text, size, w):
+    """The lines a wrapping DISPLAY field (title, subtitle, quote, label, line) is set in — its measured breaks at width
+    `w` — or None: one line, a field that is not display type, or Chinese/Japanese/Korean whose East-Asian face is a
+    stand-in here (a Linux box without SimSun: lines imposed from stand-in metrics read as overflow to the lint)."""
+    if field not in _NO_WIDOW:
+        return None
+    if dk._has_cjk(text):
+        role = TYPE[k.name][field][1]
+        if dk._font_substituted(k.ea_face(role, text) or k.face(role)):
+            return None
+    ls = _break_lines(k, field, text, size, w)
+    return ls if len(ls) > 1 and "".join(ls).replace(" ", "") == text.replace(" ", "") else None
 
 
 def _widowed(k, field, text, size, w):
@@ -703,7 +1029,7 @@ def _clause_cuts(text):
 def _one_line(k, f, seg, size, w):
     """The segment sits on ONE line by both models (the glyph break and measure_text, which lint reads), with
     3% to spare for a renderer a little wider than either."""
-    role, bold = TYPE[k.name][f][1], TYPE[k.name][f][2]
+    role, bold = TYPE[k.name][f][1], _weight(k, f, seg)
     face = k.ea_face(role, seg) if dk._has_cjk(seg) else k.face(role)
     ww = w * 0.97
     return (len(_break_lines(k, f, seg, size, ww)) == 1
@@ -754,7 +1080,7 @@ def _balanced_width(k, f, t, sz, w):
     n = len(_break_lines(k, f, t, sz, w))
     if n < 2:
         return None
-    role, bold = TYPE[k.name][f][1], TYPE[k.name][f][2]
+    role, bold = TYPE[k.name][f][1], _weight(k, f, t)
     face = k.ea_face(role, t) if dk._has_cjk(t) else k.face(role)
     full = dt._glyph_width(t, sz, face, bold) or 0
     wb = full / n + _INSET
@@ -775,10 +1101,13 @@ def _flow(k, slide, page, col, items, *, anchor, align, underlay=None, start=Non
     "工具其实很 / 少", "先种下第 / 一株", 2026-10-03). Nothing is drawn until draw() is called, so a
     card can be sized to the text it backs."""
     from pptx.enum.text import PP_ALIGN
-    x, y, w, h = col
+    import math as _math
+    x, y, w_col, h = col
     W, H = _canvas(k)
     h = min(h, H - _FOOT - y)
     s = min(W, H) / 7.5
+    w = w_col * HEADROOM                   # MEASURED in HEADROOM of the column; every box is DRAWN dw wider (see HEADROOM)
+    dw = w_col - w
     sizes, floors, widths = {}, {}, {}
     for f, _t in items:
         base, *_rest, floor = TYPE[k.name][f]
@@ -802,12 +1131,26 @@ def _flow(k, slide, page, col, items, *, anchor, align, underlay=None, start=Non
     def total():
         return sum(fheight(f, t, sizes[f], widths[f]) + gaps[f] for f, t in items)
     for f, t in items:
-        while sizes[f] > floors[f] and not _widest_word_fits(k, f, t, sizes[f], w):
+        # ONE word is never re-wrapped, so it is held to the full column; the headroom is for where lines break
+        # ("1,250,000" at its floor was refused on a square board under Linux's wider faces, 2026-10-09)
+        while sizes[f] > floors[f] and not _widest_word_fits(k, f, t, sizes[f], w_col):
             sizes[f] = max(floors[f], sizes[f] * 0.94)
-        bad = _unbreakable_overwide(k, f, t, sizes[f], w) if not (f == "number" and _outlinable(k, t)) else None
+        bad = _unbreakable_overwide(k, f, t, sizes[f], w_col) if not (f == "number" and _outlinable(k, t)) else None
         if bad:                           # it would break mid-word and run into the next field (final review)
             raise VLTextOverflow("{}.{}(): the {}'s word {!r} is wider than the {:.2f}in column even at the floor size "
-                                 "{:.0f}pt — shorten it, or break it with a space".format(k.name, page, f, bad, w, sizes[f]))
+                                 "{:.0f}pt — shorten it, or break it with a space".format(k.name, page, f, bad, w_col, sizes[f]))
+    # copy that cannot fit even at the floor sizes is refused at once, with the same numbers — the shrink loop below
+    # measured an overlong title up to 200 times first (a refusal took ~20s a page, the audit's test, 2026-10-09)
+    _start = dict(sizes)
+    sizes.update({f_: min(sizes[f_], floors[f_]) for f_ in sizes})   # the smallest the loop can reach: a field that
+    _at_floor = total()                                                # STARTS under its floor (cutpaper's disc
+    sizes.update(_start)                                               # numbers) is never grown to it
+    if _at_floor > h + 0.02:
+        worst = max(items, key=lambda it: _field_height(k, it[0], it[1], floors[it[0]], w))
+        raise VLTextOverflow("{}.{}(): all fields together need {:.2f}in at their floor sizes but the column is "
+                             "{:.2f}in — shorten the copy; the longest is the {} ({:.2f}in at {:.0f}pt)".format(
+                                 k.name, page, _at_floor, h, worst[0],
+                                 _field_height(k, worst[0], worst[1], floors[worst[0]], w), floors[worst[0]]))
     guard = 0
     while total() > h and guard < 200:
         guard += 1
@@ -845,10 +1188,11 @@ def _flow(k, slide, page, col, items, *, anchor, align, underlay=None, start=Non
     cy = y if anchor == "top" else (y + h - t_all if anchor == "bottom" else y + (h - t_all) / 2.0)
     rects, plan = {}, []
     for f, t in items:
-        sz = round(sizes[f], 1)
-        fw = widths[f]
-        fx = x + (w - fw) / 2.0 if align == "c" else x
+        sz = _math.floor(sizes[f] * 10 + 1e-9) / 10.0   # rounded DOWN: 32.58pt (one line) drawn at 32.6 set two lines
+        fw = widths[f]                                   # the measure …
         fh = fheight(f, t, sz, fw)
+        fw = fw + dw                                     # … and the box, drawn with the headroom
+        fx = x + (w_col - fw) / 2.0 if align == "c" else x
         rects[f] = (fx, cy, fw, fh)
         plan.append((f, t, sz, (fx, cy, fw, fh)))
         cy += fh + gaps[f]
@@ -869,6 +1213,11 @@ def _flow(k, slide, page, col, items, *, anchor, align, underlay=None, start=Non
                 dk.text(slide, fx, fy, fw, fh, [k.runs(l_, sz, color, bold, role, italic) for l_ in phrased[f]],
                         align=al, space_after=0)
                 continue
+            lines = _set_lines(k, f, t, sz, fw - dw)
+            if lines:                      # a wrapping display field is SET in its measured lines: drawn dw wider than it
+                dk.text(slide, fx, fy, fw, fh, [k.runs(l_, sz, color, bold, role, italic) for l_ in lines],   # was measured,
+                        align=al, space_after=0)    # the renderer re-wrapped "…more than ever / before" (final review)
+                continue
             if f == "kicker" and k.name == "collage":
                 hl = _hex(k.P["accents"][0])         # highlighter: the text reads on the HIGHLIGHT, not the ground
                 ink = max((k.P["ink"], LANGS[k.name]["palette"]["ink"]), key=lambda c: _contrast(c, hl))
@@ -876,6 +1225,10 @@ def _flow(k, slide, page, col, items, *, anchor, align, underlay=None, start=Non
             else:
                 rr = k.runs(t, sz, color, bold, role, italic)
             dk.text(slide, fx, fy, fw, fh, [rr], align=al)
+    draw.sizes = {f: sz for f, _t, sz, _r in plan}      # what each field was planned at (P4 sizes its art by it)
+    draw.headroom = dw                                   # how much wider each box is drawn than its words were measured
+    draw.exact = {f: sizes[f] for f, _t in items}       # …before the 0.1pt rounding: a size decided at 32.58pt (one
+    # line) was drawn at 32.6 (two, "一盏茶的时 / 间"); vl_native2 draws at the exact size rounded DOWN
     return rects, draw
 
 
@@ -938,7 +1291,7 @@ def _resolve(k, image):
         path = base.with_name(base.stem + ".cut.png") if sl.get("cutout") else base
         if not path.exists():
             raise FileNotFoundError("{}: no image for slot {!r} at {}".format(k.name, image, path))
-        return str(path), sl["alt"], sl["id"]
+        return _usable(path), sl["alt"], sl["id"]
     p = Path(str(image))
     if not p.is_file():
         hint = ""
@@ -950,7 +1303,85 @@ def _resolve(k, image):
                 hint = (" — if {!r} is an image-series slot id, pass plan= and image_dir= to visual_languages.use() "
                         "so it resolves to that slot's image".format(str(image)))
         raise FileNotFoundError("{}: no image at {}{}".format(k.name, p, hint))
-    return str(p), p.stem.replace("-", " ").replace("_", " "), None
+    return _usable(p), p.stem.replace("-", " ").replace("_", " "), None
+
+
+_EMBEDS = ("JPEG", "PNG", "GIF", "BMP", "TIFF")     # what python-pptx embeds
+
+
+def _usable(p):
+    """The path of `p` as every language can place it — the caller's own file is never rewritten. A picture that only
+    LOOKS right in a viewer is made right in a copy (robustness audit, 2026-10-09): a phone photo's EXIF orientation is
+    baked into its pixels (pptx ignores the flag — the photo landed on its side in all 13 languages); a 16-bit PNG is
+    scaled to 8 bits (the feather step clipped it to a white plate); WebP and other formats pptx cannot embed are
+    re-saved as PNG. A file that cannot be decoded at all — truncated, or not an image — is refused by name."""
+    import hashlib, tempfile
+    from PIL import Image, ImageOps
+    try:
+        im = Image.open(p)
+        im.load()
+    except Exception as e:
+        why = "it is cut short" if "truncated" in str(e).lower() else "it is not a picture this machine can read"
+        raise VLImageError("the image {} cannot be used: {} ({}) — re-export it as a JPEG or PNG".format(
+            Path(p).name, why, type(e).__name__))
+    fmt = (im.format or "").upper()
+    try:
+        orient = int(im.getexif().get(274, 1) or 1)
+    except Exception:
+        orient = 1
+    deep = im.mode in ("I;16", "I;16B", "I;16L", "I;16N", "I", "F")
+    if fmt in _EMBEDS and orient in (0, 1) and not deep:
+        return str(p)
+    st = Path(p).stat()
+    key = hashlib.sha1("{}|{}|{}".format(Path(p).resolve(), st.st_size, st.st_mtime_ns).encode()).hexdigest()[:20]
+    # a photo stays a JPEG (a phone JPEG re-saved as PNG grew 1.2MB -> 7.5MB, final review 2026-10-09); PNG for alpha,
+    # deep or palette pictures
+    as_jpeg = fmt in ("JPEG", "MPO") and not deep and "A" not in im.mode
+    out = Path(tempfile.gettempdir()) / "slide-maker-images" / (key + (".jpg" if as_jpeg else ".png"))
+    if not _cached_ok(out):
+        out.parent.mkdir(parents=True, exist_ok=True)
+        if orient not in (0, 1):
+            im = ImageOps.exif_transpose(im)
+        if deep:
+            import numpy as _np
+            a = _np.asarray(im, dtype=_np.float64)
+            top = 65535.0 if im.mode.startswith("I;16") or (im.mode == "I" and a.max() > 255) else (a.max() or 1.0)
+            im = Image.fromarray(_np.clip(a / top * 255.0, 0, 255).astype(_np.uint8), "L")
+        elif as_jpeg:
+            im = im.convert("RGB")
+        elif im.mode not in ("RGB", "RGBA", "L", "LA", "P"):
+            im = im.convert("RGBA" if "A" in im.mode else "RGB")
+        _atomic_save(im, out, **({"format": "JPEG", "quality": 92} if as_jpeg else {"format": "PNG"}))
+    return str(out)
+
+
+def _cached_ok(path):
+    """A cache file that exists AND decodes: a build killed mid-write left a truncated copy under a stable key, and every
+    later build embedded it as a black rectangle (final review, 2026-10-09)."""
+    try:
+        from PIL import Image
+        if not Path(path).exists():
+            return False
+        with Image.open(path) as im:
+            im.load()
+        return True
+    except Exception:
+        return False
+
+
+def _atomic_save(im, path, **kw):
+    """Save a PIL image to `path` through a temporary name and an atomic rename, so a reader never sees half a file."""
+    import os
+    import tempfile
+    path = Path(path)
+    fd, tmp = tempfile.mkstemp(dir=str(path.parent), suffix=path.suffix)
+    os.close(fd)
+    try:
+        im.save(tmp, **kw)
+        os.replace(tmp, str(path))
+    finally:
+        if os.path.exists(tmp):
+            os.remove(tmp)
 
 
 def _place_image(k, slide, image, rect, lay, page, keep_clear=None):
@@ -999,6 +1430,8 @@ def _paper_tint(k):
     every illustration sat as a pale patch on the meadow ground (looked at, 2026-10-04)."""
     if k.ground == "light":
         return None
+    if _lum(k.P["ground"]) < 0.2:          # a DARK ground: multiplying by dark/light (~0.13 on ink's night) all but
+        return None                        # erased the picture (audits, 2026-10-09) — it is feathered onto the dark as is
     a, b = _rgb(LANGS[k.name]["palette"]["ground"]), _rgb(k.P["ground"])
     return tuple(round(b[i] / float(max(1, a[i])), 4) for i in range(3))
 
@@ -1015,7 +1448,8 @@ def _feathered(path, tint=None):
     d = Path(tempfile.gettempdir()) / "slide-maker-feather"
     d.mkdir(parents=True, exist_ok=True)
     out = d / "feather-{}.png".format(key)
-    if not out.exists():
+    if not _cached_ok(out):
+        import os
         src = str(path)
         if tint:
             from PIL import Image
@@ -1023,8 +1457,10 @@ def _feathered(path, tint=None):
             r, g, b, a = im.split()
             r, g, b = (ch.point(lambda v, f=f: min(255, int(round(v * f)))) for ch, f in zip((r, g, b), tint))
             src = str(d / "tinted-{}.png".format(key))
-            Image.merge("RGBA", (r, g, b, a)).save(src)
-        image_fx.feather(src, out=str(out))
+            _atomic_save(Image.merge("RGBA", (r, g, b, a)), src, format="PNG")
+        tmp = str(out) + ".{}.tmp.png".format(os.getpid())             # written whole, then renamed (see _cached_ok)
+        image_fx.feather(src, out=tmp)
+        os.replace(tmp, str(out))
     return str(out)
 
 
@@ -1088,8 +1524,9 @@ def _deco_before(k, slide, page, lay, img_rect, col, index):
     p = k.P
     if "blob" in lay["deco"] and img_rect and col is None:
         x, y, w, h = img_rect
-        _oval(slide, x - w * 0.10, y + h * 0.18, w * 0.62, w * 0.62, p["accents"][index % len(p["accents"])],
-              "a soft colour blob behind the picture; carries no information")
+        blob = _oval(slide, x - w * 0.10, y + h * 0.18, w * 0.62, w * 0.62, p["accents"][index % len(p["accents"])],
+                     "a soft colour blob behind the picture; carries no information")
+        dk.overlap_intent(blob, "a soft colour blob tucked behind the picture's frame: the overlap is the composition")
     if "card" in lay["deco"] and col and img_rect is None:
         cx, cy, cw, ch, _rot = _card_geom(lay, col)
         dk.box(slide, cx, cy, cw, ch, fill=_hex(p["panel"]), round=True, r=0.28)
@@ -1119,7 +1556,32 @@ def _deco_after(k, slide, page, lay, rects):
                            waves=5, line_w=2.5)
 
 
+def _yield_to_words(lay, f):
+    """The layout with its picture shrunk to `f` of its size along the line it shares with the text column — the
+    column takes the room — or None when the two are not side by side or stacked (a bleed, an overlap)."""
+    I, C = lay.get("image"), lay.get("col")
+    if not I or not C or lay["treat"] == "bleed":
+        return None
+    ix, iy, iw, ih = I
+    cx, cy, cw, ch = C
+    if cx + cw <= ix + 0.01:                       # words left of the picture
+        I2, C2 = (ix + iw * (1 - f), iy, iw * f, ih), (cx, cy, cw + iw * (1 - f), ch)
+    elif cx >= ix + iw - 0.01:                     # words right of it
+        I2, C2 = (ix, iy, iw * f, ih), (cx - iw * (1 - f), cy, cw + iw * (1 - f), ch)
+    elif cy >= iy + ih - 0.01:                     # words under it
+        I2, C2 = (ix, iy, iw, ih * f), (cx, cy - ih * (1 - f), cw, ch + ih * (1 - f))
+    elif cy + ch <= iy + 0.01:                     # words over it
+        I2, C2 = (ix, iy + ih * (1 - f), iw, ih * f), (cx, cy, cw, ch + ih * (1 - f))
+    else:
+        return None
+    return dict(lay, image=I2, col=C2)
+
+
 def _compose(k, slide, page, fields, image):
+    """Compose an image-led page; when its words do not fit beside the picture, the picture gives up room (80%, then
+    65% of its size) before the page refuses — a storybook cover refused an ordinary 14-word title on the 10in 16:9,
+    and every image-led cover a 30-character Chinese one on the square (the long-copy corpus, 2026-10-09)."""
+    import vl_native
     W, H = _canvas(k)
     orient = "land" if W >= H * 1.2 else "port"
     lay = LAYOUTS[k.name][page][orient]
@@ -1132,6 +1594,22 @@ def _compose(k, slide, page, fields, image):
                 lay = LAYOUTS[k.name][page][orient + "_tall"]
         except Exception:
             pass                                   # an unresolvable image is refused where it is placed, as before
+    variants = [lay] + ([v for v in (_yield_to_words(lay, 0.8), _yield_to_words(lay, 0.65)) if v]
+                        if image is not None else [])
+    n0, state, last = len(slide.shapes), dict(k.__dict__), None
+    for v in variants:
+        try:
+            return _compose_one(k, slide, page, fields, image, v)
+        except VLTextOverflow as e:
+            last = e
+            vl_native._unbuild(slide, n0)
+            k.__dict__.clear(); k.__dict__.update(state)
+    raise last
+
+
+def _compose_one(k, slide, page, fields, image, lay):
+    W, H = _canvas(k)
+    orient = "land" if W >= H * 1.2 else "port"
     n0 = len(slide.shapes)
     index = len(k.prs.slides)
     items = [(f, str(fields[f]).strip()) for f in PAGE_FIELDS[page]
@@ -1210,22 +1688,57 @@ def _compose(k, slide, page, fields, image):
 
 def _page(page):
     def fn(self, slide, *, image=None, **fields):
+        # words are words: a list was str()'d onto the slide as "['Bring it', 'broken']" and a float as
+        # 0.30000000000000004 (robustness audit, 2026-10-09) — a whole number is shown as written, anything else refused
+        fields = dict(fields)
+        for f_, v in list(fields.items()):
+            if f_ not in PAGE_FIELDS[page] or f_ == "items" or v is None or isinstance(v, str):
+                continue
+            if f_ == "number" and isinstance(v, int) and not isinstance(v, bool):
+                fields[f_] = str(v)
+                continue
+            raise ValueError("{}.{}(): {}= takes text, got {} {!r} — pass the words exactly as they should read{}".format(
+                self.name, page, f_, type(v).__name__, v,
+                " (a number as written, e.g. '0.3' or '98.6%')" if isinstance(v, float) else ""))
         extras = {e for e in NATIVE_EXTRAS.get(self.name, ()) if page in EXTRA_PAGES.get(e, (page,))}
         bad = set(fields) - set(PAGE_FIELDS[page]) - ({"line"} if page == "closing" else set()) - extras
         if bad:
-            raise TypeError("{}.{}(): unknown field(s) {} — this page takes {}{}".format(
+            elsewhere = ["{}= is drawn on {}".format(e, ", ".join(EXTRA_PAGES[e])) for e in sorted(bad)
+                         if e in NATIVE_EXTRAS.get(self.name, ()) and e in EXTRA_PAGES]
+            raise TypeError("{}.{}(): unknown field(s) {} — this page takes {}{}{}".format(
                 self.name, page, sorted(bad), list(PAGE_FIELDS[page]) + ["image"],
-                " and {}".format(sorted(extras)) if extras else ""))
+                " and {}".format(sorted(extras)) if extras else "",
+                " ({})".format("; ".join(elsewhere)) if elsewhere else ""))
         if self.name in NATIVE:
             import vl_native
-            out = vl_native.compose(self, slide, page, fields, image)
-        elif page == "points":
-            raise ValueError("{}.points(): the points page belongs to the native languages ({}) — on {} build the "
-                             "list on an ordinary page: s = k.new_slide(); x, y, w, h = rs.ground(s, {!r}, "
-                             "role='content', index=n); then rs.card / dk.text".format(
-                                 self.name, ", ".join(NATIVE), self.name, self.name))
+            if image is not None:
+                pics = NATIVE_IMAGE_PAGES[self.name]
+                if page not in pics:
+                    raise ValueError("{}.{}(): this page draws no picture — {} draws the caller's picture on {}; pass "
+                                     "image= there, or leave it out".format(self.name, page, self.name, " and ".join(pics)))
+                if isinstance(image, (list, tuple)):
+                    if len(image) != 1:
+                        raise ValueError("{}.{}(): image= takes ONE picture (a file path or a slot id), got a list of "
+                                         "{}".format(self.name, page, len(image)))
+                    image = image[0]
+            try:
+                out = vl_native.compose(self, slide, page, fields, image)
+            except VLImageError as e:
+                raise VLImageError("{}.{}(): {}".format(self.name, page, e)) from None
         else:
-            out = _compose(self, slide, page, fields, image)
+            import vl_native
+            n0, state = len(slide.shapes), dict(self.__dict__)
+            try:
+                out = (_points_led(self, slide, fields, image) if page == "points"
+                       else _compose(self, slide, page, fields, image))
+            except Exception as e:
+                # a refused page leaves its slide as it found it: collage left its furniture and storybook its picture,
+                # and a retry with shorter copy on the same slide drew them twice (audit sweep, 2026-10-09)
+                vl_native._unbuild(slide, n0)
+                self.__dict__.clear(); self.__dict__.update(state)
+                if isinstance(e, VLImageError):
+                    raise VLImageError("{}.{}(): {}".format(self.name, page, e)) from None
+                raise
         # the page's title for screen readers: the kicker is set above it, or the title sits low, so neither lint
         # reading (a TITLE placeholder, or large text in the top 28%) found it — READING ORDER held the hand-off
         ttl = (" ".join(str(fields.get(f) or "") for f in ("number", "label")) if page == "data"
@@ -1238,19 +1751,183 @@ def _page(page):
                   "cover/closing take a list of up to 4). Returns {{'rects': {{field: (x, y, w, h)}}, ...}}; refuses "
                   "with VLTextOverflow when even the floor sizes overflow, ValueError when there is nothing to place. "
                   "The native languages also take the words only you can give: seal= (ink), highlight= (poster), "
-                  "icons= (cutpaper points), project= (drafting) — never invented, nothing drawn without them."
+                  "icons= (cutpaper points), project= (drafting); masthead=, edition=, inside= (cover), tags= (points) "
+                  "(broadsheet); running=, authors= and abstract= (cover), margin= (points) (journal); tags= (points), "
+                  "total= (data) (tally); doodle= (cover, closing), ordered= (points) (chalkboard) — never invented, "
+                  "nothing drawn without them; on a page that does not draw one it is refused, naming the pages that do."
                   .format(page, PAGE_FIELDS[page]))
     import inspect as _insp                      # a real signature, so sigs.py prints the fields by name
     _P = _insp.Parameter
     fn.__signature__ = _insp.Signature(
         [_P("self", _P.POSITIONAL_OR_KEYWORD), _P("slide", _P.POSITIONAL_OR_KEYWORD)]
         + [_P(f, _P.KEYWORD_ONLY, default=None) for f in PAGE_FIELDS[page] if not (page == "quote" and f == "mark")]
-        + [_P("image", _P.KEYWORD_ONLY, default=None)])
+        + [_P("image", _P.KEYWORD_ONLY, default=None), _P("extras", _P.VAR_KEYWORD)])
     return fn
 
 
 for _pg in PAGE_FIELDS:
     setattr(Kit, _pg, _page(_pg))
+
+# the points page of the image-led languages (audit, 2026-10-09): a number, a head and a line per point, in each
+# language's own voice — sizes scale with the canvas like every other field
+for _n, (_no, _hd, _ln) in {
+        "editorial": ((26, "numeral", True, "accent", False, 16), (22, "display", False, "ink", False, 13), (15, "body", False, "ink", False, 10)),
+        "soft": ((24, "numeral", False, "accent", False, 15), (20, "display", False, "ink", False, 13), (15, "body", False, "ink", False, 10)),
+        "collage": ((26, "numeral", True, "accent", False, 16), (22, "display", True, "ink", False, 13), (15, "body", False, "ink", False, 10)),
+        "storybook": ((24, "numeral", False, "accent", False, 15), (21, "display", False, "ink", False, 13), (15, "body", False, "ink", False, 10)),
+}.items():
+    TYPE[_n].setdefault("item_no", _no)
+    TYPE[_n].setdefault("item_head", _hd)
+    TYPE[_n].setdefault("item_line", _ln)
+
+
+def _points_led(k, slide, fields, image):
+    """The points page of an image-led language: kicker and title, then 2-4 points — a number, a head and a line —
+    in the language's own furniture (editorial: a hairline over each; soft: a rounded panel; collage: a taped note;
+    storybook: a painted dot), with the caller's picture beside them (landscape) or above them (portrait) when given.
+    Points sit in a row, else a 2x2 grid, else a stack — the first layout their words fit — at one size per field."""
+    import vl_native as vn
+    import vl_native2 as v2
+    import ornaments
+    W, H = _canvas(k)
+    s = min(W, H) / 7.5
+    land = W >= H * 1.05
+    pts = vn.points_of(fields.get("items"))
+    n = len(pts)
+    P = k.P
+    m = (0.07 if land else 0.08) * W
+    top, bottom = 0.08 * H, H - max(0.55 * s, 0.07 * H)
+    def attempt(frac, hfrac):
+        img_rect = None
+        if image is not None:
+            lay = dict(LAYOUTS[k.name]["image_text"]["land" if land else "port"], deco=())
+            if land:
+                img_rect = (m, top, frac * W, bottom - top)
+                x0, w0 = m + frac * W + 0.04 * W, W - (m + (frac + 0.04) * W) - m
+            else:
+                img_rect = (m, top, W - 2 * m, frac * H)
+                x0, w0 = m, W - 2 * m
+            head_top = top if land else top + frac * H + 0.3 * s
+        else:
+            x0, w0, head_top = m, W - 2 * m, top
+        head = v2.fields(fields, ("kicker", "title"), ())
+        hh = hfrac * H
+        hr, hd = v2.flow(k, slide, "points", (x0, head_top, w0, hh), head, anchor="top") if head else ({}, (lambda: None))
+        y0 = (max(v[1] + v[3] for v in hr.values()) if hr else head_top) + 0.35 * s
+        area = (x0, y0, w0, bottom - y0)
+        pad = 0.0 if k.name in ("editorial", "storybook") else 0.20 * s
+        gap = 0.28 * s
+
+        lift = 0.16 * s if k.name == "editorial" else 0.0            # editorial's hairline sits above the number
+        big = {f_: TYPE[k.name][f_][0] * s * 1.25 for f_ in ("item_no", "item_head", "item_line")}   # room to read from the back
+
+        def cells(cols, y, ch):
+            rows = -(-n // cols)
+            cw = (area[2] - gap * (cols - 1)) / cols
+            return [(area[0] + (i % cols) * (cw + gap), y + (i // cols) * (ch + gap), cw, ch) for i in range(n)]
+
+        def plan_at(grid, inline=False, tight=False):
+            """[(rects, draw)] per point. inline: the number in a gutter beside the head instead of a line above it — one
+            line less per point, which four two-line points on a square page needed (the long-copy corpus)."""
+            specs, nums = [], []
+            pd = pad * (0.6 if tight else 1.0)           # last resort: a narrower margin inside each note or panel
+            for i, ((hd_, ln_), c) in enumerate(zip(pts, grid)):
+                inner = (c[0] + pd, c[1] + pd + lift, c[2] - 2 * pd, c[3] - 2 * pd - lift)
+                no = [] if k.name == "storybook" else [("item_no", "{:02d}".format(i + 1))]
+                if inline and no:
+                    gw = 0.62 * s
+                    nums.append(((inner[0], inner[1], gw, inner[3]), no, dict(anchor="top", start=dict(big))))
+                    inner, no = (inner[0] + gw, inner[1], inner[2] - gw, inner[3]), []
+                its = no + [("item_head", hd_)] + ([("item_line", ln_)] if ln_ else [])
+                if k.name == "storybook":
+                    inner = (inner[0] + 0.42 * s, inner[1], inner[2] - 0.42 * s, inner[3])
+                specs.append((inner, its, dict(anchor="top", start=dict(big))))
+            words = v2.plan_together(k, slide, "points", specs)
+            if not nums:
+                return words
+            out = []
+            for (nr, nd), (wr, wd) in zip(v2.plan_together(k, slide, "points", nums), words):
+                def both(nd=nd, wd=wd):
+                    nd(); wd()
+                both.sizes = getattr(wd, "sizes", {})
+                out.append((dict(nr, **wr), both))
+            return out
+        orders = ([n, 2, 1] if land and image is None else [1, 2]) if n > 2 else ([2, 1] if land and image is None else [1, 2])
+        last, fits = None, []
+        tries = ([(c_, False, False) for c_ in dict.fromkeys(orders)] + [(c_, True, False) for c_ in dict.fromkeys(orders)]
+                 + ([(c_, True, True) for c_ in dict.fromkeys(orders)] if pad else []))
+        for rank, (cols, inline, tight) in enumerate(tries):
+            if tight and fits:
+                break                                    # the narrower margin is only a last resort
+            if fits and fits[-1][0] >= big["item_head"] - 0.05:
+                break                                    # a layout already sets the points at full size: none can beat it
+            rows = -(-n // cols)
+            grid = cells(cols, area[1], (area[3] - gap * (rows - 1)) / rows)
+            try:
+                planned = plan_at(grid, inline, tight)
+            except VLTextOverflow as e:
+                last = e
+                continue
+            # each cell as tall as the tallest point's words; the block sits a little above the middle of the room
+            need = max(max(v[1] + v[3] for v in r.values()) - c[1] for (r, _d), c in zip(planned, grid)) + pad
+            block = rows * need + (rows - 1) * gap
+            grid = cells(cols, area[1] + max(0.0, area[3] - block) * 0.4, need)
+            try:
+                planned = plan_at(grid, inline, tight)
+            except VLTextOverflow as e:
+                last = e
+                continue
+            fits.append((planned[0][1].sizes.get("item_head", 0.0), rank, grid, planned))
+        if not fits:
+            raise last or VLTextOverflow("{}.points(): the points do not fit".format(k.name))
+        # the layout that sets the points LARGEST (four points stacked on a portrait page were set at the floor while a
+        # 2x2 grid held them at full size); within 5%, the preferred order (row, grid, stack) decides
+        top_ = max(f_[0] for f_ in fits)
+        _z, _rank, grid, planned = min((f_ for f_ in fits if f_[0] >= 0.95 * top_), key=lambda f_: f_[1])
+        return img_rect, (lay if image is not None else None), hr, hd, grid, planned
+
+    # the caller's picture is never dropped for room: on a portrait page it gives up height first (28% → 21% → 15%),
+    # a landscape one width (36% → 30%) — three points beside a photo on 3:4 were refused at the first size (2026-10-09)
+    last_, done = None, None
+    for frac in ((0.36, 0.30) if land else (0.28, 0.21, 0.15)) if image is not None else (None,):
+        for hfrac in ((0.30, 0.40) if land else (0.24, 0.34)):     # a long title gets more room (as the drawn ones)
+            try:
+                done = attempt(frac, hfrac)
+                break
+            except VLTextOverflow as e:
+                last_ = e
+        if done:
+            break
+    if not done:
+        raise last_
+    img_rect, lay, hr, hd, grid, planned = done
+    art = []
+    if img_rect is not None:
+        _place_image(k, slide, image, img_rect, lay, "points")
+    hd()
+    rects = dict(hr)
+    for i, ((r, d), c) in enumerate(zip(planned, grid)):
+        x, y, w, h = c
+        if k.name == "soft":
+            dk.decorative(dk.box(slide, x, y, w, h, fill=_hex(P["panel"]), round=True, r=0.22),
+                          "a soft panel behind one point")
+        elif k.name == "collage":
+            # the language's own note colour for this ground (white on kraft, slate on slate): a hard-coded white note
+            # put slate's yellow numbers on white at 1.68:1 (the lint, 2026-10-09)
+            dk.decorative(dk.box(slide, x, y, w, h, fill=_hex(P["panel"])), "a paper note holding one point")
+            tp = ornaments.tape(slide, x + w * 0.38, y - 0.14 * s, w * 0.24, 0.26 * s, "EDE3C8", rotation=2.0)
+            dk.decorative(tp, "washi tape holding the note; ornament")
+            dk.overlap_intent(tp, "washi tape across the note's top edge holds it to the page: the overlap is the tape")
+        elif k.name == "editorial":
+            dk.decorative(dk.box(slide, x, y, w, max(0.012, 0.012 * s), fill=_hex(P["ink"])), "a hairline over one point")
+        elif k.name == "storybook":
+            dd = 0.24 * s
+            dk.decorative(dk.box(slide, x, y + 0.08 * s, dd, dd, fill=_hex(P["accents"][i % len(P["accents"])]), round=True, r=dd / 2),
+                          "a painted dot marking one point")
+        d()
+        for f_, v in r.items():
+            rects["{}_{}".format(f_, i + 1)] = v
+    return {"rects": rects, "image": img_rect, "free": None}
 
 
 # ════════════════════════════════════════════════════════════════════════════════════════════════
@@ -1299,6 +1976,72 @@ _SAMPLE_COPY_NATIVE = {
                                                                          ("Roof", "A single span, no columns.")])),
                   ("quote", dict(quote="“Draw the quiet first, then the walls.”", attribution="Design principle")),
                   ("data", dict(number="3", label="layers, one structure.", note="Each layer can be built, moved and reused on its own."))],
+    "starlit": [("cover", dict(kicker="Year in review", title="What this year taught us", subtitle="A letter to the team")),
+                ("points", dict(title="Three things we learned", items=[("We shipped slower", "and broke less"),
+                                ("We listened more", "to the people who use it"), ("We kept the team", "through a hard spring")])),
+                ("quote", dict(quote="We measured the year in conversations, not in launches.", attribution="From the founder's letter")),
+                ("data", dict(number="12", label="conversations that changed our plan", note="Each one is written up in the archive."))],
+    "broadsheet": [("cover", dict(title="Every street needs a night for fixing things",
+                                  subtitle="Volunteers, borrowed tools and one long table: how a repair evening works.",
+                                  masthead="The Neighbourhood Repair Weekly", inside=["The idea", "The evening", "The numbers"])),
+                   ("points", dict(title="How a repair evening works", tags=["The idea", "The evening", "The next step"],
+                                   items=[("Bring it broken", "Anything that switches on, unzips or wobbles is welcome."),
+                                          ("Fix it together", "A volunteer sits beside you, but your hands do the work."),
+                                          ("Take it home", "What could not be fixed today goes on a list for next time.")])),
+                   ("quote", dict(quote="The visitor holds the screwdriver; the volunteer only guides.",
+                                  attribution="From the volunteer handbook")),
+                   ("data", dict(number="3", label="evenings a month", note="Short enough to fit around work."))],
+    "journal": [("cover", dict(kicker="Lab meeting", title="Learning to reconstruct undersampled cardiac MRI",
+                               authors="Author One · Author Two · Author Three",
+                               abstract="We ask whether a learned reconstruction keeps fine edges when far fewer measurements "
+                                        "are taken, and how we would know.")),
+                ("image_text", dict(title="Reconstruction error across acceleration",
+                                    body="Error as acceleration grows. Illustrative curves for this style sample, not results.",
+                                    caption="Style sample — not data.", image=str(ASSETS / "figure" / "illustrative-curves.jpg"))),
+                ("points", dict(title="What we set out to test",
+                                items=[("The question", "Does the method keep edges at high acceleration?"),
+                                       ("The method", "Retrospective undersampling of fully sampled scans."),
+                                       ("The check", "Compare against the fully sampled reference, slice by slice.")],
+                                margin="Every figure in this deck is labelled with its source.")),
+                ("data", dict(number="8×", label="acceleration we aim to support",
+                              note="A target for the study, stated before any result."))],
+    "tally": [("cover", dict(kicker="Q3 review", title="The lending library, quarter three",
+                             subtitle="Members, loans and repairs across the network")),
+              ("points", dict(title="Three lines on the ledger", tags=["Members", "Loans", "Repairs"],
+                              items=[("New members joined", "Mostly through word of mouth"),
+                                     ("Tools went out on loan", "Drills and ladders led the list"),
+                                     ("Items came back repaired", "Fixed at the monthly evening")])),
+              ("quote", dict(quote="Count what people borrow, not what we own.", attribution="Library principle")),
+              ("data", dict(number="12", label="of 40 neighbourhoods now have a shelf", note="A target of 20 by next year.",
+                            total="40"))],
+    "chalkboard": [("cover", dict(kicker="科学课 · 第 3 讲", title="光合作用是怎么回事", subtitle="一片叶子，就是一座小工厂")),
+                   ("points", dict(title="叶子做的三件事", ordered=True,
+                                   items=[("吸收阳光", "叶绿素抓住光的能量"), ("吸进水和二氧化碳", "根吸水，叶子吸二氧化碳"),
+                                          ("做出糖和氧气", "糖留给植物，氧气放出来")])),
+                   ("quote", dict(quote="一片叶子就是一座小工厂。", attribution="科学课笔记")),
+                   ("data", dict(number="6", label="个二氧化碳分子", note="和 6 个水分子一起，做出一个葡萄糖分子。"))],
+    "interface": [("cover", dict(kicker="Product tour", title="One board for every request",
+                                 subtitle="A ten-minute tour of the new workspace", crumb="Launch › Overview",
+                                 status=("Live", "on"), actions=["Get started", "Watch demo"],
+                                 toggles=[("Auto-sync", True), ("Share with team", True), ("Public link", False)])),
+                  ("points", dict(title="Three settings change how a team works",
+                                  items=[("Approvals before anything is sent", "Drafts wait until a lead signs off"),
+                                         ("One shared source of truth", "Every edit syncs to the same page"),
+                                         ("A weekly digest instead of pings", "Notifications batch into one summary")],
+                                  tags=[("Required", "pending"), ("On", "on"), "New"])),
+                  ("quote", dict(quote="We stopped chasing status updates. The board just tells us.",
+                                 attribution="Style sample")),
+                  ("data", dict(number="12", label="of 40 teams switched", note="Style sample — your numbers go here.",
+                                total="40"))],
+    "wayfinding": [("cover", dict(kicker="Next stop", title="Our plan to reach one million riders",
+                                  subtitle="Strategy 2027", line="1")),
+                   ("points", dict(title="Four stops between sign-up and a paying customer", ordered=True,
+                                   items=[("Sign up", "Under two minutes, no card"), ("First project", "A template does the setup"),
+                                          ("Invite a teammate", "Work stops being solo"), ("Upgrade", "Billing when the team is in")],
+                                   interchange=[2])),
+                   ("quote", dict(quote="If a stranger can find the platform, anyone can.", attribution="Style sample")),
+                   ("data", dict(number="96.4%", label="Harbour line on time", note="Style sample — your numbers go here.",
+                                 board=[("North loop", "93.1%"), ("Riverside", "91.8%")]))],
 }
 
 
@@ -1368,7 +2111,40 @@ def sample_sheet(render_dir, out_jpg, *, width=1400):
         rec = json.loads(man.read_text(encoding="utf-8")) if man.exists() else {}
         rec[stem] = sample_fingerprint(deck)
         man.write_text(json.dumps(dict(sorted(rec.items())), indent=1) + "\n", encoding="utf-8")
+    _record_hues(render_dir, Path(out_jpg).parent, stem)
     return out_jpg
+
+
+def _record_hues(render_dir, folder, stem):
+    """Measure which of the language's chromatic colours its rendered sample pages really PAINT (as the register-pixels
+    gate measures: the largest share on any one page) into <folder>/hues.json. --gates declares exactly these — the text
+    accents it declared before (a kicker's red, a hairline's gold) never reached the gate's floor, and broadsheet,
+    soft dusk, ink night and cutpaper night failed DECLARED HUES ABSENT on their own samples (docs audit, 2026-10-09)."""
+    import json
+    import check_register_pixels as crp
+    hit = [(n_, g_) for n_ in LANGS for g_ in VARIANTS[n_] if _sample_stem(n_, g_) == stem]
+    if not hit:
+        return None
+    P = VARIANTS[hit[0][0]][hit[0][1]]["palette"]
+    cands = [c.upper() for c in dict.fromkeys(list(P["accents"]) + list(P["text_accents"])) if crp._chromatic(_rgb(c))]
+    pngs = sorted(str(q) for q in Path(render_dir).glob("slide*.png"))
+    seen = crp.presence(pngs, [_rgb(c) for c in cands]) if pngs else {}
+    got = ["#" + c for c in cands if seen.get(_rgb(c), 0) >= crp.PRESENT]
+    hf = Path(folder) / "hues.json"
+    rec = json.loads(hf.read_text(encoding="utf-8")) if hf.exists() else {}
+    rec[stem] = got
+    hf.write_text(json.dumps(dict(sorted(rec.items())), indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    return got
+
+
+def painted_hues(name, ground):
+    """The hues `name` paints on `ground`, as measured on its sample pages (hues.json), or None when not recorded."""
+    import json
+    hf = ASSETS / "samples" / "hues.json"
+    try:
+        return json.loads(hf.read_text(encoding="utf-8")).get(_sample_stem(name, ground))
+    except Exception:
+        return None
 
 
 _DISPLAY_NAMES = {"editorial": "Editorial magazine", "soft": "Soft organic", "collage": "Collage scrapbook",
@@ -1382,6 +2158,20 @@ _RATIONALE.update({"ink": "drawn, no pictures: misty ink ridges, vertical CJK, a
                    "poster": "drawn, no pictures: the headline is the picture, one saturated field per page",
                    "cutpaper": "drawn, no pictures: a layered paper diorama with soft paper shadows",
                    "drafting": "drawn, no pictures: a drawing sheet with grid, title block, dimensions and leaders"})
+_DISPLAY_NAMES["starlit"] = "Starlit night"
+_RATIONALE["starlit"] = "drawn, no pictures: a night sky and a crescent moon, points as a constellation, the figure in a glow"
+_DISPLAY_NAMES["broadsheet"] = "Broadsheet front page"
+_RATIONALE["broadsheet"] = "drawn, no pictures: a masthead strip, a headline and standfirst, newspaper columns, a pull quote between rules"
+_DISPLAY_NAMES["journal"] = "Journal article"
+_RATIONALE["journal"] = "drawn around your figures: a running head, an abstract, numbered figures with captions, margin notes"
+_DISPLAY_NAMES["tally"] = "Data tally"
+_RATIONALE["tally"] = "drawn, no pictures: a fine grid, heavy type, pill tags, one giant number with its share bar"
+_DISPLAY_NAMES["chalkboard"] = "Chalkboard"
+_RATIONALE["chalkboard"] = "drawn, no pictures: a framed board, coloured chalk strokes, boxed steps, a circled figure"
+_DISPLAY_NAMES["interface"] = "Product interface"
+_RATIONALE["interface"] = "drawn, no pictures: every page an app screen — windows, status chips, a settings list, a dashboard card, a dialog"
+_DISPLAY_NAMES["wayfinding"] = "Wayfinding"
+_RATIONALE["wayfinding"] = "drawn, no pictures: metro lines converging on an interchange, station signs, a strip map for ordered steps, a departure board"
 
 
 def direction(name, *, fonts="both", ground="light", W=13.333, H=7.5):
@@ -1439,7 +2229,12 @@ def _print_gates(name, deck, topic, fonts, ground="light"):
               file=sys.stderr)
         return 2
     p = VARIANTS[name][ground]["palette"]
-    pal = "ground #{} ink #{} accents {}".format(p["ground"], p["ink"], " ".join("#" + h for h in p["text_accents"]))
+    hues = painted_hues(name, ground)
+    if hues is None:                       # not measured here: the fill accents, never the text ones (see _record_hues)
+        hues = ["#" + h for h in p["accents"]]
+    pal = "ground #{} ink #{}".format(p["ground"], p["ink"]) + (
+        " accents {}".format(" ".join(hues)) if hues else
+        " — a neutral register: its accent colour is a type colour, too small to carry a page")
     pick = "bespoke {}".format(name) + (" for {}".format(topic) if topic else "")
     d = shlex.quote(str(Path(str(deck)).resolve()))
     # the script's ABSOLUTE path: the commands run as printed from any folder (`python3 scripts/deck_gates.py` ran only
@@ -1461,6 +2256,8 @@ def main(argv=None):
     import shlex
     ap = argparse.ArgumentParser(description="visual languages: build the bundled samples")
     ap.add_argument("--sample", metavar="OUT_DIR", help="build sample-<name>.pptx for every language")
+    ap.add_argument("--refresh-bundled", action="store_true", help="maintainers, with --sample: the printed then: "
+                    "lines overwrite the BUNDLED previews in assets/vl/samples (and their manifest.json)")
     ap.add_argument("--sample-sheet", nargs=2, metavar=("RENDER_DIR", "OUT_JPG"),
                     help="contact a rendered sample's four pages into one JPEG")
     ap.add_argument("--list", action="store_true", help="list the languages")
@@ -1476,7 +2273,14 @@ def main(argv=None):
             print("visual_languages: --gates needs --deck <the deck folder>, so every printed command runs as "
                   "printed", file=sys.stderr)
             return 2
+        if a.deck.strip() in ("DECK_DIR", "<deck>") or "<" in a.deck or ">" in a.deck:   # a template, run verbatim
+            print("visual_languages: --deck {!r} is a placeholder — pass the folder the deck is saved in".format(a.deck),
+                  file=sys.stderr)
+            return 2
         return _print_gates(a.gates, a.deck, a.topic, a.fonts, a.ground)
+    if a.refresh_bundled and not a.sample:
+        print("visual_languages: --refresh-bundled goes with --sample <OUT_DIR>", file=sys.stderr)
+        return 2
     if a.list or not (a.sample or a.sample_sheet):
         for n, L in LANGS.items():
             print("{:10s} fonts both: {}  mac: {}  grounds: {}".format(n, L["fonts"]["both"], L["fonts"]["mac"], ", ".join(
@@ -1488,11 +2292,15 @@ def main(argv=None):
     for n in LANGS:
         for g in VARIANTS[n]:
             out = build_sample(n, a.sample, ground=g)
-            rd = Path(a.sample) / ("render-" + _sample_stem(n, g))
+            rd = Path(a.sample).resolve() / ("render-" + _sample_stem(n, g))
+            # absolute script paths (they ran only from the skill folder), and the sheet lands in OUT_DIR: a then:
+            # line run verbatim used to overwrite the bundled preview (audit 2026-10-09) — that is --refresh-bundled
+            sheet = (ASSETS / "samples" if a.refresh_bundled else Path(a.sample).resolve()) / (_sample_stem(n, g) + ".jpg")
             print("built", out)
-            print("NEXT: python3 scripts/render_deck.py {} {}".format(shlex.quote(str(out)), shlex.quote(str(rd))))
-            print("then: python3 scripts/visual_languages.py --sample-sheet {} {}".format(
-                shlex.quote(str(rd)), shlex.quote(str(ASSETS / "samples" / (_sample_stem(n, g) + ".jpg")))))
+            print("NEXT: python3 {} {} {}".format(shlex.quote(str(HERE / "render_deck.py")), shlex.quote(str(Path(out).resolve())),
+                                                  shlex.quote(str(rd))))
+            print("then: python3 {} --sample-sheet {} {}".format(shlex.quote(str(HERE / "visual_languages.py")),
+                                                                 shlex.quote(str(rd)), shlex.quote(str(sheet))))
     return 0
 
 

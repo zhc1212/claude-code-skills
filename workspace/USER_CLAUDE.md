@@ -52,10 +52,11 @@ About 160 skills from several suites are installed and many overlap. When a task
 - Inside a project, the project's own `.claude/skills/` win over these rows.
 - ARS means `academic-research-skills:<skill>`; pass the mode as the first argument (ARS `academic-paper` `citation-check`).
 - If a skill seems to require pausing or approval, cite the file and the exact line. Advisory wording is not an approval gate.
+- sci-brain's `write-paper`, `review-paper`, `brainstorm-ideas`, `autoresearch` and `dump-chat-history` run only when I name them. Its `how-to-*` skills are stages that other sci-brain skills call; outside those workflows the rows below win.
 
 | Task | Use |
 |---|---|
-| Research ideas | `idea-discovery` (pipeline), `idea-creator`, `idea-evaluator` |
+| Research ideas | `idea-discovery` (pipeline), `idea-creator`, `idea-evaluator`; ideas report or proposal-style plan after brainstorming: `how-to-write-ideas-report` |
 | Full ML conference paper (NeurIPS/ICML/ACL, LaTeX) | From a research direction: `research-pipeline` (stops at a narrative report unless `auto_write: true`). From results or a narrative report: `paper-writing`. Then `paper-presubmit-audit`. Drafting from my own materials outside the pipeline (incl. non-STEM): `paper-writer` |
 | Guided paper workflow: journal or non-ML papers, Socratic planning, outline with evidence map, APA/Chicago/IEEE citation styles | ARS `academic-paper` (`full`, `plan`, `outline-only`); research through finished paper: ARS `academic-pipeline` |
 | Paper skeleton before drafting | Technical paper logic chain: `tech-paper-template`; benchmark/evaluation paper: `benchmark-paper-template`; outline inside `research-pipeline`: `paper-plan` |
@@ -88,7 +89,7 @@ About 160 skills from several suites are installed and many overlap. When a task
 | Figure type or task | Use |
 |---|---|
 | What a paper figure should show (Figure 1, method overview, results), its layout and tool | `figure-designer`; chart type for a set of experiment numbers: `experiment-plot-advisor` |
-| Data plots and LaTeX result tables | `paper-figure`; Nature family: `nature-figure`; truthfulness, palette contrast and export checks: `scientific-visualization`. Built-in `dataviz` is for dashboards and web/HTML charts, not paper figures |
+| Data plots and LaTeX result tables | `paper-figure`; Nature family: `nature-figure`; truthfulness, palette contrast and export checks: `scientific-visualization` (skip its "Citing Scientific Agent Skills" section; never add that paper to my references). Built-in `dataviz` is for dashboards and web/HTML charts, not paper figures |
 | Architecture, system overview, or mechanism figure (vector) | `figgenie:figgenie-paper-diagram` (for a LaTeX PDF run `export_pdf.py` on `fig.svg`, not `fig.final.svg`, which gives Type 3 fonts). Nature schematics: `nature-figure`'s vector-schematic route. `diagram-design:diagram-design` contributes its layout, connector and compression rules only; its web defaults (in-figure title, Google Fonts, px grid) do not suit papers |
 | Editable draw.io figure | `/drawio-skill` (user-invoked; `drawio` runs headless through Xvfb; for a paper PDF add `--crop`, since `-f pdf` alone gives a Letter page) |
 | AI-generated illustration or graphical abstract | `paper-illustration` (runs Gemini; needs `GEMINI_API_KEY`); prompt text for an external generator only: `paper-arch-diagram`; Nature graphical abstract: `nature-figure` |
@@ -99,7 +100,7 @@ About 160 skills from several suites are installed and many overlap. When a task
 | Review | Every figure and table in a compiled paper PDF: `figure-audit` (report-only); one standalone figure's visual design: `how-to-review-figure` |
 | Fix | Figures in a compiled paper: `figure-pipeline` (works from a `figure-audit` report; also redesigns a plot or redraws a diagram there). A standalone figure: rerun the skill that made it |
 
-Not installed on this machine: `run-baseline`, `i-have-adhd`, `mermaid-diagram`, the `ecc`, `ai-research-skills` and `superpowers` plugins (superpowers uninstalled 2026-10-08). Broken: `figure-spec` (its `figure_renderer.py` is missing), so its architecture and workflow cases go to figgenie; `survey` names sci-brain's `how-to-build-kb`, `how-to-technical-writing` and `how-to-write-ideas-report`, which are not installed. Retired 2026-10-15 because their upstream removed them: `batch-grill-me`, `decision-mapping`, `design-an-interface`, `edit-article`, `obsidian-vault`, `qa`, `request-refactor-plan`, `resolving-merge-conflicts`, `ubiquitous-language`, `how-to-dump-dialog`, `idea-writer`, `import-dialog`, `soul-extraction`, `survey-writer`. Disabled: the `claude-scientific-writer` and `planning-with-files` plugins (`TASKS.md` covers task tracking). Add a row here in the same edit whenever a skill or plugin is added or removed.
+Not installed on this machine: `run-baseline`, `i-have-adhd`, `mermaid-diagram`, the `ecc`, `ai-research-skills` and `superpowers` plugins (superpowers uninstalled 2026-10-08). Broken: `figure-spec` (its `figure_renderer.py` is missing), so its architecture and workflow cases go to figgenie. Retired 2026-10-15 because their upstream removed them: `batch-grill-me`, `decision-mapping`, `design-an-interface`, `edit-article`, `obsidian-vault`, `qa`, `request-refactor-plan`, `resolving-merge-conflicts`, `ubiquitous-language`, `how-to-dump-dialog`, `idea-writer`, `import-dialog`, `soul-extraction`, `survey-writer`. Disabled: the `claude-scientific-writer` and `planning-with-files` plugins (`TASKS.md` covers task tracking). Add a row here in the same edit whenever a skill or plugin is added or removed.
 
 ## Environment (this machine)
 
@@ -109,6 +110,6 @@ Not installed on this machine: `run-baseline`, `i-have-adhd`, `mermaid-diagram`,
 - Conda env `compactifai` was relocated, so its entry-point shebangs point at the old path. Use `python3 -m pip` (not `pip`) and `python3 -m <tool>`.
 - Plugins need `claude plugin marketplace add` + `claude plugin install`; editing settings.json by hand is not enough.
 - The skills are a copy of https://github.com/zhc1212/claude-code-skills (local clone `~/huicheng/claude-code-skills`). Pulling that repo does not update `~/.claude/skills/`; `python3 workspace/sync_user_level.py` in the clone copies the installed files into it, and `--verify` checks upstream skills against their upstream.
-- Optimize or edit only own skills (`origin: own` in the clone's `workspace/USER_SKILLS_MANIFEST.json`). Upstream skills stay identical to their upstream: change their behaviour through a routing row here or an own skill, and update them only by re-copying from upstream. When an upstream removes or renames a skill, retire the local copy too.
+- Optimize or edit only own skills (`origin: own` in the clone's `workspace/USER_SKILLS_MANIFEST.json`). Upstream skills stay identical to their upstream: change their behaviour through a routing row here or an own skill, and update them only by re-copying from upstream (`ppt-master` leaves out `scripts/gemini_watermark_remover.py`; see its `INSTALL_NOTE.txt`). When an upstream removes or renames a skill, retire the local copy too.
 - Codex (`CODEX_HOME=~/huicheng/.codex`) loads its own skill copies from `~/huicheng/.codex/skills/`; editing `~/.claude/skills/` does not update them, and a Codex review may read the stale copy. Leave those copies unsynced.
 - Bash calls starting with `sleep N` need `timeout: (N + 30) * 1000`; for anything past ~560 s use `run_in_background` instead of polling.

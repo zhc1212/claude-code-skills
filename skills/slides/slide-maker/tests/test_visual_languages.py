@@ -417,7 +417,10 @@ r_ = _run("scripts/visual_languages.py", "--gates", "editorial", "--deck", "my-d
 _pal = vl.LANGS["editorial"]["palette"]
 check(r_.returncode == 0 and "deck_gates.py set " in r_.stdout                 # the deck's path is printed absolute now
       and "my-deck design_plan.visual_language editorial" in r_.stdout
-      and "design_plan.palette" in r_.stdout and all(h.upper() in r_.stdout.upper() for h in [_pal["ground"], _pal["ink"]] + list(_pal["text_accents"])),
+      # the ground, the ink and the hues the language PAINTS (measured on its sample, hues.json) — not its text accents,
+      # which never reached the register-pixels floor (audit, 2026-10-09)
+      and "design_plan.palette" in r_.stdout and all(h.lstrip("#").upper() in r_.stdout.upper()
+                                                     for h in [_pal["ground"], _pal["ink"]] + list(vl.painted_hues("editorial", "light") or [])),
       "--gates prints the full record with the language's hexes: {}".format(r_.stdout[:400] + r_.stderr[:200]))
 check("design.visual_language" in r_.stdout, "--gates names the Codex evidence fields too")
 # …and every command it prints RUNS as printed, on a fresh deck folder with a space and CJK in its path
@@ -603,7 +606,8 @@ else:
                 p_ = vl.build_sample(n_, str(_ftd), ground=g_)
             check(_rec.get(stem) == vl.sample_fingerprint(p_),
                   "sample {}.jpg is current with the code that builds it — else rebuild: python3 scripts/"
-                  "visual_languages.py --sample <dir>, then the NEXT/then lines it prints".format(stem))
+                  "visual_languages.py --sample <dir> --refresh-bundled, then the NEXT/then lines it prints "
+                  "(assets/vl/README.md)".format(stem))
 
 # ── Task 11: the reference names what the code does ──
 _ref = (ROOT / "references" / "visual-languages.md")

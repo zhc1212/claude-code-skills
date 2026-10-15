@@ -325,7 +325,7 @@ EXAMPLES = {
                '            align=dk.PP_ALIGN.CENTER, anchor=dk.MSO_ANCHOR.MIDDLE)\n'
                'dk.overlap_intent(n, "the count sits on its badge")   # declared on the TEXT',
     "use": 'import visual_languages as vl\n'
-           'k = vl.use("drafting", prs, ground="auto")       # ink · poster · cutpaper · drafting: no pictures needed\n'
+           'k = vl.use("drafting", prs, ground="auto")       # 11 native languages: ink poster cutpaper drafting starlit broadsheet journal tally chalkboard interface wayfinding\n'
            'k.cover(k.new_slide(), kicker="Schematic 01", title="A modular bike shelter", project="Bike shelter, phase 1")\n'
            'k.section(k.new_slide(), number="01", title="The frame")\n'
            'k.points(k.new_slide(), title="Three parts", items=[("Base", "One cast plate."), ("Posts", "Bolted, not welded."), ("Roof", "A single sheet.")])\n'
@@ -343,13 +343,70 @@ EXAMPLES = {
            'dk.text(s, body.left.inches + 0.4, top, body.width.inches - 0.8, rows_h, [k.runs(r, size) for r in rows],\n'
            '        space_after=8)                            # k.runs: the language\'s own face and ink',
     "points": 'import visual_languages as vl\n'
-              'k = vl.use("ink", prs)                         # or "poster" / "cutpaper" / "drafting" — no pictures needed\n'
+              'k = vl.use("ink", prs)                         # or any native language — no pictures needed\n'
               'k.points(k.new_slide(), title="三道工序",\n'
               '         items=[("洗盏", "器净，心先静"), ("候汤", "水沸，如蟹眼"), ("分茶", "浅斟，留七分")], seal="序")',
     "ink_ridges": 'import native_art as na\n'
                   'na.ink_ridges(s, color="1D1C1A", layers=na.INK_LAYERS["land"], keep_clear=[(7.0, 0.5, 1.0, 3.0)])',
     "clipped_block": 'import native_art as na\n'
                      'na.clipped_block(s, 7.0, 3.0, 4.0, 4.0, -9, fill="D7FF3B")   # a rotated block, cut to the page',
+    "starfield_png": 'import native_art as na\n'
+                     'na.starfield_png(s, base="0B1430", ink="F3EBD8", glow="F1D9A6", seed=3,\n'
+                     '                 keep_clear=[(1.0, 1.0, 6.0, 1.6)])     # the sky as background; none where words go\n'
+                     'dk.text(s, 1.0, 1.0, 6.0, 1.6, [[("A year in review", 36, dk.RGBColor(0xF3, 0xEB, 0xD8), False, False)]])',
+    "radial_glow": 'import native_art as na\n'
+                   'na.radial_glow(s, 5.0, 2.8, 3.0, "F1D9A6")         # a rim-free glow behind a figure',
+    "horizon_glow": 'import native_art as na\n'
+                    'na.horizon_glow(s, 4.6, "F1D9A6", "D9B36C")        # clear at its top, warm at the page foot',
+    "crescent": 'import native_art as na\n'
+                'na.crescent(s, 8.6, 1.0, 0.8, "D9B36C", "0B1430")     # moved onto the page if asked off it',
+    "ring": 'import native_art as na\n'
+            'na.ring(s, 2.5, 2.8, 3.2, "D9B36C", w=1.25)                # the rim of a round picture window',
+    "polyline": 'import native_art as na\n'
+                'na.polyline(s, [(1, 4.5), (4, 3.8), (7, 4.4)], "1E3A5F", w=1.5)   # open; clamped onto the page',
+    "chalk_path": 'import native_art as na\n'
+                  'na.chalk_path(s, [(1, 4.0), (5, 4.1)], "F3F1EA", seed=2)   # dragged twice; deterministic for a seed',
+    "chalk_box": 'import native_art as na\n'
+                 'na.chalk_box(s, 1.0, 1.0, 3.6, 1.8, "F2D16B", seed=4)\n'
+                 'dk.text(s, 1.3, 1.3, 3.0, 1.2, [[("Catch the light", 22, dk.RGBColor(0xF3, 0xF1, 0xEA), True, False)]])',
+    "chalk_ellipse": 'import native_art as na\n'
+                     'na.chalk_ellipse(s, 3.0, 2.8, 1.4, 1.1, "F2A9B8", seed=9)   # circle a figure in chalk',
+    "chalk_underline": 'import native_art as na\n'
+                       'na.chalk_underline(s, 1.0, 1.6, 4.0, "F2D16B", seed=5)   # a double chalk underline',
+    "chalk_arrow": 'import native_art as na\n'
+                   'na.chalk_arrow(s, 4.2, 2.8, 5.4, 2.8, "F3F1EA", seed=40)   # only between steps that ARE in order',
+    "board_frame": 'import native_art as na\n'
+                   'x, y, w, h = na.board_frame(s, "7A4F2A", "E8E2D2")   # a framed board; content goes in x, y, w, h',
+    "route": 'import native_art as na\n'
+             'na.route(s, [(1.0, 4.0), (5.0, 4.0), (6.2, 2.8)], "E3242B")   # a line: draw it ONLY through points in order',
+    "roundel": 'import native_art as na\n'
+               'na.roundel(s, 2.0, 2.0, 0.8, "1", fill="E3242B", ink="FFFFFF", size=24, face="Arial")   # a 1-3 char code',
+    "sign_panel": 'import native_art as na\n'
+                  'x, y, w, h = na.sign_panel(s, 1.0, 1.0, 6.0, 1.2, fill="1B2A41")   # an enamel sign; text inside x, y, w, h',
+    "ui_window": 'import native_art as na\n'
+                 'x, y, w, h = na.ui_window(s, 1.0, 0.8, 7.0, 4.2, fill="FFFFFF", line="D9DCE3", drop="E3E6EC", bar=0.5)\n'
+                 'dk.text(s, x + 0.4, y + 0.4, w - 0.8, 1.0, [[("Settings", 24, dk.DEEP, True, False)]])   # below the bar',
+    "ui_button": 'import native_art as na\n'
+                 'na.ui_button(s, 1.0, 5.6, "Get started", size=16, fill="2563EB", ink="FFFFFF", face="Arial")   # width measured',
+    "ui_device": 'import native_art as na\n'
+                 'x, y, w, h = na.ui_device(s, 7.6, 0.8, 2.6, 5.0, "phone", frame="111318", screen="2A2E36")\n'
+                 '# the screen rect: put the screenshot there at ITS aspect (a tall picture → "phone", a wide one → "browser")',
+    "chip": 'import native_art as na\n'
+            'na.chip(s, 0.8, 0.6, "Q3 REVIEW", size=12, fill="C6F432", ink="0E0E10", face="Arial")   # one line, measured',
+    "chip_width": 'import native_art as na\n'
+                  'w = na.chip_width("会员资格", 12, "Arial")               # an em per CJK character, plus the padding\n'
+                  'na.chip(s, 9.0 - w, 0.6, "会员资格", size=12, fill="C6F432", ink="0E0E10", face="Arial",\n'
+                  '        ea_face="Hiragino Sans GB")',
+    "share_bar": 'import native_art as na\n'
+                 'na.share_bar(s, 0.8, 4.6, 8.4, 12 / 40, track="E7EAF1", fill="2438F0")   # 12 of 40: YOUR numbers',
+    "vl_extras": 'import visual_languages as vl\n'
+                 'k = vl.use("broadsheet", prs)        # words only YOU give: masthead=, edition=, inside=, tags=\n'
+                 'k.cover(k.new_slide(), title="Every street needs a night for fixing things", masthead="The Repair Weekly",\n'
+                 '        edition="No. 12", inside=["The idea", "The evening"])\n'
+                 'k.points(k.new_slide(), title="How it works", tags=["Idea", "Evening"],\n'
+                 '         items=[("Bring it broken", "Anything that switches on."), ("Fix it together", "Your hands do the work.")])\n'
+                 'k = vl.use("tally", prs)             # total= draws a share bar: plain numbers, number <= total\n'
+                 'k.data(k.new_slide(), number="12", label="of 40 neighbourhoods have a shelf", total="40")',
     "slot_picture": 'import image_series as ims\n'
                     'plan = ims.load("series.json")                 # validated by: image_series.py check\n'
                     'ims.slot_picture(s, plan, "hero", 0.6, 0.6, 3.2, 4.2, image_dir=".")   # arch + alt + +gen tag',
@@ -375,10 +432,94 @@ EXAMPLES = {
     "collage": 'import collage\n'
                'collage.collage(s, (5.0, 0.4, 4.6, 4.8), ["skyline.png", "gt_c1.png", "ours_c1.png"],\n'
                '                seed=3, keep_clear=(0.4, 0.6, 4.2, 2.4))   # tilted prints + tape',
+    # The visual-language scaffolds are whole pages that run AS PRINTED after the --example preamble: they use the
+    # pictures bundled with the skill (vl.ASSETS), never a file the reader does not have. vl_cover once used
+    # "skyline.png" and no `prs`, and failed when a non-Claude agent ran it (audit 2026-10-09).
     "vl_cover": 'import visual_languages as vl\n'
-                'k = vl.use("editorial", prs)               # fonts="both": faces on macOS AND Windows\n'
-                'pg = k.new_slide()\n'
-                'k.cover(pg, title="Bring it broken, take it home working", kicker="A repair café", image="skyline.png")',
+                'k = vl.use("editorial", prs)               # image-led; fonts="both": faces on macOS AND Windows\n'
+                'photo = str(vl.ASSETS / "photo" / "hall-repair.jpg")   # a BUNDLED sample photo: put YOUR picture\'s path here\n'
+                'k.cover(k.new_slide(), kicker="A repair café", title="Bring it broken, take it home working", image=photo)\n'
+                'k.image_text(k.new_slide(), kicker="What you find", title="Tools on every bench",   # image= is required here\n'
+                '             body="Volunteers bring the tools; you bring the broken thing.",\n'
+                '             image=str(vl.ASSETS / "photo" / "tools-tray.jpg"))',
+    "vl_drawn": 'import visual_languages as vl\n'
+                'k = vl.use("starlit", prs)                 # a DRAWN language: every page without a picture\n'
+                'k.cover(k.new_slide(), kicker="2026 in review", title="A year of small repairs", subtitle="For everyone who came")\n'
+                'k.section(k.new_slide(), number="01", title="What we fixed")\n'
+                'k.points(k.new_slide(), title="Three things we learned",   # 2 to 4 points\n'
+                '         items=[("Start small", "One table, one evening."), ("Teach, do not fix", "Your hands do the work."),\n'
+                '                ("Keep a list", "What is not fixed comes back.")])\n'
+                'k.quote(k.new_slide(), quote="Nothing here is too broken to try.", attribution="A volunteer")\n'
+                'k.data(k.new_slide(), number="212", label="things mended this year")\n'
+                'k.closing(k.new_slide(), title="Thank you", line="See you in the new year.")\n'
+                '# image_text needs a picture on every language: image=str(vl.ASSETS / "photo" / "tools-tray.jpg")',
+    "vl_tally": 'import visual_languages as vl\n'
+                'k = vl.use("tally", prs)                   # extras, YOUR words: tags= (points), total= (data)\n'
+                'k.points(k.new_slide(), title="Where the quarter went", tags=["Grew", "Flat", "Fell"],   # one tag per point\n'
+                '         items=[("Visits", "Up on every weekday."), ("Repairs", "About the same as spring."),\n'
+                '                ("Waiting list", "Down by half.")])\n'
+                'k.data(k.new_slide(), number="12", label="of 40 neighbourhoods run a repair night",\n'
+                '       total="40")                         # a share bar: plain numbers, number <= total',
+    "vl_broadsheet": 'import visual_languages as vl\n'
+                     'k = vl.use("broadsheet", prs)         # extras: masthead=/edition= (any page, remembered), inside= (cover), tags= (points)\n'
+                     'k.cover(k.new_slide(), title="Every street needs a night for fixing things",\n'
+                     '        subtitle="How a repair evening works, and why it spreads.",\n'
+                     '        masthead="The Repair Weekly", edition="No. 12", inside=["The idea", "The evening", "The numbers"])\n'
+                     'k.points(k.new_slide(), title="How it works", tags=["Idea", "Evening"],\n'
+                     '         items=[("Bring it broken", "Anything that switches on."), ("Fix it together", "Your hands do the work.")])',
+    "vl_journal": 'import visual_languages as vl\n'
+                  'k = vl.use("journal", prs)               # extras: running= (any page, remembered), authors=/abstract= (cover), margin= (points)\n'
+                  'k.cover(k.new_slide(), title="Faster scans, same answers", subtitle="A lab-meeting update",\n'
+                  '        authors="A. Author, B. Author", running="Lab meeting: reconstruction",\n'
+                  '        abstract="We compare three reconstructions at four accelerations.")\n'
+                  'k.points(k.new_slide(), title="What we compared", margin="All runs on one scanner.",\n'
+                  '         items=[("Three methods", "Same data, same metric."), ("Four accelerations", "From 2x to 8x.")])\n'
+                  'k.image_text(k.new_slide(), title="Error grows with acceleration",   # the FIGURE page: numbered for you\n'
+                  '             body="Error against acceleration for three methods.", caption="Source: an illustrative figure",\n'
+                  '             image=str(vl.ASSETS / "figure" / "illustrative-curves.jpg"))   # YOUR figure, placed whole',
+    "vl_chalkboard": 'import visual_languages as vl\n'
+                     'k = vl.use("chalkboard", prs)         # extras: doodle= (cover, closing), ordered=True (points)\n'
+                     'k.cover(k.new_slide(), kicker="Science: lesson 3", title="How photosynthesis works",\n'
+                     '        doodle="lucide:sun")              # one icon, fetched once from the icon library (network), then cached\n'
+                     'k.points(k.new_slide(), title="Three steps", ordered=True,   # arrows only when the points happen IN ORDER\n'
+                     '         items=[("Light in", "Leaves catch sunlight."), ("Water up", "Roots pull water."),\n'
+                     '                ("Sugar out", "The leaf makes food.")])\n'
+                     'k.closing(k.new_slide(), title="Questions?", line="Next week: the water cycle.")',
+    "vl_interface": 'import visual_languages as vl\n'
+                    'k = vl.use("interface", prs)   # extras: crumb= status= (remembered; drawn in the bar of cover/section/points), actions= toggles= (cover),\n'
+                    '                               # tags= (points), total= (data), actions= (closing)\n'
+                    'k.cover(k.new_slide(), kicker="Product tour", title="One board for every request",\n'
+                    '        crumb="Launch › Overview", status=("Live", "on"), actions=["Get started", "Watch demo"],\n'
+                    '        toggles=[("Auto-sync", True), ("Public link", False)])\n'
+                    'k.points(k.new_slide(), title="Three settings", items=["Approvals first", "One source of truth",\n'
+                    '         "A weekly digest"], tags=[("Required", "pending"), "On", "New"])   # state colours the chip dot\n'
+                    'k.data(k.new_slide(), number="12", label="of 40 teams switched", total="40")   # a progress bar 12/40\n'
+                    'k.closing(k.new_slide(), title="Start with one team", line="Free for the first month.",\n'
+                    '          actions=["Start free"])',
+    "vl_wayfinding": 'import visual_languages as vl\n'
+                     'k = vl.use("wayfinding", prs)   # extras: line= (any page, remembered), ordered= interchange= (points),\n'
+                     '                                # board= (data)\n'
+                     'k.cover(k.new_slide(), kicker="Roadmap 2027", title="Four stops to launch", line="A")\n'
+                     'k.points(k.new_slide(), title="Four stops", ordered=True, interchange=[2],   # a route ONLY when ordered\n'
+                     '         items=["Sign up", "First project", "Invite a teammate", "Upgrade"])\n'
+                     'k.points(k.new_slide(), title="What we offer", items=["Support", "Training", "Hosting"])   # a directory sign\n'
+                     'k.data(k.new_slide(), number="96.4%", label="Harbour line on time", board=[("North loop", "93.1%")])\n'
+                     'k.closing(k.new_slide(), title="Questions?", line="Thank you.")',
+    # An ORDINARY page (agenda, list, chart) in a language's look: `rs.ground` paints the furniture and returns the
+    # content rect, `rs.card` gives the language's card. Also printed for `--example rs.ground` / `rs.card`.
+    "ground": 'import visual_languages as vl, register_surface as rs\n'
+              'k = vl.use("journal", prs)\n'
+              's = k.new_slide()                           # an ORDINARY page: k.new_slide(), never dk.add_slide\n'
+              'x, y, w, h = rs.ground(s, k.name, role="content", index=2)   # furniture; the content rect in inches\n'
+              'rows = ["1.  Why a repair café", "2.  How an evening runs", "3.  What to bring"]\n'
+              'size = 24 * min(prs.slide_width.inches, prs.slide_height.inches) / 7.5   # scaled with the canvas\n'
+              'rows_h = sum(dk.measure_text([(r, False)], w - 0.8, size, font=k.face("body")) + 0.18 for r in rows)\n'
+              'card_h = rows_h + 1.1                       # the card fits its words, with room for the label band\n'
+              'body, header = rs.card(s, k.name, x, y + max(0.0, (h - card_h) / 2), w, card_h, label="Agenda")\n'
+              'top = header.top.inches + header.height.inches + 0.2 if header else body.top.inches + 0.45   # below the label\n'
+              'dk.text(s, body.left.inches + 0.4, top, body.width.inches - 0.8, rows_h, [k.runs(r, size) for r in rows],\n'
+              '        space_after=8)\n'
+              'dk.a11y_title(s, "Agenda")                  # an ordinary page names its own title for screen readers',
     "sticker_outline": 'import image_fx\n'
                        'st = image_fx.sticker_outline("cutout.png")      # needs a transparent cut-out\n'
                        'dk.picture(s, st, 6.6, 0.6, 2.6, 3.4, fit="contain", alt="a cut-out subject")',
@@ -395,6 +536,53 @@ EXAMPLES = {
             '                 alt="a city skyline under an open sky")   # a pinned print\n'
             'orn.tape(s, 4.1, 0.98, 1.4, 0.4, "F2D16B", holds=pic)   # holding it to the page',
 }
+EXAMPLES["card"] = EXAMPLES["ground"]      # rs.card is shown on the same ordinary page
+
+# Printed once above the scaffolds: the names they assume, as the first lines of a build script that runs from any
+# folder. A scaffold run without them failed on `prs` (audit 2026-10-09).
+PREAMBLE = """\
+# ── every scaffold below assumes a build script that starts like this (it runs from any folder) ──
+import sys; sys.path.insert(0, {scripts!r})
+import deckkit as dk, designed_charts as dc
+prs = dk.blank_deck(13.333, 7.5)        # the canvas (formats.blank_deck("<name>") for another)
+s = dk.add_slide(prs)                   # the page most scaffolds draw on (a visual-language deck starts EVERY
+                                        # page with k.new_slide() instead, so leave this line out there)
+# A file name such as "skyline.png" stands for YOUR file; the vl_* and ground scaffolds use pictures bundled
+# with the skill. End the script with prs.save("<deck folder>/<deck>.pptx").
+"""
+
+# A module prefix as a build script writes it — `vl.use`, `rs.ground`, `k.cover`. A non-Claude agent looked up exactly
+# these and was told "no helper named" (audit 2026-10-09).
+_PREFIX = {"dk": "deckkit", "dc": "designed_charts", "rs": "register_surface", "vl": "visual_languages",
+           "na": "native_art", "orn": "ornaments", "ims": "image_series", "dt": "display_type",
+           "k": "Kit", "kit": "Kit", "Kit": "Kit"}
+_PREFIX.update({m: m for m in MODULES})
+
+
+def _canon(name, reg):
+    """The registry key for a name as a build script writes it: `vl.use` -> `use`, `rs.ground` -> `ground`,
+    `k.cover` / `vl.cover` -> `Kit.cover`. A helper an earlier module shadows is registered as `<module>.<name>`."""
+    if name in reg or "." not in name:
+        return name
+    pre, _, base = name.partition(".")
+    mod = _PREFIX.get(pre)
+    if mod is None or not base:
+        return name
+    if mod in ("Kit", "visual_languages") and "Kit." + base in reg and not (base in reg and reg[base][0] == mod):
+        return "Kit." + base
+    if mod == "Kit":
+        return name
+    hit = reg.get(base)
+    if hit and hit[0] == mod:
+        return base
+    try:
+        fn = getattr(__import__(mod), base)
+    except Exception:
+        return name
+    if inspect.isfunction(fn):
+        reg[mod + "." + base] = (mod, fn)
+        return mod + "." + base
+    return name
 
 
 def load():
@@ -431,7 +619,8 @@ def load():
 _EXTRA_GUARANTEES = {
     "points": "2 to 4 points, measured; a roomier layout is tried before anything is refused, never truncated; "
               "vertical only for CJK text (ink), one iso layer per point (drafting), one icon per point when icons= "
-              "is given (cutpaper)",
+              "is given (cutpaper); one star per point (starlit), one ledger row per point (tally), chalk boxes sized "
+              "to their words with arrows only when ordered=True (chalkboard)",
     "ink_ridges": "ridges fade into mist and never pass the page; over every keep_clear rect the crest stays "
                   "below the text, falling away on a shoulder rather than a cliff",
     "clipped_block": "drawn as its polygon cut to the page, so PowerPoint's editing view shows nothing past "
@@ -505,7 +694,7 @@ def show(name, mod, fn, full=False):
         sig = sig.replace("(self, ", "(", 1).replace("(self)", "()", 1)
         print(f"\n{'─' * 78}\n{name}{sig}    # k = visual_languages.use(\"<language>\", prs); k.{name[4:]}(...)")
     else:
-        print(f"\n{'─' * 78}\n{mod}.{name}{sig}")
+        print(f"\n{'─' * 78}\n{name if name.startswith(mod + '.') else mod + '.' + name}{sig}")
     doc = inspect.getdoc(fn) or "(no docstring)"
     if full:
         print("\n" + doc)
@@ -563,8 +752,11 @@ def main(argv=None):
 
     if a.example:
         # a page name (`section`) is the kit's page function, as on the plain lookup path
+        a.names = [_canon(n, reg) for n in a.names]
         a.names = [n if (n in EXAMPLES or n in reg or "Kit." + n not in reg) else "Kit." + n for n in a.names]
         miss = [n for n in a.names if n not in EXAMPLES]
+        if len(miss) < len(a.names):
+            print(PREAMBLE.format(scripts=HERE))
         for n in a.names:
             if n in EXAMPLES:
                 g = _guarantee(n)
@@ -601,8 +793,9 @@ def main(argv=None):
         return 1 if any(n not in reg for n in miss) else 0
 
     missing = []
+    a.names = [_canon(n, reg) for n in a.names]
     for n in a.names:
-        kit = "Kit." + n if not n.startswith("Kit.") else None
+        kit = "Kit." + n if not n.startswith("Kit.") and "." not in n else None
         if n in reg:
             m, f = reg[n]
             show(n, m, f, a.full)

@@ -205,14 +205,14 @@ def _slide_bg_box(slide, sw, sh):
         # told to skip on None, skipped. Contrast checking was silently off for the entire
         # template branch of this skill, which is half of what it builds. Measured: dark text on
         # a master-level dark canvas produced zero findings.
-        bg, inherited = _bg_of(slide), False
+        bg, inherited, owner = _bg_of(slide), False, slide
         if bg is None:
             inherited = True
             try:
                 layout = slide.slide_layout
-                bg = _bg_of(layout)
+                bg, owner = _bg_of(layout), layout
                 if bg is None:
-                    bg = _bg_of(layout.slide_master)
+                    bg, owner = _bg_of(layout.slide_master), layout.slide_master
             except Exception:
                 bg = None
         if bg is None:
@@ -237,6 +237,10 @@ def _slide_bg_box(slide, sw, sh):
                     fill = _theme_resolver(slide.slide_layout.slide_master)(sch.get("val"))
                 except Exception:
                     fill = None
+        bgpix = None
+        if fill is None:
+            fill = _uniform_picture_fill(bg, owner)
+            bgpix = _bg_pixels(bg, owner) if fill else None
         if inherited and fill is None:
             # An INHERITED background we cannot resolve teaches nothing, and claiming one is not
             # free. python-pptx's own default master carries `<p:bgRef idx="1001"><a:schemeClr/>`
@@ -271,7 +275,7 @@ def _slide_bg_box(slide, sw, sh):
                 return None
     except Exception:
         return None
-    return {"l": 0.0, "t": 0.0, "w": sw, "h": sh, "r": sw, "b": sh, "zi": -1,
+    return {"l": 0.0, "t": 0.0, "w": sw, "h": sh, "r": sw, "b": sh, "zi": -1, "bgpix": bgpix,
             "runs": [], "fill": fill, "unk": fill is None, "pic": False, "grad": False,
             "icon": None,
             "st": "AUTO_SHAPE", "txt": "", "full": "", "size": 12.0,
@@ -280,6 +284,70 @@ def _slide_bg_box(slide, sw, sh):
             "text": False, "descr": None, "mathfont": None,
             "title_ph": False, "bg": True, "grp": None,
             "declared": False, "hollow": False, "motif": False, "bled": False}
+
+
+_BG_PIX = {}      # blob sha1 -> (thumbnail rgb list, (w, h), median rgb) — a 30-slide template re-decoded it per slide
+
+
+def _bg_pixels(bg, owner):
+    """(pixels, (w, h), median) of a background picture PowerPoint shows as stored, or None: any colour effect on the
+    blip (transparency, washout, duotone, greyscale, …) means the render is not the pixels — those stay unknowable."""
+    try:
+        import hashlib as _hl
+        import io as _io
+        from PIL import Image
+        blip = bg.find(".//" + qn("a:blip"))
+        if blip is None or bg.find(".//" + qn("a:blipFill")) is None or len(blip):
+            return None
+        blob = owner.part.related_part(blip.get(qn("r:embed"))).blob
+        key = _hl.sha1(blob).hexdigest()
+        if key not in _BG_PIX:
+            im = Image.open(_io.BytesIO(blob)).convert("RGB")
+            im.thumbnail((160, 160))
+            px = list(im.getdata())
+            med = tuple(sorted(c[i] for c in px)[len(px) // 2] for i in range(3))
+            _BG_PIX[key] = (px, im.size, med)
+        return _BG_PIX[key]
+    except Exception:
+        return None
+
+
+def _near_share(px, med):
+    """The share of pixels within a hair (redmean 20) of `med`."""
+    near = 0
+    for c in px:
+        rm = (c[0] + med[0]) / 2.0
+        dr, dg, db = c[0] - med[0], c[1] - med[1], c[2] - med[2]
+        if (2 + rm / 256.0) * dr * dr + 4 * dg * dg + (2 + (255 - rm) / 256.0) * db * db <= 400.0:
+            near += 1
+    return near / float(max(1, len(px)))
+
+
+def _uniform_picture_fill(bg, owner):
+    """The colour of a background PICTURE that is a texture over one colour — a grid, grain, slate or a night sky, 95%+
+    of its pixels within a hair of their median — as hex; None for anything else (a photo, a washed-out picture).
+    The colour is confirmed again under each text (`_bg_under`): a white template picture with a navy brand strip is
+    white everywhere but the strip. Called unknowable, a texture's colour was estimated from the render instead, where
+    the glyphs' own antialiasing scored white on navy at 2.8:1 on every visual-language page (audits, 2026-10-09).
+    Measured: the kit's textures put 98.7-100% of pixels near the median, photos 2-3%."""
+    got = _bg_pixels(bg, owner)
+    if got is None:
+        return None
+    px, _size, med = got
+    return "{:02X}{:02X}{:02X}".format(*med) if _near_share(px, med) >= 0.95 else None
+
+
+def _bg_under(rec, t, sw, sh):
+    """For a background record read from a picture: its colour where text box `t` sits, or "UNKNOWN" when the pixels
+    there are not the page's colour (a brand strip, a dark patch). Other records: their fill."""
+    pix = rec.get("bgpix")
+    if not pix:
+        return rec["fill"]
+    px, (iw, ih), med = pix
+    x0, x1 = max(0, int(t["l"] / sw * iw)), min(iw, max(int(t["l"] / sw * iw) + 1, int(t["r"] / sw * iw)))
+    y0, y1 = max(0, int(t["t"] / sh * ih)), min(ih, max(int(t["t"] / sh * ih) + 1, int(t["b"] / sh * ih)))
+    sub = [px[yy * iw + xx] for yy in range(y0, y1) for xx in range(x0, x1)]
+    return rec["fill"] if sub and _near_share(sub, med) >= 0.95 else "UNKNOWN"
 
 
 _A11Y_TITLE_TAG = "deckkit-a11ytitle"
@@ -452,6 +520,7 @@ def _boxes(slide, sw, sh, slide_no=None, record=True):
         except Exception:
             tph = False
         out.append({"l": l, "t": t, "w": w, "h": h, "zi": zi,
+                    "cpoly": _cust_polys(s, l, t, w, h) if not _rot else None,
                     "r": l + w if _pr is None else _pr, "b": t + h if _pb is None else _pb,
                     "rot": _rot, "fl": _fl, "ft": _ft, "fw": _fw, "fh": _fh, "poly": poly,
                     "runs": run_colors, "run_hl": run_hl, "run_fmt": run_fmt, "fill": fill_rgb, "unk": fill_unk, "pic": is_pic, "grad": is_grad,
@@ -1454,6 +1523,71 @@ def _chrome_under(chrome, t):
     return best
 
 
+def _cust_polys(sh, l, t, w, h):
+    """The PAINTED outline of a custom-geometry shape in slide inches — a list of filled paths, each a list of closed
+    polygons — or None for any other shape (the bounding box then stands in, as before). Only paths that are filled
+    count (a path with fill="none" is the shape's outline stroke); flipH/flipV mirror the points; an arcTo, an empty
+    path list or anything unreadable returns None. Bezier control points stand in for their curve."""
+    try:
+        el = sh._element
+        A = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
+        paths = el.findall(".//" + A + "custGeom/" + A + "pathLst/" + A + "path")
+        if not paths or not w or not h:
+            return None
+        xf = el.find(".//" + A + "xfrm")
+        fh = xf is not None and xf.get("flipH") in ("1", "true")
+        fv = xf is not None and xf.get("flipV") in ("1", "true")
+        out = []
+        for path in paths:
+            if path.get("fill") == "none":
+                continue
+            pw, ph = float(path.get("w") or 0), float(path.get("h") or 0)
+            if pw <= 0 or ph <= 0:
+                return None
+            polys, cur = [], []
+            for cmd in path:
+                tag = cmd.tag.split("}")[-1]
+                pts = []
+                for p_ in cmd.findall(A + "pt"):
+                    u, v = float(p_.get("x")) / pw, float(p_.get("y")) / ph
+                    pts.append((l + (1 - u if fh else u) * w, t + (1 - v if fv else v) * h))
+                if tag == "moveTo":
+                    if len(cur) > 2:
+                        polys.append(cur)
+                    cur = list(pts)
+                elif tag in ("lnTo", "cubicBezTo", "quadBezTo"):
+                    cur += pts
+                elif tag == "close":
+                    if len(cur) > 2:
+                        polys.append(cur)
+                    cur = []
+                elif tag == "arcTo":
+                    return None
+            if len(cur) > 2:
+                polys.append(cur)
+            if polys:
+                out.append(polys)
+        return out or None
+    except Exception:
+        return None
+
+
+def _in_polys(paths, x, y):
+    """Is (x, y) on the paint of these filled paths: inside ANY path (their union), each path by even-odd over its own
+    sub-outlines (so a ring's hole is outside, and two overlapping pieces do not cancel)."""
+    for polys in paths:
+        inside = False
+        for poly in polys:
+            n = len(poly)
+            for i in range(n):
+                (x1, y1), (x2, y2) = poly[i], poly[(i + 1) % n]
+                if (y1 > y) != (y2 > y) and x < (x2 - x1) * (y - y1) / (y2 - y1 + 1e-12) + x1:
+                    inside = not inside
+        if inside:
+            return True
+    return False
+
+
 def _backing_fill(bx, ti, own=True, chrome=()):
     """The topmost solid fill under text shape bx[ti]: the shape's OWN fill if solid, else the
     highest lower-z shape whose box covers the text (center inside + >=50% overlap). A picture,
@@ -1480,10 +1614,13 @@ def _backing_fill(bx, ti, own=True, chrome=()):
         ix, iy = _inter(s, t)
         if ix * iy < 0.5 * ta:
             continue
+        if s.get("cpoly") and not _in_polys(s["cpoly"], cx, cy):
+            continue                                     # the text sits in the shape's hole (ink's ensō), not on its paint
         if s["pic"] or s.get("unk"):
             best, best_is_bg = "UNKNOWN", bool(s.get("bg"))
         elif s["fill"]:
-            best, best_is_bg = s["fill"], bool(s.get("bg"))
+            # a background read from a picture is its colour only where the text sits on that colour
+            best, best_is_bg = (_bg_under(s, t, s["w"], s["h"]) if s.get("bgpix") else s["fill"]), bool(s.get("bg"))
     # inherited chrome sits between the page background and the slide's own shapes
     if chrome and (best is None or best_is_bg):
         ch = _chrome_under(chrome, t)
@@ -1505,7 +1642,8 @@ def _fill_under_point(bx, x, y, zmax):
         if s["pic"] or s.get("unk"):
             best = "UNKNOWN"
         elif s["fill"]:
-            best = s["fill"]
+            best = (_bg_under(s, {"l": x - 0.05, "r": x + 0.05, "t": y - 0.05, "b": y + 0.05}, s["w"], s["h"])
+                    if s.get("bgpix") else s["fill"])
     return best
 
 

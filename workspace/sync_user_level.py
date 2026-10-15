@@ -71,7 +71,7 @@ def sync(manifest):
 
 
 def git(repo, *args):
-    return subprocess.run(['git', '-C', str(repo), *args], capture_output=True, text=True, check=True).stdout
+    return subprocess.run(['git', '-C', str(repo), '-c', 'core.quotepath=off', *args], capture_output=True, text=True, check=True).stdout
 
 
 def upstream_clone(source):
@@ -116,6 +116,8 @@ def verify(entry, repo):
         if head.get(rel) == h or rel in allowed or (rel not in history and rel not in head):
             continue  # identical, registered deviation, or a local-only addition (PROVENANCE, LICENSE)
         (behind if h in history.get(rel, ()) else modified).append(rel)
+    if base:  # a root-level skill (humanizer) shares its upstream tree with README and CI files
+        modified += [rel for rel in head if rel not in local and rel not in allowed]  # deleted locally
     skill_md = blob(LIVE / entry['name'] / 'SKILL.md')
     if ('SKILL.md', skill_md) in first_commit:
         entry['upstream_commit'] = first_commit[('SKILL.md', skill_md)]

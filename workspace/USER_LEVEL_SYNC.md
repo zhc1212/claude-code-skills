@@ -4,9 +4,11 @@ Update 2026-10-15 (v1.0.27): run `python3 workspace/sync_user_level.py` to copy 
 and status line here; `--verify` also checks every `origin: upstream` skill against its upstream (blobless clones
 in `~/.cache/zhc-skill-upstreams/`) and reports it as current, behind, modified, moved or removed. Manifest entries
 carry `origin` (`own` or `upstream`), `source`, `upstream_path`, `upstream_commit`, `derived_from` and
-`known_deviations`. Registered deviations: `scientific-visualization/SKILL.md` drops upstream's citation section,
+`known_deviations`. Registered deviations (v1.0.28): `ppt-master` leaves out `scripts/gemini_watermark_remover.py`,
 three `citation-verification` references keep their EOF normalizations, and `neat-freak` fixtures materialize
 upstream symlinks. Fourteen skills removed by their upstream are retired; see the README's v1.0.27 notes.
+`shared-references/` mixes origins: `codex-cli.md` is ours, `compute-env-contract.md` (read by `run-experiment`) is a
+verbatim ARIS copy.
 
 Update 2026-10-15: `statusline/` snapshots the active status line. Restore `statusline.sh` and `statusline-fit.py`
 to `~/.claude/`, `ccstatusline-settings.json` to `~/.config/ccstatusline/settings.json`, and
