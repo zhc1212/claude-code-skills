@@ -1,7 +1,7 @@
 {
-  "snapshot_date": "2026-10-15",
+  "snapshot_date": "2026-10-16",
   "source": "~/.claude/skills",
-  "active_skill_count": 159,
+  "active_skill_count": 151,
   "retained_repository_only_skills": [],
   "excluded": [
     "humanizer/.git/",
@@ -286,14 +286,6 @@
       "installed_skill_sha256": "94fe58be3294df4d174148c05839815496236022f8861c6a890fe1df419d1676"
     },
     {
-      "name": "feishu-notify",
-      "origin": "upstream",
-      "source": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "upstream_path": "skills/feishu-notify",
-      "upstream_commit": "e67ae1629418319cf4056facdb5b77f09dd61d5c",
-      "installed_skill_sha256": "1a6c2e7a92b4f10c25cb7a9c647919a9dcc9b1fc9a6c99a86e73d757c8a6edbf"
-    },
-    {
       "name": "figure-audit",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
@@ -427,14 +419,6 @@
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "installed_skill_sha256": "f53012b97744a06adbc13348046bb1192cd94b3a2cc091217b3ef35bd259509d"
-    },
-    {
-      "name": "git-guardrails-claude-code",
-      "origin": "upstream",
-      "source": "https://github.com/mattpocock/skills",
-      "upstream_path": "skills/misc/git-guardrails-claude-code",
-      "upstream_commit": "321658273cb1d20b76026717d027d505790106d4",
-      "installed_skill_sha256": "69b291d655626a01602b998a1836fcb93c058ede68dfafddfd71e87f17074764"
     },
     {
       "name": "grill-me",
@@ -626,14 +610,6 @@
       "installed_skill_sha256": "75d4cc0e84df71097dd00456a49b1fea377ca82ad247120ef24b8ce40afb4401"
     },
     {
-      "name": "migrate-to-shoehorn",
-      "origin": "upstream",
-      "source": "https://github.com/mattpocock/skills",
-      "upstream_path": "skills/misc/migrate-to-shoehorn",
-      "upstream_commit": "62f43a18177be6ec82da242e59ffbc490a4c22ea",
-      "installed_skill_sha256": "de4da4c11d924fac79c924b2ee3d2db4a5cb98386eb490a599119463d036ae72"
-    },
-    {
       "name": "monitor-experiment",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
@@ -793,22 +769,6 @@
       "installed_skill_sha256": "ce7c4d20329b96b03b0f0c0bb744411b1b4deaa7a7b69b90757705a83c195b12"
     },
     {
-      "name": "neat-freak",
-      "origin": "upstream",
-      "source": "https://github.com/kkkkhazix/khazix-skills",
-      "upstream_path": "neat-freak",
-      "upstream_commit": "2b4a645cfdc894156ae347d897723562f719ce95",
-      "known_deviations": [
-        "evals/fixtures/eval-1-routine-dev-sync/workspace/taskflow/AGENTS.md",
-        "evals/fixtures/eval-2-memory-conflict/workspace/notesapp/AGENTS.md",
-        "evals/fixtures/eval-4-cross-project/workspace/auth-center/AGENTS.md",
-        "evals/fixtures/eval-4-cross-project/workspace/skills-hub/AGENTS.md",
-        "evals/fixtures/eval-6-scope-boundary/workspace/current-app/AGENTS.md"
-      ],
-      "deviation_note": "Upstream symlinks to CLAUDE.md are materialized as files.",
-      "installed_skill_sha256": "6c0ca2236d3518ccaad710f6db8e9c4aa7af67b685dc699ad347ae42186951e1"
-    },
-    {
       "name": "notation-audit",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
@@ -935,14 +895,6 @@
       "installed_skill_sha256": "639a96684ad6ca50fb1141287c4d3f2af76653b95cb2dae3dd7897d212bd8c35"
     },
     {
-      "name": "prototype",
-      "origin": "upstream",
-      "source": "https://github.com/mattpocock/skills",
-      "upstream_path": "skills/engineering/prototype",
-      "upstream_commit": "321658273cb1d20b76026717d027d505790106d4",
-      "installed_skill_sha256": "714de632d116bb73f65cdb5a882db15b9369a6713b9a47c0fad827848f0bfbe3"
-    },
-    {
       "name": "research",
       "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
@@ -1010,14 +962,6 @@
       "installed_skill_sha256": "4d481ce95d8bcadb93b095c3dd9bda51d68b6edea6b710316d6c0c74bb5bcfa8"
     },
     {
-      "name": "scaffold-exercises",
-      "origin": "upstream",
-      "source": "https://github.com/mattpocock/skills",
-      "upstream_path": "skills/misc/scaffold-exercises",
-      "upstream_commit": "62f43a18177be6ec82da242e59ffbc490a4c22ea",
-      "installed_skill_sha256": "75f5c9d771606fb9762f16522efc954df11c324f87148d8ff069bce166257de9"
-    },
-    {
       "name": "scientific-visualization",
       "origin": "upstream",
       "source": "https://github.com/K-Dense-AI/scientific-agent-skills",
@@ -1044,14 +988,6 @@
       "installed_skill_sha256": "f148858ffb7f63c03c06fca06e6fdb1d91a35c6b293244b8fdfacd5f4cc028c4"
     },
     {
-      "name": "setup-pre-commit",
-      "origin": "upstream",
-      "source": "https://github.com/mattpocock/skills",
-      "upstream_path": "skills/misc/setup-pre-commit",
-      "upstream_commit": "321658273cb1d20b76026717d027d505790106d4",
-      "installed_skill_sha256": "c9819d7f1e3b198064edc1faa3154224ed67395e9f07f5d3cea4b67cf0a11a98"
-    },
-    {
       "name": "setup-ts-deep-modules",
       "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
@@ -1072,14 +1008,6 @@
       "upstream_path": "skills/slide-maker",
       "upstream_commit": "8e053c28c4d4f259ca9a5da86a4b75f0de29bb55",
       "installed_skill_sha256": "11f02435ef1ba3f62f10e03170403e2252380a6ccb2112c335c077d75ff52281"
-    },
-    {
-      "name": "storage-analyzer",
-      "origin": "upstream",
-      "source": "https://github.com/kkkkhazix/khazix-skills",
-      "upstream_path": "storage-analyzer",
-      "upstream_commit": "b429d4c769a5446971edc5b825aaf097fa143bb3",
-      "installed_skill_sha256": "4b41cc77494638ee0f010f5c50b8015e4dff82e522c9184d4bbeba14b776eae4"
     },
     {
       "name": "survey",

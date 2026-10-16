@@ -4,7 +4,7 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 
 ## Skills by scenario
 
-159 skills in 15 scenario folders, `skills/<scenario>/<skill>/`, plus 5 [project-scoped skills](#project-scoped-skills) in `project-skills/<project>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
+151 skills in 15 scenario folders, `skills/<scenario>/<skill>/`, plus 5 [project-scoped skills](#project-scoped-skills) in `project-skills/<project>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
 
 [Ideas and literature](#ideas-and-literature) · [Experiments](#experiments) · [Drafting a paper](#drafting-a-paper) · [Figures and tables](#figures-and-tables) · [Revising a draft](#revising-a-draft) · [Review before submission](#review-before-submission) · [Second model as adversary](#second-model-as-adversary) · [Nature-family journals](#nature-family-journals) · [Software-engineering venues](#software-engineering-venues) · [Slides and reports](#slides-and-reports) · [General writing](#general-writing) · [Software engineering](#software-engineering) · [Planning and decisions](#planning-and-decisions) · [Agent setup, memory and knowledge](#agent-setup-memory-and-knowledge) · [Utilities](#utilities) · [Project-scoped skills](#project-scoped-skills)
 
@@ -211,19 +211,14 @@ Nature 系列. Writing, review, figures, statistics and literature for Nature-fa
 | `domain-modeling` | Glossary and ADRs for the domain |
 | `tdd` | Test-first features and fixes |
 | `diagnosing-bugs` | Diagnosis loop for hard bugs and performance regressions |
-| `prototype` | Throwaway prototype for a design question |
 | `implement` | Build from a spec or tickets *(user-invoked)* |
 | `implement-spec` | Implement the result of `/to-spec` and `/to-tickets` *(user-invoked)* |
 | `pr` | Write a PR body |
 | `retro` | Retrospective on a coding session *(user-invoked)* |
 | `triage` | Move issues and PRs through triage *(user-invoked)* |
 | `improve-codebase-architecture` | Find deepening opportunities *(user-invoked)* |
-| `git-guardrails-claude-code` | Hooks that block dangerous git commands |
-| `setup-pre-commit` | Husky, lint-staged, type checks and tests |
 | `setup-matt-pocock-skills` | Configure a repo for these engineering skills *(user-invoked)* |
 | `setup-ts-deep-modules` | dependency-cruiser for deep TypeScript modules *(user-invoked)* |
-| `migrate-to-shoehorn` | Replace `as` in tests with shoehorn |
-| `scaffold-exercises` | Course exercise directories |
 | `wizard` | Bash wizard for steps only a human can do |
 | `ask-matt` | Which engineering skill fits? *(user-invoked)* |
 
@@ -252,7 +247,6 @@ Nature 系列. Writing, review, figures, statistics and literature for Nature-fa
 |---|---|
 | `writing-for-agents` | Write skills, CLAUDE.md and AGENTS.md |
 | `meta-optimize` | Propose skill and workflow changes from usage logs |
-| `neat-freak` | Reconcile docs, rules and memory with the code at closeout |
 | `handoff` | Handoff document for another agent *(user-invoked)* |
 | `claude-handoff` | Hand the conversation to a background agent *(user-invoked)* |
 | `chief-of-staff` | Pursue a long-running goal by coordinating subagents *(user-invoked)* |
@@ -264,13 +258,11 @@ Nature 系列. Writing, review, figures, statistics and literature for Nature-fa
 
 ### Utilities
 
-工具. News, notifications, disk usage. `skills/utilities/`
+工具. News. `skills/utilities/`
 
 | Skill | Use it for |
 |---|---|
 | `aihot` | Chinese AI news from aihot.news |
-| `feishu-notify` | Feishu/Lark notifications |
-| `storage-analyzer` | Read-only disk usage analysis (macOS, Windows) |
 
 ### Project-scoped skills
 
@@ -300,6 +292,15 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 - [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md) — current source policy and the historical third-party workspace inventory.
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
+
+## Retire eight unused skills — v1.0.29
+
+Eight upstream skills unused on this machine since 2026-10-01 are retired from `~/.claude/skills/` and this
+repository: `storage-analyzer` (macOS and Windows only), `feishu-notify` (no `~/.claude/feishu.json`; the ARIS
+skills read that file themselves), and the TypeScript/JavaScript tools `migrate-to-shoehorn`, `prototype`,
+`scaffold-exercises` and `setup-pre-commit`, plus `git-guardrails-claude-code`, which installs a command-blocking
+hook like the `guard-destructive.py` hook the user unregistered on 2026-10-15, and `neat-freak`. `ask-matt` still suggests `/prototype`; it is an upstream copy and
+stays unedited. `workspace/USER_CLAUDE.md` also picks up the user-level sandbox `/tmp` rule.
 
 ## Upstream refresh and sci-brain dependencies — v1.0.28
 

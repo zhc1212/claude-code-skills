@@ -80,9 +80,9 @@ About 160 skills from several suites are installed and many overlap. When a task
 | Code review | Cross-model, multi-round: `codex-review` (audit-only by default; prefer it when Codex should read the repo, and over `auto-review-loop`, which iterates on research and experiments). Standards + spec review of a diff: local `code-review` |
 | Debugging | `diagnosing-bugs`; `codex-debug-pair` for a second model's hypotheses |
 | TDD | `tdd` |
-| Writing skills | Skills, CLAUDE.md and other agent-read docs: `writing-for-agents`; audit or optimise an existing skill with Codex: `codex-skill-optimizer`; from ARIS usage logs: `meta-optimize`. Inside a plugin: `plugin-dev:skill-development`. Reconcile docs, rules and memory with the code after a piece of work: `neat-freak` |
+| Writing skills | Skills, CLAUDE.md and other agent-read docs: `writing-for-agents`; audit or optimise an existing skill with Codex: `codex-skill-optimizer`; from ARIS usage logs: `meta-optimize`. Inside a plugin: `plugin-dev:skill-development`. |
 | Slides | pptx: `slide-maker` (default) or `ppt-master` (brand/template workspaces). Typst: `write-slides`. Paper → Chinese deck: `nature-paper2ppt`. Quarto/Beamer layout audit: `visual-audit-slides` |
-| TS/frontend engineering | mattpocock suite (`tdd`, `code-review`, `prototype`, …) |
+| TS/frontend engineering | mattpocock suite (`tdd`, `code-review`, …) |
 
 ### Figures
 
@@ -100,12 +100,13 @@ About 160 skills from several suites are installed and many overlap. When a task
 | Review | Every figure and table in a compiled paper PDF: `figure-audit` (report-only); one standalone figure's visual design: `how-to-review-figure` |
 | Fix | Figures in a compiled paper: `figure-pipeline` (works from a `figure-audit` report; also redesigns a plot or redraws a diagram there). A standalone figure: rerun the skill that made it |
 
-Not installed on this machine: `run-baseline`, `i-have-adhd`, `mermaid-diagram`, the `ecc`, `ai-research-skills` and `superpowers` plugins (superpowers uninstalled 2026-10-08). Broken: `figure-spec` (its `figure_renderer.py` is missing), so its architecture and workflow cases go to figgenie. Retired 2026-10-15 because their upstream removed them: `batch-grill-me`, `decision-mapping`, `design-an-interface`, `edit-article`, `obsidian-vault`, `qa`, `request-refactor-plan`, `resolving-merge-conflicts`, `ubiquitous-language`, `how-to-dump-dialog`, `idea-writer`, `import-dialog`, `soul-extraction`, `survey-writer`. Disabled: the `claude-scientific-writer` and `planning-with-files` plugins (`TASKS.md` covers task tracking). Add a row here in the same edit whenever a skill or plugin is added or removed.
+Not installed on this machine: `run-baseline`, `i-have-adhd`, `mermaid-diagram`, the `ecc`, `ai-research-skills` and `superpowers` plugins (superpowers uninstalled 2026-10-08). Broken: `figure-spec` (its `figure_renderer.py` is missing), so its architecture and workflow cases go to figgenie. Retired 2026-10-15 because their upstream removed them: `batch-grill-me`, `decision-mapping`, `design-an-interface`, `edit-article`, `obsidian-vault`, `qa`, `request-refactor-plan`, `resolving-merge-conflicts`, `ubiquitous-language`, `how-to-dump-dialog`, `idea-writer`, `import-dialog`, `soul-extraction`, `survey-writer`. Retired 2026-10-16 as unused: `storage-analyzer` (macOS/Windows only), `feishu-notify` (no `~/.claude/feishu.json`), `migrate-to-shoehorn`, `prototype`, `scaffold-exercises`, `setup-pre-commit`, `git-guardrails-claude-code` (the user unregistered the guard hook on 2026-10-15), `neat-freak`. Disabled: the `claude-scientific-writer` and `planning-with-files` plugins (`TASKS.md` covers task tracking). Add a row here in the same edit whenever a skill or plugin is added or removed.
 
 ## Environment (this machine)
 
 - The real home is `/home/huichengzhang`; inside the sandbox `/home/user` is a symlink to it, and Claude starts from the real path (project memory is keyed by it). Only the real path exists on the host, so don't hard-code `/home/user/...` into project code; use relative or configurable paths.
 - Claude stays in its bwrap sandbox by default. Follow the user-level `~/.claude/rules/sandbox-runtime.md` for resource tasks and independent training jobs; do not default to a `claude-real` relaunch. Runtime details: `~/huicheng/config/claude-sandbox.md`. Distinguish proxy CONNECT rejection from a remote HTTP 403 before changing network rules. `BASH_ENV` re-exports `HOME` in every bash call, so `HOME=/tmp/x cmd` does not isolate; use `env -u BASH_ENV HOME=/tmp/x cmd`.
+- Inside the sandbox, `/tmp` and `/var/tmp` are per-session tmpfs (only registered git worktrees are bind-mounted) and vanish when the session ends. Keep scratch that must outlive the session (TASKS files, drafts, review outputs, Codex thread ids) under `~/.claude/projects/<project-key>/scratch/`, which is outside the repo and persistent.
 - The sandbox's privacy env vars switch off server feature flags, so a flag-gated feature (e.g. `/advisor`) can look missing. Check for a flag gate before concluding a feature doesn't exist.
 - Conda env `compactifai` was relocated, so its entry-point shebangs point at the old path. Use `python3 -m pip` (not `pip`) and `python3 -m <tool>`.
 - Plugins need `claude plugin marketplace add` + `claude plugin install`; editing settings.json by hand is not enough.
