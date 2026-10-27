@@ -17,6 +17,7 @@ Defaults for every session. Project CLAUDE.md files add to these and win on conf
 - Keep diffs narrow: leave neighbouring code, comments, and formatting alone; follow the existing style unless tooling or correctness forces otherwise.
 - Clean up only what your change orphaned (imports, variables, functions). Point out other dead code instead of deleting it.
 - Every changed line should be traceable to the request.
+- Everything maintained on GitHub is in English (since 2026-10-22): repository files, commit messages, issues, PRs and review comments. Our conversation can stay in Chinese. Don't rewrite existing Chinese content just for this unless I ask.
 - A correction that applies to one project becomes a positive rule ("use X for Y") in the nearest `AGENTS.md`/`CLAUDE.md` that owns those files, so the next session in that repo reads it.
 
 ## Verifying and reporting
@@ -107,6 +108,7 @@ Not installed on this machine: `run-baseline`, `i-have-adhd`, `mermaid-diagram`,
 - The real home is `/home/huichengzhang`; inside the sandbox `/home/user` is a symlink to it, and Claude starts from the real path (project memory is keyed by it). Only the real path exists on the host, so don't hard-code `/home/user/...` into project code; use relative or configurable paths.
 - Claude stays in its bwrap sandbox by default. Follow the user-level `~/.claude/rules/sandbox-runtime.md` for resource tasks and independent training jobs; do not default to a `claude-real` relaunch. Runtime details: `~/huicheng/config/claude-sandbox.md`. Distinguish proxy CONNECT rejection from a remote HTTP 403 before changing network rules. `BASH_ENV` re-exports `HOME` in every bash call, so `HOME=/tmp/x cmd` does not isolate; use `env -u BASH_ENV HOME=/tmp/x cmd`.
 - Inside the sandbox, `/tmp` and `/var/tmp` are per-session tmpfs (only registered git worktrees are bind-mounted) and vanish when the session ends. Keep scratch that must outlive the session (TASKS files, drafts, review outputs, Codex thread ids) under `~/.claude/projects/<project-key>/scratch/`, which is outside the repo and persistent.
+- Large downloads (tens of GB and up, e.g. model weights) use the node `RAKsmart-BGP-10T-Direct-VLESS` ("BGP-10T-Direct", user's choice 2026-10-26) from the Mihomo config `~/vps_lisahost.yaml`. That file holds proxy credentials: never print its secrets, copy it into a repo or commit it. Sandbox traffic leaves through the host's main Mihomo (`127.0.0.1:18891`); leave its node selection alone. Large downloads go over a separate link for that node only (user, 2026-10-26); until that link exists, start no large download.
 - The sandbox's privacy env vars switch off server feature flags, so a flag-gated feature (e.g. `/advisor`) can look missing. Check for a flag gate before concluding a feature doesn't exist.
 - Conda env `compactifai` was relocated, so its entry-point shebangs point at the old path. Use `python3 -m pip` (not `pip`) and `python3 -m <tool>`.
 - Plugins need `claude plugin marketplace add` + `claude plugin install`; editing settings.json by hand is not enough.
