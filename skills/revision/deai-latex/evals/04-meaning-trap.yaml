@@ -1,0 +1,20 @@
+prompt: |
+  /deai-latex De-AI this related-work paragraph from my paper:
+
+  Interestingly, Smith et al.~\cite{smith2024} report that pruning beyond 50\% of the weights may hurt multi-step reasoning, highlighting the fragility of compressed models. Notably, our method does not recover this loss at 60\% sparsity, and it remains well beyond the reach of current pruning methods to close the gap.
+expected_behavior:
+- Removes the boosters ("Interestingly", "Notably") and the interpreting participial tail ("highlighting the fragility ...") from the rewritten text
+- Keeps the reported attribution ("report"), the hedge "may", the citation, and both numbers (50%, 60%)
+- Keeps the limitation as a limitation: the method still does not recover the loss
+- Adds no new contrast, cause, or evaluative clause
+required_markers:
+- 'Part 1'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?\breport'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?\bmay\b'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?\\cite\{smith2024\}'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?50\\?%'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?60\\?%'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?(does not|doesn''t|did not|fails to) recover'
+forbidden_markers:
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?Interestingly'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?highlighting the fragility'

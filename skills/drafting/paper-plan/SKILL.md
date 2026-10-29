@@ -1,6 +1,6 @@
 ---
 name: paper-plan
-description: "Generate a structured paper outline from review conclusions and experiment results. Use when user says \"写大纲\", \"paper outline\", \"plan the paper\", \"论文规划\", or wants to create a paper plan before writing."
+description: "Generate a structured paper outline from review conclusions and experiment results. Use when user says \"写大纲\", \"paper outline\", or wants a section-by-section outline from a narrative report before writing. Planning a technical paper's logic skeleton goes to tech-paper-template."
 argument-hint: "[topic-or-narrative-doc] [— style-ref: <source>]"
 allowed-tools: Bash(*), Read, Write, Edit, Grep, Glob, Agent, WebSearch, WebFetch
 ---

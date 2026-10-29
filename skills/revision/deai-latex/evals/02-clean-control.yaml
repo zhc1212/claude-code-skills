@@ -1,0 +1,14 @@
+prompt: |
+  /deai-latex I wrote this method paragraph myself, without AI help. Check it for AI style:
+
+  We fit a robust regression (Huber loss, $\delta=1.35$) to the per-layer ranks. The gating mechanism is applied after the projection. Each gate is initialized at 0.5 and trained for 2{,}000 steps. However, the gates of the last two layers did not move from their initial value, so we froze them in all later runs. Results are reported over three seeds.
+expected_behavior:
+- Returns the paragraph unchanged with a [PASS] line saying what it was checked against
+- Dismisses "robust regression", "gating mechanism", passive voice, and "However" as not tells here, or raises no candidate at all
+- Changes no number or wording
+required_markers:
+- '\[PASS\]'
+- 'Huber loss, \$\\delta=1\.35\$'
+- 'did not move from their initial value'
+forbidden_markers:
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?(leverag|crucial|notably|seamless)'

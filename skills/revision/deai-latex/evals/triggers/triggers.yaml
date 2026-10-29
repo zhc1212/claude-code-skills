@@ -1,0 +1,16 @@
+# Trigger smoke test: one run per prompt, first assistant turn only (--max-turns 1).
+- id: d1-zh-deai
+  prompt: '这段英文去一下AI味："In recent years, LoRA has achieved remarkable success, demonstrating the effectiveness of low-rank adaptation."'
+  expect: deai-latex
+- id: d2-chatgpt
+  prompt: 'This paragraph from my paper reads like ChatGPT wrote it, fix that: "Notably, our method not only reduces memory but also preserves accuracy, paving the way for efficient adaptation."'
+  expect: deai-latex
+- id: d3-grammar-only
+  prompt: '帮我改一下这段论文的语法错误："The model are trained on three dataset and evaluate on two benchmark."'
+  forbid: deai-latex
+- id: d4-blog
+  prompt: '这篇博客读起来像 AI 写的，帮我改一下："In today''s fast-paced world, productivity is more important than ever. Let''s dive in!"'
+  forbid: deai-latex
+- id: d5-paragraph-audit
+  prompt: '帮我看看这段写得怎么样，衔接顺不顺："We prune heads. The model loses 0.6 points. Furthermore, latency drops by 17%."'
+  forbid: deai-latex

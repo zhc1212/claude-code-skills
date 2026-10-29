@@ -258,7 +258,7 @@
       "name": "figure-audit",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "f83d43c1c829dae94a9359b03930e838a1c2d95ff1580e61fb367a7410b4397f"
+      "installed_skill_sha256": "c4a0a4e035a3d5d593537e6fe5fdaf9bfa0edb12a8632667979cdb5e67ba1596"
     },
     {
       "name": "figure-designer",
@@ -617,7 +617,7 @@
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "installed_skill_sha256": "eb26486359aa135fc2e2f3b9a48abff1b75f4b9d02f99426176df92e1490f581"
+      "installed_skill_sha256": "62b783772c41ac7b228682838f77f8fd8c0bee83d38048fad4ca1f79cf5f367d"
     },
     {
       "name": "paper-polish",
@@ -631,7 +631,7 @@
       "name": "paper-presubmit-audit",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "29460f7c23013d9a4849afc4a73baef89eb59f7d6fd66c68efbc0c3ad9ca1f82"
+      "installed_skill_sha256": "8a4fb25d85719f770b198786ff054a9f2bf696b7d2d1a479009d6dbb54cf755b"
     },
     {
       "name": "paper-write",
@@ -698,7 +698,7 @@
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "installed_skill_sha256": "1bacef2e294d893c3af674d68dd30634bffee901ef20032c9f460a6d56ae52fc"
+      "installed_skill_sha256": "14b4b4a9080c83d97d3c3ac9f6400c7a2129ea6f7e59c96d06cc072ef056dcee"
     },
     {
       "name": "research-paper-writing",

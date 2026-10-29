@@ -1,0 +1,25 @@
+prompt: |
+  /deai-latex Here is my own earlier draft of an experiments paragraph, then the version after an AI polished it. De-AI the polished version, using my draft as the baseline.
+
+  My draft:
+  We prune 30\% of the heads in each layer. The model loses 0.6 points on MMLU. Pruning may reduce latency by 17.4\%. We did not tune the pruning order.
+
+  AI-polished version:
+  We prune 30\% of the heads in each layer, so the model loses only 0.6 points on MMLU: pruning seamlessly reduces latency by 17.4\%. Furthermore, we did not tune the pruning order, so further gains are possible.
+expected_behavior:
+- Builds a baseline table from the earlier draft and names it as the author's earlier version of the same passage
+- Reports edit residue such as the merged sentences, the ", so" tails, and the claim-elaborating colon, and brings ", so" back to the draft's rate of zero
+- Removes "seamlessly" and the added "only" or names them as added filler
+- Names the dropped hedge ("may reduce" became "reduces") and the added "further gains are possible" as suspected claim changes in the log
+- Keeps 30%, 0.6, MMLU, and 17.4% in the rewritten text
+required_markers:
+- 'Part 1'
+- 'Part 2'
+- 'baseline'
+- 'earlier (version|draft)|same passage'
+- 'claim (strength|change)|hedge|\bmay\b'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?17\.4'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?0\.6'
+forbidden_markers:
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?, so\b'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?seamless'

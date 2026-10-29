@@ -259,6 +259,22 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
+## Settle routing overlaps in own-skill descriptions; add deai-latex evals — v1.0.32
+
+Four own skills now carry the triggers that routing rows used to supply: `figure-audit` drops "图好不好看" (one
+standalone figure's look), `paper-plan` triggers only on outlines and sends a technical paper's logic skeleton to
+`tech-paper-template`, `research-lit` adds "看看这篇论文" and "读一下这篇论文", and `paper-presubmit-audit` adds "review
+my paper". The routing table in `workspace/USER_CLAUDE.md` keeps four rows, each for an overlap among upstream or plugin
+skills that flipped in routing probes without its row. Semantic Scholar, DBLP and OpenAlex mechanics move to
+`~/.claude/reference/literature-apis.md` (not in this repository); the snapshot keeps the key location and the
+never-print rule, and picks up the Triton/cuda-compat line from another session.
+
+`deai-latex` gets evals in the repository's format: four synthetic cases (seeded intro, clean control, the author's
+earlier draft as baseline, a meaning trap), five trigger prompts and the runner with its pytest. One Sonnet run, re-graded
+on its cached outputs after Part 1 markers were scoped to the rewritten text, passes 62/62; Opus and trigger runs were
+not made. Case 03 makes the skill save a synthetic baseline in `~/.claude/deai-baselines/` that later cases see (04
+skipped it as a different section); the runner header says to delete it after a run.
+
 ## Retire the Nature suite except nature-figure — v1.0.31
 
 Seventeen `nature-*` skills are retired from `~/.claude/skills/` and this repository at the user's request; only

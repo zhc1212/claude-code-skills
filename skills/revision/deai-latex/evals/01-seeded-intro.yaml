@@ -1,0 +1,26 @@
+prompt: |
+  /deai-latex This introduction paragraph of my paper was polished by ChatGPT. Remove the AI style:
+
+  In recent years, low-rank adaptation has achieved remarkable success across a wide range of tasks~\cite{hu2021lora}. Notably, QLoRA~\cite{dettmers2023qlora} not only reduces memory but also preserves accuracy, demonstrating the effectiveness of quantized fine-tuning. Additionally, we find that a rank of $r=8$ reaches 42.3 on GSM8K, 1.8 points below full fine-tuning, which may matter for small models. This paves the way for efficient adaptation and opens exciting avenues for future research.:contentReference[oaicite:0]{index=0}
+expected_behavior:
+- Returns Part 1 [Text] and Part 2 [Log] and says no baseline is available, so only catalogue phrases are candidates
+- Removes the formulaic opener, the inflated phrases (remarkable success, a wide range of, paves the way, exciting avenues), the interpreting participial tail, and the leaked contentReference/oaicite token from the rewritten text
+- Keeps every number (r=8, 42.3, 1.8), both citation keys, and the hedge "may" in the rewritten text
+- Adds no new claim, citation, or contrast
+required_markers:
+- 'Part 1'
+- 'Part 2'
+- 'no baseline|baseline: none'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?42\.3'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?1\.8'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?r\s*=\s*8'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?\\cite\{hu2021lora\}'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?\\cite\{dettmers2023qlora\}'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?\bmay\b'
+forbidden_markers:
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?In recent years'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?remarkable success'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?paves the way'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?exciting avenues'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?demonstrating the effectiveness'
+- '(?s)Part 1(?:(?!Part 2|```\n\n).)*?(oaicite|contentReference)'
