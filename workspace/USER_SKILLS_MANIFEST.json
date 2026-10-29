@@ -1,7 +1,7 @@
 {
   "snapshot_date": "2026-10-16",
   "source": "~/.claude/skills",
-  "active_skill_count": 141,
+  "active_skill_count": 124,
   "retained_repository_only_skills": [],
   "excluded": [
     "humanizer/.git/",
@@ -556,46 +556,6 @@
       "installed_skill_sha256": "10719897591c878f6fd362d818a1797c2ffe5380980f3decce5ee05e21f785dc"
     },
     {
-      "name": "nature-academic-search",
-      "origin": "upstream",
-      "source": "https://github.com/Yuan1z0825/nature-skills",
-      "upstream_path": "skills/nature-academic-search",
-      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
-      "installed_skill_sha256": "3ed327e3e9c56cddfaa0e48ffb3503b1f9e27f917916013798ef57bf8131101a"
-    },
-    {
-      "name": "nature-citation",
-      "origin": "upstream",
-      "source": "https://github.com/Yuan1z0825/nature-skills",
-      "upstream_path": "skills/nature-citation",
-      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
-      "installed_skill_sha256": "f0436639c2bcf966e8f8cdda6e06501b396bb32cc3b7cce57f67eb0cd7b5a44d"
-    },
-    {
-      "name": "nature-data",
-      "origin": "upstream",
-      "source": "https://github.com/Yuan1z0825/nature-skills",
-      "upstream_path": "skills/nature-data",
-      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
-      "installed_skill_sha256": "4ef9c383411b069265901e9f157cb4d73861f42f6ddd28611084005e67eafa43"
-    },
-    {
-      "name": "nature-downloader",
-      "origin": "upstream",
-      "source": "https://github.com/Yuan1z0825/nature-skills",
-      "upstream_path": "skills/nature-downloader",
-      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
-      "installed_skill_sha256": "0351f9069e77a4b027893592d295f3c511301bc7d2ec7d299ab49ee2c106be54"
-    },
-    {
-      "name": "nature-experiment-log",
-      "origin": "upstream",
-      "source": "https://github.com/Yuan1z0825/nature-skills",
-      "upstream_path": "skills/nature-experiment-log",
-      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
-      "installed_skill_sha256": "1f7fffcbc950d4f60fcb5ad9f2aabe82246ebbd83bf29621a0e90c9ff4ec4b8b"
-    },
-    {
       "name": "nature-figure",
       "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
@@ -604,108 +564,12 @@
       "installed_skill_sha256": "5aefe708a2531c5ddaa8ee74d5155d747e96c0f21a33143d38316b7c5c88ffc4"
     },
     {
-      "name": "nature-literature-pipeline",
-      "origin": "upstream",
-      "source": "https://github.com/Yuan1z0825/nature-skills",
-      "upstream_path": "skills/nature-literature-pipeline",
-      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
-      "installed_skill_sha256": "1dcaa692457ec9c2be409cb7777f834a2db833788b2e9b680baf0e961126b01a"
-    },
-    {
-      "name": "nature-paper-card",
-      "origin": "upstream",
-      "source": "https://github.com/Yuan1z0825/nature-skills",
-      "upstream_path": "skills/nature-paper-card",
-      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
-      "installed_skill_sha256": "a71e3dbc446523e415ed4b896bed8ea60e0c598fb8655c587679d719648b68c9"
-    },
-    {
-      "name": "nature-paper-to-patent",
-      "origin": "upstream",
-      "source": "https://github.com/Yuan1z0825/nature-skills",
-      "upstream_path": "skills/nature-paper-to-patent",
-      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
-      "installed_skill_sha256": "b65243157addf3e4e38de4cb35136d95478c2c997bdd5600e6ae21f91f4d06f0"
-    },
-    {
-      "name": "nature-paper2ppt",
-      "origin": "upstream",
-      "source": "https://github.com/Yuan1z0825/nature-skills",
-      "upstream_path": "skills/nature-paper2ppt",
-      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
-      "installed_skill_sha256": "a8d0fd14ca0863602cfc76305467d0f5a6ac2c104abedd7f7e86dfcf46bf04cf"
-    },
-    {
-      "name": "nature-polishing",
-      "origin": "upstream",
-      "source": "https://github.com/Yuan1z0825/nature-skills",
-      "upstream_path": "skills/nature-polishing",
-      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
-      "installed_skill_sha256": "9391b2a2487306cf2ed560377d4bc10c339fd2c220a79db278cb7f9d31e79023"
-    },
-    {
-      "name": "nature-proposal-writer",
-      "origin": "upstream",
-      "source": "https://github.com/Yuan1z0825/nature-skills",
-      "upstream_path": "skills/nature-proposal-writer",
-      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
-      "installed_skill_sha256": "9be8ae52f909969592529414fb6f5bb54059c8cbe520e78b53d22b297cef5e4a"
-    },
-    {
-      "name": "nature-reader",
-      "origin": "upstream",
-      "source": "https://github.com/Yuan1z0825/nature-skills",
-      "upstream_path": "skills/nature-reader",
-      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
-      "installed_skill_sha256": "999a5c1b116558133d0389ce6c1bbc3dc9cf5242d1be2870358789769d97a84e"
-    },
-    {
-      "name": "nature-ref-verifier",
-      "origin": "upstream",
-      "source": "https://github.com/Yuan1z0825/nature-skills",
-      "upstream_path": "skills/nature-ref-verifier",
-      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
-      "installed_skill_sha256": "6a975074d7a1c62c00dd9e8c7367cd2af0ef9d573d6d6ce5ea12f70d9320a516"
-    },
-    {
-      "name": "nature-response",
-      "origin": "upstream",
-      "source": "https://github.com/Yuan1z0825/nature-skills",
-      "upstream_path": "skills/nature-response",
-      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
-      "installed_skill_sha256": "a8283db56e73879413311cbcde1db4c72dd4390bbe21ab2f62f1f968610b5de1"
-    },
-    {
-      "name": "nature-reviewer",
-      "origin": "upstream",
-      "source": "https://github.com/Yuan1z0825/nature-skills",
-      "upstream_path": "skills/nature-reviewer",
-      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
-      "installed_skill_sha256": "8ca28cc8e8bda2b5254056940d2a696dc0d3cabcd5573cdec98ffc3cbd162610"
-    },
-    {
       "name": "nature-shared",
       "origin": "upstream",
       "source": "https://github.com/Yuan1z0825/nature-skills",
       "upstream_path": "skills/nature-shared",
       "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
       "installed_skill_sha256": "3d914e73f023cab4f247d82f906a948307de8a867fd6c33df999badf67c5d5f2"
-    },
-    {
-      "name": "nature-statistics",
-      "origin": "upstream",
-      "source": "https://github.com/Yuan1z0825/nature-skills",
-      "upstream_path": "skills/nature-statistics",
-      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
-      "installed_skill_sha256": "89d2a101fc45d7adf8ca327a6da4bda4a696d6364d7c36ead4f53413627a9b6f"
-    },
-    {
-      "name": "nature-writing",
-      "origin": "upstream",
-      "source": "https://github.com/Yuan1z0825/nature-skills",
-      "upstream_path": "skills/nature-writing",
-      "upstream_commit": "4d4971a6aa3888e51e42c1334da2d0e1fe0ef239",
-      "installed_skill_sha256": "ce7c4d20329b96b03b0f0c0bb744411b1b4deaa7a7b69b90757705a83c195b12"
     },
     {
       "name": "notation-audit",

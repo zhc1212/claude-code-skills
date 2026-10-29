@@ -4,7 +4,7 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 
 ## Skills by scenario
 
-141 skills in 14 scenario folders, `skills/<scenario>/<skill>/`, plus 5 [project-scoped skills](#project-scoped-skills) in `project-skills/<project>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
+124 skills in 14 scenario folders, `skills/<scenario>/<skill>/`, plus 5 [project-scoped skills](#project-scoped-skills) in `project-skills/<project>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
 
 [Ideas and literature](#ideas-and-literature) · [Experiments](#experiments) · [Drafting a paper](#drafting-a-paper) · [Figures and tables](#figures-and-tables) · [Revising a draft](#revising-a-draft) · [Review before submission](#review-before-submission) · [Second model as adversary](#second-model-as-adversary) · [Nature-family journals](#nature-family-journals) · [Software-engineering venues](#software-engineering-venues) · [Slides and reports](#slides-and-reports) · [General writing](#general-writing) · [Software engineering](#software-engineering) · [Planning and decisions](#planning-and-decisions) · [Agent setup, memory and knowledge](#agent-setup-memory-and-knowledge) · [Project-scoped skills](#project-scoped-skills)
 
@@ -125,29 +125,12 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 
 ### Nature-family journals
 
-Nature 系列. Writing, review, figures, statistics and literature for Nature-family submissions. `skills/nature/`
+Nature 系列. Figures for Nature-family submissions. `skills/nature/`
 
 | Skill | Use it for |
 |---|---|
-| `nature-academic-search` | Multi-source search and citation management |
-| `nature-citation` | Find and verify supporting CNS-family literature |
-| `nature-data` | Data and code availability statements |
-| `nature-downloader` | Lawful full-text retrieval |
-| `nature-experiment-log` | Structured lab-notebook entries |
 | `nature-figure` | Figures in Python or R, and vector schematics |
-| `nature-literature-pipeline` | Search → score → read → deliver → archive |
-| `nature-paper-card` | Deep-reading card for one paper |
-| `nature-paper-to-patent` | Chinese invention patent drafts from papers |
-| `nature-paper2ppt` | Chinese PPTX from a paper |
-| `nature-polishing` | Polish or translate prose in Nature register |
-| `nature-proposal-writer` | Research proposals and opening reports |
-| `nature-reader` | Aligned bilingual reader for a paper |
-| `nature-ref-verifier` | Cross-check references field by field |
-| `nature-response` | Responses to reviewers and revision packages |
-| `nature-reviewer` | Mock peer review |
-| `nature-shared` | Shared references read by the other nature skills |
-| `nature-statistics` | Statistical reporting audit |
-| `nature-writing` | Manuscript arguments and sections from evidence |
+| `nature-shared` | Shared references read by `nature-figure` |
 
 ### Software-engineering venues
 
@@ -275,6 +258,12 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 - [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md) — current source policy and the historical third-party workspace inventory.
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
+
+## Retire the Nature suite except nature-figure — v1.0.31
+
+Seventeen `nature-*` skills are retired from `~/.claude/skills/` and this repository at the user's request; only
+`nature-figure` stays, with `nature-shared`, whose files it reads. Their READMEs and `nature-shared` still name the
+retired skills; as upstream copies they stay unedited.
 
 ## Retire ten unused skills and three plugins — v1.0.30
 
