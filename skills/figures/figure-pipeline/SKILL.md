@@ -91,7 +91,7 @@ For each selected finding, fill one row:
   |---|---|
   | Python generator, matplotlib (one script or many) | Edit the generator, regenerate under the guard |
   | R or another plotting library | Edit the generator, regenerate; check the source diff (Repair, last paragraph) |
-  | FigureSpec JSON (`figure-spec`) | Edit the JSON, validate, re-render |
+  | FigureSpec JSON (`figure-spec`, retired) | Redraw (below), once the user approves it |
   | Inline TikZ/pgfplots | Edit the TeX; verify on the compiled page |
   | Hand-drawn vector (Inkscape, draw.io) | Edit the native file, keeping entities and connections |
   | Diagram whose drawing is the defect (slide canvas, G5–G7) | Redraw (below), once the user approves it |

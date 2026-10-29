@@ -4,9 +4,9 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 
 ## Skills by scenario
 
-151 skills in 15 scenario folders, `skills/<scenario>/<skill>/`, plus 5 [project-scoped skills](#project-scoped-skills) in `project-skills/<project>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
+141 skills in 14 scenario folders, `skills/<scenario>/<skill>/`, plus 5 [project-scoped skills](#project-scoped-skills) in `project-skills/<project>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
 
-[Ideas and literature](#ideas-and-literature) · [Experiments](#experiments) · [Drafting a paper](#drafting-a-paper) · [Figures and tables](#figures-and-tables) · [Revising a draft](#revising-a-draft) · [Review before submission](#review-before-submission) · [Second model as adversary](#second-model-as-adversary) · [Nature-family journals](#nature-family-journals) · [Software-engineering venues](#software-engineering-venues) · [Slides and reports](#slides-and-reports) · [General writing](#general-writing) · [Software engineering](#software-engineering) · [Planning and decisions](#planning-and-decisions) · [Agent setup, memory and knowledge](#agent-setup-memory-and-knowledge) · [Utilities](#utilities) · [Project-scoped skills](#project-scoped-skills)
+[Ideas and literature](#ideas-and-literature) · [Experiments](#experiments) · [Drafting a paper](#drafting-a-paper) · [Figures and tables](#figures-and-tables) · [Revising a draft](#revising-a-draft) · [Review before submission](#review-before-submission) · [Second model as adversary](#second-model-as-adversary) · [Nature-family journals](#nature-family-journals) · [Software-engineering venues](#software-engineering-venues) · [Slides and reports](#slides-and-reports) · [General writing](#general-writing) · [Software engineering](#software-engineering) · [Planning and decisions](#planning-and-decisions) · [Agent setup, memory and knowledge](#agent-setup-memory-and-knowledge) · [Project-scoped skills](#project-scoped-skills)
 
 ### Ideas and literature
 
@@ -26,8 +26,6 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 | `brainstorm-ideas` | Socratic idea brainstorm that learns your background *(run when named)* |
 | `how-to-write-ideas-report` | Proposal-style ideas report after a brainstorm |
 | `how-to-download-ref` | Add arXiv IDs or DOIs to a knowledge base (metadata, PDFs, BibTeX) |
-| `hv-analysis` | Horizontal–vertical (synchronic/diachronic) analysis of a topic |
-| `vibe-research-workflow` | Rules for AI-assisted coding, figures and writing that keep you in charge |
 | `research-pipeline` | End to end: idea discovery → experiments → auto review → paper |
 | `auto-review-loop` | Multi-round external review of a project, fixing until it passes |
 
@@ -71,11 +69,8 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 | `figure-audit` | Audit a compiled paper's figures: readability, venue rules, top-venue bar |
 | `figure-pipeline` | Fix audited figures in a staged copy, prove the data unchanged, recheck |
 | `figure-designer` | Design the core figures: motivating example, overview, results |
-| `figure-spec` | Architecture and workflow diagrams from JSON to editable SVG |
 | `paper-figure` | Plots and tables from experiment results |
 | `paper-illustration` | AI-generated method illustrations (Gemini) |
-| `paper-arch-diagram` | Image-model prompts for architecture figures |
-| `experiment-plot-advisor` | Choose a chart type for experiment data |
 | `gen-figure-caption` | English figure captions from Chinese descriptions |
 | `gen-table-caption` | English table captions from Chinese descriptions |
 | `scientific-visualization` | Truthful, accessible data figures; palette and export checks |
@@ -98,7 +93,6 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 | `deai-latex` | Remove AI writing style from paper prose |
 | `paper-polish` | Grammar, flow and tone, meaning preserved |
 | `how-to-technical-writing` | Sentence- and paragraph-level scientific prose (sci-brain stage) |
-| `polish-english-paper` | Paragraph-level English polishing |
 | `academic-humanizer` | Clarity and voice for papers and grant proposals |
 | `shorten-latex` | Trim a paragraph to fit the page limit |
 | `research-paper-writing` | Structure, flow and reviewer-facing presentation |
@@ -113,7 +107,6 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 | `pre-submission-reviewer` | Five-dimension pre-submission review, any field |
 | `reviewer-view-paper` | One harsh top-venue reviewer |
 | `review-paper` | sci-brain review and fact-check of a manuscript *(run when named)* |
-| `citation-verification` | Verify references and catch fabricated ones |
 | `auto-paper-improvement-loop` | Two rounds of external review, fixes and recompile |
 
 ### Second model as adversary
@@ -195,7 +188,6 @@ Nature 系列. Writing, review, figures, statistics and literature for Nature-fa
 | Skill | Use it for |
 |---|---|
 | `humanizer` | Remove AI tells from non-paper prose |
-| `khazix-writer` | Long-form WeChat articles in Khazix's style |
 | `writing-beats` | Assemble material into beats *(user-invoked)* |
 | `writing-fragments` | Mine raw fragments *(user-invoked)* |
 | `writing-shape` | Shape material into an article *(user-invoked)* |
@@ -246,7 +238,6 @@ Nature 系列. Writing, review, figures, statistics and literature for Nature-fa
 | Skill | Use it for |
 |---|---|
 | `writing-for-agents` | Write skills, CLAUDE.md and AGENTS.md |
-| `meta-optimize` | Propose skill and workflow changes from usage logs |
 | `handoff` | Handoff document for another agent *(user-invoked)* |
 | `claude-handoff` | Hand the conversation to a background agent *(user-invoked)* |
 | `chief-of-staff` | Pursue a long-running goal by coordinating subagents *(user-invoked)* |
@@ -255,14 +246,6 @@ Nature 系列. Writing, review, figures, statistics and literature for Nature-fa
 | `dump-chat-history` | Export conversations as transcripts or Typst/PDF field notes *(run when named)* |
 | `how-to-analyze-dialog` | Classify research conversations and their prompting patterns |
 | `know-me-better` | Learn your research style from your papers |
-
-### Utilities
-
-工具. News. `skills/utilities/`
-
-| Skill | Use it for |
-|---|---|
-| `aihot` | Chinese AI news from aihot.news |
 
 ### Project-scoped skills
 
@@ -278,7 +261,7 @@ These serve one project, so they install into that project's `.claude/skills/`, 
 
 ## Provenance and licenses
 
-Provenance: 3 adapted hybrids (paper-write, paper-plan, paper-figure) carry PROVENANCE headers naming their upstream sources. `citation-verification` is an MIT-licensed copy from Galaxy-Dawn/claude-scholar, with source provenance and three EOF whitespace normalizations recorded separately. 20 third-party imports were removed 2026-07-19.
+Provenance: 3 adapted hybrids (paper-write, paper-plan, paper-figure) carry PROVENANCE headers naming their upstream sources. 20 third-party imports were removed 2026-07-19.
 
 The snapshot also includes the installed engineering, Nature, FSE, slide, and writing suites. Third-party files retain their own licenses, including MIT, Apache-2.0, and CC BY-NC-SA-4.0; the bundle is not uniformly MIT licensed. Historical updates below describe earlier releases.
 
@@ -292,6 +275,18 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 - [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md) — current source policy and the historical third-party workspace inventory.
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
+
+## Retire ten unused skills and three plugins — v1.0.30
+
+Ten skills with no call on this machine since 2026-10-01, each overlapped by a skill in use or outside research
+work, are retired from `~/.claude/skills/` and this repository: own `figure-spec` (its `figure_renderer.py` was
+missing; architecture figures go to figgenie), `polish-english-paper` (covered by `paper-polish`,
+`oral-paragraph-audit` and `deai-latex`), `paper-arch-diagram`, `experiment-plot-advisor` and `meta-optimize`, and
+upstream `citation-verification`, `vibe-research-workflow`, `aihot`, `hv-analysis` and `khazix-writer`, with the
+now-unused claude-scholar and khazix-skills licenses. The `plugin-dev`, `claude-scientific-writer` and
+`planning-with-files` plugins are uninstalled. `deai-latex`, `shorten-latex`, `figure-pipeline` and
+`paper-writing` drop or redirect their pointers; `nature-academic-search` still names `citation-verification`, as an
+upstream copy it stays unedited. The `skills/utilities/` folder is gone with `aihot`.
 
 ## Retire eight unused skills — v1.0.29
 

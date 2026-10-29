@@ -1,7 +1,7 @@
 {
   "snapshot_date": "2026-10-16",
   "source": "~/.claude/skills",
-  "active_skill_count": 151,
+  "active_skill_count": 141,
   "retained_repository_only_skills": [],
   "excluded": [
     "humanizer/.git/",
@@ -23,9 +23,6 @@
     "defensive-writing-sweep/evals/02-clean-control.yaml"
   ],
   "packaging_normalizations": [
-    "citation-verification/references/api-usage.md",
-    "citation-verification/references/common-errors.md",
-    "citation-verification/references/verification-rules.md",
     "deai-latex/SKILL.md: YAML-only folded description; text unchanged",
     "notation-audit/SKILL.md: two coined-name examples taken from an unpublished paper read Oracle; text otherwise unchanged"
   ],
@@ -43,14 +40,6 @@
       "upstream_path": "",
       "upstream_commit": "94b88b23703bed7df507acae7d6d5876209a0cdf",
       "installed_skill_sha256": "1f4501cb7331cffe9018960f8db045c719eea0658ce04e4af5e273ee59785a9c"
-    },
-    {
-      "name": "aihot",
-      "origin": "upstream",
-      "source": "https://github.com/kkkkhazix/khazix-skills",
-      "upstream_path": "aihot",
-      "upstream_commit": "1e6adab5ecfbc36156071295a0d3e7757d50c53e",
-      "installed_skill_sha256": "1fe3b86de1309617713c4b205b6dbaef0fe2cf28cb61cfb9f4c9b4accae521a1"
     },
     {
       "name": "analyze-results",
@@ -121,20 +110,6 @@
       "upstream_path": "skills/in-progress/chief-of-staff",
       "upstream_commit": "6fd947921b935b7e1e69293a200400f0fdd5c15f",
       "installed_skill_sha256": "6cc6e47ab5022f3e45e5be0fedbb0f6e645f4f0190d6b0c51c7cd60c2d7c1d98"
-    },
-    {
-      "name": "citation-verification",
-      "origin": "upstream",
-      "source": "https://github.com/Galaxy-Dawn/claude-scholar",
-      "upstream_path": "skills/citation-verification",
-      "upstream_commit": "f84460e5aa000b932c7545efef2c0d6fb66398ec",
-      "known_deviations": [
-        "references/api-usage.md",
-        "references/common-errors.md",
-        "references/verification-rules.md"
-      ],
-      "deviation_note": "Three EOF whitespace normalizations (see PROVENANCE.md).",
-      "installed_skill_sha256": "c98a1be776ee4301425e01e4ed46488aba293487c8b572de8963cadf805f929a"
     },
     {
       "name": "claude-handoff",
@@ -214,7 +189,7 @@
       "name": "deai-latex",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "0c88045056cd350d58ca8a6a0e4ae4f9d9c3389e2f7eb3b2219b59cf27ec98b0",
+      "installed_skill_sha256": "b43eb9be3d0aba00b51d9f44a68a30b28a06b5b67412ea6305a6fe2296934f57",
       "packaging_note": "Description encoded as a YAML folded scalar; wording unchanged."
     },
     {
@@ -280,12 +255,6 @@
       "installed_skill_sha256": "9450b3d5e4f6a9a600fc0339a454e47541a9987cefea1be25705bf1aa68ac08c"
     },
     {
-      "name": "experiment-plot-advisor",
-      "origin": "own",
-      "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "94fe58be3294df4d174148c05839815496236022f8861c6a890fe1df419d1676"
-    },
-    {
       "name": "figure-audit",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
@@ -303,14 +272,7 @@
       "name": "figure-pipeline",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "3da4118a5a6e7f6ccf49de6a237499f2dbad8b3267f31c0a77ce7e774724d037"
-    },
-    {
-      "name": "figure-spec",
-      "origin": "own",
-      "source": "https://github.com/zhc1212/claude-code-skills",
-      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "installed_skill_sha256": "30e4070062c23f6920e01338dd654dfefa4f3eff4ba7551d533fcd76a9ca54c8"
+      "installed_skill_sha256": "3eed2cf16eb03d726a141f62a7c805f25254ec6879009dcea97b9a9b88fc2a72"
     },
     {
       "name": "fse-artifact-evaluation",
@@ -517,14 +479,6 @@
       "installed_skill_sha256": "0612f1dfb1672b0ea9b97e139bf1f06cabe98d8b27424fe8ff01e1fb4cc99cad"
     },
     {
-      "name": "hv-analysis",
-      "origin": "upstream",
-      "source": "https://github.com/kkkkhazix/khazix-skills",
-      "upstream_path": "hv-analysis",
-      "upstream_commit": "c6d097b020bea94d93d60d05f204bca63c165840",
-      "installed_skill_sha256": "898f21b1f7b45456a54419b1b31765c896662a1e3f614d2c3413f809824de3a2"
-    },
-    {
       "name": "idea-creator",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
@@ -579,14 +533,6 @@
       "installed_skill_sha256": "675e8a97a58a841b04dd9fa061fcc03075e75695aada5c7b23d1c1498435d5a7"
     },
     {
-      "name": "khazix-writer",
-      "origin": "upstream",
-      "source": "https://github.com/kkkkhazix/khazix-skills",
-      "upstream_path": "khazix-writer",
-      "upstream_commit": "08996c956ea70b1529a9b1bff308296c4076c3ad",
-      "installed_skill_sha256": "081bfbf5bc0f0c9a2c5a6410eaaa9de18a0cc50f932a1195f45df04e30018602"
-    },
-    {
       "name": "know-me-better",
       "origin": "upstream",
       "source": "https://github.com/QuantumBFS/sci-brain",
@@ -601,13 +547,6 @@
       "upstream_path": "skills/in-progress/loop-me",
       "upstream_commit": "321658273cb1d20b76026717d027d505790106d4",
       "installed_skill_sha256": "e44d1cc3e760fb86ac42964c2a5f1fcac511715db50fb375f3f7be814de1eaa7"
-    },
-    {
-      "name": "meta-optimize",
-      "origin": "own",
-      "source": "https://github.com/zhc1212/claude-code-skills",
-      "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "installed_skill_sha256": "75d4cc0e84df71097dd00456a49b1fea377ca82ad247120ef24b8ce40afb4401"
     },
     {
       "name": "monitor-experiment",
@@ -788,12 +727,6 @@
       "installed_skill_sha256": "2d703effdf0e124a2c66c03e8b2e4b8a2cef71dde140143a48e5d091cce1946a"
     },
     {
-      "name": "paper-arch-diagram",
-      "origin": "own",
-      "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "4cdc81a1f7ab1688ab7e6da30329e281f03805f2d48fec3b8772c212889f5904"
-    },
-    {
       "name": "paper-compile",
       "origin": "upstream",
       "source": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
@@ -856,13 +789,7 @@
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "installed_skill_sha256": "e5646803e0da7ec57210935db72e8e4d86d2a06aac494b36137ff086a00165ef"
-    },
-    {
-      "name": "polish-english-paper",
-      "origin": "own",
-      "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "4f937b30185de3d9e6a9ba9d1b042033c549b28cab92025a04165ec137dbb40a"
+      "installed_skill_sha256": "ca35de430d02b3872d72b66d3b6dcfbc9d7d4eba3740c08af0cb5f409c8305d5"
     },
     {
       "name": "ppt-master",
@@ -999,7 +926,7 @@
       "name": "shorten-latex",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "c97391fd1d597ab406fd8daafbf4de6017b25416cf589c0fa9af6ee06d6ba8ff"
+      "installed_skill_sha256": "a29a80a971488e34f895fc635b566be0705aec84de1d67525e187b088096489f"
     },
     {
       "name": "slide-maker",
@@ -1090,14 +1017,6 @@
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "installed_skill_sha256": "da0d7a41d94d81e9ecf2be2b1a5d23fb42bac67b18e08cc689438d27e96a6761"
-    },
-    {
-      "name": "vibe-research-workflow",
-      "origin": "upstream",
-      "source": "https://github.com/HKUSTDial/Supervisor-Skills",
-      "upstream_path": "skills/vibe-research-workflow",
-      "upstream_commit": "6800d4d758bd1579faa6e50abae2b7fa31d2a835",
-      "installed_skill_sha256": "c26a9f011cb8e88d6d5000c1b1844db7278334c07e84be4bae7ea8d08084a333"
     },
     {
       "name": "visual-audit-slides",

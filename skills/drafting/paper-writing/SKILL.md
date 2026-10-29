@@ -8,7 +8,7 @@ allowed-tools: Bash(*), Read, Write, Edit, Grep, Glob, Agent, Skill
 # Workflow 3: Paper Writing Pipeline
 
 > Codex calls (`codex exec`, `codex exec resume`) follow `../shared-references/codex-cli.md`.
-> Not installed on this machine: `/proof-checker`, `/paper-claim-audit`, `/citation-audit`, `/kill-argument`, `/mermaid-diagram` and `/paper-illustration-image2`, with no installed equivalent. Skip any step that calls one and list it as NOT RUN in the final report. A gate that depends on one is NOT RUN, never PASS, so the paper is not submission-ready on that gate. `illustration: mermaid` and `illustration: codex-image2` are unavailable; use `figurespec` or `gemini`.
+> Not installed on this machine: `/proof-checker`, `/paper-claim-audit`, `/citation-audit`, `/kill-argument`, `/mermaid-diagram` and `/paper-illustration-image2`, with no installed equivalent. Skip any step that calls one and list it as NOT RUN in the final report. `/figure-spec` is retired: for `illustration: figurespec` (the default), draw the figure with `figgenie:figgenie-paper-diagram` instead. A gate that depends on one is NOT RUN, never PASS, so the paper is not submission-ready on that gate. `illustration: mermaid` and `illustration: codex-image2` are unavailable; use `figurespec` or `gemini`.
 
 Orchestrate a complete paper writing workflow for: **$ARGUMENTS**
 

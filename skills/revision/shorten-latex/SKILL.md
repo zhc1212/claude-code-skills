@@ -12,7 +12,7 @@ description: Use when user needs to slightly shorten an English LaTeX paragraph 
 
 ## When NOT to Use
 - "compress" / "压缩模型" → that's `/compress` (SVD model compression), not this skill
-- Paragraph needs rewriting / restructuring → use `polish-english-paper`
+- Paragraph needs rewriting / restructuring → use `oral-paragraph-audit`
 
 ## Instructions
 
