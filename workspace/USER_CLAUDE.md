@@ -72,7 +72,7 @@ Usage notes:
 - FSE/PACMSE uses acmart `acmsmall`, so `paper-write venue: ACM` (sigconf) is the wrong template; re-check page limits against the live call.
 - `run-experiment`: long jobs follow `~/.claude/rules/sandbox-runtime.md`.
 
-Not installed on this machine: `run-baseline`, `i-have-adhd`, `mermaid-diagram`, and the `ecc`, `ai-research-skills` and `superpowers` plugins. Retired skills and uninstalled plugins, with dates and reasons, are in the release notes of the claude-code-skills README. Whenever a skill or plugin is added or removed, update this section and those notes in the same edit.
+Not installed on this machine: `run-baseline`, `i-have-adhd`, `mermaid-diagram`, and the `ecc`, `ai-research-skills`, `superpowers` and `impeccable` plugins. Retired skills and uninstalled plugins, with dates and reasons, are in the release notes of the claude-code-skills README. Whenever a skill or plugin is added or removed, update this section and those notes in the same edit.
 
 ## Environment (this machine)
 

@@ -259,6 +259,16 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
+## Install the hallmark plugin; decline impeccable — v1.0.33
+
+`hallmark` (Nutlope/hallmark 2.0.0, MIT, commit `4f6a46c`) is installed as a user-scope plugin from its own
+marketplace and is invoked as `/hallmark:hallmark`; like the other plugins it stays outside this repository. Its browser
+checks (`sloplint --render`, screenshots) need `puppeteer-core` and Chrome, neither installed here; the static checks run
+without them. `impeccable` (pbakaus/impeccable 4.8.0) is declined at the user's request (2026-11-01): its plugin registers
+SessionStart, PostToolUse (`Edit|Write`) and Stop hooks that run a downloaded engine binary in every project and
+session. `workspace/USER_CLAUDE.md` lists it under "Not installed". No routing row is added: hallmark's description
+limits it to new websites and pages, which no installed skill covers; no routing probe was run.
+
 ## Settle routing overlaps in own-skill descriptions; add deai-latex evals — v1.0.32
 
 Four own skills now carry the triggers that routing rows used to supply: `figure-audit` drops "图好不好看" (one
