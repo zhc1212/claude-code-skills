@@ -275,7 +275,9 @@ endpoint" and max reasoning, and its research agent runs only where subagents ar
 attaches review-critical figures with `codex exec -i` (tested live with gpt-6-astra on 2026-11-02) instead of
 describing them, and `codex-debug-pair` lets Claude run GPU checks where it has the hardware. No MCP-era "reply
 endpoint" or `codex-reply` wording is left in the family. `workspace/USER_CLAUDE.md` adds one line: when the user asks
-for the advisor and Codex together, the advisor is consulted before Codex's reply is read.
+for the advisor and Codex together, the advisor is consulted before Codex's reply is read. A two-round Codex review of
+this release hardened `skill_runs.py` against damaged lines, malformed fields and harness messages taken for user input;
+the fixes after round 2 were tested against Codex's probes but not reviewed again.
 
 ## Cap codex-experiment-critic rounds and persist its artifacts — v1.0.34
 

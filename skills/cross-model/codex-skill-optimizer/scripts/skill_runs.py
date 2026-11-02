@@ -25,27 +25,32 @@ def content_of(rec):
     return msg.get('content') if isinstance(msg, dict) else None
 
 
+def str_field(d, key):
+    value = d.get(key)
+    return value if isinstance(value, str) else ''
+
+
 def text_of(rec):
     content = content_of(rec)
     if isinstance(content, str):
         return content
     if isinstance(content, list):
-        return ' '.join(b.get('text', '') for b in content if isinstance(b, dict) and b.get('type') == 'text')
+        return ' '.join(b['text'] for b in content
+                        if isinstance(b, dict) and b.get('type') == 'text' and isinstance(b.get('text'), str))
     return ''
 
 
 def is_real_user(rec):
     """A message the user typed (text or slash command), not one the harness generated.
 
-    Skill text and reload notices carry isMeta; task notifications, local command
-    output and compaction summaries do not, so their prefixes are checked too.
+    Skill text and reload notices carry isMeta and compaction summaries carry
+    isCompactSummary; task notifications and local command output carry neither,
+    so text starting with "<" counts only when it is a slash command.
     """
-    if rec.get('type') != 'user' or rec.get('isMeta'):
+    if rec.get('type') != 'user' or rec.get('isMeta') or rec.get('isCompactSummary'):
         return False
     text = text_of(rec).strip()
-    if text.startswith('<command-'):
-        return True
-    return bool(text) and not text.startswith(('<', 'This session is being continued'))
+    return text.startswith('<command-') or (bool(text) and not text.startswith('<'))
 
 
 def invocation_args(rec, skill):
@@ -55,7 +60,7 @@ def invocation_args(rec, skill):
         for b in content:
             if (isinstance(b, dict) and b.get('type') == 'tool_use' and b.get('name') == 'Skill'
                     and isinstance(b.get('input'), dict) and b['input'].get('skill') == skill):
-                return b['input'].get('args', '')
+                return str_field(b['input'], 'args')
     if rec.get('type') == 'user':
         text = text_of(rec)
         if f'<command-name>/{skill}</command-name>' in text:
@@ -99,19 +104,22 @@ def summarize(recs, i, args, final_n):
             if not isinstance(b, dict):
                 continue
             if b.get('type') == 'tool_use' and b.get('name') == 'Bash':
-                cmd = (b.get('input') or {}).get('command', '')
+                inp = b.get('input')
+                cmd = str_field(inp, 'command') if isinstance(inp, dict) else ''
                 if 'codex exec resume' in cmd:
                     resumes += 1
-                    codex_ids.add(b.get('id'))
                 elif re.search(r'\bcodex\b.*\bexec\b', cmd):
                     execs += 1
-                    codex_ids.add(b.get('id'))
-            elif b.get('type') == 'tool_result' and b.get('tool_use_id') in codex_ids:
+                else:
+                    continue
+                if str_field(b, 'id'):
+                    codex_ids.add(b['id'])
+            elif b.get('type') == 'tool_result' and str_field(b, 'tool_use_id') in codex_ids:
                 m = CODEX_ERROR.search(json.dumps(b.get('content'))[:3000])
                 if m:
                     errors.append(m.group(1))
-            elif b.get('type') == 'text' and rec.get('type') == 'assistant':
-                texts.append(b.get('text', ''))
+            elif b.get('type') == 'text' and rec.get('type') == 'assistant' and isinstance(b.get('text'), str):
+                texts.append(b['text'])
     after = [one_line(text_of(r), 160) for r in recs[end:end + 40] if is_real_user(r)][:3]
     lines = []
     if execs or resumes:
@@ -145,7 +153,7 @@ def main():
             runs += 1
             project = os.path.basename(os.path.dirname(path))[-40:]
             print('=' * 100)
-            print(f"{rec.get('timestamp', '')[:16]} {project} {os.path.basename(path)[:8]}")
+            print(f"{str_field(rec, 'timestamp')[:16]} {project} {os.path.basename(path)[:8]}")
             print('\n'.join(summarize(recs, i, args, final_n)))
     note = f' ({skipped_total} unparseable line(s) skipped, see stderr)' if skipped_total else ''
     print(f'\n{runs} invocation(s) of {skill} in the retained transcripts{note}.')
