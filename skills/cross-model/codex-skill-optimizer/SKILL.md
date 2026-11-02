@@ -219,7 +219,7 @@ Score across 10 dimensions. Mark dimensions as N/A when they don't apply
 | Cross-File Consistency | References align with SKILL.md, shared terminology |
 | Safety | Secrets, consent, destructive operations |
 | Follow-Up | threadId preserved, follow-up modes documented |
-| Codex Integration | max config, error handling, initial failure path |
+| Codex Integration | xhigh config, error handling, initial failure path |
 | Craftsmanship | Line count, progressive disclosure, organization |
 
 For each dimension: score 1-10, note issues found. Fix all issues

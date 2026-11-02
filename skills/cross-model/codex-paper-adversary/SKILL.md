@@ -85,8 +85,7 @@ images and describe the rest.
 comparisons, or has multiple panels with distinct results): attach each as a
 PNG with `-i <file>` on the `codex exec` that reviews it (in Multi-Pass, the
 pass for its section; render a PDF page with `pdftoppm -png -r 150 -f N -l N`),
-and name the file beside its caption in the inventory. `-i` takes several files, so place it
-before another flag rather than right before the `-` prompt argument.
+and name the file beside its caption in the inventory.
 
 **Non-critical decorative/overview figures**: brief factual inventory only.
 

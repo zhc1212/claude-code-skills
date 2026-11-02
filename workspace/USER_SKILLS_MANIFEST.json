@@ -157,7 +157,7 @@
       "name": "codex-paper-adversary",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "4e2e70a58ee9a3a6f5da10543b00f2d6f141fa2a04a7e05f77172773aa82c561"
+      "installed_skill_sha256": "b24a9c068730c37d1b13eb960839a14d5185089ebc6412f0a5790dce7284f1f5"
     },
     {
       "name": "codex-review",
@@ -169,7 +169,7 @@
       "name": "codex-skill-optimizer",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "1ad4f82100cdfd4305b4a00decf24002b8c7176f32f6a965084e82cd96dcf22e"
+      "installed_skill_sha256": "014284adb51d450dad5a9a870e8b483a2d67e6902ff10afefd37e44a8b40bd38"
     },
     {
       "name": "collect-results",
