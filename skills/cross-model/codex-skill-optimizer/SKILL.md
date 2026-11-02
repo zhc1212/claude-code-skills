@@ -34,8 +34,8 @@ audit, this catches problems that no single-pass review would find.
 ## Protocol
 
 ```
-1. Read + analyze the target skill
-2. Research domain best practices (background agent)
+1. Read + analyze the target skill, and check its real use
+2. Research domain best practices (background agent if allowed)
 3. Claude forms independent position (3-5 claims, not shown to Codex)
 4. Build neutral evidence packet → Codex blind review
 5. Compare → crux ledger → 1 focused round (usually sufficient)
@@ -60,10 +60,21 @@ Record initial observations:
 Also read the skill's neighboring skills to understand trigger boundaries —
 the most common skill defect is overlapping triggers with a sibling.
 
+Then check real use: run `python3 scripts/skill_runs.py <skill-name>` from
+this skill's directory. It prints one block per past invocation found in
+`~/.claude/projects/*/*.jsonl` (Skill tool calls and slash commands): the
+request, the arguments, Codex calls and errors, the final report, and what the
+user said next. Read the runs for steps carried out differently from the
+instructions and for user corrections. A deviation that recurs across runs is
+the strongest evidence of a gap, stronger than any reading of the text.
+Transcripts older than `cleanupPeriodDays` (default 30) are deleted, so zero
+runs means unused in that window, not never used.
+
 ## Step 2: Domain Research
 
-Launch a background research agent to find best practices relevant to the
-skill's domain. This grounds the debate in evidence rather than opinion.
+Research best practices relevant to the skill's domain, in a background agent
+if the session allows subagents, otherwise inline. This grounds the debate in
+evidence rather than opinion.
 
 Research prompt template (adapt to the skill's domain):
 
@@ -76,8 +87,7 @@ Research [DOMAIN] best practices for AI-assisted [SKILL TOPIC]. I need:
 Under 400 words, focus on actionable findings not vague summaries.
 ```
 
-The research agent returns while Claude forms its position (Step 3) —
-they run in parallel to save time.
+A background agent runs while Claude forms its position (Step 3).
 
 ## Step 3: Claude's Independent Position
 
@@ -107,6 +117,8 @@ Show claims to the user. Do NOT include them in Codex's prompt.
 Build a neutral evidence packet containing:
 - The target skill's full content
 - Known weaknesses from Step 1 analysis
+- Real-use evidence from Step 1: run count, recurring deviations, user
+  corrections, stated as facts
 - Research findings from Step 2
 - Skill craftsmanship standards (below)
 - The skill's context (what project, what ecosystem)
@@ -134,7 +146,7 @@ Send via `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_e
 - Confidence calibration on findings
 - Blind independence in cross-model protocols
 - Evidence-grounded claims with falsifiers
-- max reasoning, threadId for follow-up
+- `xhigh` reasoning, threadId for follow-up
 - Edge case handling, cross-file consistency
 
 ### Task
@@ -251,8 +263,9 @@ boundaries referencing sibling skills.
 without reasoning. Progressive structure (high at boundaries, light in
 middle). Evidence-grounded claims with confidence + falsifiers.
 
-**Codex CLI**: `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`. Save threadId. Handle
-initial connection failure. Reply endpoint for follow-ups.
+**Codex CLI**: calls follow `shared-references/codex-cli.md`: `model: gpt-6-astra`,
+`config: {"model_reasoning_effort": "xhigh"}`, and `codex exec resume` with the
+saved threadId for follow-ups. Handle initial connection failure.
 
 **Organization**: SKILL.md under 500 lines. Reference files for domain
 detail, categories, templates. Lean body, rich references.

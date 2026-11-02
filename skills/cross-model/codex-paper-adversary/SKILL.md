@@ -73,7 +73,8 @@ Read the file directly. Strip LaTeX comments (`%...`). Send text as-is.
 
 ### Figure/Table Protocol (tiered)
 
-Codex cannot see images. Use a tiered description protocol:
+Codex sees only what the prompt carries: attach the review-critical figures as
+images and describe the rest.
 
 **All figures/tables** (always include):
 - Caption text verbatim
@@ -81,17 +82,16 @@ Codex cannot see images. Use a tiered description protocol:
 - Role in the paper's argument (what claim does this support?)
 
 **Review-critical figures** (supports a main claim, contains quantitative
-comparisons, or has multiple panels with distinct results):
-- Axes, variables, units
-- Baselines and data series shown
-- Visible trends and key numbers
-- Error bars / uncertainty if present
-- For multi-panel: panel-by-panel description
+comparisons, or has multiple panels with distinct results): attach each as a
+PNG with `-i <file>` on the `codex exec` that reviews it (in Multi-Pass, the
+pass for its section; render a PDF page with `pdftoppm -png -r 150 -f N -l N`),
+and name the file beside its caption in the inventory. `-i` takes several files, so place it
+before another flag rather than right before the `-` prompt argument.
 
 **Non-critical decorative/overview figures**: brief factual inventory only.
 
-Mark any attack that depends on visual inspection as `[visual-only]` —
-Claude verifies these since Codex reviewed blind to the image.
+Mark any attack on a figure Codex received only as text as `[visual-only]` —
+Claude verifies these against the figure.
 
 ## Protocol
 
@@ -137,7 +137,7 @@ Key elements of the prompt:
   confidence, claim attacked, attack, evidence, fix, falsifier
 - Strongest Rejection Case (1 paragraph narrative)
 - Hostile Review Score (venue-calibrated)
-- `[visual-only]` marker for figure-dependent attacks
+- `[visual-only]` marker for attacks on figures sent only as text
 
 Save the `threadId` for follow-up.
 

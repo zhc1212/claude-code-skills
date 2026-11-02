@@ -241,15 +241,16 @@ about what to log, where, and what value range confirms vs denies.
 ```
 ### Experiment {N}: Test {hypothesis}
 **Action**: {exact code change, print statement, or command}
-**Executor**: {Claude (local command/print) | user (GPU experiment) | user (manual check)}
+**Executor**: {Claude | user (needs hardware or access Claude lacks) | user (manual check)}
 **Predicted if true**: {specific output or behavior}
 **Predicted if false**: {specific output or behavior}
 **Estimated time**: {how long this takes to run}
 ```
 
-Claude executes print-statement tests and local assertions directly.
-GPU experiments, model loading, and commands requiring specific hardware
-need the user to run them.
+Claude runs print-statement tests, local assertions, and GPU or
+model-loading checks wherever the environment gives it the hardware.
+Hand a command to the user only when it needs hardware or access Claude
+lacks.
 
 Prefer experiments that are:
 - **Fast**: minutes, not hours. If a full model eval takes 2 hours,
@@ -356,7 +357,7 @@ when similar bugs recur -- the ledger is a searchable diagnostic record.
 - **First call**: `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
 - **Follow-ups**: `codex exec resume` with saved `threadId` + `prompt`
 - Starting a fresh `codex exec` mid-session erases Codex's memory
-  of the evidence packet and prior hypotheses -- always use the reply
-  endpoint after the first call
+  of the evidence packet and prior hypotheses -- always continue with
+  `codex exec resume` after the first call
 - On Codex CLI error (including initial connection failure): tell the user, ask
   whether to retry or proceed with Claude-only debugging

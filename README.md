@@ -259,6 +259,24 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
+## Fit the cross-model skills to their real use — v1.0.35
+
+Changes from the real runs of five own skills in the 30 retained days of transcripts (`codex-review` 24 invocations,
+`codex-debate` 20, `codex-skill-optimizer` 1, `codex-debug-pair` and `codex-paper-adversary` none). `codex-review`'s
+round-1 prompt gains a dimension set for text (docs, plans, issue bodies, research notes, paper sources, agent
+instructions): 10 of its 24 runs reviewed no code, and Claude either rewrote the dimensions ad hoc or applied the code
+set to a docs-only PR. `codex-debate` keeps the exchange in a persistent scratch directory outside the repository and
+copies the saved record to `docs/debates/` only when the project keeps records there and nothing in it is unpublished
+(three of five recorded runs had already moved it out); it gives Codex the repository as `cwd`, and its description no
+longer points at a nonexistent `/codex consult`. `codex-skill-optimizer` adds a real-use step with
+`scripts/skill_runs.py`, which summarizes a skill's past invocations (Skill tool calls and slash commands) from
+`~/.claude/projects/*/*.jsonl`; its craftsmanship standard asks for `codex exec resume` and `xhigh` instead of a "reply
+endpoint" and max reasoning, and its research agent runs only where subagents are allowed. `codex-paper-adversary`
+attaches review-critical figures with `codex exec -i` (tested live with gpt-6-astra on 2026-11-02) instead of
+describing them, and `codex-debug-pair` lets Claude run GPU checks where it has the hardware. No MCP-era "reply
+endpoint" or `codex-reply` wording is left in the family. `workspace/USER_CLAUDE.md` adds one line: when the user asks
+for the advisor and Codex together, the advisor is consulted before Codex's reply is read.
+
 ## Cap codex-experiment-critic rounds and persist its artifacts — v1.0.34
 
 Fixes from the skill's six real runs (2026-10-01 to 10-23). A new Round Budget section allows one Codex round by

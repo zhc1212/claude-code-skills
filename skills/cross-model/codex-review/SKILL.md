@@ -99,9 +99,9 @@ The last two are what make a grinding loop visible.
 **The ledger lives on disk.** After every round, write ledger + `threadId` +
 round count + snapshot to a scratch file in an already-ignored directory, e.g.
 `.claude/codex-review-<branch>.md`. A continuation session resumes with
-`codex-reply` and the delta prompt; if the thread is gone, a fresh `codex` call
-carries the delta prompt plus the ledger verbatim, and the round count carries
-over. One review = one ledger = one thread; concurrent reviews are keyed by
+`codex exec resume` and the delta prompt; if the thread is gone, a fresh
+`codex exec` carries the delta prompt plus the ledger verbatim, and the round
+count carries over. One review = one ledger = one thread; concurrent reviews are keyed by
 branch.
 
 ## Protocol
@@ -242,13 +242,22 @@ codex exec:
     COVERAGE — per dimension: checked / n-a / not-assessed, plus the paths or
       checks you inspected, and for n-a the reason it does not apply. Vary the
       environment and concurrency envelope the policy names, not just the inputs.
-      Dimensions: correctness on real inputs; concurrency and ordering; resource
-      lifecycle (files, locks, handles, temp dirs); error and partial-failure
-      paths; interface contract vs. callers; security and authorisation;
-      persistence and migrations; test validity — does each test fail if the
-      behaviour it claims to pin is broken, or does it assert whatever the
-      implementation happens to do? Performance only if an SLO or complexity
-      contract exists.
+      Dimensions for code: correctness on real inputs; concurrency and ordering;
+      resource lifecycle (files, locks, handles, temp dirs); error and
+      partial-failure paths; interface contract vs. callers; security and
+      authorisation; persistence and migrations; test validity — does each test
+      fail if the behaviour it claims to pin is broken, or does it assert
+      whatever the implementation happens to do? Performance only if an SLO or
+      complexity contract exists.
+      Dimensions for text (docs, plans, issue bodies, research notes, paper
+      sources, agent instructions): claims against their sources (numbers,
+      citations, quoted results, file:line references); agreement with the
+      code, data and recorded results the text describes; consistency across
+      files that state the same rule; frozen protocols, thresholds and
+      identities, unchanged unless the change says so; for plans, step order,
+      dependencies and cost estimates; links, anchors and the build or render;
+      privacy and anonymity.
+      [keep the set or sets that match the files in scope]
 
     MATERIAL — all four gate conditions met, evidence already produced by you.
       Per finding: id, file:line, dimension, one-line claim, the oracle (from

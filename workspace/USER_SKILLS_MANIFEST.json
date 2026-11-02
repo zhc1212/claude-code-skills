@@ -139,13 +139,13 @@
       "name": "codex-debate",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "99c38e2b62375a7e0603be091c908bdb71e8471251498c87dfe4dfe1dab0366c"
+      "installed_skill_sha256": "2bba00af2f6d956a0107cf27aa537d0a0fc067ecd757410560bc61b91769c68c"
     },
     {
       "name": "codex-debug-pair",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "eba8d58818d10f4798faede93f8425278bdbb0e0c8edecfbd0920483b58bf557"
+      "installed_skill_sha256": "13caaac394b676ff064ed3fea4fedf42856147b2306010df055614dc9edcea06"
     },
     {
       "name": "codex-experiment-critic",
@@ -157,19 +157,19 @@
       "name": "codex-paper-adversary",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "1b13153e8164d956cb774a7b9d08b8ff12d8cd13b46aefc547d4a65c1ef318d1"
+      "installed_skill_sha256": "4e2e70a58ee9a3a6f5da10543b00f2d6f141fa2a04a7e05f77172773aa82c561"
     },
     {
       "name": "codex-review",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "2a02e42ff8e3b76f92b4923a129bdd68477c7288bfef4bdf8275099aac9bbff6"
+      "installed_skill_sha256": "b6dcee201315a3abd3131c09554f8955a2f36431c69b02e185e7d2ef31629a5c"
     },
     {
       "name": "codex-skill-optimizer",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "4369b415aeecf489d8d5b83c6eab5dc04a2c5aac76e870b1d067dbb8119e2ccc"
+      "installed_skill_sha256": "1ad4f82100cdfd4305b4a00decf24002b8c7176f32f6a965084e82cd96dcf22e"
     },
     {
       "name": "collect-results",

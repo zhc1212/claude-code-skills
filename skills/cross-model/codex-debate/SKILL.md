@@ -1,6 +1,6 @@
 ---
 name: codex-debate
-description: Conducts structured multi-round debates between Claude and Codex (GPT via Codex CLI) on research directions, code architecture, experiment design, or technical tradeoffs. Elicits independent blind opening positions using Toulmin argumentation, identifies cruxes, requires steel-manning before rebuttals, and synthesizes a consensus or documented disagreement with calibrated confidence. Use whenever the user wants two models to deliberate — triggers on "和codex讨论", "codex debate", "codex brainstorm", "让codex和你辩", "多轮探讨", "头脑风暴codex", "cross-model debate", "codex discuss", "两个模型讨论", "让两个模型辩一下", "两个AI讨论", "pros and cons with codex", "和codex头脑风暴", "codex 你怎么看" (when back-and-forth is intended). Not for code review (/codex-review) or quick one-shot questions (/codex consult).
+description: Conducts structured multi-round debates between Claude and Codex (GPT via Codex CLI) on research directions, code architecture, experiment design, or technical tradeoffs. Elicits independent blind opening positions using Toulmin argumentation, identifies cruxes, requires steel-manning before rebuttals, and synthesizes a consensus or documented disagreement with calibrated confidence. Use whenever the user wants two models to deliberate — triggers on "和codex讨论", "codex debate", "codex brainstorm", "让codex和你辩", "多轮探讨", "头脑风暴codex", "cross-model debate", "codex discuss", "两个模型讨论", "让两个模型辩一下", "两个AI讨论", "pros and cons with codex", "和codex头脑风暴", "codex 你怎么看" (when back-and-forth is intended). Not for code review (/codex-review) or a quick one-shot question to Codex, which needs no protocol.
 ---
 
 # Codex Debate
@@ -47,6 +47,7 @@ from "loose analogy" — that distinction matters for deciding how much weight t
 1. **Gather context** relevant to the debate topic:
    - Code: read source files, current architecture, recent changes
    - Research: check docs, papers, experiment results, prior debate records
+     (the repository's `docs/debates/` and the scratch debates directory)
    - Design: understand constraints, prior decisions, and stakeholder needs
 
 2. If genuinely ambiguous, ask ONE clarifying question. Otherwise start.
@@ -86,8 +87,10 @@ logic rather than talking past each other.
 
 ## Phase 2: Blind Opening
 
-Send Codex the evidence packet and topic. Via `codex exec` with
-`model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`:
+Send Codex the evidence packet and topic via `codex exec` with
+`model: gpt-6-astra`, `config: {"model_reasoning_effort": "xhigh"}` and, when
+the topic concerns a repository, `cwd: <repository root>`, so Codex can open
+the code and results the packet cites:
 
 ```
 ## Independent Position Request: {topic}
@@ -121,10 +124,13 @@ Also provide:
 
 Save the `threadId` — all subsequent rounds use `codex exec resume`.
 
-Keep the exchange on disk as it happens, in `docs/debates/{date}-{topic-slug}/`:
+Keep the exchange on disk as it happens, in a persistent directory outside the
+repository, e.g. `~/.claude/projects/<project-key>/scratch/debates/{date}-{topic-slug}/`:
 `packet.md`, `thread_id`, and per round `r{N}-prompt.md` (written before
 sending) and `r{N}-codex.md` (the `-o` file), with the blind opening as round 0.
-The saved document links here instead of reconstructing the exchange.
+Outside the repository, because packets often carry unpublished numbers and the
+repository may be shared; not `/tmp`, which inside the sandbox is per-session
+tmpfs. The saved document links here instead of reconstructing the exchange.
 
 ### Optional Context Follow-Up
 
@@ -324,12 +330,13 @@ The user can interrupt if they want to override cruxes.
 
 ### Saved document (conditional)
 
-Write to `docs/debates/{date}-{topic-slug}.md` when:
+Write `debate.md` in the exchange directory when:
 - The debate ran 3+ rounds, OR
 - It affects code/research direction materially, OR
 - The user explicitly asks for a record
 
-Create `docs/debates/` if it doesn't exist.
+Copy it to the repository's `docs/debates/{date}-{topic-slug}.md` when the
+project already keeps debate records there and nothing in it is unpublished.
 Template: see [references/consensus-template.md](references/consensus-template.md)
 
 ## Behavioral Rules
@@ -349,12 +356,12 @@ Template: see [references/consensus-template.md](references/consensus-template.m
 
 ## Codex CLI
 
-- **First call**: `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
+- **First call**: `codex exec` with `model: gpt-6-astra`, `config: {"model_reasoning_effort": "xhigh"}` and, for a repository topic, `cwd: <repository root>`
 - **Follow-ups**: `codex exec resume` with saved `threadId` + `prompt`
 - Every prompt, first and follow-up, carries the read-only line from the Phase 2
   template: the `codex` wrapper runs with write access inside the Claude sandbox
 - Starting a fresh `codex exec` mid-debate erases Codex's memory of
-  prior rounds — always use the reply endpoint after the first call
+  prior rounds — always continue with `codex exec resume` after the first call
 - On Codex CLI error (including initial connection failure): tell the user, ask
   whether to retry or summarize current state. If Codex is unreachable before
   the debate starts, offer to proceed as a solo analysis instead

@@ -19,9 +19,9 @@ describe what you learned. Then attack those claims.
 {raw paper text — full merged .tex or section excerpt}
 
 ### Figure/Table Inventory
-{for each figure/table: caption text, label, brief factual description
-of what the figure shows. Mark with [visual-only] if attack would depend
-on seeing the actual image.}
+{for each figure/table: caption text, label, and either the attached image
+file or a brief factual description of what the figure shows. Mark with
+[visual-only] an attack on a figure you have only as a description.}
 
 ### Review Dimensions
 All attacks must map to at least one evaluation dimension:

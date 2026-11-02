@@ -9,7 +9,7 @@ Defaults for every session. Project CLAUDE.md files add to these and win on conf
 - No asking needed for: the project's own test/lint/build/format commands, read-only git, read-only inspection, and edits to `~/.claude` config or memory.
 - Ask first for: deleting data, force-pushing, or changing anything outside the current repo/workspace.
 - Subagents (Agent tool of any type, including Explore and fork) only when I ask. A skill I invoked whose method is dispatching subagents counts as asking.
-- The advisor tool is not a subagent; call it when you judge it worth the cost. It already sees the whole transcript, your reasoning included, so state a plan in the conversation and never write a plan or draft file just to show it. Its "make your deliverable durable before calling" means saving the real output (the edited file, a result), not drafts.
+- The advisor tool is not a subagent; call it when you judge it worth the cost. It already sees the whole transcript, your reasoning included, so state a plan in the conversation and never write a plan or draft file just to show it. Its "make your deliverable durable before calling" means saving the real output (the edited file, a result), not drafts. When I ask for the advisor and Codex together, consult the advisor before reading Codex's reply so the two views stay independent; a later call to weigh them is fine.
 
 ## Changing code
 
