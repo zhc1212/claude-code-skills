@@ -8,7 +8,7 @@ Defaults for every session. Project CLAUDE.md files add to these and win on conf
 - Make a reasonable assumption and keep moving. Stop only for a real blocker that no safe assumption covers, and name it.
 - No asking needed for: the project's own test/lint/build/format commands, read-only git, read-only inspection, and edits to `~/.claude` config or memory.
 - Ask first for: deleting data, force-pushing, or changing anything outside the current repo/workspace.
-- Subagents (Agent tool of any type, including Explore and fork) only when I ask. A skill I invoked whose method is dispatching subagents counts as asking.
+- Subagents (Agent tool of any type, including Explore and fork) only when I ask. A skill I invoked whose method is dispatching subagents counts as asking. Run at most 5 subagents at a time, including those a skill dispatches; queue the rest.
 - The advisor tool is not a subagent; call it when you judge it worth the cost. It already sees the whole transcript, your reasoning included, so state a plan in the conversation and never write a plan or draft file just to show it. Its "make your deliverable durable before calling" means saving the real output (the edited file, a result), not drafts. When I ask for the advisor and Codex together, consult the advisor before reading Codex's reply so the two views stay independent; a later call to weigh them is fine.
 
 ## Changing code
@@ -72,7 +72,7 @@ Usage notes:
 - FSE/PACMSE uses acmart `acmsmall`, so `paper-write venue: ACM` (sigconf) is the wrong template; re-check page limits against the live call.
 - `run-experiment`: long jobs follow `~/.claude/rules/sandbox-runtime.md`.
 
-Not installed on this machine: `run-baseline`, `i-have-adhd`, `mermaid-diagram`, and the `ecc`, `ai-research-skills`, `superpowers` and `impeccable` plugins. Retired skills and uninstalled plugins, with dates and reasons, are in the release notes of the claude-code-skills README. Whenever a skill or plugin is added or removed, update this section and those notes in the same edit.
+Not installed on this machine: `run-baseline`, `i-have-adhd`, `mermaid-diagram`, and the `ecc`, `ai-research-skills` and `impeccable` plugins. `superpowers` and `skill-creator` are installed for the agentic-infra project only (project scope, 2026-11-02), not user-wide. Retired skills and uninstalled plugins, with dates and reasons, are in the release notes of the claude-code-skills README. Whenever a skill or plugin is added or removed, update this section and those notes in the same edit.
 
 ## Environment (this machine)
 

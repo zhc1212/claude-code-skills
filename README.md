@@ -259,6 +259,14 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
+## Record project-scoped superpowers and skill-creator; sync the subagent cap — v1.0.36
+
+`superpowers` (6.4.1) and `skill-creator` were installed on 2026-11-02 at project scope for agentic-infra only (its
+`.claude/settings.json`; agentic-infra PR #77), not user-wide. `workspace/USER_CLAUDE.md` therefore drops
+`superpowers` from the "Not installed" list and names both as project-scoped; the v1.0.17 note on the user-wide
+uninstall still holds. The snapshot also picks up a line already live in `~/.claude/CLAUDE.md` since 2026-11-02: at most
+5 subagents at a time, including those a skill dispatches. No skill changed.
+
 ## Fit the cross-model skills to their real use — v1.0.35
 
 Changes from the real runs of five own skills in the 30 retained days of transcripts (`codex-review` 24 invocations,
