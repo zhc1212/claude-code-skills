@@ -151,7 +151,7 @@
       "name": "codex-experiment-critic",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "3672493e686fae64357e0cc34828ffddc27a29b6f1b69a3fbb8928c537221b9b"
+      "installed_skill_sha256": "b8f6ab8b273e99e238cdd6971e65bc6ba027e68021d521326dd9e2d08d4a1037"
     },
     {
       "name": "codex-paper-adversary",

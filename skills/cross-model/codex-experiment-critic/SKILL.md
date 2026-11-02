@@ -28,6 +28,36 @@ of researcher time. A 5-minute design review would have caught it.
 7. User decides: revise, proceed, or redesign
 ```
 
+## Round Budget
+
+A round is one Codex critique of a plan version. Asked for flaws, a model
+always finds one more, so each revision invites fresh findings and the
+experiment never starts unless the rounds are capped.
+
+- **Round 1** (`codex exec`): the full critique. This is the default and
+  often the only round.
+- **Round 2** (`codex exec resume`): runs only if the plan was revised after
+  round 1. It is a delta review: the changed elements plus round 1's blocking
+  and important findings.
+- Revisions made in response to round 2 go ahead without another Codex pass,
+  and the report says so. A third round happens only when the user asks for
+  it by name.
+- Revise the plan for blocking and important findings. Minor findings are
+  recorded for the paper's limitations, not fixed.
+- Asking Codex to clarify or reconsider an existing finding is not a round.
+
+## Artifacts
+
+Keep each critique's files in one persistent directory outside the
+repository Codex reads, e.g.
+`~/.claude/projects/<project-key>/scratch/experiment-critic/<slug>/`:
+the pre-assessment, the packet, Codex's reply for each round, the
+`threadId`, and the final verdict. Not `/tmp`: inside the sandbox it is
+per-session tmpfs, and the `threadId` needed for round 2 or follow-ups
+vanishes with the session. Outside the repository, because Codex may read the
+repo and must not find the pre-assessment. If the project keeps design
+reviews (e.g. `docs/review/`), copy the final critique there.
+
 ## Phase 1: Collect the Experiment Plan
 
 Extract or ask for these elements. If the user provides a partial plan, ask
@@ -66,8 +96,15 @@ completeness.
 ## Phase 2: Claude Quick-Assessment
 
 Before calling Codex, form 3-5 private concerns. Focus on the highest-risk
-categories. Record them privately — these are hypotheses to cross-check
-later, not conclusions.
+categories. Write them to the pre-assessment file (see Artifacts) before
+calling Codex — these are hypotheses to cross-check later, not conclusions.
+Concerns kept only in thinking cannot be checked in Phase 5 and do not
+survive compaction.
+
+If the advisor is consulted too, call it before reading Codex's reply and
+add its concerns to the same file as part of Claude's side. Once Codex's
+output is in the transcript, the advisor sees it and is no longer
+independent of Codex.
 
 Focus on:
 - Does the hypothesis have a clear falsification criterion?
@@ -94,29 +131,36 @@ without being steered by Claude's framing.
 - Data pipeline (sources, splits, any reuse across stages)
 - Control variables
 - Compute budget and number of planned runs
-- Relevant code paths (function names, not full source — Codex can't run it)
-- Domain context (model architecture, compression ratio, task type)
+- Repository root and the files that implement the method, data pipeline and
+  evaluation — Codex reads them itself, so leakage or split errors that live
+  in code are in scope
+- Domain context (field, model or system, task type)
 - Known limitations the user has acknowledged
 
 **Exclude:**
-- Claude's assessment or concerns
+- Claude's assessment or concerns, and paths to Claude's notes, earlier
+  reviews or the artifacts directory
 - Leading language ("this seems problematic because...")
 - Recommendations or suggested fixes
 
 ## Phase 4: Codex Blind Critique
 
-Send via `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`:
+Send via `codex exec` with `model: gpt-6-astra`, `config: {"model_reasoning_effort": "xhigh"}` and `cwd: <repository root>`:
 
 ```
 ## Experiment Design Critique
 
-You are a senior ML researcher reviewing an experiment plan before
+You are a senior {field} researcher reviewing an experiment plan before
 execution. Your job: find flaws that would invalidate the results or
 waste compute. Be thorough and specific — vague concerns are not
 actionable.
 
 ### Experiment Plan
 {neutral experiment packet from Phase 3}
+
+Read the listed code paths and check that the code does what the plan
+says, especially data splits and evaluation. Do not launch training or
+evaluation jobs.
 
 ### Critique Checklist
 Evaluate each category. For each finding, provide ALL fields:
@@ -137,7 +181,7 @@ Evaluate each category. For each finding, provide ALL fields:
   forces precise scoping of the concern
 
 ### Categories
-See references/critique-categories.md for detailed definitions with examples.
+Definitions with examples: {absolute path of this skill's references/critique-categories.md}
 Categories: Confounder, Missing Baseline, Unfair Comparison, Information Leakage,
 Statistical Issue, Reproducibility Gap, Compute Efficiency, Ablation Gap, Logical Gap.
 
@@ -150,11 +194,13 @@ After all findings, provide:
 - **Top priority**: the single most important thing to fix before running
 ```
 
-Save the `threadId` — the user may want follow-up clarification.
+Save the `threadId` in the artifacts directory — round 2 and follow-ups
+resume this thread.
 
 ## Phase 5: Cross-Check
 
-Compare Claude's private quick-assessment with Codex's critique:
+Compare the pre-assessment file with Codex's critique (concerns the advisor
+raised count as Claude's side):
 
 - **Both flagged**: High confidence the issue is real. Present as primary
   finding. Note the convergence — independent identification from two
@@ -206,8 +252,8 @@ After presenting:
 
 The user decides. Three paths:
 
-1. **Revise**: fix the flagged issues, optionally re-run the critique on
-   the revised plan via `codex exec resume` with the saved threadId
+1. **Revise**: fix the blocking and important issues, optionally followed
+   by round 2 on the revised plan (see Round Budget)
 2. **Proceed anyway**: the user understands the risks and wants to run —
    acknowledge and note which findings they accepted
 3. **Redesign**: go back to hypothesis formulation
@@ -220,8 +266,8 @@ findings, let them choose.
 The user can ask to:
 - **Clarify a finding**: use `codex exec resume` with the saved
   threadId to ask Codex to elaborate or reconsider
-- **Re-critique after revision**: send the updated plan elements to Codex
-  for a delta review
+- **Re-critique after revision**: this is round 2, the delta review in
+  Round Budget
 - **Challenge a finding**: if the user disagrees, send their reasoning to
   Codex and report whether it changes the verdict
 
@@ -243,9 +289,10 @@ The user can ask to:
 
 ## Codex CLI
 
-- **First call**: `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
+- **First call**: `codex exec` with `model: gpt-6-astra`, `config: {"model_reasoning_effort": "xhigh"}` and `cwd: <repository root>`
 - **Follow-ups**: `codex exec resume` with saved `threadId` + `prompt`
 - Starting a fresh `codex exec` mid-critique erases Codex's memory of
-  the experiment context — always use the reply endpoint after the first call
+  the experiment context — always continue with `codex exec resume` after
+  the first call
 - On Codex CLI error: tell the user, offer to retry or proceed with Claude-only
   assessment (clearly labeled as single-model, not cross-validated)

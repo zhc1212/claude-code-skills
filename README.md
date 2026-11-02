@@ -259,6 +259,17 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
+## Cap codex-experiment-critic rounds and persist its artifacts — v1.0.34
+
+Fixes from the skill's six real runs (2026-10-01 to 10-23). A new Round Budget section allows one Codex round by
+default and a second, delta round only after a revision; a third needs the user to ask for it, and minor findings are
+recorded rather than fixed. Two earlier runs had kept resuming, one still returning REVISE with new findings in round
+2. Claude's pre-assessment, and the advisor's if consulted before Codex replies, is now written to a file before Codex
+is called, so the Phase 5 cross-check can be audited after compaction. The packet, replies and `threadId` go to a
+persistent directory outside the repository instead of `/tmp`. Codex now gets the repository as `cwd` and is asked to
+read the implementing code paths rather than function names alone, replacing the outdated "Codex can't run it" line.
+The reviewer persona takes the plan's field, and the category examples are marked as LLM-compression illustrations.
+
 ## Install the hallmark plugin; decline impeccable — v1.0.33
 
 `hallmark` (Nutlope/hallmark 2.0.0, MIT, commit `4f6a46c`) is installed as a user-scope plugin from its own

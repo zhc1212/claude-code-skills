@@ -1,7 +1,8 @@
 # Experiment Critique Categories
 
-Nine categories for evaluating ML experiment designs. Each finding in a
-critique must be classified into exactly one.
+Nine categories for evaluating experiment designs. Each finding in a
+critique must be classified into exactly one. The examples come from LLM
+compression; apply the definitions to the plan's own field.
 
 ## Confounder
 
