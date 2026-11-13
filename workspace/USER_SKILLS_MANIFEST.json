@@ -1,8 +1,31 @@
 {
   "snapshot_date": "2026-10-16",
   "source": "~/.claude/skills",
-  "active_skill_count": 124,
+  "active_skill_count": 127,
   "retained_repository_only_skills": [],
+  "local_only_skills": {
+    "note": "Installed in ~/.claude/skills but never copied here: the source repository has no license. sync_user_level.py skips these names.",
+    "source": "https://github.com/eunomia-bpf/research-skills",
+    "upstream_path": "skills/",
+    "upstream_commit": "bc0de6643266152bc201efade1a5dc1f36812384",
+    "installed": "2026-11-13",
+    "names": [
+      "auto-research-orchestrator",
+      "check-paper-citations",
+      "check-paper-structure-flow",
+      "check-terminology-infoflow",
+      "iter-refine-ideas",
+      "iter-refine-writing",
+      "iter-review-critique",
+      "paper-figures",
+      "paper-writing-style",
+      "research-experiment-design",
+      "research-literature-novelty",
+      "rewrite-abstract-intro",
+      "rewrite-paper-section",
+      "tighten-prose-systems-latex"
+    ]
+  },
   "excluded": [
     "humanizer/.git/",
     "oral-paragraph-audit/evals/results/",
@@ -238,6 +261,14 @@
       "upstream_commit": "57270820d3cd71cbdf4fb6b2f7091d4fb37bb019",
       "installed_skill_sha256": "922d7863a09e6521236bffb6989ebe4e9bce045ebd0f82866c94375fccfd1c6b",
       "note": "MIT; PROVENANCE.md and LICENSE added."
+    },
+    {
+      "name": "dse-loop",
+      "origin": "upstream",
+      "source": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "upstream_path": "skills/dse-loop",
+      "upstream_commit": "e67ae1629418319cf4056facdb5b77f09dd61d5c",
+      "installed_skill_sha256": "ae8e147011f7c1a6add208b6cecb218d03a83949fba0ef9b0b1936e4b0ee18bf"
     },
     {
       "name": "dump-chat-history",
@@ -674,7 +705,7 @@
       "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
       "upstream_path": "skills/engineering/pr",
-      "upstream_commit": "49dd158d1076134a641b33efb035946536778336",
+      "upstream_commit": "5863806dd4e15c63174bee4e7515a4256792ecfa",
       "installed_skill_sha256": "ab63f1cf78647389edcd386c9427c5dfca27ed2836930c24773ffee834c19bcd"
     },
     {
@@ -807,6 +838,14 @@
       "upstream_path": "skills/survey",
       "upstream_commit": "18e4cddead85740ccf3ebab6d4693f23a0491b26",
       "installed_skill_sha256": "f04961424a781fa1a3ff80b79c907f9c6f9c04868d6660c85162a54066a37206"
+    },
+    {
+      "name": "system-profile",
+      "origin": "upstream",
+      "source": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "upstream_path": "skills/system-profile",
+      "upstream_commit": "71c9f397a397c46bba8faf527af439761fc4e5d5",
+      "installed_skill_sha256": "9d31e32d2a63cf2f27a843e171c652327596c3f9e911c265660618d4ba27c48e"
     },
     {
       "name": "tdd",
@@ -965,6 +1004,14 @@
       "upstream_path": "skills/in-progress/writing-shape",
       "upstream_commit": "5c89081d4bbeb3d039a42093653f90bb698d780e",
       "installed_skill_sha256": "f5e6c57bdd85178ace4a260c92f46da6b64ddee18215b461d875739c68976f72"
+    },
+    {
+      "name": "writing-systems-papers",
+      "origin": "upstream",
+      "source": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+      "upstream_path": "skills/writing-systems-papers",
+      "upstream_commit": "e67ae1629418319cf4056facdb5b77f09dd61d5c",
+      "installed_skill_sha256": "385fcf41742514b4aa9ecf93a0582a1bfd3452cacd12a54c87cf5bd82adccf7f"
     }
   ],
   "project_scoped_skills": {

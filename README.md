@@ -4,7 +4,7 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 
 ## Skills by scenario
 
-124 skills in 14 scenario folders, `skills/<scenario>/<skill>/`, plus 5 [project-scoped skills](#project-scoped-skills) in `project-skills/<project>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
+127 skills in 14 scenario folders, `skills/<scenario>/<skill>/`, plus 5 [project-scoped skills](#project-scoped-skills) in `project-skills/<project>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
 
 [Ideas and literature](#ideas-and-literature) · [Experiments](#experiments) · [Drafting a paper](#drafting-a-paper) · [Figures and tables](#figures-and-tables) · [Revising a draft](#revising-a-draft) · [Review before submission](#review-before-submission) · [Second model as adversary](#second-model-as-adversary) · [Nature-family journals](#nature-family-journals) · [Software-engineering venues](#software-engineering-venues) · [Slides and reports](#slides-and-reports) · [General writing](#general-writing) · [Software engineering](#software-engineering) · [Planning and decisions](#planning-and-decisions) · [Agent setup, memory and knowledge](#agent-setup-memory-and-knowledge) · [Project-scoped skills](#project-scoped-skills)
 
@@ -41,6 +41,8 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 | `collect-results` | Aggregate results into comparison tables |
 | `analyze-results` | Statistics, comparisons and insights from results |
 | `experiment-bridge` | Implement an experiment plan, deploy it, collect first results |
+| `system-profile` | Profile a script, process, GPU, memory or interconnect for bottlenecks |
+| `dse-loop` | Design-space exploration loop for architecture and EDA (gem5, Yosys) |
 | `upload-hf` | Upload and verify model artifacts on the Hugging Face Hub |
 
 ### Drafting a paper
@@ -57,6 +59,7 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 | `intro-drafter` | Introduction along a six-paragraph flow |
 | `tech-paper-template` | Logical skeleton of a technical paper |
 | `benchmark-paper-template` | Structure of a benchmark or evaluation paper |
+| `writing-systems-papers` | Paragraph blueprint for OSDI/SOSP/ASPLOS/NSDI/EuroSys papers |
 | `translate-zh-en` | Chinese draft → publication-quality English LaTeX |
 | `paper-compile` | Compile LaTeX, fix errors, verify the PDF |
 
@@ -258,6 +261,26 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 - [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md) — current source policy and the historical third-party workspace inventory.
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
+
+## Add AI-infra and architecture-venue skills — v1.0.37
+
+Installed on 2026-11-13 at Dr.Z's request, for AI-infra research aimed at architecture venues.
+
+- Three ARIS skills, copied verbatim at `8f49392` into `skills/experiments/` (`system-profile`, `dse-loop`) and
+  `skills/drafting/` (`writing-systems-papers`), plus the ARIS `shared-references/external-cadence.md` that
+  `dse-loop` reads.
+- Plugins (user scope), so each keeps its repository layout: `isca-skills`, `micro-skills`, `hpca-skills` and
+  `asplos-skills` 1.1.0 from the `awesome-journal-skills` marketplace (brycewang-stanford/Awesome-Journal-Skills, MIT;
+  their skills read `../../resources/`, which a flat copy would break), and `ai-infra-auto-driven-skills` 0.10.0 from
+  BBuf/AI-Infra-Auto-Driven-SKILLS (no license; serving benchmarks, profiler analysis, capacity planning). Plugin
+  files are not snapshotted here.
+- Fourteen eunomia-bpf/research-skills skills (`bc0de66`) are installed in `~/.claude/skills/` only. That repository
+  has no license, so they are not copied into this public repository; the manifest lists them under
+  `local_only_skills`, and `sync_user_level.py` now skips those names instead of reporting them as missing folders.
+
+`workspace/USER_CLAUDE.md` gains a routing row for systems and architecture venues and two usage notes on these
+installs. The snapshot also picks up three lines already live in `~/.claude/CLAUDE.md`: fewer tool calls and
+staying in the current session, the separate bulk link for large downloads, and the paper-retrieval reference.
 
 ## Record project-scoped superpowers and skill-creator; sync the subagent cap — v1.0.36
 

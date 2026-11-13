@@ -58,7 +58,8 @@ def sync(manifest):
 
     entries = {e['name']: e for e in manifest['skills']}
     folders = {p.name: p for p in REPO.glob('skills/*/*') if p.is_dir()}
-    live = {p.name for p in LIVE.iterdir() if (p / 'SKILL.md').is_file()}
+    local_only = set(manifest.get('local_only_skills', {}).get('names', []))
+    live = {p.name for p in LIVE.iterdir() if (p / 'SKILL.md').is_file()} - local_only
     problems = [f'{n}: installed but has no skills/<scenario>/{n}/ folder' for n in sorted(live - folders.keys())]
     problems += [f'{n}: installed but has no manifest entry (add one with its origin)' for n in sorted(live - entries.keys())]
     problems += [f'{n}: in the manifest but no longer installed (git rm its folder, drop the entry)'

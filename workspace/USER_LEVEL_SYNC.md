@@ -7,8 +7,8 @@ carry `origin` (`own` or `upstream`), `source`, `upstream_path`, `upstream_commi
 `known_deviations`. Registered deviations (v1.0.28): `ppt-master` leaves out `scripts/gemini_watermark_remover.py`,
 three `citation-verification` references keep their EOF normalizations, and `neat-freak` fixtures materialize
 upstream symlinks. Fourteen skills removed by their upstream are retired; see the README's v1.0.27 notes.
-`shared-references/` mixes origins: `codex-cli.md` is ours, `compute-env-contract.md` (read by `run-experiment`) is a
-verbatim ARIS copy.
+`shared-references/` mixes origins: `codex-cli.md` is ours, `compute-env-contract.md` (read by `run-experiment`) and
+`external-cadence.md` (read by `dse-loop`) are verbatim ARIS copies.
 
 Update 2026-10-15: `statusline/` snapshots the active status line. Restore `statusline.sh` and `statusline-fit.py`
 to `~/.claude/`, `ccstatusline-settings.json` to `~/.config/ccstatusline/settings.json`, and
