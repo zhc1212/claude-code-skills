@@ -123,7 +123,7 @@ hints about what might be weak. Blind independence is the entire point.
 
 ## Step 2: Codex Adversarial Review
 
-Call `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`.
+Call `codex exec` with `model: gpt-6.2-astra` and `config: {"model_reasoning_effort": "xhigh"}`.
 See `references/codex-prompt-template.md` for the full prompt.
 
 Key elements of the prompt:
@@ -282,7 +282,7 @@ when X is in a section Codex hasn't seen yet.
 
 ## Codex CLI
 
-- **First call**: `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
+- **First call**: `codex exec` with `model: gpt-6.2-astra` and `config: {"model_reasoning_effort": "xhigh"}`
 - **Follow-ups on same section**: `codex exec resume` with saved `threadId`
 - **New section or re-review**: fresh `codex exec` call (independent)
 - On Codex CLI error: tell user, offer Claude-only adversarial review (single-model,

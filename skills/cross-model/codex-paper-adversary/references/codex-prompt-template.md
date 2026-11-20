@@ -1,6 +1,6 @@
 # Codex Adversarial Review Prompt Template
 
-Send via `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`.
+Send via `codex exec` with `model: gpt-6.2-astra` and `config: {"model_reasoning_effort": "xhigh"}`.
 Adapt venue, paper text, and figure inventory per invocation.
 
 ```

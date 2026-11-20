@@ -13,7 +13,7 @@ Get a multi-round critical review of research work from an external LLM at high 
 
 ## Constants
 
-- REVIEWER_MODEL = `gpt-6-astra` — Model used via Codex CLI. Must be an OpenAI model (e.g., `gpt-6-astra`, `gpt-5.6-sol`, `gpt-5.5`)
+- REVIEWER_MODEL = `gpt-6.2-astra` — Model used via Codex CLI. Must be an OpenAI model (e.g., `gpt-6.2-astra`, `gpt-5.6-sol`, `gpt-5.5`)
 - **REVIEWER_BACKEND = `codex`** — Default: Codex CLI (xhigh). Override with `— reviewer: oracle-pro` for GPT-5.6-sol Pro via Oracle MCP. See `shared-references/reviewer-routing.md`.
 
 ## Context: $ARGUMENTS

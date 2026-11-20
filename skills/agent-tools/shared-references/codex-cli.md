@@ -8,7 +8,7 @@ continues an existing thread.
 New thread. It prints the `threadId`, and Codex's reply goes to the `-o` file:
 
 ```bash
-codex -c model_reasoning_effort=xhigh exec --json --skip-git-repo-check -m gpt-6-astra \
+codex -c model_reasoning_effort=xhigh exec --json --skip-git-repo-check -m gpt-6.2-astra \
   -o /tmp/codex-reply.md - <<'PROMPT' | jq -r 'select(.type=="thread.started").thread_id'
 <prompt>
 PROMPT

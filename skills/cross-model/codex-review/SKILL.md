@@ -219,7 +219,7 @@ not-merging, not a PR comment.
 
 ```
 codex exec:
-  model: gpt-6-astra
+  model: gpt-6.2-astra
   cwd: <the tree from the snapshot — the worktree, not the primary checkout>
   config: {"model_reasoning_effort": "xhigh"}
   prompt: |
@@ -328,8 +328,8 @@ then only the items they accept as real debt go out.
 `-c model_reasoning_effort=xhigh` before `exec`; leave the sandbox at its default
 (`../shared-references/codex-cli.md`). A bare `reasoning_effort` key is silently
 ignored, leaving the model default `low` — verified by a live call on 2026-09-04. Use `xhigh`; reserve
-`max`/`ultra` for genuinely subtle code. `gpt-6-astra` answered a live call on
-2026-09-24; an unsupported model name returns HTTP 400 rather than falling back,
+`max`/`ultra` for genuinely subtle code. `gpt-6.2-astra` answered a live call on
+2026-11-20; an unsupported model name returns HTTP 400 rather than falling back,
 so that error means the pin needs updating, not a transient failure.
 
 **On failure before any edit**: tell the user, offer a Claude-only review, and

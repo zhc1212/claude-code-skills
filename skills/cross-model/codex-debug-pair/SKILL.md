@@ -124,7 +124,7 @@ as neutral description.
 ## Phase 4: Codex Blind Hypotheses
 
 Send the evidence packet to Codex via `codex exec` with
-`model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`. The high
+`model: gpt-6.2-astra` and `config: {"model_reasoning_effort": "xhigh"}`. The high
 reasoning effort is worth it here because hypothesis generation benefits from
 deeper exploration of the search space.
 
@@ -354,7 +354,7 @@ when similar bugs recur -- the ledger is a searchable diagnostic record.
 
 ## Codex CLI
 
-- **First call**: `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
+- **First call**: `codex exec` with `model: gpt-6.2-astra` and `config: {"model_reasoning_effort": "xhigh"}`
 - **Follow-ups**: `codex exec resume` with saved `threadId` + `prompt`
 - Starting a fresh `codex exec` mid-session erases Codex's memory
   of the evidence packet and prior hypotheses -- always continue with

@@ -136,7 +136,7 @@ Give Codex what a reviewer sees, before it sees any of Claude's findings.
 
 1. **Inputs per figure**: the in-context page render and the figure crop (PNG), its caption, the
    sentences citing it, its line from the script, and the venue.
-2. **First call**: `codex exec` with `model: gpt-6-astra` and
+2. **First call**: `codex exec` with `model: gpt-6.2-astra` and
    `config: {"model_reasoning_effort": "xhigh"}`; attach images with repeated `-i FILE` placed
    before `-o FILE`. Save the `threadId`. If the prompt points Codex at this rubric, give the
    absolute paths of this skill's files and tell it to ignore any installed copy of figure-audit

@@ -18,7 +18,7 @@ Autonomously iterate: review → implement fixes → re-review, until the extern
 - MAX_ROUNDS = 4
 - POSITIVE_THRESHOLD: score >= 6/10, or verdict contains "accept", "sufficient", "ready for submission"
 - REVIEW_DOC: `review-stage/AUTO_REVIEW.md` (cumulative log) *(fall back to `./AUTO_REVIEW.md` for legacy projects)*
-- REVIEWER_MODEL = `gpt-6-astra` — Model used via Codex CLI. Must be an OpenAI model (e.g., `gpt-6-astra`, `gpt-5.6-sol`, `gpt-5.5`)
+- REVIEWER_MODEL = `gpt-6.2-astra` — Model used via Codex CLI. Must be an OpenAI model (e.g., `gpt-6.2-astra`, `gpt-5.6-sol`, `gpt-5.5`)
 - **REVIEWER_BACKEND = `codex`** — Default: Codex CLI (xhigh). Override with `— reviewer: oracle-pro` for GPT-5.6-sol via Oracle MCP. See `shared-references/reviewer-routing.md`.
 - **OUTPUT_DIR = `review-stage/`** — All review-stage outputs go here. Create the directory if it doesn't exist.
 - **HUMAN_CHECKPOINT = false** — When `true`, pause after each round's review (Phase B) and present the score + weaknesses to the user. Wait for user input before proceeding to Phase C. The user can: approve the suggested fixes, provide custom modification instructions, skip specific fixes, or stop the loop early. When `false` (default), the loop runs fully autonomously.

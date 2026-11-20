@@ -13,7 +13,7 @@ Check whether a proposed method/idea has already been done in the literature: **
 
 ## Constants
 
-- REVIEWER_MODEL = `gpt-6-astra` — Model used via Codex CLI. Must be an OpenAI model (e.g., `gpt-6-astra`, `gpt-5.6-sol`, `gpt-5.5`)
+- REVIEWER_MODEL = `gpt-6.2-astra` — Model used via Codex CLI. Must be an OpenAI model (e.g., `gpt-6.2-astra`, `gpt-5.6-sol`, `gpt-5.5`)
 
 ## Instructions
 

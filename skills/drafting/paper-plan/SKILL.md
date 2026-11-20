@@ -17,7 +17,7 @@ Generate a structured, section-by-section paper outline from: **$ARGUMENTS**
 
 ## Constants
 
-- **REVIEWER_MODEL = `gpt-6-astra`** — Model used via Codex CLI for outline review. Must be an OpenAI model.
+- **REVIEWER_MODEL = `gpt-6.2-astra`** — Model used via Codex CLI for outline review. Must be an OpenAI model.
 - **TARGET_VENUE = `ICLR`** — Default venue. User can override (e.g., `/paper-plan "topic" — venue: NeurIPS`). Supported: `ICLR`, `NeurIPS`, `ICML`, `CVPR`, `ACL`, `AAAI`, `ACM`, `IEEE_JOURNAL` (IEEE Transactions / Letters), `IEEE_CONF` (IEEE conferences).
 - **MAX_PAGES** — Page limit. For ML conferences: main body to Conclusion end (excluding references, appendix). ICLR=9, NeurIPS=9, ICML=8. **For IEEE venues: references ARE included in page count.** IEEE journal Transactions ≈ 12-14 pages total, Letters ≈ 4-5 pages total; IEEE conference ≈ 5-8 pages total (including references).
 
@@ -241,11 +241,11 @@ For each section, list required citations:
 
 ### Step 6: Cross-Review with REVIEWER_MODEL
 
-Send the complete outline to GPT-6-Astra xhigh for feedback:
+Send the complete outline to GPT-6.2-Astra xhigh for feedback:
 
 ```
 codex exec:
-  model: gpt-6-astra
+  model: gpt-6.2-astra
   config: {"model_reasoning_effort": "xhigh"}
   prompt: |
     Review this paper outline for a [VENUE] submission.

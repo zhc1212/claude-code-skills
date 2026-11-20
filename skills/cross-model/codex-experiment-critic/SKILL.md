@@ -145,7 +145,7 @@ without being steered by Claude's framing.
 
 ## Phase 4: Codex Blind Critique
 
-Send via `codex exec` with `model: gpt-6-astra`, `config: {"model_reasoning_effort": "xhigh"}` and `cwd: <repository root>`:
+Send via `codex exec` with `model: gpt-6.2-astra`, `config: {"model_reasoning_effort": "xhigh"}` and `cwd: <repository root>`:
 
 ```
 ## Experiment Design Critique
@@ -289,7 +289,7 @@ The user can ask to:
 
 ## Codex CLI
 
-- **First call**: `codex exec` with `model: gpt-6-astra`, `config: {"model_reasoning_effort": "xhigh"}` and `cwd: <repository root>`
+- **First call**: `codex exec` with `model: gpt-6.2-astra`, `config: {"model_reasoning_effort": "xhigh"}` and `cwd: <repository root>`
 - **Follow-ups**: `codex exec resume` with saved `threadId` + `prompt`
 - Starting a fresh `codex exec` mid-critique erases Codex's memory of
   the experiment context — always continue with `codex exec resume` after

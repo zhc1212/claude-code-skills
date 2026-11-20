@@ -125,7 +125,7 @@ Build a neutral evidence packet containing:
 
 Exclude: Claude's position, Claude's specific claims, user reactions.
 
-Send via `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`:
+Send via `codex exec` with `model: gpt-6.2-astra` and `config: {"model_reasoning_effort": "xhigh"}`:
 
 ```
 ## Independent Skill Review: {skill name}
@@ -263,7 +263,7 @@ boundaries referencing sibling skills.
 without reasoning. Progressive structure (high at boundaries, light in
 middle). Evidence-grounded claims with confidence + falsifiers.
 
-**Codex CLI**: calls follow `shared-references/codex-cli.md`: `model: gpt-6-astra`,
+**Codex CLI**: calls follow `shared-references/codex-cli.md`: `model: gpt-6.2-astra`,
 `config: {"model_reasoning_effort": "xhigh"}`, and `codex exec resume` with the
 saved threadId for follow-ups. Handle initial connection failure.
 
@@ -272,7 +272,7 @@ detail, categories, templates. Lean body, rich references.
 
 ## Codex CLI
 
-- **First call**: `codex exec` with `model: gpt-6-astra` and `config: {"model_reasoning_effort": "xhigh"}`
+- **First call**: `codex exec` with `model: gpt-6.2-astra` and `config: {"model_reasoning_effort": "xhigh"}`
 - **Follow-ups**: `codex exec resume` with saved `threadId`
 - On Codex CLI error: tell user, offer Claude-only audit (still valuable, just
   not cross-model validated)

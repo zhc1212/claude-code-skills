@@ -88,7 +88,7 @@ logic rather than talking past each other.
 ## Phase 2: Blind Opening
 
 Send Codex the evidence packet and topic via `codex exec` with
-`model: gpt-6-astra`, `config: {"model_reasoning_effort": "xhigh"}` and, when
+`model: gpt-6.2-astra`, `config: {"model_reasoning_effort": "xhigh"}` and, when
 the topic concerns a repository, `cwd: <repository root>`, so Codex can open
 the code and results the packet cites:
 
@@ -356,7 +356,7 @@ Template: see [references/consensus-template.md](references/consensus-template.m
 
 ## Codex CLI
 
-- **First call**: `codex exec` with `model: gpt-6-astra`, `config: {"model_reasoning_effort": "xhigh"}` and, for a repository topic, `cwd: <repository root>`
+- **First call**: `codex exec` with `model: gpt-6.2-astra`, `config: {"model_reasoning_effort": "xhigh"}` and, for a repository topic, `cwd: <repository root>`
 - **Follow-ups**: `codex exec resume` with saved `threadId` + `prompt`
 - Every prompt, first and follow-up, carries the read-only line from the Phase 2
   template: the `codex` wrapper runs with write access inside the Claude sandbox
