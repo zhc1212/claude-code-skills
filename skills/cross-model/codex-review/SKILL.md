@@ -325,7 +325,8 @@ then only the items they accept as real debt go out.
 ## Codex CLI
 
 **Call shape.** Pass the model as `-m`, the tree as `-C`, and reasoning effort as
-`-c model_reasoning_effort=xhigh` before `exec`; leave the sandbox at its default
+`-c model_reasoning_effort=xhigh` before `exec`, add the shared reference's `$LEAN`
+flags and `skills.include_instructions=false`; leave the sandbox at its default
 (`../shared-references/codex-cli.md`). A bare `reasoning_effort` key is silently
 ignored, leaving the model default `low` — verified by a live call on 2026-09-04. Use `xhigh`; reserve
 `max`/`ultra` for genuinely subtle code. `gpt-6.2-astra` answered a live call on

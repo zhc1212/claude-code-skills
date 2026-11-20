@@ -8,7 +8,11 @@ continues an existing thread.
 New thread. It prints the `threadId`, and Codex's reply goes to the `-o` file:
 
 ```bash
-codex -c model_reasoning_effort=xhigh exec --json --skip-git-repo-check -m gpt-6.2-astra \
+LEAN="--disable multi_agent --disable apps --disable plugins --disable browser_use \
+  --disable computer_use --disable image_generation --disable goals --disable tool_suggest \
+  --disable skill_search --disable in_app_browser"
+codex -c model_reasoning_effort=xhigh -c skills.include_instructions=false \
+  exec $LEAN --json --skip-git-repo-check -m gpt-6.2-astra \
   -o /tmp/codex-reply.md - <<'PROMPT' | jq -r 'select(.type=="thread.started").thread_id'
 <prompt>
 PROMPT
@@ -17,7 +21,7 @@ PROMPT
 Follow-up in the same thread:
 
 ```bash
-codex exec resume <threadId> --json --skip-git-repo-check \
+codex -c skills.include_instructions=false exec resume <threadId> $LEAN --json --skip-git-repo-check \
   -o /tmp/codex-reply.md - <<'PROMPT' >/dev/null
 <prompt>
 PROMPT
@@ -28,6 +32,11 @@ Then read `/tmp/codex-reply.md`.
 - Map `model: X` to `-m X`, `cwd: D` to `-C D`, and each `config` key to
   `-c key=value` placed before `exec`. A `-c` after `exec` replaces every earlier
   `-c`, including the wrapper's sandbox default below.
+- Keep `$LEAN` and `skills.include_instructions=false` on every call: they stop
+  Codex from spawning sub-agents and drop its skill listing and app/browser tools,
+  which every request otherwise resends (first request 29.6K → 17.3K input tokens,
+  CLI 0.167.0, 2026-11-20). Shell, `apply_patch`, `view_image` and web search stay.
+  `--disable` takes effect only after `exec`; placed before it, `spawn_agent` stays.
 - Pass the prompt on stdin through a quoted heredoc so the shell expands nothing.
 - An xhigh call can run past the 10-minute Bash limit. Start long calls with
   `run_in_background` and read the `-o` file when the task finishes.
