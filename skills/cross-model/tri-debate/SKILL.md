@@ -11,12 +11,9 @@ them. Everything else in the protocol applies as written. Where the two differ, 
 
 ## Both opponents
 
-- The Carbon rules apply to both opponents. Verify every decision-bearing checkable claim from either before it enters
-  the ledger or reaches the other. Mark a disproved claim `[refuted: <source fact>]` and relay an uncheckable one as
+- Verification (Opponent rules) also comes before a claim reaches the other opponent. Relay an uncheckable claim as
   conditional.
-- Both blind openings ask for Alternatives Outside the Framing. When an existing implementation is relevant, that
-  section also asks which design would win if it could be replaced at no cost. The opening says the debate is with
-  Claude and one other AI model.
+- The blind opening says the debate is with Claude and one other AI model.
 - Each wave sends both calls at once with `run_in_background` and waits for both replies. Claude saves its own opening
   or round reply to `r{N}-claude.md` before reading either.
 - Prompts are `r{N}-prompt-codex.md` and `r{N}-prompt-agy.md`. They differ only in the read-only line and, after round 0, the tilt.

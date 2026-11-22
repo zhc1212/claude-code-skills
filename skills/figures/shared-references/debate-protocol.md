@@ -27,20 +27,22 @@ Claude's ledger label is `C:`. Every prompt to an opponent, first and follow-up,
 without its deny settings. A fresh first call mid-debate erases the opponent's memory of earlier
 rounds; after the first call, always resume.
 
-### Carbon rules
+### Opponent rules
 
-- **Verify on arrival.** Each round, open every checkable claim from Carbon that bears on a
+- **Verify on arrival.** Each round, open every checkable claim from an opponent that bears on a
   crux (file:line, quoted code, citation, number, API name) before it enters the crux ledger.
   Until opened it is `unverified`, and an unverified claim leaves every crux status unchanged.
+  Mark a disproved claim `[refuted: <source fact>]`.
   A `code-inspected` tag on a path outside the packet counts as `inference` until you open it.
-- **Widen the option space.** Add this section to Carbon's blind-opening request, after `## Risks`:
+- **Widen the option space.** Add this section to every blind-opening request, after `## Risks`:
 
   ```
   ## Alternatives Outside the Framing
   [at least one option the question does not list, with its strongest case]
   ```
 
-  Treat a surviving alternative as a new crux.
+  When an existing implementation is relevant, the section also asks which design would win if it
+  could be replaced at no cost. Treat a surviving alternative as a new crux.
 
 ## Protocol Overview
 

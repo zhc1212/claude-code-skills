@@ -264,6 +264,18 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
+## Verify and widen with every debate opponent — v1.0.41
+
+Agreed by all three models in the 2026-11-22 tri-debate pilot. Kept as a separate commit because it changes
+`codex-debate`'s behaviour.
+
+- The two rules that were Carbon-only now apply to every opponent, so `codex-debate` gains them. They sit under
+  "Opponent rules" in `shared-references/debate-protocol.md`.
+  - Claude opens each checkable claim when it arrives and marks a disproved one `[refuted: <source fact>]`.
+  - Every blind opening asks for "Alternatives Outside the Framing". When an existing implementation is relevant,
+    the section also asks which design would win if it could be replaced at no cost.
+- `tri-debate` drops its own copy of these rules.
+
 ## Share one debate protocol; add tri-debate — v1.0.40
 
 Added on 2026-11-22 at Dr.Z's request, after a hand-run three-way pilot debate on this very design.

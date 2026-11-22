@@ -6,4 +6,4 @@ description: Conducts structured multi-round debates between Claude and Codex (G
 # Codex Debate
 
 Run [`../shared-references/debate-protocol.md`](../shared-references/debate-protocol.md) with Codex as the only
-opponent: its Codex column under Participants, every phase, and the Two-Party Round Messages.
+opponent: its Codex column under Participants, the Opponent rules, every phase, and the Two-Party Round Messages.

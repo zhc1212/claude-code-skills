@@ -68,7 +68,7 @@
       "name": "agy-debate",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "2810f1afb634e71366c8592bc50708d5af7d0f2ea112240cee0b2e4effddf1a2"
+      "installed_skill_sha256": "6a7b77c74794d03c2e9ba32287a9c9a65bb666f438096000a2318ecf16f2c149"
     },
     {
       "name": "analyze-results",
@@ -168,7 +168,7 @@
       "name": "codex-debate",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "7ce1d9476f7a58b4369163663c322de7bedeb7c7409c95ad1906534efec36e1f"
+      "installed_skill_sha256": "9bd7ccdc17ca91cacbd0f073fe9bf7ac1efbcd36029d49690ac32b4b84ec1745"
     },
     {
       "name": "codex-debug-pair",
@@ -911,7 +911,7 @@
       "name": "tri-debate",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "27852fbac53f60229c536cc4286b304a99eeff271b201e16c30b590343ef9fb1"
+      "installed_skill_sha256": "828d600511dd158caef53693d268294681b13acb403229447400fa25a10d54b5"
     },
     {
       "name": "triage",
