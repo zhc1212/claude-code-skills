@@ -93,14 +93,14 @@
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "installed_skill_sha256": "1a758691883ad19730523b805f25084af12e87e94fc58a22deb405172083b5b9"
+      "installed_skill_sha256": "3d6f363f3739e3fc6f98968003aff7f10e01d6f719b9b02c2210bab8140b7e75"
     },
     {
       "name": "auto-review-loop",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "installed_skill_sha256": "df5f4a2fb8a483a405135b5a98df5c833d81175837ff1c705f672c492ddd9ae4"
+      "installed_skill_sha256": "e88900ac5e7b5a5addfb316541eb6e9524c086270a2f78e94d878244579b70c3"
     },
     {
       "name": "autoresearch",
@@ -162,37 +162,37 @@
       "name": "codex-debate",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "2bba00af2f6d956a0107cf27aa537d0a0fc067ecd757410560bc61b91769c68c"
+      "installed_skill_sha256": "d2757cbed998dd9b8a1ff45bd84ba65b6fbf82a3ce554b489381fcb011b47693"
     },
     {
       "name": "codex-debug-pair",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "13caaac394b676ff064ed3fea4fedf42856147b2306010df055614dc9edcea06"
+      "installed_skill_sha256": "d06affc3bea5215cd7fb69cc4bdc785459fb931787cd0c72837489bfb0ab12dd"
     },
     {
       "name": "codex-experiment-critic",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "b8f6ab8b273e99e238cdd6971e65bc6ba027e68021d521326dd9e2d08d4a1037"
+      "installed_skill_sha256": "435cd95866622dec136056066e616df123561dc66e8e2ecb00cb0b86c79893f7"
     },
     {
       "name": "codex-paper-adversary",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "b24a9c068730c37d1b13eb960839a14d5185089ebc6412f0a5790dce7284f1f5"
+      "installed_skill_sha256": "08d3b54886f5b1085574a0fea16ce3c002d225494626e31ebfec7e1a4c7ee0c0"
     },
     {
       "name": "codex-review",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "b6dcee201315a3abd3131c09554f8955a2f36431c69b02e185e7d2ef31629a5c"
+      "installed_skill_sha256": "d7eaacfe09de0e28a4e8e4f027e0707e33b4036d9c8636d1dffae8e3c8ef8e09"
     },
     {
       "name": "codex-skill-optimizer",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "014284adb51d450dad5a9a870e8b483a2d67e6902ff10afefd37e44a8b40bd38"
+      "installed_skill_sha256": "72fbfd086b86d6f1bee5c7b83c58cced950bbd88862f8d1d271eaadb66407d06"
     },
     {
       "name": "collect-results",
@@ -283,13 +283,13 @@
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "installed_skill_sha256": "9450b3d5e4f6a9a600fc0339a454e47541a9987cefea1be25705bf1aa68ac08c"
+      "installed_skill_sha256": "8e8654c07417fda3d3e877047b49f496f40c00ab7982ea85b787683c3ef69069"
     },
     {
       "name": "figure-audit",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "c4a0a4e035a3d5d593537e6fe5fdaf9bfa0edb12a8632667979cdb5e67ba1596"
+      "installed_skill_sha256": "09d480a1015984a88daac5b0e3798d107119eae1af1a1bafef449296cee907d0"
     },
     {
       "name": "figure-designer",
@@ -514,14 +514,14 @@
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "installed_skill_sha256": "ec3244fea83c57b49227922f22722a896f70a9c68737288e93cf20152e0ff11b"
+      "installed_skill_sha256": "e4be179400ef7dace78148381c88c09a477b24ee20f0d64d8385f9ea1a30b06c"
     },
     {
       "name": "idea-discovery",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "installed_skill_sha256": "4b95488b3ee0cff57efdd71d1a79d429c363dd83f1160a079440cf202dca2ba9"
+      "installed_skill_sha256": "7d2c0e9fe1c8e256a04e7198653005b54f1828b7265af30d1eccf1f53852599f"
     },
     {
       "name": "idea-evaluator",
@@ -613,7 +613,7 @@
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "installed_skill_sha256": "aa9ed796202a60e4da5426d4e23111a52a7fc4c6bbcba0767d67c86617947e62"
+      "installed_skill_sha256": "f9879e0ebad0d22b0d1863054101657d9e80cf0ae29c91c0e89d30eb265263de"
     },
     {
       "name": "oral-paragraph-audit",
@@ -634,7 +634,7 @@
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "installed_skill_sha256": "30cf2277c47290b22d32be5a05414ff4b280419bbbbce48f0ff8c53582ee84d5"
+      "installed_skill_sha256": "7d285e76eacee36f679ee19cc2d7acb052ce7efa5ccf3366bce51983b460639c"
     },
     {
       "name": "paper-illustration",
@@ -648,7 +648,7 @@
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "installed_skill_sha256": "62b783772c41ac7b228682838f77f8fd8c0bee83d38048fad4ca1f79cf5f367d"
+      "installed_skill_sha256": "af73baa91eb2bd0c483e3e0d291cfabfd45467c9ecd17d32875932714db8ee81"
     },
     {
       "name": "paper-polish",
@@ -669,7 +669,7 @@
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "installed_skill_sha256": "aa6a63e904dd64d31d2c3e23c31f7910cb9708d399fe733b6b0c103ec494b37b"
+      "installed_skill_sha256": "3a8f10fd922360633080715751b0e6bacc1087b05e6cc939c3f9ad6f7837a821"
     },
     {
       "name": "paper-writer",
@@ -684,7 +684,7 @@
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "installed_skill_sha256": "ca35de430d02b3872d72b66d3b6dcfbc9d7d4eba3740c08af0cb5f409c8305d5"
+      "installed_skill_sha256": "e2a720e22b6c241fd8077989d9e6ac1924b960dbf107744af8f365a0c698815d"
     },
     {
       "name": "ppt-master",
@@ -705,7 +705,7 @@
       "origin": "upstream",
       "source": "https://github.com/mattpocock/skills",
       "upstream_path": "skills/engineering/pr",
-      "upstream_commit": "5863806dd4e15c63174bee4e7515a4256792ecfa",
+      "upstream_commit": "abeeaf95660ba9e8b7c753eb38f441ca707a8823",
       "installed_skill_sha256": "ab63f1cf78647389edcd386c9427c5dfca27ed2836930c24773ffee834c19bcd"
     },
     {
@@ -744,14 +744,14 @@
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "installed_skill_sha256": "ffcacca99651b599328a5287c58f8f697ecff4da6206b9b46dadc6a8c506bdaa"
+      "installed_skill_sha256": "9153cd2ba4e6108ad3be5bfb7c40a754cbc9c0d0172ffb7fa638f68587554db0"
     },
     {
       "name": "research-review",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
-      "installed_skill_sha256": "0e53958e222c13ae880798502d59bcaa992f3764973ec070a86b80e1fe0fca5d"
+      "installed_skill_sha256": "043d966672faead9b9ea2299921d91a05214c33bb491cf1eb3cb207df585c748"
     },
     {
       "name": "retro",
