@@ -44,6 +44,8 @@ Then read `/tmp/codex-reply.md`.
 - An xhigh call can run past the 10-minute Bash limit. Start long calls with
   `run_in_background` and read the `-o` file when the task finishes.
 - Concurrent calls need distinct `-o` files.
+- Pass `-o` through `realpath -m`: inside the Claude sandbox `~` is a symlinked home, and
+  Codex rejects a path through it with "Not a directory" (CLI 0.167.0, 2026-11-22).
 - Do not pass `-s`. On the host, Codex keeps its own read-only sandbox. Inside the
   Claude sandbox, Codex's bubblewrap cannot nest, so the `codex` wrapper defaults to
   `danger-full-access` there; the outer sandbox still applies.

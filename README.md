@@ -126,6 +126,7 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 | `codex-review` | Cross-model code review; Codex reads the repo |
 | `codex-skill-optimizer` | Cross-model audit and improvement of a skill |
 | `research-review` | Deep critical review of research by Codex |
+| `tri-debate` | Three-way debate: Claude, Codex and Gemini 4 Carbon |
 
 ### Nature-family journals
 
@@ -262,6 +263,39 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 - [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md) — current source policy and the historical third-party workspace inventory.
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
+
+## Share one debate protocol; add tri-debate — v1.0.40
+
+Added on 2026-11-22 at Dr.Z's request, after a hand-run three-way pilot debate on this very design.
+
+- `shared-references/debate-protocol.md` now holds the debate protocol that was `codex-debate`'s body. It names each
+  model "the opponent" and has a Participants table: Codex and Carbon calls, read-only lines, exchange files and
+  ledger labels. Carbon's two rules moved there too. The two-party round templates sit in one "Two-Party Round
+  Messages" section. The text is otherwise unchanged (checked line by line). The record template moved to
+  `shared-references/debate-record-template.md` and is participant-generic. The agy call form moved to
+  `shared-references/agy-cli.md`. `codex-debate` and `agy-debate` are now short entry points, so `agy-debate`'s
+  substitution table and `codex-debate`'s dependency note are gone.
+- `tri-debate` (own, `skills/cross-model/`) runs the same protocol with Codex and Carbon together and replaces only
+  the two-party round messages:
+  - Blind openings run in parallel.
+  - Every claim is verified before anyone sees another position.
+  - Arguments are relayed verbatim, grouped by claim, warrant and caveat, without authors, counts or confidence.
+  - One focused round (break → repair or concede → update when requirements are testable).
+  - A final round where each model endorses each merged item or names the smallest change it needs.
+  - A 2–1 split is never reported as consensus.
+- The rules came from the pilot (exchange kept outside the repository). Claude, Codex (`gpt-6.2-astra` xhigh) and
+  Carbon each wrote a blind opening, then argued one focused round and one endorsement round, taking ~18 minutes of
+  model time in total.
+  - All three openings chose the shared protocol.
+  - Carbon found that `codex-debate`'s rounds embed Claude's reply in the next prompt, so three parties need their
+    own lockstep flow.
+  - In the endorsement round, Codex quoted three caveats of its own that Claude's merge had dropped. That is why the
+    final round asks each model to quote misrepresented words.
+  - The design leans on Shu 2026 (arXiv 2609.26145): one debate round erased most of the disagreement that
+    verification needed, and showing peers' verdicts alone reproduced 91.5% of that collapse. It also leans on He et
+    al. 2026 (arXiv 2606.29270): in three-model splits the minority was right in about a quarter of cases.
+- `shared-references/codex-cli.md`: pass `-o` through `realpath -m`. Inside the sandbox `~` is a symlinked home, and
+  Codex rejects a path through it with "Not a directory" (reproduced with CLI 0.167.0).
 
 ## Pin the model on Codex follow-up calls — v1.0.39
 

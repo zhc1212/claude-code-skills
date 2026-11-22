@@ -1,7 +1,7 @@
 {
   "snapshot_date": "2026-10-16",
   "source": "~/.claude/skills",
-  "active_skill_count": 128,
+  "active_skill_count": 129,
   "retained_repository_only_skills": [],
   "local_only_skills": {
     "note": "Installed in ~/.claude/skills but never copied here: the source repository has no license. sync_user_level.py skips these names.",
@@ -68,7 +68,7 @@
       "name": "agy-debate",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "1c9a3f6696a50a8c47844c6e747272072d95c332bc2b22c3a13cab47ac9fb1c4"
+      "installed_skill_sha256": "2810f1afb634e71366c8592bc50708d5af7d0f2ea112240cee0b2e4effddf1a2"
     },
     {
       "name": "analyze-results",
@@ -168,7 +168,7 @@
       "name": "codex-debate",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "dbefe84089aab1d2f2214994a6b44722c03da387eb16bff78fb9af969fe2114b"
+      "installed_skill_sha256": "7ce1d9476f7a58b4369163663c322de7bedeb7c7409c95ad1906534efec36e1f"
     },
     {
       "name": "codex-debug-pair",
@@ -906,6 +906,12 @@
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
       "installed_skill_sha256": "66d3e62655595fcbff263acbdd60fb21d6b70dfe23a0c5e1b1b1ad4407e69773"
+    },
+    {
+      "name": "tri-debate",
+      "origin": "own",
+      "source": "https://github.com/zhc1212/claude-code-skills",
+      "installed_skill_sha256": "27852fbac53f60229c536cc4286b304a99eeff271b201e16c30b590343ef9fb1"
     },
     {
       "name": "triage",

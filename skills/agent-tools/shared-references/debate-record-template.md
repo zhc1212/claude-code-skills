@@ -3,7 +3,7 @@
 Date: {YYYY-MM-DD}
 Rounds: {N}
 Outcome: {consensus | decision-ready tradeoff | evidence-needed | stalemate}
-Codex: {model}, {effort}, thread {threadId}
+{one record line per opponent, from Participants in debate-protocol.md}
 Exchange: {exchange directory}
 Evidence revisions: {repo@commit, … for the code and data the cruxes rest on}
 
@@ -15,7 +15,7 @@ Evidence revisions: {repo@commit, … for the code and data the cruxes rest on}
 
 ### Opening Positions
 - **Claude**: {Toulmin-structured summary — claim, warrant, confidence}
-- **Codex**: {Toulmin-structured summary — claim, warrant, confidence}
+- **{Opponent}**: {Toulmin-structured summary — claim, warrant, confidence} (one bullet per opponent)
 - **Initial cruxes identified**: {list}
 
 ### Round-by-Round
@@ -30,19 +30,19 @@ Evidence revisions: {repo@commit, … for the code and data the cruxes rest on}
 
 ## Crux Ledger (Final)
 
-| Crux | Claude view | Codex view | Confidence | Resolution | Deciding evidence |
+| Crux | Claude view | {one column per opponent} | Confidence | Resolution | Deciding evidence |
 |------|------------|------------|------------|-----------|------------------|
-| {crux} | {view} | {view} | C:{lvl} X:{lvl} | {status} | {evidence} [{tier}] |
+| {crux} | {view} | {view} | C:{lvl} X:{lvl} (labels from Participants) | {status} | {evidence} [{tier}] |
 
 ## Evidence Ledger
 
 | Claim | Evidence | Tier | Source | Status |
 |-------|----------|------|--------|--------|
-| {claim} | {evidence} | {tier} | {Claude/Codex} | {accepted/contested/unresolved} |
+| {claim} | {evidence} | {tier} | {participant} | {accepted/contested/unresolved} |
 
 ## Unresolved Items
 
-{any remaining disagreements with both positions documented}
+{any remaining disagreements with every position documented}
 {what evidence or experiment would resolve each}
 
 ## Action Items
