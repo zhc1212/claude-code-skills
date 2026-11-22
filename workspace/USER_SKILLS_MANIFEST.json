@@ -911,7 +911,7 @@
       "name": "tri-debate",
       "origin": "own",
       "source": "https://github.com/zhc1212/claude-code-skills",
-      "installed_skill_sha256": "828d600511dd158caef53693d268294681b13acb403229447400fa25a10d54b5"
+      "installed_skill_sha256": "3b365a4f9ea4ab89c250d57133984bf74b7e84bbc9029cb98d4c87fcdde1efa9"
     },
     {
       "name": "triage",

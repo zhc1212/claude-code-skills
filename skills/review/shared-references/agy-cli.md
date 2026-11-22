@@ -25,7 +25,7 @@ cd <repository root or exchange> && agy --model gemini-4-carbon --effort high \
   Read-only session: shell commands and file writes are disabled. Open files only by the exact paths given; if you need anything else, name it in your reply instead of searching.
   ```
 
-- Start each call with `run_in_background`. Read the files when the task finishes; a call took 369–553 s in
+- Start each call with `run_in_background`. Read the files when the task finishes; a call took 141–553 s in
   testing.
 - `-p` passes the prompt as a single argument, which Linux caps at 128 KB. Trim excerpts to fit.
 - After the first call, save `jq -r .conversation_id` to a file. A call without `--conversation` starts a new

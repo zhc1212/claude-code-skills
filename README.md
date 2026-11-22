@@ -295,7 +295,9 @@ Added on 2026-11-22 at Dr.Z's request, after a hand-run three-way pilot debate o
   - One focused round (break → repair or concede → update when requirements are testable).
   - A final round where each model endorses each merged item or names the smallest change it needs.
   - A 2–1 split is never reported as consensus.
-- The rules came from the pilot (exchange kept outside the repository). Claude, Codex (`gpt-6.2-astra` xhigh) and
+- Most rules came from the pilot (exchange kept outside the repository). Two were added afterwards and were not
+  debated: the red-team request rides in the final round, and an adopted change counts as endorsed only by the
+  model that proposed it. Claude, Codex (`gpt-6.2-astra` xhigh) and
   Carbon each wrote a blind opening, then argued one focused round and one endorsement round, taking ~18 minutes of
   model time in total.
   - All three openings chose the shared protocol.
@@ -304,7 +306,7 @@ Added on 2026-11-22 at Dr.Z's request, after a hand-run three-way pilot debate o
   - In the endorsement round, Codex quoted three caveats of its own that Claude's merge had dropped. That is why the
     final round asks each model to quote misrepresented words.
   - The design leans on Shu 2026 (arXiv 2609.26145): one debate round erased most of the disagreement that
-    verification needed, and showing peers' verdicts alone reproduced 91.5% of that collapse. It also leans on He et
+    verification needed, and showing peers' verdicts alone reproduced 91.5% of that collapse (figures from the abstract). It also leans on He et
     al. 2026 (arXiv 2606.29270): in three-model splits the minority was right in about a quarter of cases.
 - `shared-references/codex-cli.md`: pass `-o` through `realpath -m`. Inside the sandbox `~` is a symlinked home, and
   Codex rejects a path through it with "Not a directory" (reproduced with CLI 0.167.0).

@@ -16,10 +16,10 @@ them. Everything else in the protocol applies as written. Where the two differ, 
 - The blind opening says the debate is with Claude and one other AI model.
 - Each wave sends both calls at once with `run_in_background` and waits for both replies. Claude saves its own opening
   or round reply to `r{N}-claude.md` before reading either.
-- Prompts are `r{N}-prompt-codex.md` and `r{N}-prompt-agy.md`. They differ only in the read-only line and, after round 0, the tilt.
+- Prompts are `r{N}-prompt-codex.md` and `r{N}-prompt-agy.md`. They differ only in the read-only line and, after
+  round 0, the tilt.
 - If one CLI still fails after one narrowed retry, tell the user and continue with the other, instead of the
-  question in Failures. Mark the result partial, and its ledger
-  column missing.
+  question in Failures. Mark the result partial, and its ledger column missing.
 
 ## Round flow
 
@@ -27,8 +27,8 @@ The budget is the blind opening plus at most two rounds, a focused round and a f
 condition can end it earlier.
 
 1. **Blind opening** (Phase 2), both calls in parallel on the same packet.
-2. **Verify, then build the ledger.** Verify all three openings before either opponent sees another position. Then build the
-   ledger (Phase 3), one column per participant. The blind-opening positions stay in the record as the pre-exposure
+2. **Verify, then build the ledger.** Verify all three openings before either opponent sees another position. Then
+   build the ledger (Phase 3), one column per participant. The blind-opening positions stay in the record as the pre-exposure
    view.
 3. **Relay packet.** Send one identical packet to both:
    - The arguments of all three, Claude's included. Group them by claim, warrant and caveat. Quote them verbatim
