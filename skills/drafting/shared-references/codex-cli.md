@@ -18,10 +18,13 @@ codex -c model_reasoning_effort=xhigh -c skills.include_instructions=false \
 PROMPT
 ```
 
-Follow-up in the same thread:
+Follow-up in the same thread. Repeat the first call's model and effort: a resume
+without them runs on the config default, `gpt-6.2-sol` at medium (CLI 0.167.0,
+tested 2026-11-22):
 
 ```bash
-codex -c skills.include_instructions=false exec resume <threadId> $LEAN --json --skip-git-repo-check \
+codex -c model_reasoning_effort=xhigh -c skills.include_instructions=false \
+  exec resume <threadId> -m gpt-6.2-astra $LEAN --json --skip-git-repo-check \
   -o /tmp/codex-reply.md - <<'PROMPT' >/dev/null
 <prompt>
 PROMPT

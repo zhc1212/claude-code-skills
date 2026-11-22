@@ -263,6 +263,19 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
 
+## Pin the model on Codex follow-up calls — v1.0.39
+
+Fixed on 2026-11-22 after Dr.Z asked whether Codex calls default to `gpt-6.2-astra` at `xhigh`.
+
+- `shared-references/codex-cli.md` documented `codex exec resume` without `-m` or the effort, so every follow-up
+  round ran on the config default. A test thread with CLI 0.167.0 showed turn 1 (new thread) on
+  `gpt-6.2-astra xhigh`, turn 2 (the documented resume) on `gpt-6.2-sol medium`, and turn 3 (resume with
+  `-m gpt-6.2-astra -c model_reasoning_effort=xhigh`) back on astra xhigh. Session logs show real skill runs on
+  2026-11-20, 11-21 and 11-22 whose later rounds ran on `gpt-6.2-sol`; some callers passed the effort but not the
+  model. The resume form now repeats the first call's model and effort. All 20 skills that use `codex exec resume`
+  point to this file.
+- `workspace/USER_CLAUDE.md`: the Codex line now says to pin the model and effort on `exec resume` too.
+
 ## Add agy-debate — v1.0.38
 
 Added on 2026-11-22 at Dr.Z's request.
