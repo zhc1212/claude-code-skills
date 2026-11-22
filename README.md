@@ -118,6 +118,7 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 
 | Skill | Use it for |
 |---|---|
+| `agy-debate` | The same debate with Gemini 4 Carbon through the Antigravity CLI (`agy`) |
 | `codex-debate` | Structured Claude–Codex debate on a decision |
 | `codex-debug-pair` | Independent bug hypotheses from both models |
 | `codex-experiment-critic` | Codex critiques an experiment plan before GPU hours |
@@ -261,6 +262,27 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 - [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md) — current source policy and the historical third-party workspace inventory.
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
+
+## Add agy-debate — v1.0.38
+
+Added on 2026-11-22 at Dr.Z's request.
+
+- `agy-debate` (own, `skills/cross-model/`) runs `codex-debate`'s protocol with Gemini 4 Carbon (High) as the
+  opponent, called through the Antigravity CLI `agy`. It reads `../codex-debate/SKILL.md` and swaps every Codex call
+  for one agy call form, so the protocol keeps a single source. Two rules are added for Carbon: Claude opens each of
+  Carbon's checkable claims when it arrives, and an unopened claim leaves every crux status unchanged; the blind
+  opening also asks for at least one option outside the question's framing.
+- Every agy call is read-only through deny rules:
+  `--settings '{"permissions":{"deny":["write_file(*)","command(*)","mcp(*)"]}}'`. Tested on 2026-11-22 with agy
+  1.5.14 in this repository: writes and shell commands come back to Carbon as tool errors and the turn continues;
+  reads by exact path, inside or outside the repository, and web search work, but fetching a page needs the denied
+  shell, and a blind opening took 553 s. `--mode plan` did not stop a write,
+  and `permissions.allow` entries passed through `--settings` had no effect. With the shell denied Carbon has no
+  listing or search tool, so the evidence packet gives absolute paths.
+- `codex-debate` gains a note naming `agy-debate` as a dependent, so renaming its sections or template lines also
+  updates the substitution table.
+- `workspace/USER_CLAUDE.md` gains the agy call form and the Codex-versus-Carbon usage line.
+- v1.0.37 left the four manifest version fields at 1.0.36; this release sets all four to 1.0.38.
 
 ## Add AI-infra and architecture-venue skills — v1.0.37
 

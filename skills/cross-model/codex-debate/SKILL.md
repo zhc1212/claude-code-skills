@@ -6,6 +6,8 @@ description: Conducts structured multi-round debates between Claude and Codex (G
 # Codex Debate
 
 > Codex calls (`codex exec`, `codex exec resume`) follow `../shared-references/codex-cli.md`.
+> `agy-debate` runs this protocol through a substitution table keyed to its section names, template
+> headings and template lines; when renaming any of them, update `../agy-debate/SKILL.md` in the same edit.
 
 Stress-test technical decisions by eliciting independent positions from Claude and
 Codex, identifying cruxes, and producing either a justified consensus or a clear
