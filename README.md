@@ -4,7 +4,7 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 
 ## Skills by scenario
 
-127 skills in 14 scenario folders, `skills/<scenario>/<skill>/`, plus 5 [project-scoped skills](#project-scoped-skills) in `project-skills/<project>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
+130 skills in 14 scenario folders, `skills/<scenario>/<skill>/`, plus 5 [project-scoped skills](#project-scoped-skills) in `project-skills/<project>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
 
 [Ideas and literature](#ideas-and-literature) · [Experiments](#experiments) · [Drafting a paper](#drafting-a-paper) · [Figures and tables](#figures-and-tables) · [Revising a draft](#revising-a-draft) · [Review before submission](#review-before-submission) · [Second model as adversary](#second-model-as-adversary) · [Nature-family journals](#nature-family-journals) · [Software-engineering venues](#software-engineering-venues) · [Slides and reports](#slides-and-reports) · [General writing](#general-writing) · [Software engineering](#software-engineering) · [Planning and decisions](#planning-and-decisions) · [Agent setup, memory and knowledge](#agent-setup-memory-and-knowledge) · [Project-scoped skills](#project-scoped-skills)
 
@@ -57,6 +57,7 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 | `paper-writer` | Draft prose from the author's own materials, any field |
 | `write-paper` | sci-brain manuscript drafting with real results *(run when named)* |
 | `intro-drafter` | Introduction along a six-paragraph flow |
+| `bestpaper-writing` | ML/CV title, abstract, introduction, method, experiments and figure plan in award-paper style |
 | `tech-paper-template` | Logical skeleton of a technical paper |
 | `benchmark-paper-template` | Structure of a benchmark or evaluation paper |
 | `writing-systems-papers` | Paragraph blueprint for OSDI/SOSP/ASPLOS/NSDI/EuroSys papers |
@@ -263,6 +264,24 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 - [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md) — current source policy and the historical third-party workspace inventory.
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
+
+## Add bestpaper-writing — v1.0.42
+
+Installed on 2026-11-25 at Dr.Z's request.
+
+- `bestpaper-writing` (upstream, `skills/drafting/`) is copied verbatim from
+  [gulucaptain/Best-Paper-Writing-Skill](https://github.com/gulucaptain/Best-Paper-Writing-Skill) at `b9eff99`. It
+  drafts or strengthens an ML/CV paper's title, abstract and introduction (also method, experiments and a figure
+  plan) from a project description, its intake form or a pasted abstract, using a corpus of 60 CVPR/ICCV/NeurIPS
+  award papers and its own checkers (`check_draft.py`, `check_figures.py`).
+- Licenses: the skill's original content is CC BY 4.0 (copied to `workspace/third-party-licenses/best-paper-writing-skill/`);
+  parts are adapted from Master-cai/Research-Paper-Writing-Skills (MIT, `LICENSE-base-skill`, also the base of
+  `research-paper-writing`). Exemplar sentences quoted from published papers are not CC BY: their authors keep the
+  copyright (`NOTICE.md`).
+- Installed for Claude only. The upstream `install.sh` also writes `~/.agents/skills/` for Codex; it was not run.
+- `workspace/USER_CLAUDE.md`: the "Abstract and introduction" routing row sends ML/CV abstract and introduction
+  drafting to `bestpaper-writing` and keeps `intro-drafter` for other technical papers.
+- The README skill count read 127 while 129 skill folders existed; it now reads 130.
 
 ## Verify and widen with every debate opponent — v1.0.41
 

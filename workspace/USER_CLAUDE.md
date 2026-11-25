@@ -60,7 +60,7 @@ Pick skills by their descriptions. The rows below settle only the overlaps those
 
 | Task | Use |
 |---|---|
-| Abstract and introduction | Draft a technical paper's introduction: `intro-drafter`; audit abstract/intro structure: `abstract-intro-audit`; bilingual abstract + keywords: ARS `academic-paper` `abstract-only` |
+| Abstract and introduction | Draft or strengthen an ML/CV paper's title, abstract and introduction (also its Method, Experiments and figure plan, from a project description, intake form or pasted abstract): `bestpaper-writing`; draft another technical paper's introduction: `intro-drafter`; audit abstract/intro structure: `abstract-intro-audit`; bilingual abstract + keywords: ARS `academic-paper` `abstract-only` |
 | Annotated bibliography in paper format | ARS `academic-paper` `lit-review`, not ARS `deep-research` |
 | Diagram outside a paper (README, docs, talk, everyday plan or process) | `archify` (explorable HTML; also converts Mermaid); static branded SVG/PNG, types archify lacks (Gantt, Sankey, timeline, ER, Wardley), or redrawing a draw.io/Mermaid/Excalidraw file: `diagram-design:diagram-design` and its `import-*` commands |
 | Pre-submission review | ML/NLP papers: `paper-presubmit-audit` (submission gate + reviewer lens); other fields: `pre-submission-reviewer`; one harsh reviewer: `reviewer-view-paper`; simulated multi-reviewer panel: ARS `academic-paper-reviewer` |

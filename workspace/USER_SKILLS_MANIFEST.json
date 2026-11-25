@@ -1,7 +1,7 @@
 {
   "snapshot_date": "2026-10-16",
   "source": "~/.claude/skills",
-  "active_skill_count": 129,
+  "active_skill_count": 130,
   "retained_repository_only_skills": [],
   "local_only_skills": {
     "note": "Installed in ~/.claude/skills but never copied here: the source repository has no license. sync_user_level.py skips these names.",
@@ -123,6 +123,15 @@
       "upstream_path": "skills/benchmark-paper-template",
       "upstream_commit": "6800d4d758bd1579faa6e50abae2b7fa31d2a835",
       "installed_skill_sha256": "daa63e695d0dccd317517b90b92d0f7e3f1f67f104ee5971ad6e9b5c120d3095"
+    },
+    {
+      "name": "bestpaper-writing",
+      "origin": "upstream",
+      "source": "https://github.com/gulucaptain/Best-Paper-Writing-Skill",
+      "upstream_path": "skills/bestpaper-writing",
+      "upstream_commit": "b9eff99a2130bea960ef1050eacf9f40cb792dd4",
+      "derived_from": "https://github.com/Master-cai/Research-Paper-Writing-Skills",
+      "installed_skill_sha256": "cc86384ea3f6bfee773899046b5ad2f8c35daa0f3f82d437d5f39af717bc72f1"
     },
     {
       "name": "brainstorm-ideas",
