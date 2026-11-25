@@ -1,7 +1,7 @@
 {
   "snapshot_date": "2026-10-16",
   "source": "~/.claude/skills",
-  "active_skill_count": 130,
+  "active_skill_count": 131,
   "retained_repository_only_skills": [],
   "local_only_skills": {
     "note": "Installed in ~/.claude/skills but never copied here: the source repository has no license. sync_user_level.py skips these names.",
@@ -700,6 +700,14 @@
       "source": "https://github.com/zhc1212/claude-code-skills",
       "derived_from": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
       "installed_skill_sha256": "e2a720e22b6c241fd8077989d9e6ac1924b960dbf107744af8f365a0c698815d"
+    },
+    {
+      "name": "paperbanana",
+      "origin": "upstream",
+      "source": "https://github.com/dwzhu-pku/PaperBanana",
+      "upstream_path": "skill",
+      "upstream_commit": "9ceea039be86dd40294361856a4b7bf097d9e2b7",
+      "installed_skill_sha256": "c25c51368840d0358ab9c9727c5d53d6e4649c909d079d3ffe198a63e4495646"
     },
     {
       "name": "ppt-master",

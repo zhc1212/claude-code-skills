@@ -4,7 +4,7 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 
 ## Skills by scenario
 
-130 skills in 14 scenario folders, `skills/<scenario>/<skill>/`, plus 5 [project-scoped skills](#project-scoped-skills) in `project-skills/<project>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
+131 skills in 14 scenario folders, `skills/<scenario>/<skill>/`, plus 5 [project-scoped skills](#project-scoped-skills) in `project-skills/<project>/`. *User-invoked* skills run only as `/name`; the rest also load when a task matches.
 
 [Ideas and literature](#ideas-and-literature) · [Experiments](#experiments) · [Drafting a paper](#drafting-a-paper) · [Figures and tables](#figures-and-tables) · [Revising a draft](#revising-a-draft) · [Review before submission](#review-before-submission) · [Second model as adversary](#second-model-as-adversary) · [Nature-family journals](#nature-family-journals) · [Software-engineering venues](#software-engineering-venues) · [Slides and reports](#slides-and-reports) · [General writing](#general-writing) · [Software engineering](#software-engineering) · [Planning and decisions](#planning-and-decisions) · [Agent setup, memory and knowledge](#agent-setup-memory-and-knowledge) · [Project-scoped skills](#project-scoped-skills)
 
@@ -75,6 +75,7 @@ Dr.Z's user-level Claude Code configuration and research workflow skills. This r
 | `figure-designer` | Design the core figures: motivating example, overview, results |
 | `paper-figure` | Plots and tables from experiment results |
 | `paper-illustration` | AI-generated method illustrations (Gemini) |
+| `paperbanana` | Method diagrams from methodology text (PaperBanana multi-agent pipeline, raster output) |
 | `gen-figure-caption` | English figure captions from Chinese descriptions |
 | `gen-table-caption` | English table captions from Chinese descriptions |
 | `scientific-visualization` | Truthful, accessible data figures; palette and export checks |
@@ -264,6 +265,20 @@ This repository tracks both the user-level snapshot and the earlier portable wor
 - [`workspace/SKILL_SOURCES.md`](workspace/SKILL_SOURCES.md) — current source policy and the historical third-party workspace inventory.
 
 Use `USER_CLAUDE.md` for a user-level restore and adapt `workspace/CLAUDE.md` for a project-level setup; see the [snapshot notes](workspace/USER_LEVEL_SYNC.md).
+
+## Add paperbanana — v1.0.43
+
+Installed on 2026-11-25 at Dr.Z's request.
+
+- `paperbanana` (upstream, `skills/figures/`) is the `skill/` folder of
+  [dwzhu-pku/PaperBanana](https://github.com/dwzhu-pku/PaperBanana) at `9ceea03`, copied verbatim. It turns a method
+  text and a caption into an academic diagram through Retriever, Planner, Stylist, Visualizer and Critic agents
+  (arXiv 2601.23265, ICML 2026 Spotlight), with PaperBananaBench as retrieval references.
+- The skill calls the full repository: it is cloned at `~/huicheng/PaperBanana` with a Python 3.12 `.venv` and the
+  `diagram` split of PaperBananaBench. `USER_CLAUDE.md` names that root, since the skill's `run.py` resolves the
+  repository from its own location.
+- License: the repository is Apache-2.0 (copied to `workspace/third-party-licenses/paperbanana/`); the SKILL.md
+  front matter says MIT-0.
 
 ## Add bestpaper-writing — v1.0.42
 

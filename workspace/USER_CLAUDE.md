@@ -70,6 +70,7 @@ Usage notes:
 
 - `research-pipeline` stops at a narrative report unless `auto_write: true`.
 - figgenie: for a LaTeX PDF run `export_pdf.py` on `fig.svg`, not `fig.final.svg`, which gives Type 3 fonts.
+- `paperbanana` (installed 2026-11-25): its `<repo-root>` is `/home/huichengzhang/huicheng/PaperBanana`; run `.venv/bin/python skill/run.py` from there (the copy in `~/.claude/skills/` cannot find the repo). Key: `configs/model_config.yaml` (git-ignored) or `OPENROUTER_API_KEY`/`GOOGLE_API_KEY`. Output is a raster image: for a paper figure, treat it as a layout draft and redraw it as vector.
 - `diagram-design:diagram-design` contributes only its layout, connector and compression rules to a paper figure; its web defaults (in-figure title, Google Fonts, px grid) do not suit papers.
 - `/drawio-skill` (user-invoked): `drawio` runs headless through Xvfb; for a paper PDF add `--crop`, since `-f pdf` alone gives a Letter page.
 - `scientific-visualization`: skip its "Citing Scientific Agent Skills" section; never add that paper to my references.
